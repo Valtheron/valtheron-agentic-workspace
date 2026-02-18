@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import './App.css';
-import type { ViewType, Agent, Task, CollaborationSession, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, KanbanColumn } from './types';
+import type { ViewType, Agent, Task, CollaborationSession, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, KanbanColumn, LLMConfig } from './types';
 import { generateAgents, generateTasks, generateCollaborations, generateCertifications, generateSecurityEvents, generateKillSwitch, generateAuditLog, generateProjektBaum, defaultSecurityConfig, generateAnalytics } from './services/mockData';
+import { defaultLLMConfig } from './services/llmProviders';
+import { save, load, KEYS } from './services/persistence';
 import Sidebar from './components/Sidebar';
 import CommandPalette from './components/CommandPalette';
 import DashboardView from './components/DashboardView';
@@ -11,6 +13,7 @@ import CollaborationView from './components/CollaborationView';
 import CertificationsView from './components/CertificationsView';
 import KanbanView from './components/KanbanView';
 import ProjektBaumView from './components/ProjektBaumView';
+import LLMSettingsView from './components/LLMSettingsView';
 
 const viewTitles: Record<ViewType, string> = {
   dashboard: 'Dashboard',
@@ -20,31 +23,39 @@ const viewTitles: Record<ViewType, string> = {
   certifications: 'Zertifizierungen',
   kanban: 'Kanban Board',
   projektbaum: 'Projekt-Baum',
+  'llm-settings': 'LLM Provider',
 };
 
 function App() {
-  const [currentView, setCurrentView] = useState<ViewType>('dashboard');
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [currentView, setCurrentView] = useState<ViewType>(() => load(KEYS.CURRENT_VIEW, 'dashboard'));
+  const [sidebarExpanded, setSidebarExpanded] = useState(() => load(KEYS.SIDEBAR_EXPANDED, true));
   const [cmdPaletteOpen, setCmdPaletteOpen] = useState(false);
-  const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+  const [selectedAgentId, setSelectedAgentId] = useState<string | null>(() => load(KEYS.SELECTED_AGENT, null));
 
   const [agents] = useState<Agent[]>(() => generateAgents());
-  const [tasks, setTasks] = useState<Task[]>(() => generateTasks(agents));
+  const [tasks, setTasks] = useState<Task[]>(() => load(KEYS.TASKS, generateTasks(agents)));
   const [collaborations] = useState<CollaborationSession[]>(() => generateCollaborations(agents));
   const [certifications] = useState<Certification[]>(() => generateCertifications(agents));
   const [securityEvents] = useState<SecurityEvent[]>(generateSecurityEvents);
-  const [killSwitch, setKillSwitch] = useState<KillSwitch>(generateKillSwitch);
+  const [killSwitch, setKillSwitch] = useState<KillSwitch>(() => load(KEYS.KILL_SWITCH, generateKillSwitch()));
   const [auditLog] = useState<AuditEntry[]>(generateAuditLog);
   const [projektBaum] = useState<ProjektBaumNode>(generateProjektBaum);
-  const [securityConfig, setSecurityConfig] = useState<SecurityConfig>(defaultSecurityConfig);
+  const [securityConfig, setSecurityConfig] = useState<SecurityConfig>(() => load(KEYS.SECURITY_CONFIG, defaultSecurityConfig));
+  const [llmConfig, setLLMConfig] = useState<LLMConfig>(() => load(KEYS.LLM_CONFIG, defaultLLMConfig));
   const analytics = useMemo<AnalyticsData>(() => generateAnalytics(agents, tasks), [agents, tasks]);
+
+  // Persist state changes
+  useEffect(() => { save(KEYS.CURRENT_VIEW, currentView); }, [currentView]);
+  useEffect(() => { save(KEYS.SIDEBAR_EXPANDED, sidebarExpanded); }, [sidebarExpanded]);
+  useEffect(() => { save(KEYS.SELECTED_AGENT, selectedAgentId); }, [selectedAgentId]);
+  useEffect(() => { save(KEYS.TASKS, tasks); }, [tasks]);
+  useEffect(() => { save(KEYS.KILL_SWITCH, killSwitch); }, [killSwitch]);
+  useEffect(() => { save(KEYS.SECURITY_CONFIG, securityConfig); }, [securityConfig]);
+  useEffect(() => { save(KEYS.LLM_CONFIG, llmConfig); }, [llmConfig]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        setCmdPaletteOpen(prev => !prev);
-      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setCmdPaletteOpen(prev => !prev); }
       if (e.key === 'Escape') setCmdPaletteOpen(false);
     };
     document.addEventListener('keydown', handler);
@@ -57,8 +68,7 @@ function App() {
 
   const handleToggleKillSwitch = () => {
     setKillSwitch(prev => ({
-      ...prev,
-      armed: !prev.armed,
+      ...prev, armed: !prev.armed,
       triggeredAt: !prev.armed ? undefined : new Date().toISOString(),
       triggeredBy: !prev.armed ? undefined : 'admin',
     }));
@@ -71,12 +81,7 @@ function App() {
 
   return (
     <div className="app">
-      <Sidebar
-        currentView={currentView}
-        onViewChange={setCurrentView}
-        expanded={sidebarExpanded}
-        onToggle={() => setSidebarExpanded(p => !p)}
-      />
+      <Sidebar currentView={currentView} onViewChange={setCurrentView} expanded={sidebarExpanded} onToggle={() => setSidebarExpanded(p => !p)} />
       <div className="app-main">
         <header className="app-header">
           <h1>{viewTitles[currentView]}</h1>
@@ -85,38 +90,21 @@ function App() {
               / Suche&hellip; <span style={{ fontSize: 10, color: 'var(--text-muted)', marginLeft: 4 }}>Ctrl+K</span>
             </button>
             <span className="badge active">{agents.filter(a => a.status === 'active' || a.status === 'working').length} aktiv</span>
-            <span className={`badge ${killSwitch.armed ? 'valid' : 'critical'}`}>
-              KS: {killSwitch.armed ? 'ARMED' : 'OFF'}
-            </span>
+            <span className={`badge ${killSwitch.armed ? 'valid' : 'critical'}`}>KS: {killSwitch.armed ? 'ARMED' : 'OFF'}</span>
           </div>
         </header>
         <div className="app-content">
-          {currentView === 'dashboard' && (
-            <DashboardView analytics={analytics} killSwitch={killSwitch} securityEvents={securityEvents} agents={agents} onToggleKillSwitch={handleToggleKillSwitch} />
-          )}
-          {currentView === 'agents' && (
-            <AgentsView agents={agents} selectedAgentId={selectedAgentId} onSelectAgent={setSelectedAgentId} />
-          )}
-          {currentView === 'security' && (
-            <SecurityView events={securityEvents} config={securityConfig} auditLog={auditLog} onConfigChange={setSecurityConfig} />
-          )}
-          {currentView === 'collaboration' && (
-            <CollaborationView sessions={collaborations} agents={agents} />
-          )}
-          {currentView === 'certifications' && (
-            <CertificationsView certifications={certifications} />
-          )}
-          {currentView === 'kanban' && (
-            <KanbanView tasks={tasks} onMoveTask={handleMoveTask} />
-          )}
-          {currentView === 'projektbaum' && (
-            <ProjektBaumView tree={projektBaum} />
-          )}
+          {currentView === 'dashboard' && <DashboardView analytics={analytics} killSwitch={killSwitch} securityEvents={securityEvents} agents={agents} onToggleKillSwitch={handleToggleKillSwitch} />}
+          {currentView === 'agents' && <AgentsView agents={agents} selectedAgentId={selectedAgentId} onSelectAgent={setSelectedAgentId} />}
+          {currentView === 'security' && <SecurityView events={securityEvents} config={securityConfig} auditLog={auditLog} onConfigChange={setSecurityConfig} />}
+          {currentView === 'collaboration' && <CollaborationView sessions={collaborations} agents={agents} />}
+          {currentView === 'certifications' && <CertificationsView certifications={certifications} />}
+          {currentView === 'kanban' && <KanbanView tasks={tasks} onMoveTask={handleMoveTask} />}
+          {currentView === 'projektbaum' && <ProjektBaumView tree={projektBaum} />}
+          {currentView === 'llm-settings' && <LLMSettingsView config={llmConfig} onConfigChange={setLLMConfig} />}
         </div>
       </div>
-      {cmdPaletteOpen && (
-        <CommandPalette agents={agents} onViewChange={setCurrentView} onSelectAgent={handleSelectAgent} onClose={() => setCmdPaletteOpen(false)} />
-      )}
+      {cmdPaletteOpen && <CommandPalette agents={agents} onViewChange={setCurrentView} onSelectAgent={handleSelectAgent} onClose={() => setCmdPaletteOpen(false)} />}
     </div>
   );
 }

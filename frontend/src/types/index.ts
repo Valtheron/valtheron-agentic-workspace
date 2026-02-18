@@ -27,6 +27,8 @@ export interface Agent {
   certifiedAt?: string;
   hooks: PostConversationHook[];
   testResults: TestResult[];
+  llmProvider?: LLMProviderType;
+  llmModel?: string;
 }
 
 export interface PersonalityConfig {
@@ -188,4 +190,63 @@ export interface AnalyticsData {
   uptime: number;
 }
 
-export type ViewType = 'dashboard' | 'agents' | 'security' | 'collaboration' | 'certifications' | 'kanban' | 'projektbaum';
+export type ViewType = 'dashboard' | 'agents' | 'security' | 'collaboration' | 'certifications' | 'kanban' | 'projektbaum' | 'llm-settings';
+
+// LLM Provider & Model Types
+
+export type LLMProviderType = 'openai' | 'anthropic' | 'google' | 'mistral' | 'groq' | 'ollama' | 'openrouter' | 'custom';
+
+export interface LLMModel {
+  id: string;
+  name: string;
+  provider: LLMProviderType;
+  contextWindow: number;
+  maxOutput: number;
+  costPer1kInput?: number;  // USD, undefined for local
+  costPer1kOutput?: number;
+  capabilities: ('text' | 'vision' | 'code' | 'function-calling' | 'json-mode')[];
+  isLocal: boolean;
+}
+
+export interface LLMProvider {
+  id: LLMProviderType;
+  name: string;
+  enabled: boolean;
+  apiKey?: string;
+  baseUrl: string;
+  models: LLMModel[];
+  status: 'connected' | 'disconnected' | 'error' | 'checking';
+  lastChecked?: string;
+  isLocal: boolean;
+}
+
+export interface LLMConfig {
+  defaultProvider: LLMProviderType;
+  defaultModel: string;
+  providers: LLMProvider[];
+  agentModelOverrides: Record<string, { provider: LLMProviderType; model: string }>;
+  ollamaEndpoint: string;
+  ollamaModels: OllamaModel[];
+  globalParameters: {
+    temperature: number;
+    maxTokens: number;
+    topP: number;
+    streamResponses: boolean;
+    retryOnFailure: boolean;
+    maxRetries: number;
+    timeoutMs: number;
+  };
+}
+
+export interface OllamaModel {
+  name: string;
+  size: number;
+  digest: string;
+  modifiedAt: string;
+  details: {
+    format: string;
+    family: string;
+    parameterSize: string;
+    quantizationLevel: string;
+  };
+}

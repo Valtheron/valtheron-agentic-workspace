@@ -8,6 +8,7 @@ const navItems: { view: ViewType; icon: string; label: string }[] = [
   { view: 'certifications', icon: '\u2605', label: 'Zertifizierungen' },
   { view: 'kanban', icon: '\u2593', label: 'Kanban Board' },
   { view: 'projektbaum', icon: '\u2502', label: 'Projekt-Baum' },
+  { view: 'llm-settings', icon: '\u2318', label: 'LLM Provider' },
 ];
 
 interface SidebarProps {
