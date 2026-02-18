@@ -190,7 +190,54 @@ export interface AnalyticsData {
   uptime: number;
 }
 
-export type ViewType = 'dashboard' | 'agents' | 'security' | 'collaboration' | 'certifications' | 'kanban' | 'projektbaum' | 'llm-settings' | 'workflows';
+export type ViewType = 'dashboard' | 'agents' | 'security' | 'collaboration' | 'certifications' | 'kanban' | 'projektbaum' | 'llm-settings' | 'workflows' | 'projects';
+
+// Project Types
+
+export type ProjectStatus = 'importing' | 'analyzing' | 'planning' | 'in_development' | 'testing' | 'completed' | 'failed';
+
+export interface ProjectRequirement {
+  id: string;
+  category: 'ui' | 'logic' | 'api' | 'data' | 'security' | 'infra' | 'testing' | 'design';
+  title: string;
+  description: string;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  accepted: boolean;
+}
+
+export interface ProjectFile {
+  id: string;
+  path: string;           // e.g. "src/components/Dashboard.tsx"
+  language: string;        // e.g. "typescript", "html", "css"
+  content: string;
+  generatedBy: string;     // agent ID
+  generatedAt: string;
+  status: 'generated' | 'reviewed' | 'approved' | 'rejected';
+  size: number;
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  description: string;
+  sourceUrl?: string;
+  status: ProjectStatus;
+  requirements: ProjectRequirement[];
+  files: ProjectFile[];
+  workflowId?: string;     // linked workflow
+  techStack: string[];
+  createdAt: string;
+  updatedAt: string;
+  scrapedContent?: string; // raw scraped HTML/text
+  analyzedStructure?: {
+    title: string;
+    technologies: string[];
+    features: string[];
+    pages: string[];
+    apiEndpoints: string[];
+    components: string[];
+  };
+}
 
 // Workflow Types
 
