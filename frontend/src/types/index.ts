@@ -190,7 +190,40 @@ export interface AnalyticsData {
   uptime: number;
 }
 
-export type ViewType = 'dashboard' | 'agents' | 'security' | 'collaboration' | 'certifications' | 'kanban' | 'projektbaum' | 'llm-settings';
+export type ViewType = 'dashboard' | 'agents' | 'security' | 'collaboration' | 'certifications' | 'kanban' | 'projektbaum' | 'llm-settings' | 'workflows';
+
+// Workflow Types
+
+export type WorkflowStatus = 'draft' | 'running' | 'paused' | 'completed' | 'failed';
+export type WorkflowStepStatus = 'pending' | 'running' | 'completed' | 'failed' | 'skipped';
+
+export interface WorkflowStep {
+  id: string;
+  name: string;
+  description: string;
+  assignedAgentId: string | null;
+  status: WorkflowStepStatus;
+  dependsOn: string[];      // step IDs
+  output: string | null;     // result/output text
+  startedAt?: string;
+  completedAt?: string;
+  progress: number;          // 0-100
+  estimatedDuration: number; // seconds
+  retries: number;
+}
+
+export interface Workflow {
+  id: string;
+  name: string;
+  description: string;
+  status: WorkflowStatus;
+  steps: WorkflowStep[];
+  createdAt: string;
+  startedAt?: string;
+  completedAt?: string;
+  createdBy: string;
+  tags: string[];
+}
 
 // LLM Provider & Model Types
 
