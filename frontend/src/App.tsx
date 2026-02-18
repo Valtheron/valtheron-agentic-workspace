@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import './App.css';
-import type { ViewType, Agent, Task, CollaborationSession, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, KanbanColumn, LLMConfig } from './types';
+import type { ViewType, Agent, Task, CollaborationSession, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, KanbanColumn, LLMConfig, Workflow } from './types';
 import { generateAgents, generateTasks, generateCollaborations, generateCertifications, generateSecurityEvents, generateKillSwitch, generateAuditLog, generateProjektBaum, defaultSecurityConfig, generateAnalytics } from './services/mockData';
 import { defaultLLMConfig } from './services/llmProviders';
 import { save, load, KEYS } from './services/persistence';
@@ -14,6 +14,7 @@ import CertificationsView from './components/CertificationsView';
 import KanbanView from './components/KanbanView';
 import ProjektBaumView from './components/ProjektBaumView';
 import LLMSettingsView from './components/LLMSettingsView';
+import WorkflowView from './components/WorkflowView';
 
 const viewTitles: Record<ViewType, string> = {
   dashboard: 'Dashboard',
@@ -24,7 +25,20 @@ const viewTitles: Record<ViewType, string> = {
   kanban: 'Kanban Board',
   projektbaum: 'Projekt-Baum',
   'llm-settings': 'LLM Provider',
+  workflows: 'Workflows',
 };
+
+// Simulated output messages for running agents
+const simulatedOutputs = [
+  'Analysiere Eingabedaten...',
+  'Verarbeite Anfrage mit LLM...',
+  'Generiere Zwischenergebnis...',
+  'Validiere Output gegen Constraints...',
+  'Optimiere Ergebnis...',
+  'Schreibe Ergebnis in Output-Buffer...',
+  'Führe Post-Processing durch...',
+  'Aufgabe erfolgreich abgeschlossen.',
+];
 
 function App() {
   const [currentView, setCurrentView] = useState<ViewType>(() => load(KEYS.CURRENT_VIEW, 'dashboard'));
@@ -32,7 +46,7 @@ function App() {
   const [cmdPaletteOpen, setCmdPaletteOpen] = useState(false);
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(() => load(KEYS.SELECTED_AGENT, null));
 
-  const [agents] = useState<Agent[]>(() => generateAgents());
+  const [agents, setAgents] = useState<Agent[]>(() => load('agents', generateAgents()));
   const [tasks, setTasks] = useState<Task[]>(() => load(KEYS.TASKS, generateTasks(agents)));
   const [collaborations] = useState<CollaborationSession[]>(() => generateCollaborations(agents));
   const [certifications] = useState<Certification[]>(() => generateCertifications(agents));
@@ -42,7 +56,11 @@ function App() {
   const [projektBaum] = useState<ProjektBaumNode>(generateProjektBaum);
   const [securityConfig, setSecurityConfig] = useState<SecurityConfig>(() => load(KEYS.SECURITY_CONFIG, defaultSecurityConfig));
   const [llmConfig, setLLMConfig] = useState<LLMConfig>(() => load(KEYS.LLM_CONFIG, defaultLLMConfig));
+  const [workflows, setWorkflows] = useState<Workflow[]>(() => load('workflows', []));
   const analytics = useMemo<AnalyticsData>(() => generateAnalytics(agents, tasks), [agents, tasks]);
+
+  // Workflow execution timer
+  const executionRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Persist state changes
   useEffect(() => { save(KEYS.CURRENT_VIEW, currentView); }, [currentView]);
@@ -52,7 +70,10 @@ function App() {
   useEffect(() => { save(KEYS.KILL_SWITCH, killSwitch); }, [killSwitch]);
   useEffect(() => { save(KEYS.SECURITY_CONFIG, securityConfig); }, [securityConfig]);
   useEffect(() => { save(KEYS.LLM_CONFIG, llmConfig); }, [llmConfig]);
+  useEffect(() => { save('workflows', workflows); }, [workflows]);
+  useEffect(() => { save('agents', agents); }, [agents]);
 
+  // Keyboard shortcuts
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setCmdPaletteOpen(prev => !prev); }
@@ -61,6 +82,118 @@ function App() {
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
   }, []);
+
+  // Workflow Execution Engine
+  const tickWorkflows = useCallback(() => {
+    setWorkflows(prev => {
+      const running = prev.filter(w => w.status === 'running');
+      if (running.length === 0) return prev;
+
+      return prev.map(wf => {
+        if (wf.status !== 'running') return wf;
+
+        const steps = wf.steps.map(step => {
+          if (step.status === 'completed' || step.status === 'failed' || step.status === 'skipped') return step;
+
+          // Check if dependencies are met
+          const depsReady = step.dependsOn.every(depId => {
+            const dep = wf.steps.find(s => s.id === depId);
+            return dep && dep.status === 'completed';
+          });
+
+          if (!depsReady) return step;
+
+          // Start pending step
+          if (step.status === 'pending') {
+            // Set the assigned agent to 'working'
+            if (step.assignedAgentId) {
+              setAgents(prev => prev.map(a =>
+                a.id === step.assignedAgentId ? { ...a, status: 'working', currentTask: step.name } : a
+              ));
+            }
+            return { ...step, status: 'running' as const, startedAt: new Date().toISOString(), progress: 0 };
+          }
+
+          // Progress running step
+          if (step.status === 'running') {
+            const increment = Math.max(2, Math.floor(80 / (step.estimatedDuration / 2)));
+            const newProgress = Math.min(100, step.progress + increment + Math.floor(Math.random() * 5));
+
+            if (newProgress >= 100) {
+              // Complete the step
+              const outputIdx = Math.floor(Math.random() * simulatedOutputs.length);
+              if (step.assignedAgentId) {
+                setAgents(prev => prev.map(a =>
+                  a.id === step.assignedAgentId ? {
+                    ...a,
+                    status: 'active',
+                    currentTask: null,
+                    tasksCompleted: a.tasksCompleted + 1,
+                    lastActivity: new Date().toISOString()
+                  } : a
+                ));
+              }
+              return {
+                ...step, status: 'completed' as const,
+                progress: 100,
+                completedAt: new Date().toISOString(),
+                output: `[${new Date().toLocaleTimeString('de-DE')}] ${step.name}: ${simulatedOutputs[outputIdx]}\nAgent: ${step.assignedAgentId ?? 'N/A'}\nDauer: ${step.estimatedDuration}s\nStatus: Erfolgreich abgeschlossen.`,
+              };
+            }
+
+            return { ...step, progress: newProgress };
+          }
+
+          return step;
+        });
+
+        // Check if all steps are done
+        const allDone = steps.every(s => s.status === 'completed' || s.status === 'failed' || s.status === 'skipped');
+        const anyFailed = steps.some(s => s.status === 'failed');
+
+        if (allDone) {
+          return { ...wf, steps, status: anyFailed ? 'failed' as const : 'completed' as const, completedAt: new Date().toISOString() };
+        }
+
+        return { ...wf, steps };
+      });
+    });
+  }, []);
+
+  // Start/stop execution timer based on running workflows
+  useEffect(() => {
+    const hasRunning = workflows.some(w => w.status === 'running');
+    if (hasRunning && !executionRef.current) {
+      executionRef.current = setInterval(tickWorkflows, 1500);
+    } else if (!hasRunning && executionRef.current) {
+      clearInterval(executionRef.current);
+      executionRef.current = null;
+    }
+    return () => {
+      if (executionRef.current) { clearInterval(executionRef.current); executionRef.current = null; }
+    };
+  }, [workflows, tickWorkflows]);
+
+  // Workflow handlers
+  const handleCreateWorkflow = (wf: Workflow) => setWorkflows(prev => [...prev, wf]);
+  const handleUpdateWorkflow = (wf: Workflow) => setWorkflows(prev => prev.map(w => w.id === wf.id ? wf : w));
+  const handleDeleteWorkflow = (id: string) => setWorkflows(prev => prev.filter(w => w.id !== id));
+
+  const handleRunWorkflow = (id: string) => {
+    setWorkflows(prev => prev.map(wf => {
+      if (wf.id !== id) return wf;
+      return { ...wf, status: 'running', startedAt: new Date().toISOString() };
+    }));
+  };
+
+  const handlePauseWorkflow = (id: string) => {
+    setWorkflows(prev => prev.map(wf => {
+      if (wf.id !== id) return wf;
+      // Pause running steps
+      const steps = wf.steps.map(s => s.status === 'running' ? { ...s, status: 'pending' as const } : s);
+      return { ...wf, status: 'paused', steps };
+    }));
+  };
 
   const handleMoveTask = (taskId: string, column: KanbanColumn) => {
     setTasks(prev => prev.map(t => t.id === taskId ? { ...t, kanbanColumn: column } : t));
@@ -79,6 +212,8 @@ function App() {
     if (currentView !== 'agents') setCurrentView('agents');
   };
 
+  const runningWorkflows = workflows.filter(w => w.status === 'running').length;
+
   return (
     <div className="app">
       <Sidebar currentView={currentView} onViewChange={setCurrentView} expanded={sidebarExpanded} onToggle={() => setSidebarExpanded(p => !p)} />
@@ -90,6 +225,7 @@ function App() {
               / Suche&hellip; <span style={{ fontSize: 10, color: 'var(--text-muted)', marginLeft: 4 }}>Ctrl+K</span>
             </button>
             <span className="badge active">{agents.filter(a => a.status === 'active' || a.status === 'working').length} aktiv</span>
+            {runningWorkflows > 0 && <span className="badge working">{runningWorkflows} WF läuft</span>}
             <span className={`badge ${killSwitch.armed ? 'valid' : 'critical'}`}>KS: {killSwitch.armed ? 'ARMED' : 'OFF'}</span>
           </div>
         </header>
@@ -102,6 +238,17 @@ function App() {
           {currentView === 'kanban' && <KanbanView tasks={tasks} onMoveTask={handleMoveTask} />}
           {currentView === 'projektbaum' && <ProjektBaumView tree={projektBaum} />}
           {currentView === 'llm-settings' && <LLMSettingsView config={llmConfig} onConfigChange={setLLMConfig} />}
+          {currentView === 'workflows' && (
+            <WorkflowView
+              workflows={workflows}
+              agents={agents}
+              onCreateWorkflow={handleCreateWorkflow}
+              onUpdateWorkflow={handleUpdateWorkflow}
+              onDeleteWorkflow={handleDeleteWorkflow}
+              onRunWorkflow={handleRunWorkflow}
+              onPauseWorkflow={handlePauseWorkflow}
+            />
+          )}
         </div>
       </div>
       {cmdPaletteOpen && <CommandPalette agents={agents} onViewChange={setCurrentView} onSelectAgent={handleSelectAgent} onClose={() => setCmdPaletteOpen(false)} />}

@@ -2,6 +2,7 @@ import type { ViewType } from '../types';
 
 const navItems: { view: ViewType; icon: string; label: string }[] = [
   { view: 'dashboard', icon: '\u25A3', label: 'Dashboard' },
+  { view: 'workflows', icon: '\u25B6', label: 'Workflows' },
   { view: 'agents', icon: '\u2699', label: 'Agenten' },
   { view: 'security', icon: '\u26A0', label: 'Sicherheit' },
   { view: 'collaboration', icon: '\u2694', label: 'Kollaboration' },
