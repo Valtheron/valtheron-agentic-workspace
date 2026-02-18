@@ -29,6 +29,7 @@ export interface Agent {
   testResults: TestResult[];
   llmProvider?: LLMProviderType;
   llmModel?: string;
+  riskProfile?: AgentRiskProfile;
 }
 
 export interface PersonalityConfig {
@@ -64,6 +65,8 @@ export interface TestResult {
   timestamp: string;
 }
 
+export type TaskType = 'feature' | 'bug' | 'improvement' | 'research' | 'documentation' | 'testing' | 'deployment' | 'review';
+
 export interface Task {
   id: string;
   title: string;
@@ -77,6 +80,11 @@ export interface Task {
   dependencies: string[];
   kanbanColumn: KanbanColumn;
   tags: string[];
+  taskType?: TaskType;
+  deadline?: string;
+  progress?: number;
+  estimatedHours?: number;
+  actualHours?: number;
 }
 
 export interface CollaborationSession {
@@ -138,6 +146,7 @@ export interface KillSwitch {
   reason?: string;
   affectedAgents: string[];
   autoTriggerRules: KillSwitchRule[];
+  history?: KillSwitchEvent[];
 }
 
 export interface KillSwitchRule {
@@ -160,11 +169,15 @@ export interface AuditEntry {
 export interface ProjektBaumNode {
   id: string;
   name: string;
-  type: 'project' | 'module' | 'task' | 'agent';
-  status: 'active' | 'completed' | 'blocked';
+  type: 'project' | 'phase' | 'milestone' | 'module' | 'task' | 'agent';
+  status: 'active' | 'completed' | 'blocked' | 'in_progress' | 'pending';
   children: ProjektBaumNode[];
   agentId?: string;
   progress: number;
+  assignedAgents?: string[];
+  startDate?: string;
+  endDate?: string;
+  description?: string;
 }
 
 export interface SecurityConfig {
@@ -190,7 +203,7 @@ export interface AnalyticsData {
   uptime: number;
 }
 
-export type ViewType = 'dashboard' | 'agents' | 'security' | 'collaboration' | 'certifications' | 'kanban' | 'projektbaum' | 'llm-settings' | 'workflows' | 'projects';
+export type ViewType = 'dashboard' | 'agents' | 'security' | 'collaboration' | 'certifications' | 'kanban' | 'projektbaum' | 'llm-settings' | 'workflows' | 'projects' | 'kill-switch' | 'analytics' | 'enterprise';
 
 // Project Types
 
@@ -329,4 +342,146 @@ export interface OllamaModel {
     parameterSize: string;
     quantizationLevel: string;
   };
+}
+
+// === Sprint 2.1: Kill-Switch & Bulk Operations ===
+
+export interface KillSwitchEvent {
+  id: string;
+  action: 'armed' | 'disarmed' | 'triggered' | 'rule_added' | 'rule_removed' | 'batch_stop' | 'batch_start';
+  triggeredBy: string;
+  reason: string;
+  affectedAgents: string[];
+  timestamp: string;
+}
+
+export interface AgentRiskProfile {
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  maxConcurrentTasks: number;
+  maxTokenBudget: number;
+  autoSuspendOnFailure: boolean;
+  failureThreshold: number;
+  cooldownPeriod: number;
+  requiresApproval: boolean;
+}
+
+// === Sprint 2.3: Analytics & Monitoring ===
+
+export interface SLAMetric {
+  id: string;
+  name: string;
+  metric: 'response_time' | 'success_rate' | 'uptime' | 'throughput' | 'error_rate';
+  threshold: number;
+  unit: string;
+  current: number;
+  status: 'met' | 'warning' | 'breached';
+  period: 'hourly' | 'daily' | 'weekly' | 'monthly';
+  history: { timestamp: string; value: number }[];
+}
+
+export interface PerformanceTrend {
+  date: string;
+  throughput: number;
+  errorRate: number;
+  avgResponseTime: number;
+  successRate: number;
+  activeAgents: number;
+}
+
+// === Sprint 2.4: Echtzeit ===
+
+export interface AgentPresence {
+  agentId: string;
+  agentName: string;
+  nodeId: string;
+  action: 'working' | 'reviewing' | 'planning' | 'testing';
+  since: string;
+}
+
+export interface LiveUpdate {
+  id: string;
+  type: 'agent_status' | 'task_progress' | 'node_update' | 'security_event' | 'metric_change';
+  message: string;
+  severity: 'info' | 'success' | 'warning' | 'error';
+  timestamp: string;
+}
+
+// === Iteration 3: Enterprise Features ===
+
+export interface Incident {
+  id: string;
+  title: string;
+  description: string;
+  severity: SecurityLevel;
+  status: 'open' | 'investigating' | 'mitigating' | 'resolved' | 'closed';
+  assignedTo: string[];
+  affectedAgents: string[];
+  timeline: IncidentTimelineEvent[];
+  slaResponseTime?: number;
+  slaResolutionTime?: number;
+  rca?: string;
+  createdAt: string;
+  resolvedAt?: string;
+}
+
+export interface IncidentTimelineEvent {
+  id: string;
+  type: 'created' | 'updated' | 'assigned' | 'escalated' | 'resolved' | 'comment';
+  message: string;
+  author: string;
+  timestamp: string;
+}
+
+export interface Policy {
+  id: string;
+  name: string;
+  description: string;
+  rules: PolicyRule[];
+  enabled: boolean;
+  priority: number;
+  scope: 'global' | 'category' | 'agent';
+  scopeTarget?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PolicyRule {
+  id: string;
+  condition: string;
+  operator: 'equals' | 'greater_than' | 'less_than' | 'contains' | 'not_contains';
+  value: string;
+  action: 'allow' | 'deny' | 'require_approval' | 'log' | 'alert';
+}
+
+export interface AgentVersion {
+  id: string;
+  agentId: string;
+  version: number;
+  changes: string;
+  snapshot: { systemPrompt: string; parameters: AgentParameters; personality: PersonalityConfig };
+  createdAt: string;
+  createdBy: string;
+}
+
+export interface SharedFile {
+  id: string;
+  name: string;
+  path: string;
+  owner: string;
+  sharedWith: string[];
+  size: number;
+  lastModified: string;
+  type: 'code' | 'config' | 'document' | 'data';
+}
+
+export interface HealthMetric {
+  agentId: string;
+  agentName: string;
+  cpu: number;
+  memory: number;
+  responseTime: number;
+  errorRate: number;
+  uptime: number;
+  lastCheck: string;
+  status: 'healthy' | 'degraded' | 'unhealthy' | 'offline';
 }
