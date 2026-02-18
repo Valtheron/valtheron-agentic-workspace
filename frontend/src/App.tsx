@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import './App.css';
-import type { ViewType, Agent, Task, CollaborationSession, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, KanbanColumn, LLMConfig, Workflow } from './types';
+import type { ViewType, Agent, Task, CollaborationSession, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, KanbanColumn, LLMConfig, Workflow, Project } from './types';
 import { generateAgents, generateTasks, generateCollaborations, generateCertifications, generateSecurityEvents, generateKillSwitch, generateAuditLog, generateProjektBaum, defaultSecurityConfig, generateAnalytics } from './services/mockData';
 import { defaultLLMConfig } from './services/llmProviders';
 import { save, load, KEYS } from './services/persistence';
@@ -15,6 +15,7 @@ import KanbanView from './components/KanbanView';
 import ProjektBaumView from './components/ProjektBaumView';
 import LLMSettingsView from './components/LLMSettingsView';
 import WorkflowView from './components/WorkflowView';
+import ProjectsView from './components/ProjectsView';
 
 const viewTitles: Record<ViewType, string> = {
   dashboard: 'Dashboard',
@@ -26,6 +27,7 @@ const viewTitles: Record<ViewType, string> = {
   projektbaum: 'Projekt-Baum',
   'llm-settings': 'LLM Provider',
   workflows: 'Workflows',
+  projects: 'Projekte',
 };
 
 // Simulated output messages for running agents
@@ -57,6 +59,7 @@ function App() {
   const [securityConfig, setSecurityConfig] = useState<SecurityConfig>(() => load(KEYS.SECURITY_CONFIG, defaultSecurityConfig));
   const [llmConfig, setLLMConfig] = useState<LLMConfig>(() => load(KEYS.LLM_CONFIG, defaultLLMConfig));
   const [workflows, setWorkflows] = useState<Workflow[]>(() => load('workflows', []));
+  const [projects, setProjects] = useState<Project[]>(() => load('projects_data', []));
   const analytics = useMemo<AnalyticsData>(() => generateAnalytics(agents, tasks), [agents, tasks]);
 
   // Workflow execution timer
@@ -72,6 +75,7 @@ function App() {
   useEffect(() => { save(KEYS.LLM_CONFIG, llmConfig); }, [llmConfig]);
   useEffect(() => { save('workflows', workflows); }, [workflows]);
   useEffect(() => { save('agents', agents); }, [agents]);
+  useEffect(() => { save('projects_data', projects); }, [projects]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -195,6 +199,14 @@ function App() {
     }));
   };
 
+  // Project handlers
+  const handleCreateProject = (proj: Project) => setProjects(prev => [...prev, proj]);
+  const handleUpdateProject = (proj: Project) => setProjects(prev => prev.map(p => p.id === proj.id ? proj : p));
+  const handleDeleteProject = (id: string) => setProjects(prev => prev.filter(p => p.id !== id));
+  const handleNavigateWorkflow = (wfId: string) => {
+    setCurrentView('workflows');
+  };
+
   const handleMoveTask = (taskId: string, column: KanbanColumn) => {
     setTasks(prev => prev.map(t => t.id === taskId ? { ...t, kanbanColumn: column } : t));
   };
@@ -238,6 +250,17 @@ function App() {
           {currentView === 'kanban' && <KanbanView tasks={tasks} onMoveTask={handleMoveTask} />}
           {currentView === 'projektbaum' && <ProjektBaumView tree={projektBaum} />}
           {currentView === 'llm-settings' && <LLMSettingsView config={llmConfig} onConfigChange={setLLMConfig} />}
+          {currentView === 'projects' && (
+            <ProjectsView
+              projects={projects}
+              agents={agents}
+              onCreateProject={handleCreateProject}
+              onUpdateProject={handleUpdateProject}
+              onDeleteProject={handleDeleteProject}
+              onCreateWorkflow={handleCreateWorkflow}
+              onNavigateWorkflow={handleNavigateWorkflow}
+            />
+          )}
           {currentView === 'workflows' && (
             <WorkflowView
               workflows={workflows}
