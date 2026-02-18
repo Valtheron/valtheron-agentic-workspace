@@ -12,7 +12,7 @@
 .sidebar-logo { padding: 14px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-color); cursor: pointer; white-space: nowrap; }
 .sidebar-logo .logo-icon { width: 24px; height: 24px; background: var(--accent-cyan); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: var(--bg-primary); flex-shrink: 0; }
 .sidebar-logo .logo-text { font-size: 13px; font-weight: 600; color: var(--text-primary); overflow: hidden; }
-.sidebar-nav { flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav { flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
 .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 6px; color: var(--text-muted); cursor: pointer; white-space: nowrap; font-size: 12px; background: none; width: 100%; text-align: left; }
 .sidebar-item:hover { background: var(--bg-hover); color: var(--text-secondary); }
 .sidebar-item.active { background: var(--bg-hover); color: var(--accent-cyan); }
@@ -180,15 +180,16 @@ tr:hover td { background: var(--bg-hover); }
 .cert-agent { font-size: 11px; color: var(--text-muted); }
 
 /* Kanban */
-.kanban-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; height: calc(100vh - 120px); }
-.kanban-col { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; }
-.kanban-col-header { padding: 10px 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+.kanban-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; height: calc(100vh - 170px); }
+.kanban-col { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; transition: border-color 0.2s, background 0.2s; }
+.kanban-col-header { padding: 10px 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 2px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
 .kanban-col-count { background: var(--bg-hover); padding: 1px 6px; border-radius: 8px; font-size: 10px; }
-.kanban-cards { flex: 1; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 6px; }
-.kanban-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; cursor: pointer; }
-.kanban-card:hover { border-color: var(--border-active); }
+.kanban-cards { flex: 1; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 6px; min-height: 60px; }
+.kanban-card { background: var(--bg-card); border: 1px solid var(--border-color); border-left: 3px solid var(--border-color); border-radius: 6px; padding: 10px; cursor: grab; transition: opacity 0.2s, border-color 0.2s, box-shadow 0.2s; }
+.kanban-card:hover { border-color: var(--border-active); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.kanban-card:active { cursor: grabbing; }
 .kanban-card-title { font-size: 12px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
-.kanban-card-meta { display: flex; gap: 6px; align-items: center; font-size: 10px; color: var(--text-muted); }
+.kanban-card-meta { display: flex; gap: 6px; align-items: center; font-size: 10px; color: var(--text-muted); flex-wrap: wrap; }
 .kanban-tag { padding: 1px 6px; border-radius: 4px; background: var(--bg-hover); font-size: 10px; }
 
 /* Projekt Baum */
@@ -213,3 +214,19 @@ tr:hover td { background: var(--bg-hover); }
 .mb-16 { margin-bottom: 16px; }
 .gap-8 { gap: 8px; }
 .gap-12 { gap: 12px; }
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Range input */
+input[type="range"] { -webkit-appearance: none; background: var(--bg-hover); height: 4px; border-radius: 2px; border: none; padding: 0; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-cyan); cursor: pointer; }
+
+/* Checkbox */
+input[type="checkbox"] { accent-color: var(--accent-cyan); cursor: pointer; }
+
+/* Disabled */
+button:disabled { opacity: 0.4; cursor: not-allowed; }

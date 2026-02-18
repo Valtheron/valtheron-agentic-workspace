@@ -5,11 +5,14 @@ const navItems: { view: ViewType; icon: string; label: string }[] = [
   { view: 'projects', icon: '\u2302', label: 'Projekte' },
   { view: 'workflows', icon: '\u25B6', label: 'Workflows' },
   { view: 'agents', icon: '\u2699', label: 'Agenten' },
+  { view: 'kill-switch', icon: '\u26D4', label: 'Kill-Switch' },
+  { view: 'kanban', icon: '\u2593', label: 'Kanban Board' },
+  { view: 'analytics', icon: '\u2261', label: 'Analytics' },
+  { view: 'projektbaum', icon: '\u2502', label: 'Projekt-Baum' },
   { view: 'security', icon: '\u26A0', label: 'Sicherheit' },
   { view: 'collaboration', icon: '\u2694', label: 'Kollaboration' },
   { view: 'certifications', icon: '\u2605', label: 'Zertifizierungen' },
-  { view: 'kanban', icon: '\u2593', label: 'Kanban Board' },
-  { view: 'projektbaum', icon: '\u2502', label: 'Projekt-Baum' },
+  { view: 'enterprise', icon: '\u2756', label: 'Enterprise' },
   { view: 'llm-settings', icon: '\u2318', label: 'LLM Provider' },
 ];
 

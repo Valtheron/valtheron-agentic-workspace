@@ -16,6 +16,9 @@ import ProjektBaumView from './components/ProjektBaumView';
 import LLMSettingsView from './components/LLMSettingsView';
 import WorkflowView from './components/WorkflowView';
 import ProjectsView from './components/ProjectsView';
+import KillSwitchView from './components/KillSwitchView';
+import AnalyticsView from './components/AnalyticsView';
+import EnterpriseView from './components/EnterpriseView';
 
 const viewTitles: Record<ViewType, string> = {
   dashboard: 'Dashboard',
@@ -28,6 +31,9 @@ const viewTitles: Record<ViewType, string> = {
   'llm-settings': 'LLM Provider',
   workflows: 'Workflows',
   projects: 'Projekte',
+  'kill-switch': 'Kill-Switch',
+  analytics: 'Analytics & Monitoring',
+  enterprise: 'Enterprise',
 };
 
 // Simulated output messages for running agents
@@ -211,6 +217,18 @@ function App() {
     setTasks(prev => prev.map(t => t.id === taskId ? { ...t, kanbanColumn: column } : t));
   };
 
+  const handleUpdateTask = (task: Task) => {
+    setTasks(prev => prev.map(t => t.id === task.id ? task : t));
+  };
+
+  const handleCreateTask = (task: Task) => {
+    setTasks(prev => [...prev, task]);
+  };
+
+  const handleUpdateKillSwitch = (ks: KillSwitch) => {
+    setKillSwitch(ks);
+  };
+
   const handleToggleKillSwitch = () => {
     setKillSwitch(prev => ({
       ...prev, armed: !prev.armed,
@@ -247,8 +265,11 @@ function App() {
           {currentView === 'security' && <SecurityView events={securityEvents} config={securityConfig} auditLog={auditLog} onConfigChange={setSecurityConfig} />}
           {currentView === 'collaboration' && <CollaborationView sessions={collaborations} agents={agents} />}
           {currentView === 'certifications' && <CertificationsView certifications={certifications} />}
-          {currentView === 'kanban' && <KanbanView tasks={tasks} onMoveTask={handleMoveTask} />}
-          {currentView === 'projektbaum' && <ProjektBaumView tree={projektBaum} />}
+          {currentView === 'kanban' && <KanbanView tasks={tasks} agents={agents} onMoveTask={handleMoveTask} onUpdateTask={handleUpdateTask} onCreateTask={handleCreateTask} />}
+          {currentView === 'projektbaum' && <ProjektBaumView tree={projektBaum} agents={agents} />}
+          {currentView === 'kill-switch' && <KillSwitchView killSwitch={killSwitch} agents={agents} onToggleKillSwitch={handleToggleKillSwitch} onUpdateKillSwitch={handleUpdateKillSwitch} onUpdateAgents={setAgents} />}
+          {currentView === 'analytics' && <AnalyticsView analytics={analytics} agents={agents} tasks={tasks} />}
+          {currentView === 'enterprise' && <EnterpriseView agents={agents} auditLog={auditLog} />}
           {currentView === 'llm-settings' && <LLMSettingsView config={llmConfig} onConfigChange={setLLMConfig} />}
           {currentView === 'projects' && (
             <ProjectsView
