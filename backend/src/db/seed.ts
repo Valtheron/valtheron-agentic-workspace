@@ -172,7 +172,10 @@ export function seedDatabase() {
       for (let i = 0; i < 8; i++) {
         const title = titles[i % titles.length] + (i >= titles.length ? ` v${Math.floor(i / titles.length) + 1}` : '');
         const status = (['pending', 'in_progress', 'completed', 'failed'] as const)[Math.floor(Math.random() * 4)];
-        const kanban = KANBAN_COLS[Math.floor(Math.random() * KANBAN_COLS.length)];
+        const kanban = status === 'completed' ? 'done'
+          : status === 'in_progress' ? (['in_progress', 'review'] as const)[Math.floor(Math.random() * 2)]
+          : status === 'failed' ? (['backlog', 'todo', 'in_progress'] as const)[Math.floor(Math.random() * 3)]
+          : (['backlog', 'todo'] as const)[Math.floor(Math.random() * 2)];
         const agent = categoryAgents[Math.floor(Math.random() * categoryAgents.length)];
 
         insertTask.run(
