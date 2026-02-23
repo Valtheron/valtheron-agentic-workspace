@@ -244,7 +244,7 @@ export function seedDatabase() {
     for (const wf of sampleWorkflows) {
       // Set proper step dependencies (sequential)
       for (let i = 1; i < wf.steps.length; i++) {
-        wf.steps[i].dependsOn = [wf.steps[i - 1].id];
+        (wf.steps[i].dependsOn as string[]) = [wf.steps[i - 1].id];
       }
       insertWorkflow.run(uuid(), wf.name, wf.description, wf.status, JSON.stringify(wf.steps), 'system', JSON.stringify(wf.tags));
     }

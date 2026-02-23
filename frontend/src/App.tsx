@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import './App.css';
-import type { ViewType, Agent, Task, CollaborationSession, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, KanbanColumn, LLMConfig, Workflow, Project } from './types';
-import { generateAgents, generateTasks, generateCollaborations, generateCertifications, generateSecurityEvents, generateKillSwitch, generateAuditLog, generateProjektBaum, defaultSecurityConfig, generateAnalytics } from './services/mockData';
+import type { ViewType, Agent, Task, CollaborationSession, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, KanbanColumn, LLMConfig, Workflow, Project } from './types';import { generateAgents, generateTasks, generateCollaborations, generateCertifications, generateSecurityEvents, generateKillSwitch, generateAuditLog, generateProjektBaum, defaultSecurityConfig, generateAnalytics } from './services/mockData';
 import { defaultLLMConfig } from './services/llmProviders';
 import { save, load, KEYS } from './services/persistence';
 import { agentsAPI, tasksAPI, workflowsAPI, securityAPI, healthAPI, wsClient } from './services/api';
@@ -20,6 +19,7 @@ import ProjectsView from './components/ProjectsView';
 import KillSwitchView from './components/KillSwitchView';
 import AnalyticsView from './components/AnalyticsView';
 import EnterpriseView from './components/EnterpriseView';
+import ChatView from './components/ChatView';
 
 const viewTitles: Record<ViewType, string> = {
   dashboard: 'Dashboard',
@@ -35,6 +35,7 @@ const viewTitles: Record<ViewType, string> = {
   'kill-switch': 'Kill-Switch',
   analytics: 'Analytics & Monitoring',
   enterprise: 'Enterprise',
+  chat: 'Agent Chat',
 };
 
 // Simulated output messages for running agents
@@ -61,7 +62,7 @@ function App() {
 
   const [agents, setAgents] = useState<Agent[]>(() => load('agents', generateAgents()));
   const [tasks, setTasks] = useState<Task[]>(() => load(KEYS.TASKS, generateTasks(agents)));
-  const [collaborations] = useState<CollaborationSession[]>(() => generateCollaborations(agents));
+  // collaboration sessions are now loaded from the backend by CollaborationView
   const [certifications] = useState<Certification[]>(() => generateCertifications(agents));
   const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>(generateSecurityEvents);
   const [killSwitch, setKillSwitch] = useState<KillSwitch>(() => load(KEYS.KILL_SWITCH, generateKillSwitch()));
@@ -83,7 +84,7 @@ function App() {
 
         // Load all data from API in parallel
         const [agentsRes, tasksRes, workflowsRes, secEventsRes, ksRes] = await Promise.all([
-          agentsAPI.list({ limit: 200 }),
+          agentsAPI.list({ limit: 300 }),
           tasksAPI.list(),
           workflowsAPI.list(),
           securityAPI.events(),
@@ -323,7 +324,8 @@ function App() {
           {currentView === 'dashboard' && <DashboardView analytics={analytics} killSwitch={killSwitch} securityEvents={securityEvents} agents={agents} onToggleKillSwitch={handleToggleKillSwitch} />}
           {currentView === 'agents' && <AgentsView agents={agents} selectedAgentId={selectedAgentId} onSelectAgent={setSelectedAgentId} />}
           {currentView === 'security' && <SecurityView events={securityEvents} config={securityConfig} auditLog={auditLog} onConfigChange={setSecurityConfig} />}
-          {currentView === 'collaboration' && <CollaborationView sessions={collaborations} agents={agents} />}
+          {currentView === 'collaboration' && <CollaborationView agents={agents} />}
+          {currentView === 'chat' && <ChatView agents={agents} />}
           {currentView === 'certifications' && <CertificationsView certifications={certifications} />}
           {currentView === 'kanban' && <KanbanView tasks={tasks} agents={agents} onMoveTask={handleMoveTask} onUpdateTask={handleUpdateTask} onCreateTask={handleCreateTask} />}
           {currentView === 'projektbaum' && <ProjektBaumView tree={projektBaum} agents={agents} />}

@@ -10,6 +10,7 @@ const navItems: { view: ViewType; icon: string; label: string }[] = [
   { view: 'analytics', icon: '\u2261', label: 'Analytics' },
   { view: 'projektbaum', icon: '\u2502', label: 'Projekt-Baum' },
   { view: 'security', icon: '\u26A0', label: 'Sicherheit' },
+  { view: 'chat', icon: '\u2709', label: 'Agent Chat' },
   { view: 'collaboration', icon: '\u2694', label: 'Kollaboration' },
   { view: 'certifications', icon: '\u2605', label: 'Zertifizierungen' },
   { view: 'enterprise', icon: '\u2756', label: 'Enterprise' },
