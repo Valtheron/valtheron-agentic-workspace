@@ -204,6 +204,53 @@ export const analyticsAPI = {
   sla: () => apiFetch<unknown>('/analytics/sla'),
 };
 
+// ===== Chat API =====
+export const chatAPI = {
+  listSessions: (agentId?: string) => {
+    const qs = agentId ? `?agentId=${agentId}` : '';
+    return apiFetch<{ sessions: unknown[] }>(`/chat/sessions${qs}`);
+  },
+
+  createSession: (agentId: string, title?: string) =>
+    apiFetch<unknown>('/chat/sessions', { method: 'POST', body: JSON.stringify({ agentId, title }) }),
+
+  deleteSession: (id: string) =>
+    apiFetch<{ success: boolean }>(`/chat/sessions/${id}`, { method: 'DELETE' }),
+
+  getMessages: (sessionId: string) =>
+    apiFetch<{ messages: unknown[] }>(`/chat/sessions/${sessionId}/messages`),
+
+  sendMessage: (sessionId: string, content: string) =>
+    apiFetch<unknown>(`/chat/sessions/${sessionId}/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ content }),
+    }),
+};
+
+// ===== Collaboration API =====
+export const collaborationAPI = {
+  listSessions: () =>
+    apiFetch<{ sessions: unknown[] }>('/collaboration/sessions'),
+
+  createSession: (data: { name: string; agents: string[]; coordinatorPrompt?: string; delegationStrategy?: string; conflictResolution?: string; consensusThreshold?: number; maxIterations?: number }) =>
+    apiFetch<unknown>('/collaboration/sessions', { method: 'POST', body: JSON.stringify(data) }),
+
+  updateSession: (id: string, data: { status?: string; synthesis?: string }) =>
+    apiFetch<unknown>(`/collaboration/sessions/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+
+  deleteSession: (id: string) =>
+    apiFetch<{ success: boolean }>(`/collaboration/sessions/${id}`, { method: 'DELETE' }),
+
+  getMessages: (sessionId: string) =>
+    apiFetch<{ messages: unknown[] }>(`/collaboration/sessions/${sessionId}/messages`),
+
+  sendMessage: (sessionId: string, senderId: string, content: string, messageType?: string) =>
+    apiFetch<unknown>(`/collaboration/sessions/${sessionId}/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ senderId, content, messageType }),
+    }),
+};
+
 // ===== Health API =====
 export const healthAPI = {
   check: () => apiFetch<{ status: string; version: string; timestamp: string; database: unknown; websocket: unknown }>('/health'),

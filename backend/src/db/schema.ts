@@ -136,6 +136,51 @@ function initSchema(db: Database.Database) {
       history TEXT NOT NULL DEFAULT '[]'
     );
 
+    CREATE TABLE IF NOT EXISTS chat_sessions (
+      id TEXT PRIMARY KEY,
+      agentId TEXT NOT NULL,
+      title TEXT NOT NULL DEFAULT 'Neue Konversation',
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      updatedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (agentId) REFERENCES agents(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS chat_messages (
+      id TEXT PRIMARY KEY,
+      sessionId TEXT NOT NULL,
+      sender TEXT NOT NULL,
+      senderType TEXT NOT NULL DEFAULT 'user',
+      content TEXT NOT NULL,
+      timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (sessionId) REFERENCES chat_sessions(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS collaboration_sessions (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      agents TEXT NOT NULL DEFAULT '[]',
+      status TEXT NOT NULL DEFAULT 'active',
+      sharedFiles TEXT NOT NULL DEFAULT '[]',
+      coordinatorPrompt TEXT NOT NULL DEFAULT '',
+      delegationStrategy TEXT NOT NULL DEFAULT 'round-robin',
+      conflictResolution TEXT NOT NULL DEFAULT 'coordinator-decides',
+      consensusThreshold INTEGER NOT NULL DEFAULT 75,
+      maxIterations INTEGER NOT NULL DEFAULT 10,
+      synthesis TEXT,
+      startedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      updatedAt TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS collaboration_messages (
+      id TEXT PRIMARY KEY,
+      sessionId TEXT NOT NULL,
+      senderId TEXT NOT NULL,
+      content TEXT NOT NULL,
+      messageType TEXT NOT NULL DEFAULT 'message',
+      timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (sessionId) REFERENCES collaboration_sessions(id)
+    );
+
     INSERT OR IGNORE INTO kill_switch (id, armed) VALUES (1, 0);
   `);
 }
