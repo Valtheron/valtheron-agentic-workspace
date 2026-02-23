@@ -4,6 +4,7 @@ import type { ViewType, Agent, Task, CollaborationSession, Certification, Securi
 import { generateAgents, generateTasks, generateCollaborations, generateCertifications, generateSecurityEvents, generateKillSwitch, generateAuditLog, generateProjektBaum, defaultSecurityConfig, generateAnalytics } from './services/mockData';
 import { defaultLLMConfig } from './services/llmProviders';
 import { save, load, KEYS } from './services/persistence';
+import { agentsAPI, tasksAPI, workflowsAPI, securityAPI, healthAPI, wsClient } from './services/api';
 import Sidebar from './components/Sidebar';
 import CommandPalette from './components/CommandPalette';
 import DashboardView from './components/DashboardView';
@@ -54,11 +55,15 @@ function App() {
   const [cmdPaletteOpen, setCmdPaletteOpen] = useState(false);
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(() => load(KEYS.SELECTED_AGENT, null));
 
+  // Backend connection state
+  const [backendConnected, setBackendConnected] = useState(false);
+  const [dataSource, setDataSource] = useState<'loading' | 'api' | 'mock'>('loading');
+
   const [agents, setAgents] = useState<Agent[]>(() => load('agents', generateAgents()));
   const [tasks, setTasks] = useState<Task[]>(() => load(KEYS.TASKS, generateTasks(agents)));
   const [collaborations] = useState<CollaborationSession[]>(() => generateCollaborations(agents));
   const [certifications] = useState<Certification[]>(() => generateCertifications(agents));
-  const [securityEvents] = useState<SecurityEvent[]>(generateSecurityEvents);
+  const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>(generateSecurityEvents);
   const [killSwitch, setKillSwitch] = useState<KillSwitch>(() => load(KEYS.KILL_SWITCH, generateKillSwitch()));
   const [auditLog] = useState<AuditEntry[]>(generateAuditLog);
   const [projektBaum] = useState<ProjektBaumNode>(generateProjektBaum);
@@ -67,6 +72,57 @@ function App() {
   const [workflows, setWorkflows] = useState<Workflow[]>(() => load('workflows', []));
   const [projects, setProjects] = useState<Project[]>(() => load('projects_data', []));
   const analytics = useMemo<AnalyticsData>(() => generateAnalytics(agents, tasks), [agents, tasks]);
+
+  // Try to connect to backend API on mount
+  useEffect(() => {
+    let cancelled = false;
+    async function loadFromAPI() {
+      try {
+        const health = await healthAPI.check();
+        if (cancelled || health.status !== 'healthy') throw new Error('Backend unhealthy');
+
+        // Load all data from API in parallel
+        const [agentsRes, tasksRes, workflowsRes, secEventsRes, ksRes] = await Promise.all([
+          agentsAPI.list({ limit: 200 }),
+          tasksAPI.list(),
+          workflowsAPI.list(),
+          securityAPI.events(),
+          securityAPI.killSwitch(),
+        ]);
+
+        if (cancelled) return;
+
+        setAgents(agentsRes.agents as Agent[]);
+        setTasks(tasksRes.tasks as Task[]);
+        setWorkflows(workflowsRes.workflows as Workflow[]);
+        setSecurityEvents(secEventsRes.events as SecurityEvent[]);
+        setKillSwitch(ksRes as KillSwitch);
+        setBackendConnected(true);
+        setDataSource('api');
+
+        // Connect WebSocket for real-time updates
+        wsClient.connect();
+        wsClient.on('agent_status', (data) => {
+          const { agentId, status } = data as { agentId: string; status: string };
+          setAgents(prev => prev.map(a => a.id === agentId ? { ...a, status: status as Agent['status'] } : a));
+        });
+        wsClient.on('task_update', (data) => {
+          const { taskId, status } = data as { taskId: string; status: string };
+          setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: status as Task['status'] } : t));
+        });
+
+        console.log(`Backend connected: ${health.database.agents} agents, ${health.database.tasks} tasks loaded from API`);
+      } catch {
+        if (!cancelled) {
+          setBackendConnected(false);
+          setDataSource('mock');
+          console.log('Backend not available, using mock data');
+        }
+      }
+    }
+    loadFromAPI();
+    return () => { cancelled = true; wsClient.disconnect(); };
+  }, []);
 
   // Workflow execution timer
   const executionRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -254,6 +310,9 @@ function App() {
             <button className="btn btn-ghost btn-sm" onClick={() => setCmdPaletteOpen(true)}>
               / Suche&hellip; <span style={{ fontSize: 10, color: 'var(--text-muted)', marginLeft: 4 }}>Ctrl+K</span>
             </button>
+            <span className={`badge ${backendConnected ? 'valid' : 'warning'}`} title={backendConnected ? 'Connected to Backend API' : 'Using local mock data'}>
+              {dataSource === 'loading' ? 'Verbinde...' : backendConnected ? 'API' : 'Mock'}
+            </span>
             <span className="badge active">{agents.filter(a => a.status === 'active' || a.status === 'working').length} aktiv</span>
             {runningWorkflows > 0 && <span className="badge working">{runningWorkflows} WF läuft</span>}
             <span className={`badge ${killSwitch.armed ? 'valid' : 'critical'}`}>KS: {killSwitch.armed ? 'ARMED' : 'OFF'}</span>
