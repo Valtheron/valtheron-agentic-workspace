@@ -73,6 +73,7 @@
 .badge.expiring { background: rgba(245,158,11,0.15); color: var(--accent-orange); }
 .badge.expired { background: rgba(239,68,68,0.15); color: var(--accent-red); }
 .badge.revoked { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+.badge.warning { background: rgba(245,158,11,0.15); color: var(--accent-orange); }
 
 /* Button styles */
 .btn { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; }
