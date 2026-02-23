@@ -65,6 +65,27 @@ export default function ChatView({ agents }: ChatViewProps) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Build LLM headers from localStorage config if API key is configured
+  const getLLMHeaders = (): Record<string, string> | undefined => {
+    try {
+      const raw = localStorage.getItem('llmConfig');
+      if (!raw) return undefined;
+      const cfg = JSON.parse(raw);
+      const provider: string = cfg.defaultProvider || 'anthropic';
+      const model: string = cfg.defaultModel || 'claude-sonnet-4-5-20250929';
+      const activeProvider = (cfg.providers as { id: string; enabled: boolean; apiKey?: string }[] | undefined)
+        ?.find(p => p.id === provider && p.enabled);
+      if (!activeProvider?.apiKey) return undefined;
+      return {
+        'x-llm-api-key': activeProvider.apiKey,
+        'x-llm-provider': provider,
+        'x-llm-model': model,
+      };
+    } catch {
+      return undefined;
+    }
+  };
+
   const handleSend = useCallback(async () => {
     if (!inputText.trim() || !selectedSessionId || sending) return;
     const text = inputText.trim();
@@ -83,9 +104,9 @@ export default function ChatView({ agents }: ChatViewProps) {
     setMessages(prev => [...prev, tempMsg]);
 
     try {
-      await chatAPI.sendMessage(selectedSessionId, text);
+      await chatAPI.sendMessage(selectedSessionId, text, getLLMHeaders());
       // Reload messages after short delay to get agent response
-      setTimeout(() => loadMessages(selectedSessionId), 2000);
+      setTimeout(() => loadMessages(selectedSessionId), 2500);
       loadSessions(); // refresh session list for updated timestamps
     } catch {
       // remove temp message on error
