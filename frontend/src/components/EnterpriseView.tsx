@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import type { Agent, AuditEntry, Incident, IncidentTimelineEvent, Policy, PolicyRule, AgentVersion, SharedFile, HealthMetric } from '../types';
+import type { Agent, AuditEntry, Incident, IncidentTimelineEvent, Policy, AgentVersion, SharedFile, HealthMetric } from '../types';
 
 interface EnterpriseProps {
   agents: Agent[];
@@ -11,7 +11,7 @@ type Tab = 'health' | 'incidents' | 'policies' | 'rollback' | 'workspace' | 'aud
 function genId(prefix: string) { return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`; }
 
 // Generate mock data
-function generateIncidents(agents: Agent[]): Incident[] {
+function generateIncidents(_agents: Agent[]): Incident[] {
   return [
     { id: 'inc_001', title: 'Hohe Fehlerrate bei Trading-Agenten', description: 'Fehlerrate ueber 15% bei Trading-Agenten seit 14:00', severity: 'high', status: 'investigating', assignedTo: ['admin'], affectedAgents: ['agent_001', 'agent_002'], timeline: [
       { id: 'tl_1', type: 'created', message: 'Incident erstellt aufgrund SLA-Verletzung', author: 'system', timestamp: new Date(Date.now() - 7200000).toISOString() },
@@ -42,7 +42,7 @@ function generatePolicies(): Policy[] {
 }
 
 function generateVersions(agents: Agent[]): AgentVersion[] {
-  return agents.slice(0, 10).flatMap((a, i) => [
+  return agents.slice(0, 10).flatMap((a) => [
     { id: genId('v'), agentId: a.id, version: 2, changes: 'System-Prompt optimiert, Temperature angepasst', snapshot: { systemPrompt: a.systemPrompt, parameters: a.parameters, personality: a.personality }, createdAt: new Date(Date.now() - 86400000).toISOString(), createdBy: 'admin' },
     { id: genId('v'), agentId: a.id, version: 1, changes: 'Initiale Konfiguration', snapshot: { systemPrompt: `Initiale Version von ${a.name}`, parameters: { ...a.parameters, temperature: 0.5 }, personality: { ...a.personality, creativity: 50 } }, createdAt: new Date(Date.now() - 604800000).toISOString(), createdBy: 'system' },
   ]);

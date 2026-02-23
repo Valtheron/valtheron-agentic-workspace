@@ -330,7 +330,6 @@ export function generateProjectFiles(project: Project): ProjectFile[] {
   const ts = new Date().toISOString();
   const techStack = project.techStack;
   const isReact = techStack.some(t => /react|typescript/i.test(t));
-  const hasApi = project.requirements.some(r => r.category === 'api' && r.accepted);
   const isTradingBot = project.requirements.some(r => /trading|bot|crypto/i.test(r.title));
   let fileIdx = 0;
 
