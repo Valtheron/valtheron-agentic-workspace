@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Project, Agent, Workflow } from '../types';
+import type { Project, ProjectRequirement, Agent, Workflow } from '../types';
 import { fetchAndAnalyzeUrl, generateRequirements, generateWorkflowFromProject, generateProjectFiles } from '../services/projectAnalyzer';
 
 interface ProjectsProps {
