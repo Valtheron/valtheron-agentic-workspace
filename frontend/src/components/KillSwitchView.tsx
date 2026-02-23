@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { KillSwitch, KillSwitchEvent, Agent, AgentRiskProfile, AgentCategory } from '../types';
+import type { KillSwitch, KillSwitchEvent, Agent, AgentRiskProfile } from '../types';
 
 interface KillSwitchViewProps {
   killSwitch: KillSwitch;
