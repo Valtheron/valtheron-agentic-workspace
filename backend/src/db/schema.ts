@@ -181,6 +181,18 @@ function initSchema(db: Database.Database) {
       FOREIGN KEY (sessionId) REFERENCES collaboration_sessions(id)
     );
 
+    CREATE TABLE IF NOT EXISTS metrics_history (
+      id TEXT PRIMARY KEY,
+      timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+      activeAgents INTEGER NOT NULL DEFAULT 0,
+      totalTasks INTEGER NOT NULL DEFAULT 0,
+      completedToday INTEGER NOT NULL DEFAULT 0,
+      errorRate REAL NOT NULL DEFAULT 0,
+      avgResponseTime REAL NOT NULL DEFAULT 0,
+      throughput REAL NOT NULL DEFAULT 0,
+      successRate REAL NOT NULL DEFAULT 0
+    );
+
     INSERT OR IGNORE INTO kill_switch (id, armed) VALUES (1, 0);
   `);
 }

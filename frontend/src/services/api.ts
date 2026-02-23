@@ -220,10 +220,11 @@ export const chatAPI = {
   getMessages: (sessionId: string) =>
     apiFetch<{ messages: unknown[] }>(`/chat/sessions/${sessionId}/messages`),
 
-  sendMessage: (sessionId: string, content: string) =>
+  sendMessage: (sessionId: string, content: string, llmHeaders?: Record<string, string>) =>
     apiFetch<unknown>(`/chat/sessions/${sessionId}/messages`, {
       method: 'POST',
       body: JSON.stringify({ content }),
+      headers: llmHeaders,
     }),
 };
 
