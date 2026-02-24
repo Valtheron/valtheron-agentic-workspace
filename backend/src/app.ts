@@ -19,6 +19,7 @@ import projectTreeRoutes from './routes/projectTree.js';
 import notificationRoutes from './routes/notifications.js';
 import { auditLogger } from './middleware/auditLogger.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { adminOnly } from './middleware/rbac.js';
 
 export function createApp() {
   const app = express();
@@ -58,11 +59,14 @@ export function createApp() {
 
   // Protected routes (require auth in production, optional in dev)
   const protect = process.env.NODE_ENV === 'production' ? authMiddleware : optionalAuth;
+  // Admin-only guard — enforced in production; passthrough in dev
+  const adminGuard = process.env.NODE_ENV === 'production' ? adminOnly : optionalAuth;
 
   app.use('/api/agents', protect, agentRoutes);
   app.use('/api/tasks', protect, taskRoutes);
   app.use('/api/workflows', protect, workflowRoutes);
-  app.use('/api/security', protect, securityRoutes);
+  // Security routes require admin role in production (RBAC)
+  app.use('/api/security', protect, adminGuard, securityRoutes);
   app.use('/api/analytics', protect, analyticsRoutes);
   app.use('/api/chat', protect, chatRoutes);
   app.use('/api/collaboration', protect, collaborationRoutes);
