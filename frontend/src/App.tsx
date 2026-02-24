@@ -113,8 +113,7 @@ function App() {
           setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: status as Task['status'] } : t));
         });
 
-        const db = health.database as { agents: number; tasks: number };
-        console.log(`Backend connected: ${db.agents} agents, ${db.tasks} tasks loaded from API`);
+        console.log(`Backend connected: ${health.database.agents} agents, ${health.database.tasks} tasks loaded from API`);
       } catch {
         if (!cancelled) {
           setBackendConnected(false);
@@ -268,7 +267,7 @@ function App() {
   const handleCreateProject = (proj: Project) => setProjects(prev => [...prev, proj]);
   const handleUpdateProject = (proj: Project) => setProjects(prev => prev.map(p => p.id === proj.id ? proj : p));
   const handleDeleteProject = (id: string) => setProjects(prev => prev.filter(p => p.id !== id));
-  const handleNavigateWorkflow = (_wfId: string) => {
+  const handleNavigateWorkflow = (wfId: string) => {
     setCurrentView('workflows');
   };
 

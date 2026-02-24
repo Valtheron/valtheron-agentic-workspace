@@ -9,7 +9,7 @@ interface AnalyticsProps {
 
 type Tab = 'trends' | 'throughput' | 'errors' | 'capacity' | 'sla' | 'success';
 
-function generateTrends(agents: Agent[], _tasks: Task[]): PerformanceTrend[] {
+function generateTrends(agents: Agent[], tasks: Task[]): PerformanceTrend[] {
   const now = Date.now();
   return Array.from({ length: 30 }, (_, i) => {
     const d = new Date(now - (29 - i) * 86400000);
@@ -84,7 +84,7 @@ function BarChart({ data, labels, width = 300, height = 140, color = 'var(--acce
   );
 }
 
-export default function AnalyticsView({ agents, tasks }: AnalyticsProps) {
+export default function AnalyticsView({ analytics, agents, tasks }: AnalyticsProps) {
   const [tab, setTab] = useState<Tab>('trends');
   const trends = useMemo(() => generateTrends(agents, tasks), [agents, tasks]);
   const slas = useMemo(generateSLAs, []);
