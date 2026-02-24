@@ -203,7 +203,35 @@ export interface AnalyticsData {
   uptime: number;
 }
 
-export type ViewType = 'dashboard' | 'agents' | 'security' | 'collaboration' | 'certifications' | 'kanban' | 'projektbaum' | 'llm-settings' | 'workflows' | 'projects' | 'kill-switch' | 'analytics' | 'enterprise';
+export type ViewType = 'dashboard' | 'agents' | 'security' | 'collaboration' | 'certifications' | 'kanban' | 'projektbaum' | 'llm-settings' | 'workflows' | 'projects' | 'kill-switch' | 'analytics' | 'enterprise' | 'chat';
+
+// Chat Types
+export interface ChatSession {
+  id: string;
+  agentId: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  sessionId: string;
+  sender: string;
+  senderType: 'user' | 'agent';
+  content: string;
+  timestamp: string;
+}
+
+// Collaboration Message Types
+export interface CollaborationMessage {
+  id: string;
+  sessionId: string;
+  senderId: string;
+  content: string;
+  messageType: 'message' | 'system' | 'decision' | 'file_share';
+  timestamp: string;
+}
 
 // Project Types
 

@@ -4,21 +4,33 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DB_PATH = path.join(__dirname, '../../data/valtheron.db');
+const DEFAULT_DB_PATH = path.join(__dirname, '../../data/valtheron.db');
 
-let db: Database.Database;
+let db: Database.Database | undefined;
+
+function getConfiguredDbPath() {
+  return process.env.VALTHERON_DB_PATH || DEFAULT_DB_PATH;
+}
 
 export function getDb(): Database.Database {
   if (!db) {
-    const dataDir = path.dirname(DB_PATH);
+    const dbPath = getConfiguredDbPath();
+    const dataDir = path.dirname(dbPath);
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-    db = new Database(DB_PATH);
+    db = new Database(dbPath);
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');
     initSchema(db);
   }
   return db;
+}
+
+export function closeDb() {
+  if (db) {
+    db.close();
+    db = undefined;
+  }
 }
 
 function initSchema(db: Database.Database) {
@@ -134,6 +146,114 @@ function initSchema(db: Database.Database) {
       affectedAgents TEXT NOT NULL DEFAULT '[]',
       autoTriggerRules TEXT NOT NULL DEFAULT '[]',
       history TEXT NOT NULL DEFAULT '[]'
+    );
+
+    CREATE TABLE IF NOT EXISTS chat_sessions (
+      id TEXT PRIMARY KEY,
+      agentId TEXT NOT NULL,
+      title TEXT NOT NULL DEFAULT 'Neue Konversation',
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      updatedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (agentId) REFERENCES agents(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS chat_messages (
+      id TEXT PRIMARY KEY,
+      sessionId TEXT NOT NULL,
+      sender TEXT NOT NULL,
+      senderType TEXT NOT NULL DEFAULT 'user',
+      content TEXT NOT NULL,
+      timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (sessionId) REFERENCES chat_sessions(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS collaboration_sessions (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      agents TEXT NOT NULL DEFAULT '[]',
+      status TEXT NOT NULL DEFAULT 'active',
+      sharedFiles TEXT NOT NULL DEFAULT '[]',
+      coordinatorPrompt TEXT NOT NULL DEFAULT '',
+      delegationStrategy TEXT NOT NULL DEFAULT 'round-robin',
+      conflictResolution TEXT NOT NULL DEFAULT 'coordinator-decides',
+      consensusThreshold INTEGER NOT NULL DEFAULT 75,
+      maxIterations INTEGER NOT NULL DEFAULT 10,
+      synthesis TEXT,
+      startedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      updatedAt TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS collaboration_messages (
+      id TEXT PRIMARY KEY,
+      sessionId TEXT NOT NULL,
+      senderId TEXT NOT NULL,
+      content TEXT NOT NULL,
+      messageType TEXT NOT NULL DEFAULT 'message',
+      timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (sessionId) REFERENCES collaboration_sessions(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS shared_files (
+      id TEXT PRIMARY KEY,
+      sessionId TEXT NOT NULL,
+      filename TEXT NOT NULL,
+      content TEXT NOT NULL DEFAULT '',
+      mimeType TEXT NOT NULL DEFAULT 'text/plain',
+      size INTEGER NOT NULL DEFAULT 0,
+      version INTEGER NOT NULL DEFAULT 1,
+      uploadedBy TEXT NOT NULL,
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      updatedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (sessionId) REFERENCES collaboration_sessions(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS file_versions (
+      id TEXT PRIMARY KEY,
+      fileId TEXT NOT NULL,
+      version INTEGER NOT NULL,
+      content TEXT NOT NULL DEFAULT '',
+      size INTEGER NOT NULL DEFAULT 0,
+      editedBy TEXT NOT NULL,
+      changeDescription TEXT NOT NULL DEFAULT '',
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (fileId) REFERENCES shared_files(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS notifications (
+      id TEXT PRIMARY KEY,
+      type TEXT NOT NULL,
+      title TEXT NOT NULL,
+      message TEXT NOT NULL,
+      severity TEXT NOT NULL DEFAULT 'info',
+      targetAgentId TEXT,
+      read INTEGER NOT NULL DEFAULT 0,
+      createdAt TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS project_tree (
+      id TEXT PRIMARY KEY,
+      parentId TEXT,
+      name TEXT NOT NULL,
+      type TEXT NOT NULL DEFAULT 'module',
+      status TEXT NOT NULL DEFAULT 'active',
+      progress INTEGER NOT NULL DEFAULT 0,
+      agentId TEXT,
+      description TEXT NOT NULL DEFAULT '',
+      sortOrder INTEGER NOT NULL DEFAULT 0,
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      updatedAt TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS metrics_history (
+      id TEXT PRIMARY KEY,
+      timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+      activeAgents INTEGER NOT NULL DEFAULT 0,
+      totalTasks INTEGER NOT NULL DEFAULT 0,
+      completedToday INTEGER NOT NULL DEFAULT 0,
+      errorRate REAL NOT NULL DEFAULT 0,
+      avgResponseTime REAL NOT NULL DEFAULT 0,
+      throughput REAL NOT NULL DEFAULT 0,
+      successRate REAL NOT NULL DEFAULT 0
     );
 
     INSERT OR IGNORE INTO kill_switch (id, armed) VALUES (1, 0);

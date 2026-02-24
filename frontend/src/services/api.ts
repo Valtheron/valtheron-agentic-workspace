@@ -202,6 +202,111 @@ export const analyticsAPI = {
   dashboard: () => apiFetch<unknown>('/analytics/dashboard'),
   performance: () => apiFetch<unknown>('/analytics/performance'),
   sla: () => apiFetch<unknown>('/analytics/sla'),
+  agentDrillDown: (agentId: string) => apiFetch<unknown>(`/analytics/agents/${agentId}`),
+  exportReport: (type: string, format: 'json' | 'csv' = 'json') =>
+    apiFetch<unknown>(`/analytics/export?type=${type}&format=${format}`),
+};
+
+// ===== Chat API =====
+export const chatAPI = {
+  listSessions: (agentId?: string) => {
+    const qs = agentId ? `?agentId=${agentId}` : '';
+    return apiFetch<{ sessions: unknown[] }>(`/chat/sessions${qs}`);
+  },
+
+  createSession: (agentId: string, title?: string) =>
+    apiFetch<unknown>('/chat/sessions', { method: 'POST', body: JSON.stringify({ agentId, title }) }),
+
+  deleteSession: (id: string) =>
+    apiFetch<{ success: boolean }>(`/chat/sessions/${id}`, { method: 'DELETE' }),
+
+  getMessages: (sessionId: string) =>
+    apiFetch<{ messages: unknown[] }>(`/chat/sessions/${sessionId}/messages`),
+
+  sendMessage: (sessionId: string, content: string, llmHeaders?: Record<string, string>) =>
+    apiFetch<unknown>(`/chat/sessions/${sessionId}/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ content }),
+      headers: llmHeaders,
+    }),
+};
+
+// ===== Collaboration API =====
+export const collaborationAPI = {
+  listSessions: () =>
+    apiFetch<{ sessions: unknown[] }>('/collaboration/sessions'),
+
+  createSession: (data: { name: string; agents: string[]; coordinatorPrompt?: string; delegationStrategy?: string; conflictResolution?: string; consensusThreshold?: number; maxIterations?: number }) =>
+    apiFetch<unknown>('/collaboration/sessions', { method: 'POST', body: JSON.stringify(data) }),
+
+  updateSession: (id: string, data: { status?: string; synthesis?: string }) =>
+    apiFetch<unknown>(`/collaboration/sessions/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+
+  deleteSession: (id: string) =>
+    apiFetch<{ success: boolean }>(`/collaboration/sessions/${id}`, { method: 'DELETE' }),
+
+  getMessages: (sessionId: string) =>
+    apiFetch<{ messages: unknown[] }>(`/collaboration/sessions/${sessionId}/messages`),
+
+  sendMessage: (sessionId: string, senderId: string, content: string, messageType?: string) =>
+    apiFetch<unknown>(`/collaboration/sessions/${sessionId}/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ senderId, content, messageType }),
+    }),
+};
+
+// ===== File Sharing API =====
+export const fileAPI = {
+  listFiles: (sessionId: string) =>
+    apiFetch<{ files: unknown[] }>(`/collaboration/sessions/${sessionId}/files`),
+
+  uploadFile: (sessionId: string, data: { filename: string; content: string; mimeType?: string }) =>
+    apiFetch<unknown>(`/collaboration/sessions/${sessionId}/files`, { method: 'POST', body: JSON.stringify(data) }),
+
+  getFile: (fileId: string) =>
+    apiFetch<unknown>(`/collaboration/files/${fileId}`),
+
+  updateFile: (fileId: string, data: { content: string; changeDescription?: string }) =>
+    apiFetch<unknown>(`/collaboration/files/${fileId}`, { method: 'PUT', body: JSON.stringify(data) }),
+
+  getVersions: (fileId: string) =>
+    apiFetch<{ versions: unknown[] }>(`/collaboration/files/${fileId}/versions`),
+
+  getVersion: (fileId: string, version: number) =>
+    apiFetch<unknown>(`/collaboration/files/${fileId}/versions/${version}`),
+
+  deleteFile: (fileId: string) =>
+    apiFetch<{ success: boolean }>(`/collaboration/files/${fileId}`, { method: 'DELETE' }),
+};
+
+// ===== Project Tree API =====
+export const projectTreeAPI = {
+  getTree: () => apiFetch<{ tree: unknown[] }>('/project-tree'),
+  getFlat: () => apiFetch<{ nodes: unknown[] }>('/project-tree/flat'),
+  createNode: (data: { parentId?: string; name: string; type?: string; status?: string; progress?: number; agentId?: string; description?: string }) =>
+    apiFetch<unknown>('/project-tree', { method: 'POST', body: JSON.stringify(data) }),
+  updateNode: (id: string, data: Record<string, unknown>) =>
+    apiFetch<unknown>(`/project-tree/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+  deleteNode: (id: string) =>
+    apiFetch<{ success: boolean; deletedCount: number }>(`/project-tree/${id}`, { method: 'DELETE' }),
+};
+
+// ===== Notifications API =====
+export const notificationsAPI = {
+  list: (params?: { read?: string; severity?: string; limit?: number }) => {
+    const query = new URLSearchParams();
+    if (params?.read !== undefined) query.set('read', params.read);
+    if (params?.severity) query.set('severity', params.severity);
+    if (params?.limit) query.set('limit', String(params.limit));
+    const qs = query.toString();
+    return apiFetch<{ notifications: unknown[]; unreadCount: number }>(`/notifications${qs ? `?${qs}` : ''}`);
+  },
+  markRead: (id: string) =>
+    apiFetch<{ success: boolean }>(`/notifications/${id}/read`, { method: 'PATCH' }),
+  markAllRead: () =>
+    apiFetch<{ success: boolean }>('/notifications/read-all', { method: 'POST' }),
+  delete: (id: string) =>
+    apiFetch<{ success: boolean }>(`/notifications/${id}`, { method: 'DELETE' }),
 };
 
 // ===== Health API =====

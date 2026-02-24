@@ -11,7 +11,7 @@ interface WSClient {
 
 const clients = new Map<WebSocket, WSClient>();
 
-export type WSEventType = 'agent_status' | 'task_update' | 'workflow_progress' | 'security_event' | 'kill_switch' | 'metric_change' | 'system';
+export type WSEventType = 'agent_status' | 'task_update' | 'workflow_progress' | 'security_event' | 'kill_switch' | 'metric_change' | 'system' | 'chat_message' | 'collaboration_message';
 
 export interface WSMessage {
   type: WSEventType;
