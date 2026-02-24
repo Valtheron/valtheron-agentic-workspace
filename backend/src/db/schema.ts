@@ -4,21 +4,33 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DB_PATH = path.join(__dirname, '../../data/valtheron.db');
+const DEFAULT_DB_PATH = path.join(__dirname, '../../data/valtheron.db');
 
-let db: Database.Database;
+let db: Database.Database | undefined;
+
+function getConfiguredDbPath() {
+  return process.env.VALTHERON_DB_PATH || DEFAULT_DB_PATH;
+}
 
 export function getDb(): Database.Database {
   if (!db) {
-    const dataDir = path.dirname(DB_PATH);
+    const dbPath = getConfiguredDbPath();
+    const dataDir = path.dirname(dbPath);
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-    db = new Database(DB_PATH);
+    db = new Database(dbPath);
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');
     initSchema(db);
   }
   return db;
+}
+
+export function closeDb() {
+  if (db) {
+    db.close();
+    db = undefined;
+  }
 }
 
 function initSchema(db: Database.Database) {
