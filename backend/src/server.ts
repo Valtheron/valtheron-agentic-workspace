@@ -2,6 +2,7 @@ import http from 'http';
 import { createApp, initDatabase } from './app.js';
 import { initWebSocket } from './services/websocket.js';
 import { startActivitySimulator } from './services/activitySimulator.js';
+import { startKillSwitchMonitor } from './services/killSwitchMonitor.js';
 
 const app = createApp();
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001;
@@ -15,6 +16,9 @@ initDatabase();
 
 // Start live activity simulation
 startActivitySimulator();
+
+// Start kill-switch auto-trigger monitoring
+startKillSwitchMonitor();
 
 server.listen(PORT, () => {
   console.log(`
