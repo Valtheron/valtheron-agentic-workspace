@@ -1,153 +1,143 @@
-import { getDb } from '../db/schema.js';
-import { broadcast } from './websocket.js';
-import { createNotification } from '../routes/notifications.js';
+/**
+ * Kill-Switch Auto-Trigger Rules Engine
+ *
+ * Periodically evaluates auto-trigger rules stored in the kill_switch table.
+ * If any enabled rule's threshold is breached, the kill switch is armed automatically.
+ */
 
-interface AutoTriggerRule {
+import { getDb } from '../db/schema.js';
+import { v4 as uuid } from 'uuid';
+
+export interface AutoTriggerRule {
   id: string;
-  condition: string;
+  name: string;
+  metric: 'error_rate' | 'failed_agents' | 'failed_tasks_rate';
   threshold: number;
+  comparison: 'gt' | 'lt' | 'gte' | 'lte';
   enabled: boolean;
+  windowMinutes: number;
 }
 
-// Evaluate auto-trigger rules every 30 seconds
-function evaluateTriggerRules() {
-  try {
-    const db = getDb();
-    const ks = db.prepare('SELECT * FROM kill_switch WHERE id = 1').get() as Record<string, unknown>;
-    if (!ks || ks.armed) return; // Already armed, skip
+const POLL_INTERVAL_MS = 30_000; // 30 seconds
 
-    const rules: AutoTriggerRule[] = JSON.parse(ks.autoTriggerRules as string || '[]');
-    if (rules.length === 0) return;
+let monitorInterval: ReturnType<typeof setInterval> | null = null;
 
-    const totalAgents = (db.prepare('SELECT COUNT(*) as c FROM agents').get() as { c: number }).c;
-    const errorAgents = (db.prepare("SELECT COUNT(*) as c FROM agents WHERE status = 'error'").get() as { c: number }).c;
-    const blockedAgents = (db.prepare("SELECT COUNT(*) as c FROM agents WHERE status = 'blocked'").get() as { c: number }).c;
-    const totalTasks = (db.prepare('SELECT COUNT(*) as c FROM tasks').get() as { c: number }).c;
-    const failedTasks = (db.prepare("SELECT COUNT(*) as c FROM tasks WHERE status = 'failed'").get() as { c: number }).c;
-    const avgSuccessRate = (db.prepare('SELECT AVG(successRate) as avg FROM agents').get() as { avg: number }).avg ?? 100;
-
-    const errorRate = totalAgents > 0 ? (errorAgents / totalAgents) * 100 : 0;
-    const taskFailRate = totalTasks > 0 ? (failedTasks / totalTasks) * 100 : 0;
-
-    for (const rule of rules) {
-      if (!rule.enabled) continue;
-
-      let triggered = false;
-      let reason = '';
-
-      switch (rule.condition) {
-        case 'error_rate_exceeds':
-          if (errorRate > rule.threshold) {
-            triggered = true;
-            reason = `Agent-Fehlerrate ${errorRate.toFixed(1)}% ueberschreitet Schwellwert ${rule.threshold}%`;
-          }
-          break;
-        case 'task_failure_exceeds':
-          if (taskFailRate > rule.threshold) {
-            triggered = true;
-            reason = `Task-Fehlerrate ${taskFailRate.toFixed(1)}% ueberschreitet Schwellwert ${rule.threshold}%`;
-          }
-          break;
-        case 'blocked_agents_exceeds':
-          if (blockedAgents > rule.threshold) {
-            triggered = true;
-            reason = `${blockedAgents} blockierte Agenten ueberschreiten Schwellwert ${rule.threshold}`;
-          }
-          break;
-        case 'success_rate_below':
-          if (avgSuccessRate < rule.threshold) {
-            triggered = true;
-            reason = `Erfolgsrate ${avgSuccessRate.toFixed(1)}% unter Schwellwert ${rule.threshold}%`;
-          }
-          break;
-      }
-
-      if (triggered) {
-        armKillSwitch(db, reason, rule.id);
-        break; // Only trigger once per evaluation
-      }
-    }
-  } catch {
-    // Silently fail — monitor should not crash the system
+function compare(value: number, threshold: number, comparison: AutoTriggerRule['comparison']): boolean {
+  switch (comparison) {
+    case 'gt':
+      return value > threshold;
+    case 'gte':
+      return value >= threshold;
+    case 'lt':
+      return value < threshold;
+    case 'lte':
+      return value <= threshold;
   }
 }
 
-function armKillSwitch(db: ReturnType<typeof getDb>, reason: string, ruleId: string) {
+function evaluateMetric(rule: AutoTriggerRule): { value: number; breached: boolean } {
+  const db = getDb();
+  const windowCutoff = new Date(Date.now() - rule.windowMinutes * 60 * 1000).toISOString();
+  let value = 0;
+
+  switch (rule.metric) {
+    case 'error_rate': {
+      const total = (
+        db
+          .prepare('SELECT COUNT(*) as c FROM tasks WHERE updatedAt >= ? OR createdAt >= ?')
+          .get(windowCutoff, windowCutoff) as { c: number }
+      ).c;
+      const failed = (
+        db
+          .prepare("SELECT COUNT(*) as c FROM tasks WHERE status = 'failed' AND (updatedAt >= ? OR createdAt >= ?)")
+          .get(windowCutoff, windowCutoff) as { c: number }
+      ).c;
+      value = total > 0 ? (failed / total) * 100 : 0;
+      break;
+    }
+    case 'failed_agents': {
+      value = (db.prepare("SELECT COUNT(*) as c FROM agents WHERE status = 'error'").get() as { c: number }).c;
+      break;
+    }
+    case 'failed_tasks_rate': {
+      const completed = (
+        db.prepare("SELECT COUNT(*) as c FROM tasks WHERE status IN ('completed','failed')").get() as { c: number }
+      ).c;
+      const failed = (db.prepare("SELECT COUNT(*) as c FROM tasks WHERE status = 'failed'").get() as { c: number }).c;
+      value = completed > 0 ? (failed / completed) * 100 : 0;
+      break;
+    }
+  }
+
+  return { value, breached: compare(value, rule.threshold, rule.comparison) };
+}
+
+function armKillSwitch(rule: AutoTriggerRule, triggeredValue: number): void {
+  const db = getDb();
   const ks = db.prepare('SELECT * FROM kill_switch WHERE id = 1').get() as Record<string, unknown>;
-  const history = JSON.parse(ks.history as string || '[]');
-  const now = new Date().toISOString();
+  const history = JSON.parse(ks.history as string) as unknown[];
+  const reason = `Auto-trigger: ${rule.name} — Wert ${triggeredValue.toFixed(2)} ${rule.comparison} Schwellenwert ${rule.threshold}`;
 
   history.push({
-    id: ruleId,
-    action: 'auto-armed',
+    id: uuid(),
+    action: 'auto-triggered',
     triggeredBy: 'system:auto-trigger',
     reason,
     affectedAgents: [],
-    timestamp: now,
+    timestamp: new Date().toISOString(),
   });
 
-  // Suspend active agents
-  const agents = db.prepare("SELECT id FROM agents WHERE status IN ('active', 'working')").all() as { id: string }[];
-  const agentIds = agents.map(a => a.id);
-
+  const agents = db.prepare("SELECT id FROM agents WHERE status IN ('active','working')").all() as { id: string }[];
+  const agentIds = agents.map((a) => a.id);
   if (agentIds.length > 0) {
-    db.prepare("UPDATE agents SET status = 'suspended' WHERE status IN ('active', 'working')").run();
+    db.prepare("UPDATE agents SET status = 'suspended' WHERE status IN ('active','working')").run();
   }
 
   db.prepare(
-    'UPDATE kill_switch SET armed = 1, triggeredBy = ?, reason = ?, triggeredAt = ?, affectedAgents = ?, history = ? WHERE id = 1'
-  ).run('system:auto-trigger', reason, now, JSON.stringify(agentIds), JSON.stringify(history));
+    'UPDATE kill_switch SET armed = 1, triggeredBy = ?, reason = ?, triggeredAt = ?, affectedAgents = ?, history = ? WHERE id = 1',
+  ).run('system:auto-trigger', reason, new Date().toISOString(), JSON.stringify(agentIds), JSON.stringify(history));
 
-  broadcast({
-    type: 'kill_switch',
-    payload: { armed: true, reason, autoTriggered: true, suspendedAgents: agentIds.length },
-    timestamp: now,
-  });
+  db.prepare(
+    "INSERT INTO audit_log (id, agentId, action, details, riskLevel) VALUES (?, 'system', ?, ?, 'critical')",
+  ).run(uuid(), 'kill-switch:auto-triggered', reason);
 
-  // Create notifications
-  createNotification(
-    'kill_switch',
-    'Kill-Switch automatisch aktiviert',
-    reason,
-    'critical'
-  );
-
-  for (const agentId of agentIds.slice(0, 10)) {
-    createNotification(
-      'agent_suspended',
-      'Agent suspendiert',
-      `Agent wurde durch Kill-Switch suspendiert: ${reason}`,
-      'high',
-      agentId
-    );
-  }
-
-  console.log(`[KillSwitchMonitor] Auto-triggered: ${reason}. ${agentIds.length} agents suspended.`);
+  console.warn(`[KillSwitchMonitor] Kill switch auto-triggered by rule "${rule.name}": ${reason}`);
 }
 
-export function startKillSwitchMonitor() {
-  console.log('[KillSwitchMonitor] Starting auto-trigger monitoring...');
-  // Seed default rules if none exist
-  seedDefaultRules();
-  setTimeout(() => setInterval(evaluateTriggerRules, 30000), 10000);
-}
-
-function seedDefaultRules() {
+function runCheck(): void {
   try {
     const db = getDb();
-    const ks = db.prepare('SELECT autoTriggerRules FROM kill_switch WHERE id = 1').get() as { autoTriggerRules: string };
-    const rules = JSON.parse(ks.autoTriggerRules || '[]');
-    if (rules.length > 0) return;
+    const ks = db.prepare('SELECT armed, autoTriggerRules FROM kill_switch WHERE id = 1').get() as
+      | { armed: number; autoTriggerRules: string }
+      | undefined;
 
-    const defaultRules: AutoTriggerRule[] = [
-      { id: 'rule-1', condition: 'error_rate_exceeds', threshold: 50, enabled: true },
-      { id: 'rule-2', condition: 'task_failure_exceeds', threshold: 60, enabled: true },
-      { id: 'rule-3', condition: 'blocked_agents_exceeds', threshold: 100, enabled: false },
-      { id: 'rule-4', condition: 'success_rate_below', threshold: 30, enabled: true },
-    ];
+    if (!ks || ks.armed) return;
 
-    db.prepare('UPDATE kill_switch SET autoTriggerRules = ? WHERE id = 1').run(JSON.stringify(defaultRules));
-  } catch {
-    // Ignore
+    const rules: AutoTriggerRule[] = JSON.parse(ks.autoTriggerRules || '[]');
+    const enabledRules = rules.filter((r) => r.enabled);
+
+    for (const rule of enabledRules) {
+      const { value, breached } = evaluateMetric(rule);
+      if (breached) {
+        armKillSwitch(rule, value);
+        break;
+      }
+    }
+  } catch (err) {
+    console.error('[KillSwitchMonitor] Error during check:', err);
+  }
+}
+
+export function startKillSwitchMonitor(): void {
+  if (monitorInterval) return;
+  monitorInterval = setInterval(runCheck, POLL_INTERVAL_MS);
+  console.info('[KillSwitchMonitor] Auto-trigger monitor started (interval: 30s)');
+}
+
+export function stopKillSwitchMonitor(): void {
+  if (monitorInterval) {
+    clearInterval(monitorInterval);
+    monitorInterval = null;
+    console.info('[KillSwitchMonitor] Auto-trigger monitor stopped');
   }
 }

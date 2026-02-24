@@ -1,3 +1,8 @@
+/* Tailwind CSS directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Valtheron Agentic Workspace - Global Styles */
 :root {
   --bg-primary: #060a14;

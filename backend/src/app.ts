@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import morgan from 'morgan';
 import { optionalAuth, authMiddleware } from './middleware/auth.js';
 import { getDb } from './db/schema.js';
 import { seedDatabase } from './db/seed.js';
@@ -32,6 +33,11 @@ export function createApp() {
     }),
   );
   app.use(express.json({ limit: '10mb' }));
+
+  // HTTP request logging (skip in test environment)
+  if (process.env.NODE_ENV !== 'test') {
+    app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+  }
 
   // Apply optional auth globally (populates req.user if token present)
   app.use(optionalAuth);
