@@ -14,6 +14,10 @@ import securityRoutes from './routes/security.js';
 import analyticsRoutes from './routes/analytics.js';
 import chatRoutes from './routes/chat.js';
 import collaborationRoutes from './routes/collaboration.js';
+import fileRoutes from './routes/files.js';
+import projectTreeRoutes from './routes/projectTree.js';
+import notificationRoutes from './routes/notifications.js';
+import { auditLogger } from './middleware/auditLogger.js';
 
 export function createApp() {
   const app = express();
@@ -27,6 +31,9 @@ export function createApp() {
 
   // Apply optional auth globally (populates req.user if token present)
   app.use(optionalAuth);
+
+  // Audit logging for all mutating operations
+  app.use(auditLogger);
 
   // Health check
   app.get('/api/health', (_req, res) => {
@@ -56,6 +63,9 @@ export function createApp() {
   app.use('/api/analytics', protect, analyticsRoutes);
   app.use('/api/chat', protect, chatRoutes);
   app.use('/api/collaboration', protect, collaborationRoutes);
+  app.use('/api/collaboration', protect, fileRoutes);
+  app.use('/api/project-tree', protect, projectTreeRoutes);
+  app.use('/api/notifications', protect, notificationRoutes);
 
   // 404 handler
   app.use((_req, res) => {
