@@ -1,6 +1,7 @@
 import http from 'http';
 import { createApp, initDatabase } from './app.js';
 import { initWebSocket } from './services/websocket.js';
+import { startActivitySimulator } from './services/activitySimulator.js';
 
 const app = createApp();
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001;
@@ -11,6 +12,9 @@ initWebSocket(server);
 
 // Initialize DB and seed
 initDatabase();
+
+// Start live activity simulation
+startActivitySimulator();
 
 server.listen(PORT, () => {
   console.log(`
