@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import './App.css';
-import type { ViewType, Agent, Task, CollaborationSession, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, KanbanColumn, LLMConfig, Workflow, Project } from './types';import { generateAgents, generateTasks, generateCollaborations, generateCertifications, generateSecurityEvents, generateKillSwitch, generateAuditLog, generateProjektBaum, defaultSecurityConfig, generateAnalytics } from './services/mockData';
+import type { ViewType, Agent, Task, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, KanbanColumn, LLMConfig, Workflow, Project } from './types';
+import { generateAgents, generateTasks, generateCertifications, generateSecurityEvents, generateKillSwitch, generateAuditLog, generateProjektBaum, defaultSecurityConfig, generateAnalytics } from './services/mockData';
 import { defaultLLMConfig } from './services/llmProviders';
 import { save, load, KEYS } from './services/persistence';
 import { agentsAPI, tasksAPI, workflowsAPI, securityAPI, healthAPI, wsClient } from './services/api';
