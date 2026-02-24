@@ -9,25 +9,35 @@ const COMM_STYLES = ['formal', 'casual', 'technical', 'diplomatic'] as const;
 
 const AGENT_NAMES: Record<string, string[]> = {
   trading: ['TradeMaster', 'MarketSentinel', 'AlphaSeeker', 'RiskGuard', 'PortfolioBot', 'SwingTrader', 'ArbitrageHunter', 'TrendFollower', 'VolatilityScout', 'LiquidityBot',
-            'DeltaTrader', 'GammaHedger', 'ThetaCollector', 'VegaTracker', 'RhoAnalyzer', 'MomentumBot', 'MeanReversion', 'PairTrader', 'FlowDetector', 'OrderBookBot'],
+            'DeltaTrader', 'GammaHedger', 'ThetaCollector', 'VegaTracker', 'RhoAnalyzer', 'MomentumBot', 'MeanReversion', 'PairTrader', 'FlowDetector', 'OrderBookBot',
+            'SpreadTrader', 'ScalpingBot', 'QuantEngine', 'SectorRotator', 'DividendBot', 'CryptoTrader', 'ForexBot', 'CommodityBot', 'OptionsBot'],
   security: ['FirewallGuard', 'ThreatHunter', 'VulnScanner', 'AccessControl', 'CryptoGuard', 'AnomalyDetector', 'PenTestBot', 'SOCAnalyst', 'MalwareHunter', 'ComplianceBot',
-             'PhishGuard', 'EndpointSentry', 'NetworkWatch', 'LogAnalyzer', 'IncidentBot', 'ForensicBot', 'ZeroDayWatch', 'DLPGuard', 'IdentityBot', 'CloudSecBot'],
+             'PhishGuard', 'EndpointSentry', 'NetworkWatch', 'LogAnalyzer', 'IncidentBot', 'ForensicBot', 'ZeroDayWatch', 'DLPGuard', 'IdentityBot', 'CloudSecBot',
+             'RansomGuard', 'APISecBot', 'ContainerSecBot', 'SupplyChainGuard', 'PrivacyBot', 'TokenGuard', 'WAFBot', 'BotDetector', 'ThreatIntel'],
   development: ['CodeArchitect', 'RefactorBot', 'APIBuilder', 'FrontendDev', 'BackendDev', 'FullStackDev', 'MicroserviceBot', 'DatabaseDev', 'CICDBot', 'PerformanceDev',
-                'ReactDev', 'NodeDev', 'PythonDev', 'RustDev', 'GoDev', 'TypeScriptDev', 'GraphQLDev', 'WebSocketDev', 'ContainerDev', 'InfraDev'],
+                'ReactDev', 'NodeDev', 'PythonDev', 'RustDev', 'GoDev', 'TypeScriptDev', 'GraphQLDev', 'WebSocketDev', 'ContainerDev', 'InfraDev',
+                'SwiftDev', 'KotlinDev', 'WasmDev', 'ElixirDev', 'ScalaDev', 'MLEngineer', 'GameDev', 'EmbeddedDev', 'BlockchainDev'],
   qa: ['TestMaster', 'E2ETestBot', 'UnitTestBot', 'IntegrationTester', 'LoadTestBot', 'SecurityTester', 'RegressionBot', 'FuzzerBot', 'AccessibilityBot', 'CompatTester',
-       'VisualTestBot', 'APITester', 'PerformanceTester', 'ChaosMonkey', 'DataValidator', 'SmokeTestBot', 'ContractTester', 'MutationTester', 'CoveragBot', 'BugHunter'],
+       'VisualTestBot', 'APITester', 'PerformanceTester', 'ChaosMonkey', 'DataValidator', 'SmokeTestBot', 'ContractTester', 'MutationTester', 'CoveragBot', 'BugHunter',
+       'SnapshotBot', 'StressTestBot', 'PropertyTester', 'PlaywrightBot', 'CypressBot', 'SeleniumBot', 'TestDataBot', 'MockServiceBot', 'BenchmarkBot'],
   documentation: ['DocWriter', 'APIDocBot', 'ReadmeGen', 'ChangelogBot', 'TutorialBot', 'SchemaDoc', 'WikiBot', 'DiagramBot', 'SpecWriter', 'StyleGuideBot',
-                  'JSDocBot', 'TypeDocBot', 'SwaggerBot', 'PostmanBot', 'MarkdownBot', 'TranslateBot', 'GlossaryBot', 'FAQBot', 'OnboardBot', 'KnowledgeBot'],
+                  'JSDocBot', 'TypeDocBot', 'SwaggerBot', 'PostmanBot', 'MarkdownBot', 'TranslateBot', 'GlossaryBot', 'FAQBot', 'OnboardBot', 'KnowledgeBot',
+                  'RFCWriter', 'ADRBot', 'RunbookBot', 'LicenseBot', 'ReleaseNoteBot', 'CodeCommentBot', 'ArchDocBot', 'ComplianceDocBot', 'TrainingDocBot'],
   deployment: ['DeployMaster', 'K8sBot', 'DockerBot', 'TerraformBot', 'AnsibleBot', 'HelmBot', 'PipelineBot', 'RollbackBot', 'ScalerBot', 'MonitorDeploy',
-               'BlueGreenBot', 'CanaryBot', 'FeatureFlagBot', 'SecretManager', 'ConfigBot', 'DNSBot', 'CDNBot', 'SSLBot', 'LoadBalancer', 'ServiceMesh'],
+               'BlueGreenBot', 'CanaryBot', 'FeatureFlagBot', 'SecretManager', 'ConfigBot', 'DNSBot', 'CDNBot', 'SSLBot', 'LoadBalancer', 'ServiceMesh',
+               'GitOpsBot', 'ArgoBot', 'FluxBot', 'VaultBot', 'ConsulBot', 'NomadBot', 'PulumiBot', 'CrossplaneBot', 'IstioBot'],
   analyst: ['DataAnalyst', 'BIBot', 'MetricsBot', 'TrendAnalyst', 'ReportGen', 'ForecastBot', 'SegmentBot', 'CohortBot', 'FunnelBot', 'RetentionBot',
-            'RevenueBot', 'ChurnPredictor', 'SentimentBot', 'NLPAnalyst', 'AnomalyBot', 'ClusterBot', 'RegressionBot', 'TimeSeriesBot', 'ABTestBot', 'DashboardBot'],
+            'RevenueBot', 'ChurnPredictor', 'SentimentBot', 'NLPAnalyst', 'AnomalyBot', 'ClusterBot', 'RegressionBot', 'TimeSeriesBot', 'ABTestBot', 'DashboardBot',
+            'GeoAnalyst', 'PricingBot', 'DemandBot', 'InventoryBot', 'SupplyChainBot', 'FraudDetector', 'RiskScorer', 'BenchmarkAnalyst', 'MarketResearch'],
   support: ['HelpDeskBot', 'TicketRouter', 'EscalationBot', 'KBSearchBot', 'ChatBot', 'FeedbackBot', 'SLAMonitor', 'CustomerBot', 'OnboardBot', 'TrainingBot',
-            'TriageBot', 'ResponseBot', 'SatisfactionBot', 'SurveyBot', 'IssueTracker', 'StatusPageBot', 'NotifyBot', 'PriorityBot', 'QueueManager', 'AutoReply'],
+            'TriageBot', 'ResponseBot', 'SatisfactionBot', 'SurveyBot', 'IssueTracker', 'StatusPageBot', 'NotifyBot', 'PriorityBot', 'QueueManager', 'AutoReply',
+            'VoiceBot', 'EmailSupportBot', 'SocialMediaBot', 'RetentionAgent', 'UpsellBot', 'RefundBot', 'WarrantyBot', 'LiveChatBot', 'SentimentAgent'],
   integration: ['APIGateway', 'WebhookBot', 'ETLBot', 'SyncBot', 'MigrationBot', 'ConnectorBot', 'TransformBot', 'SchemaMapper', 'EventBridge', 'MessageQueue',
-                'OAuthBot', 'SSOBot', 'PaymentBot', 'EmailBot', 'SlackBot', 'JiraBot', 'GitHubBot', 'S3Bot', 'RedisBot', 'KafkaBot'],
+                'OAuthBot', 'SSOBot', 'PaymentBot', 'EmailBot', 'SlackBot', 'JiraBot', 'GitHubBot', 'S3Bot', 'RedisBot', 'KafkaBot',
+                'PubSubBot', 'RabbitMQBot', 'GraphQLGateway', 'gRPCBot', 'FTPBot', 'SFTPBot', 'MQTTBot', 'DataLakeBot', 'SnowflakeBot'],
   monitoring: ['HealthCheck', 'AlertManager', 'UptimeBot', 'LogCollector', 'MetricStore', 'TracingBot', 'PrometheusBot', 'GrafanaBot', 'PagerBot', 'SLATracker',
-               'LatencyBot', 'ErrorTracker', 'ResourceBot', 'CapacityBot', 'CostMonitor', 'AuditBot', 'ComplianceMonitor', 'DriftDetector', 'ChangeTracker', 'BaselineBot'],
+               'LatencyBot', 'ErrorTracker', 'ResourceBot', 'CapacityBot', 'CostMonitor', 'AuditBot', 'ComplianceMonitor', 'DriftDetector', 'ChangeTracker', 'BaselineBot',
+               'DatadogBot', 'NewRelicBot', 'SplunkBot', 'ElasticBot', 'JaegerBot', 'ZipkinBot', 'SentryBot', 'RollbarBot', 'IncidentManager'],
 };
 
 const ROLES: Record<string, string[]> = {
@@ -68,7 +78,7 @@ export function seedDatabase() {
     uuid(), 'operator', hashPassword('operator123'), 'operator'
   );
 
-  // Create 200 agents (20 per category)
+  // Create 290 agents (29 per category)
   const insertAgent = db.prepare(`
     INSERT INTO agents (id, name, role, category, status, successRate, tasksCompleted, failedTasks, avgTaskDuration, lastActivity, systemPrompt, personality, parameters, hooks, testResults, llmProvider, llmModel, riskProfile)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -80,7 +90,7 @@ export function seedDatabase() {
     for (const category of CATEGORIES) {
       const names = AGENT_NAMES[category];
       const roles = ROLES[category];
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < names.length; i++) {
         const id = uuid();
         const name = names[i];
         const role = roles[i % roles.length];
@@ -162,7 +172,10 @@ export function seedDatabase() {
       for (let i = 0; i < 8; i++) {
         const title = titles[i % titles.length] + (i >= titles.length ? ` v${Math.floor(i / titles.length) + 1}` : '');
         const status = (['pending', 'in_progress', 'completed', 'failed'] as const)[Math.floor(Math.random() * 4)];
-        const kanban = KANBAN_COLS[Math.floor(Math.random() * KANBAN_COLS.length)];
+        const kanban = status === 'completed' ? 'done'
+          : status === 'in_progress' ? (['in_progress', 'review'] as const)[Math.floor(Math.random() * 2)]
+          : status === 'failed' ? (['backlog', 'todo', 'in_progress'] as const)[Math.floor(Math.random() * 3)]
+          : (['backlog', 'todo'] as const)[Math.floor(Math.random() * 2)];
         const agent = categoryAgents[Math.floor(Math.random() * categoryAgents.length)];
 
         insertTask.run(
@@ -234,7 +247,7 @@ export function seedDatabase() {
     for (const wf of sampleWorkflows) {
       // Set proper step dependencies (sequential)
       for (let i = 1; i < wf.steps.length; i++) {
-        wf.steps[i].dependsOn = [wf.steps[i - 1].id];
+        (wf.steps[i].dependsOn as string[]) = [wf.steps[i - 1].id];
       }
       insertWorkflow.run(uuid(), wf.name, wf.description, wf.status, JSON.stringify(wf.steps), 'system', JSON.stringify(wf.tags));
     }
@@ -262,5 +275,5 @@ export function seedDatabase() {
   });
   seedEvents();
 
-  console.log('Database seeded: 200 agents, 80 tasks, 3 workflows, 5 security events, 2 users');
+  console.log(`Database seeded: ${agents.length} agents, 80 tasks, 3 workflows, 5 security events, 2 users`);
 }

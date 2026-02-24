@@ -12,6 +12,8 @@ import taskRoutes from './routes/tasks.js';
 import workflowRoutes from './routes/workflows.js';
 import securityRoutes from './routes/security.js';
 import analyticsRoutes from './routes/analytics.js';
+import chatRoutes from './routes/chat.js';
+import collaborationRoutes from './routes/collaboration.js';
 
 export function createApp() {
   const app = express();
@@ -52,6 +54,8 @@ export function createApp() {
   app.use('/api/workflows', protect, workflowRoutes);
   app.use('/api/security', protect, securityRoutes);
   app.use('/api/analytics', protect, analyticsRoutes);
+  app.use('/api/chat', protect, chatRoutes);
+  app.use('/api/collaboration', protect, collaborationRoutes);
 
   // 404 handler
   app.use((_req, res) => {
