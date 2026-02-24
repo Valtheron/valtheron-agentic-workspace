@@ -5,22 +5,20 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULT_DB_PATH = path.join(__dirname, '../../data/valtheron.db');
-const DB_PATH_ENV_VAR = 'VALTHERON_DB_PATH';
 
-let db: Database.Database;
-let activeDbPath: string | undefined;
+let db: Database.Database | undefined;
 
-function resolveDbPath(): string {
-  return process.env[DB_PATH_ENV_VAR] || DEFAULT_DB_PATH;
+function getConfiguredDbPath() {
+  return process.env.VALTHERON_DB_PATH || DEFAULT_DB_PATH;
 }
 
 export function getDb(): Database.Database {
   if (!db) {
-    activeDbPath = resolveDbPath();
-    const dataDir = path.dirname(activeDbPath);
+    const dbPath = getConfiguredDbPath();
+    const dataDir = path.dirname(dbPath);
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-    db = new Database(activeDbPath);
+    db = new Database(dbPath);
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');
     initSchema(db);
@@ -31,8 +29,7 @@ export function getDb(): Database.Database {
 export function closeDb() {
   if (db) {
     db.close();
-    db = undefined as unknown as Database.Database;
-    activeDbPath = undefined;
+    db = undefined;
   }
 }
 
@@ -194,6 +191,57 @@ function initSchema(db: Database.Database) {
       messageType TEXT NOT NULL DEFAULT 'message',
       timestamp TEXT NOT NULL DEFAULT (datetime('now')),
       FOREIGN KEY (sessionId) REFERENCES collaboration_sessions(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS shared_files (
+      id TEXT PRIMARY KEY,
+      sessionId TEXT NOT NULL,
+      filename TEXT NOT NULL,
+      content TEXT NOT NULL DEFAULT '',
+      mimeType TEXT NOT NULL DEFAULT 'text/plain',
+      size INTEGER NOT NULL DEFAULT 0,
+      version INTEGER NOT NULL DEFAULT 1,
+      uploadedBy TEXT NOT NULL,
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      updatedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (sessionId) REFERENCES collaboration_sessions(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS file_versions (
+      id TEXT PRIMARY KEY,
+      fileId TEXT NOT NULL,
+      version INTEGER NOT NULL,
+      content TEXT NOT NULL DEFAULT '',
+      size INTEGER NOT NULL DEFAULT 0,
+      editedBy TEXT NOT NULL,
+      changeDescription TEXT NOT NULL DEFAULT '',
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (fileId) REFERENCES shared_files(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS notifications (
+      id TEXT PRIMARY KEY,
+      type TEXT NOT NULL,
+      title TEXT NOT NULL,
+      message TEXT NOT NULL,
+      severity TEXT NOT NULL DEFAULT 'info',
+      targetAgentId TEXT,
+      read INTEGER NOT NULL DEFAULT 0,
+      createdAt TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS project_tree (
+      id TEXT PRIMARY KEY,
+      parentId TEXT,
+      name TEXT NOT NULL,
+      type TEXT NOT NULL DEFAULT 'module',
+      status TEXT NOT NULL DEFAULT 'active',
+      progress INTEGER NOT NULL DEFAULT 0,
+      agentId TEXT,
+      description TEXT NOT NULL DEFAULT '',
+      sortOrder INTEGER NOT NULL DEFAULT 0,
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      updatedAt TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
     CREATE TABLE IF NOT EXISTS metrics_history (

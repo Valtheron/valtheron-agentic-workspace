@@ -191,4 +191,107 @@ router.get('/sla', (_req: Request, res: Response) => {
   res.json({ slaMetrics });
 });
 
+// GET /api/analytics/agents/:id — per-agent drill-down analytics
+router.get('/agents/:id', (req: Request, res: Response) => {
+  const db = getDb();
+  const agent = db.prepare('SELECT * FROM agents WHERE id = ?').get(req.params.id) as Record<string, unknown> | undefined;
+  if (!agent) return res.status(404).json({ error: 'Agent not found' });
+
+  const tasks = db.prepare('SELECT * FROM tasks WHERE assignedAgentId = ?').all(req.params.id) as Record<string, unknown>[];
+  const completedTasks = tasks.filter(t => t.status === 'completed');
+  const failedTasks = tasks.filter(t => t.status === 'failed');
+  const inProgressTasks = tasks.filter(t => t.status === 'in_progress');
+
+  // Task completion trend (last 30 days)
+  const taskTrend = db.prepare(
+    "SELECT date(completedAt) as date, COUNT(*) as count FROM tasks WHERE assignedAgentId = ? AND status = 'completed' AND completedAt IS NOT NULL AND completedAt >= datetime('now', '-30 days') GROUP BY date(completedAt) ORDER BY date ASC"
+  ).all(req.params.id) as { date: string; count: number }[];
+
+  const trend: { date: string; count: number }[] = [];
+  for (let i = 29; i >= 0; i--) {
+    const date = new Date(Date.now() - i * 86400000).toISOString().split('T')[0];
+    const found = taskTrend.find(t => t.date === date);
+    trend.push({ date, count: found ? found.count : 0 });
+  }
+
+  const auditEntries = db.prepare(
+    'SELECT * FROM audit_log WHERE agentId = ? ORDER BY timestamp DESC LIMIT 20'
+  ).all(req.params.id);
+
+  const chatSessions = (db.prepare('SELECT COUNT(*) as c FROM chat_sessions WHERE agentId = ?').get(req.params.id) as { c: number }).c;
+
+  const tasksByCategory = db.prepare(
+    'SELECT category, COUNT(*) as count FROM tasks WHERE assignedAgentId = ? GROUP BY category'
+  ).all(req.params.id) as { category: string; count: number }[];
+
+  const tasksByPriority = db.prepare(
+    'SELECT priority, COUNT(*) as count FROM tasks WHERE assignedAgentId = ? GROUP BY priority'
+  ).all(req.params.id) as { priority: string; count: number }[];
+
+  const personality = typeof agent.personality === 'string' ? JSON.parse(agent.personality as string) : agent.personality;
+  const parameters = typeof agent.parameters === 'string' ? JSON.parse(agent.parameters as string) : agent.parameters;
+
+  res.json({
+    agent: { id: agent.id, name: agent.name, role: agent.role, category: agent.category, status: agent.status, successRate: agent.successRate, tasksCompleted: agent.tasksCompleted, failedTasks: agent.failedTasks, avgTaskDuration: agent.avgTaskDuration, lastActivity: agent.lastActivity, llmProvider: agent.llmProvider, llmModel: agent.llmModel, personality, parameters },
+    metrics: { totalTasks: tasks.length, completed: completedTasks.length, failed: failedTasks.length, inProgress: inProgressTasks.length, successRate: tasks.length > 0 ? +((completedTasks.length / tasks.length) * 100).toFixed(1) : 0, chatSessions },
+    taskTrend: trend,
+    tasksByCategory,
+    tasksByPriority,
+    auditEntries,
+  });
+});
+
+// GET /api/analytics/export — export reports as JSON or CSV
+router.get('/export', (req: Request, res: Response) => {
+  const db = getDb();
+  const { format = 'json', type = 'agents' } = req.query;
+
+  let data: Record<string, unknown>[];
+  let filename: string;
+
+  switch (type) {
+    case 'agents':
+      data = db.prepare('SELECT id, name, role, category, status, successRate, tasksCompleted, failedTasks, avgTaskDuration, lastActivity FROM agents ORDER BY name ASC').all() as Record<string, unknown>[];
+      filename = 'agents-report';
+      break;
+    case 'tasks':
+      data = db.prepare('SELECT id, title, status, priority, assignedAgentId, category, createdAt, completedAt, kanbanColumn, progress FROM tasks ORDER BY createdAt DESC').all() as Record<string, unknown>[];
+      filename = 'tasks-report';
+      break;
+    case 'metrics':
+      data = db.prepare('SELECT * FROM metrics_history ORDER BY timestamp DESC LIMIT 1000').all() as Record<string, unknown>[];
+      filename = 'metrics-report';
+      break;
+    case 'audit':
+      data = db.prepare('SELECT * FROM audit_log ORDER BY timestamp DESC LIMIT 1000').all() as Record<string, unknown>[];
+      filename = 'audit-report';
+      break;
+    default:
+      return res.status(400).json({ error: 'Invalid type. Use: agents, tasks, metrics, audit' });
+  }
+
+  if (format === 'csv') {
+    if (data.length === 0) {
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}.csv"`);
+      return res.send('');
+    }
+    const headers = Object.keys(data[0]);
+    const csvRows = [
+      headers.join(','),
+      ...data.map(row => headers.map(h => {
+        const val = row[h];
+        const str = val === null || val === undefined ? '' : String(val);
+        return str.includes(',') || str.includes('"') || str.includes('\n') ? `"${str.replace(/"/g, '""')}"` : str;
+      }).join(',')),
+    ];
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}.csv"`);
+    return res.send(csvRows.join('\n'));
+  }
+
+  res.setHeader('Content-Disposition', `attachment; filename="${filename}.json"`);
+  res.json({ type, exportedAt: new Date().toISOString(), count: data.length, data });
+});
+
 export default router;
