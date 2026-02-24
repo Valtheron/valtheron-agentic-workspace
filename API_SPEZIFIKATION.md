@@ -2,7 +2,7 @@
 
 **Version:** 1.0  
 **Datum:** Januar 2026  
-**Base URL:** `https://api.agentic-workspace.com/api/v1`
+**Base URL:** `https://api.agentworkspace.online/api/v1`
 
 ---
 
@@ -12,7 +12,7 @@ Alle API-Anfragen müssen mit einem JWT-Token authentifiziert werden. Der Token 
 
 ```bash
 curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
-  https://api.agentic-workspace.com/api/v1/agents
+  https://api.agentworkspace.online/api/v1/agents
 ```
 
 ### Login-Endpunkt
@@ -462,7 +462,7 @@ Ruft Kill-Switch-Status eines Agenten ab.
 
 Verbindung zu Echtzeit-Updates.
 
-**URL:** `wss://api.agentic-workspace.com/ws`
+**URL:** `wss://api.agentworkspace.online/ws`
 
 **Authentication:** Token im Query-Parameter: `?token=<jwt_token>`
 
@@ -540,7 +540,8 @@ Alle Fehler folgen diesem Format:
 | NOT_FOUND | 404 | Ressource nicht gefunden |
 | CONFLICT | 409 | Konflikt mit existierender Ressource |
 | RATE_LIMITED | 429 | Rate-Limit überschritten |
-| INTERNAL_ERROR | 500 | Interner Server-Fehler |
+| INTERNAL_ERROR | 500
+ | Interner Server-Fehler |
 | SERVICE_UNAVAILABLE | 503 | Service nicht verfügbar |
 
 ---
