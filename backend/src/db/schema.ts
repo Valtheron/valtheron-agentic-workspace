@@ -5,22 +5,20 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULT_DB_PATH = path.join(__dirname, '../../data/valtheron.db');
-const DB_PATH_ENV_VAR = 'VALTHERON_DB_PATH';
 
-let db: Database.Database;
-let activeDbPath: string | undefined;
+let db: Database.Database | undefined;
 
-function resolveDbPath(): string {
-  return process.env[DB_PATH_ENV_VAR] || DEFAULT_DB_PATH;
+function getConfiguredDbPath() {
+  return process.env.VALTHERON_DB_PATH || DEFAULT_DB_PATH;
 }
 
 export function getDb(): Database.Database {
   if (!db) {
-    activeDbPath = resolveDbPath();
-    const dataDir = path.dirname(activeDbPath);
+    const dbPath = getConfiguredDbPath();
+    const dataDir = path.dirname(dbPath);
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-    db = new Database(activeDbPath);
+    db = new Database(dbPath);
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');
     initSchema(db);
@@ -31,8 +29,7 @@ export function getDb(): Database.Database {
 export function closeDb() {
   if (db) {
     db.close();
-    db = undefined as unknown as Database.Database;
-    activeDbPath = undefined;
+    db = undefined;
   }
 }
 
