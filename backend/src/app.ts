@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import morgan from 'morgan';
 import { optionalAuth, authMiddleware } from './middleware/auth.js';
 import { getDb } from './db/schema.js';
 import { seedDatabase } from './db/seed.js';
@@ -18,16 +19,25 @@ import fileRoutes from './routes/files.js';
 import projectTreeRoutes from './routes/projectTree.js';
 import notificationRoutes from './routes/notifications.js';
 import { auditLogger } from './middleware/auditLogger.js';
+import { errorHandler } from './middleware/errorHandler.js';
+import { adminOnly } from './middleware/rbac.js';
 
 export function createApp() {
   const app = express();
 
   // Middleware
-  app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
-    credentials: true,
-  }));
+  app.use(
+    cors({
+      origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
+      credentials: true,
+    }),
+  );
   app.use(express.json({ limit: '10mb' }));
+
+  // HTTP request logging (skip in test environment)
+  if (process.env.NODE_ENV !== 'test') {
+    app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+  }
 
   // Apply optional auth globally (populates req.user if token present)
   app.use(optionalAuth);
@@ -55,11 +65,14 @@ export function createApp() {
 
   // Protected routes (require auth in production, optional in dev)
   const protect = process.env.NODE_ENV === 'production' ? authMiddleware : optionalAuth;
+  // Admin-only guard — enforced in production; passthrough in dev
+  const adminGuard = process.env.NODE_ENV === 'production' ? adminOnly : optionalAuth;
 
   app.use('/api/agents', protect, agentRoutes);
   app.use('/api/tasks', protect, taskRoutes);
   app.use('/api/workflows', protect, workflowRoutes);
-  app.use('/api/security', protect, securityRoutes);
+  // Security routes require admin role in production (RBAC)
+  app.use('/api/security', protect, adminGuard, securityRoutes);
   app.use('/api/analytics', protect, analyticsRoutes);
   app.use('/api/chat', protect, chatRoutes);
   app.use('/api/collaboration', protect, collaborationRoutes);
@@ -71,6 +84,9 @@ export function createApp() {
   app.use((_req, res) => {
     res.status(404).json({ error: 'Endpoint not found' });
   });
+
+  // Centralized error handler (must be last)
+  app.use(errorHandler);
 
   return app;
 }
