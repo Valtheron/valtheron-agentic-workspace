@@ -47,6 +47,7 @@ import KillSwitchView from './components/KillSwitchView';
 import AnalyticsView from './components/AnalyticsView';
 import EnterpriseView from './components/EnterpriseView';
 import ChatView from './components/ChatView';
+import AuditView from './components/AuditView';
 
 const viewTitles: Record<ViewType, string> = {
   dashboard: 'Dashboard',
@@ -63,6 +64,7 @@ const viewTitles: Record<ViewType, string> = {
   analytics: 'Analytics & Monitoring',
   enterprise: 'Enterprise',
   chat: 'Agent Chat',
+  audit: 'Audit-Trail',
 };
 
 // Simulated output messages for running agents
@@ -497,6 +499,7 @@ function App() {
           )}
           {currentView === 'analytics' && <AnalyticsView analytics={analytics} agents={agents} tasks={tasks} />}
           {currentView === 'enterprise' && <EnterpriseView agents={agents} auditLog={auditLog} />}
+          {currentView === 'audit' && <AuditView />}
           {currentView === 'llm-settings' && <LLMSettingsView config={llmConfig} onConfigChange={setLLMConfig} />}
           {currentView === 'projects' && (
             <ProjectsView
