@@ -18,9 +18,13 @@ import collaborationRoutes from './routes/collaboration.js';
 import fileRoutes from './routes/files.js';
 import projectTreeRoutes from './routes/projectTree.js';
 import notificationRoutes from './routes/notifications.js';
+import mfaRoutes from './routes/mfa.js';
+import secretsRoutes from './routes/secrets.js';
+import backupRoutes from './routes/backup.js';
 import { auditLogger } from './middleware/auditLogger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { adminOnly } from './middleware/rbac.js';
+import { rateLimiter } from './middleware/rateLimiter.js';
 
 export function createApp() {
   const app = express();
@@ -60,8 +64,12 @@ export function createApp() {
     });
   });
 
+  // Rate limiting for auth endpoints
+  app.use('/api/auth', rateLimiter(60, 20)); // 20 requests per 60 seconds
+
   // Public routes
   app.use('/api/auth', authRoutes);
+  app.use('/api/auth/mfa', mfaRoutes);
 
   // Protected routes (require auth in production, optional in dev)
   const protect = process.env.NODE_ENV === 'production' ? authMiddleware : optionalAuth;
@@ -79,6 +87,9 @@ export function createApp() {
   app.use('/api/collaboration', protect, fileRoutes);
   app.use('/api/project-tree', protect, projectTreeRoutes);
   app.use('/api/notifications', protect, notificationRoutes);
+  // Admin-only: secrets management and backup/restore
+  app.use('/api/secrets', protect, adminGuard, secretsRoutes);
+  app.use('/api/backup', protect, adminGuard, backupRoutes);
 
   // 404 handler
   app.use((_req, res) => {
