@@ -12,12 +12,20 @@ export default defineConfig({
       reporter: ['text', 'lcov', 'html'],
       reportsDirectory: './coverage',
       include: ['src/**/*.ts'],
-      exclude: ['src/__tests__/**', 'src/db/schema.ts', 'src/db/seed.ts', 'src/server.ts'],
+      exclude: [
+        'src/__tests__/**',
+        'src/db/schema.ts',
+        'src/db/seed.ts',
+        'src/server.ts',
+        'src/services/activitySimulator.ts',  // Demo simulation — no business logic
+        'src/services/websocket.ts',          // WebSocket server — requires integration setup
+        'src/services/killSwitchMonitor.ts',  // Timer-based monitor — integration only
+      ],
       thresholds: {
-        lines: 70,
-        functions: 70,
-        branches: 60,
-        statements: 70,
+        lines: 85,
+        functions: 80,
+        branches: 65,
+        statements: 85,
       },
     },
   },
