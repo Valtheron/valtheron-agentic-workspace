@@ -101,6 +101,7 @@ describe('Load Testing', () => {
   it('handles 20 concurrent POST /api/agents (bulk create)', async () => {
     const { results } = await concurrentRequests('post', '/api/agents', 20, {
       name: 'LoadTestAgent',
+      role: 'tester',
       category: 'testing',
       status: 'idle',
     });
@@ -134,7 +135,7 @@ describe('Load Testing', () => {
       request(app)
         .post('/api/agents')
         .set('Authorization', `Bearer ${authToken}`)
-        .send({ name: 'MixedLoadAgent', category: 'testing', status: 'idle' }),
+        .send({ name: 'MixedLoadAgent', role: 'tester', category: 'testing', status: 'idle' }),
     );
     const start = Date.now();
     const results = await Promise.all([...reads, ...writes]);
@@ -168,7 +169,7 @@ describe('Stress Testing', () => {
       const res = await request(app)
         .post('/api/agents')
         .set('Authorization', `Bearer ${authToken}`)
-        .send({ name, category: 'stress', status: 'idle' });
+        .send({ name, role: 'tester', category: 'stress', status: 'idle' });
       expect(res.status === 200 || res.status === 201).toBe(true);
     }
     // Verify all agents were persisted
@@ -196,7 +197,7 @@ describe('Stress Testing', () => {
     const createRes = await request(app)
       .post('/api/agents')
       .set('Authorization', `Bearer ${authToken}`)
-      .send({ name: 'ConcurrentTestAgent', category: 'concurrent', status: 'idle' });
+      .send({ name: 'ConcurrentTestAgent', role: 'tester', category: 'concurrent', status: 'idle' });
     const agentId = createRes.body.id;
 
     // Concurrent operations on mixed endpoints
@@ -240,7 +241,7 @@ describe('Endurance Testing (simulated burst cycles)', () => {
       const createRes = await request(app)
         .post('/api/agents')
         .set('Authorization', `Bearer ${authToken}`)
-        .send({ name, category: 'endurance', status: 'idle' });
+        .send({ name, role: 'tester', category: 'endurance', status: 'idle' });
       expect(createRes.status === 200 || createRes.status === 201).toBe(true);
 
       // Immediately verify it's readable
