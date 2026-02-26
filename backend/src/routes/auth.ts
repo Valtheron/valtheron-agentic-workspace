@@ -29,6 +29,19 @@ router.post('/login', (req: Request, res: Response) => {
     return;
   }
 
+  // Check if MFA is enabled — require second factor
+  const mfaRow = db.prepare('SELECT mfaEnabled FROM users WHERE id = ?').get(user.id) as
+    | { mfaEnabled?: number }
+    | undefined;
+  if (mfaRow?.mfaEnabled) {
+    res.json({
+      mfaRequired: true,
+      userId: user.id,
+      message: 'MFA verification required. Call POST /api/auth/mfa/verify with userId and code.',
+    });
+    return;
+  }
+
   const token = generateToken({ userId: user.id, username: user.username, role: user.role });
   res.json({ token, user: { id: user.id, username: user.username, role: user.role } });
 });
