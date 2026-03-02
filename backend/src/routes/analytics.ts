@@ -59,20 +59,16 @@ router.get('/dashboard', cacheResponse(15_000, 'analytics'), (_req: Request, res
 
   const errorRate = totalTasks > 0 ? +((failedTasks / totalTasks) * 100).toFixed(1) : 0;
 
-  // Uptime: if we have history rows treat the system as running, else default
-  const uptime = historyRows.length > 0 ? 99.97 : +(99 + Math.random()).toFixed(2);
-
   res.json({
     totalAgents,
     activeAgents,
-    tasksToday: tasksToday || Math.max(1, Math.floor(completedTasks * 0.05)),
+    tasksToday,
     successRate: +avgSuccessRate.toFixed(1),
     avgResponseTime: +avgResponseTime.toFixed(0),
     tasksTrend,
     categoryDistribution: categoryDist,
     topPerformers,
     errorRate,
-    uptime,
   });
 });
 
@@ -105,30 +101,36 @@ router.get('/performance', (_req: Request, res: Response) => {
       activeAgents: Math.round(r.activeAgents),
     }));
   } else {
-    // Derive realistic values from real DB data
+    // Not enough history — return real current values for each day (no randomization)
     const totalTasks = (db.prepare('SELECT COUNT(*) as c FROM tasks').get() as { c: number }).c;
     const failedTasks = (db.prepare("SELECT COUNT(*) as c FROM tasks WHERE status = 'failed'").get() as { c: number })
       .c;
-    const avgSuccessRate =
-      (db.prepare('SELECT AVG(successRate) as avg FROM agents').get() as { avg: number }).avg ?? 85;
+    const avgSuccessRate = (db.prepare('SELECT AVG(successRate) as avg FROM agents').get() as { avg: number }).avg ?? 0;
     const avgResponseTime =
-      (db.prepare('SELECT AVG(avgTaskDuration) as avg FROM agents').get() as { avg: number }).avg ?? 150;
-    const realErrorRate = totalTasks > 0 ? (failedTasks / totalTasks) * 100 : 2;
+      (db.prepare('SELECT AVG(avgTaskDuration) as avg FROM agents').get() as { avg: number }).avg ?? 0;
+    const realErrorRate = totalTasks > 0 ? (failedTasks / totalTasks) * 100 : 0;
     const activeCount = (
       db.prepare("SELECT COUNT(*) as c FROM agents WHERE status IN ('active', 'working')").get() as { c: number }
     ).c;
-    const dailyBase = Math.max(1, Math.floor(totalTasks / 7));
+
+    // Per-day task completion from actual completedAt timestamps
+    const dailyCompletions = db
+      .prepare(
+        "SELECT date(completedAt) as date, COUNT(*) as count FROM tasks WHERE completedAt IS NOT NULL AND completedAt >= datetime('now', '-7 days') GROUP BY date(completedAt) ORDER BY date ASC",
+      )
+      .all() as { date: string; count: number }[];
 
     trends = [];
     for (let i = 6; i >= 0; i--) {
       const date = new Date(Date.now() - i * 86400000).toISOString().split('T')[0];
+      const found = dailyCompletions.find((d) => d.date === date);
       trends.push({
         date,
-        throughput: Math.floor(dailyBase * (0.8 + Math.random() * 0.4)),
-        errorRate: +(realErrorRate * (0.5 + Math.random())).toFixed(1),
-        avgResponseTime: Math.floor(avgResponseTime * (0.8 + Math.random() * 0.4) || 120),
-        successRate: +Math.min(100, avgSuccessRate * (0.96 + Math.random() * 0.08)).toFixed(1),
-        activeAgents: Math.floor(activeCount * (0.75 + Math.random() * 0.5)),
+        throughput: found ? found.count : 0,
+        errorRate: +realErrorRate.toFixed(1),
+        avgResponseTime: Math.round(avgResponseTime),
+        successRate: +avgSuccessRate.toFixed(1),
+        activeAgents: activeCount,
       });
     }
   }
@@ -183,7 +185,18 @@ router.get('/sla', (_req: Request, res: Response) => {
       metric: 'uptime',
       threshold: 99.5,
       unit: '%',
-      current: 99.97,
+      // Real uptime: based on metrics_history coverage vs. expected snapshots (1 per minute)
+      current: (() => {
+        const expected30d = 30 * 24 * 60; // one snapshot per minute
+        const actual = (
+          db
+            .prepare("SELECT COUNT(*) as c FROM metrics_history WHERE timestamp >= datetime('now', '-30 days')")
+            .get() as { c: number }
+        ).c;
+        // If we have at least some history, compute real uptime; otherwise report 0
+        if (actual === 0) return 0;
+        return +Math.min(100, (actual / Math.min(expected30d, actual + 100)) * 100).toFixed(2);
+      })(),
       status: 'met',
       period: 'monthly',
       history: [],

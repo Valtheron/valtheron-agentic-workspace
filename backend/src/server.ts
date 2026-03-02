@@ -1,9 +1,9 @@
 import http from 'http';
 import { createApp, initDatabase } from './app.js';
 import { initWebSocket } from './services/websocket.js';
-import { startActivitySimulator } from './services/activitySimulator.js';
 import { startKillSwitchMonitor } from './services/killSwitchMonitor.js';
 import { startScheduledBackups } from './services/backup.js';
+import { startMetricsRecorder } from './services/metricsRecorder.js';
 
 const app = createApp();
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001;
@@ -15,8 +15,8 @@ initWebSocket(server);
 // Initialize DB and seed
 initDatabase();
 
-// Start live activity simulation
-startActivitySimulator();
+// Start real metrics recording (no simulation)
+startMetricsRecorder();
 
 // Start kill-switch auto-trigger monitoring
 startKillSwitchMonitor();
@@ -39,6 +39,7 @@ server.listen(PORT, () => {
 ║    GET    /api/agents          (CRUD + search)   ║
 ║    GET    /api/tasks           (CRUD + Kanban)   ║
 ║    GET    /api/workflows       (CRUD + execute)  ║
+║    POST   /api/tasks/:id/execute  (LLM exec)    ║
 ║    GET    /api/security/events (events + audit)  ║
 ║    GET    /api/security/kill-switch              ║
 ║    GET    /api/analytics/dashboard               ║
