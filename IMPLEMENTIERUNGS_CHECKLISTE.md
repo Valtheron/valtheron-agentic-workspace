@@ -6,16 +6,50 @@
 
 ---
 
+## Projekt-spezifischer Dev-Workflow (Valtheron Agentic Workspace)
+
+**Technologie-Stack (Stand: aktuelles Projekt):**
+- Frontend: React + TypeScript + Vite, Vitest, ESLint
+- Backend: Node.js + Express + TypeScript, tsx, Vitest/Supertest, better-sqlite3
+
+### Täglicher Entwicklungs-Workflow
+
+- **Backend starten**
+  - [ ] Terminal öffnen  
+  - [ ] In das Backend-Verzeichnis wechseln  
+    - `cd backend`
+  - [ ] Development-Server starten  
+    - `npm run dev` (Port 3001, WebSocket auf `/ws`)
+
+- **Frontend starten**
+  - [ ] Zweites Terminal öffnen  
+  - [ ] In das Frontend-Verzeichnis wechseln  
+    - `cd frontend`
+  - [ ] Development-Server starten  
+    - `npm run dev` (Port 5173, Proxy auf `http://localhost:3001`)
+
+### Qualitäts-Gates (lokal, vor jedem Merge)
+
+- **Frontend**
+  - [ ] `npm run lint`
+  - [ ] `npm run test`
+  - [ ] `npm run build`
+
+- **Backend**
+  - [ ] `npm run lint`
+  - [ ] `npm run test`
+  - [ ] `npm run build`
+
+---
+
 ## Phase 1: Projektinitialisierung (Wochen 1-2)
 
 ### Infrastruktur-Setup
 
 - [ ] Git-Repository erstellt und konfiguriert
-- [ ] Docker-Setup mit Docker Compose für lokale Entwicklung
-- [ ] PostgreSQL-Datenbank initialisiert
-- [ ] MongoDB-Datenbank initialisiert
-- [ ] Redis-Cache konfiguriert
-- [ ] Environment-Variablen dokumentiert
+- [ ] Lokale Node.js-Services (Frontend/Backend) lauffähig
+- [ ] SQLite-Datenbank (über `better-sqlite3`) initialisiert
+- [ ] Environment-Variablen für Backend dokumentiert (z.B. Secrets, Ports)
 
 ### Development-Environment
 

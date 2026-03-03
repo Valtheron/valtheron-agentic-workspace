@@ -1,11 +1,11 @@
-version: "3.9"
 
 services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
+    ports:version: "3.9"
+
       - "3001:3001"
     environment:
       - NODE_ENV=production
