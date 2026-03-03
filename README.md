@@ -296,5 +296,5 @@ agentic-workspace-concept/
 ---
 
 **Letztes Update:** 2026-01-03  
-**Autor:** Manus AI  
+**Autoren:** Manus AI, Claude Code, Open AI Codex, BlackIce Secure Inc.  
 **Status:** Konzeptphase - Bereit für Implementierung
