@@ -67,16 +67,20 @@ router.post('/register', (req: Request, res: Response) => {
     return;
   }
 
+  // First user ever becomes admin, regardless of requested role
+  const userCount = (db.prepare('SELECT COUNT(*) as c FROM users').get() as { c: number }).c;
+  const assignedRole = userCount === 0 ? 'admin' : role;
+
   const id = uuid();
   db.prepare('INSERT INTO users (id, username, passwordHash, role) VALUES (?, ?, ?, ?)').run(
     id,
     username,
     hashPassword(password),
-    role,
+    assignedRole,
   );
 
-  const token = generateToken({ userId: id, username, role });
-  res.json({ token, user: { id, username, role } });
+  const token = generateToken({ userId: id, username, role: assignedRole });
+  res.json({ token, user: { id, username, role: assignedRole } });
 });
 
 // GET /api/auth/me
