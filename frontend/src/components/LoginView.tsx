@@ -180,12 +180,6 @@ export default function LoginView({ onLogin }: LoginViewProps) {
             {mode === 'login' ? 'Registrieren' : 'Anmelden'}
           </button>
         </p>
-
-        {import.meta.env.DEV && (
-          <p style={{ marginTop: '0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center' }}>
-            Dev: <strong>admin</strong> / <strong>valtheron2024</strong>
-          </p>
-        )}
       </div>
     </div>
   );
