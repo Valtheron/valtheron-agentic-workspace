@@ -3,7 +3,7 @@ import type { FormEvent } from 'react';
 import { authAPI, setToken } from '../services/api';
 
 interface LoginViewProps {
-  onLogin: (user: { id: string; username: string; role: string }) => void;
+  onLogin: (user: { id: string; username: string; role: string }, isNewUser?: boolean) => void;
 }
 
 export default function LoginView({ onLogin }: LoginViewProps) {
@@ -38,7 +38,7 @@ export default function LoginView({ onLogin }: LoginViewProps) {
       }
 
       setToken(res.token);
-      onLogin(res.user);
+      onLogin(res.user, mode === 'register');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Authentication failed');
     } finally {
