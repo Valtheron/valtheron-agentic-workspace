@@ -169,16 +169,22 @@ function App() {
         });
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         console.log(
           `Backend connected: ${health.database.agents} agents, ${health.database.tasks} tasks loaded from API`,
         );
 =======
+=======
+>>>>>>> Stashed changes
         const db = (health as { database?: { agents?: number; tasks?: number } }).database;
         if (db) {
           console.log(`Backend connected: ${db.agents ?? 0} agents, ${db.tasks ?? 0} tasks loaded from API`);
         } else {
           console.log('Backend connected: database metrics unavailable');
         }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       } catch {
         if (!cancelled) {
@@ -386,6 +392,9 @@ function App() {
   const handleDeleteProject = (id: string) => setProjects(prev => prev.filter(p => p.id !== id));
   const handleNavigateWorkflow = (wfId: string) => {
     console.log('Navigate to workflow', wfId);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     setCurrentView('workflows');
   };

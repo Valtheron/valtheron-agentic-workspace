@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import type {
   Agent,
   AuditEntry,
@@ -10,6 +11,9 @@ import type {
   SharedFile,
   HealthMetric,
 } from '../types';
+=======
+import type { Agent, AuditEntry, Incident, IncidentTimelineEvent, Policy, AgentVersion, SharedFile, HealthMetric } from '../types';
+>>>>>>> Stashed changes
 =======
 import type { Agent, AuditEntry, Incident, IncidentTimelineEvent, Policy, AgentVersion, SharedFile, HealthMetric } from '../types';
 >>>>>>> Stashed changes
@@ -27,7 +31,11 @@ function genId(prefix: string) {
 
 // Generate mock data
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 function generateIncidents(_agents: Agent[]): Incident[] {
+=======
+function generateIncidents(): Incident[] {
+>>>>>>> Stashed changes
 =======
 function generateIncidents(): Incident[] {
 >>>>>>> Stashed changes
@@ -147,6 +155,7 @@ function generatePolicies(): Policy[] {
 
 function generateVersions(agents: Agent[]): AgentVersion[] {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   return agents.slice(0, 10).flatMap((a, _i) => [
     {
       id: genId('v'),
@@ -171,6 +180,8 @@ function generateVersions(agents: Agent[]): AgentVersion[] {
       createdBy: 'system',
     },
 =======
+=======
+>>>>>>> Stashed changes
   return agents.slice(0, 10).flatMap((a) => [
     { id: genId('v'), agentId: a.id, version: 2, changes: 'System-Prompt optimiert, Temperature angepasst', snapshot: { systemPrompt: a.systemPrompt, parameters: a.parameters, personality: a.personality }, createdAt: new Date(Date.now() - 86400000).toISOString(), createdBy: 'admin' },
     { id: genId('v'), agentId: a.id, version: 1, changes: 'Initiale Konfiguration', snapshot: { systemPrompt: `Initiale Version von ${a.name}`, parameters: { ...a.parameters, temperature: 0.5 }, personality: { ...a.personality, creativity: 50 } }, createdAt: new Date(Date.now() - 604800000).toISOString(), createdBy: 'system' },

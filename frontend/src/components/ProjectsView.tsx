@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Project, Agent, Workflow } from '../types';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   fetchAndAnalyzeUrl,
   generateRequirements,
@@ -8,6 +9,8 @@ import {
   generateProjectFiles,
 } from '../services/projectAnalyzer';
 =======
+=======
+>>>>>>> Stashed changes
 import { fetchAndAnalyzeUrl, generateRequirements, generateWorkflowFromProject, generateProjectFiles } from '../services/projectAnalyzer';
 >>>>>>> Stashed changes
 
