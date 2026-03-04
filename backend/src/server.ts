@@ -3,6 +3,7 @@ import { createApp, initDatabase } from './app.js';
 import { initWebSocket } from './services/websocket.js';
 import { startActivitySimulator } from './services/activitySimulator.js';
 import { startKillSwitchMonitor } from './services/killSwitchMonitor.js';
+import { startScheduledBackups } from './services/backup.js';
 
 const app = createApp();
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001;
@@ -19,6 +20,9 @@ startActivitySimulator();
 
 // Start kill-switch auto-trigger monitoring
 startKillSwitchMonitor();
+
+// Start automated database backups (every 6 hours)
+startScheduledBackups();
 
 server.listen(PORT, () => {
   console.log(`

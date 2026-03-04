@@ -72,7 +72,12 @@ async function apiFetch<T>(path: string, options: RequestInit = {}, _retry = tru
 // ===== Auth API =====
 export const authAPI = {
   login: (username: string, password: string) =>
-    apiFetch<{ token: string; user: { id: string; username: string; role: string } }>('/auth/login', {
+    apiFetch<{
+      token: string;
+      user: { id: string; username: string; role: string };
+      mfaRequired?: boolean;
+      userId?: string;
+    }>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ username, password }),
     }),
@@ -92,6 +97,49 @@ export const authAPI = {
       setToken(data.token);
       return data;
     }),
+
+  // MFA endpoints (Phase 4)
+  mfaSetup: () =>
+    apiFetch<{ secret: string; uri: string; qrDataUrl: string; backupCodes: string[] }>('/auth/mfa/setup', {
+      method: 'POST',
+    }),
+
+  mfaConfirm: (code: string) =>
+    apiFetch<{ success: boolean }>('/auth/mfa/confirm', { method: 'POST', body: JSON.stringify({ code }) }),
+
+  mfaVerify: (userId: string, code: string) =>
+    apiFetch<{ token: string; user: { id: string; username: string; role: string } }>('/auth/mfa/verify', {
+      method: 'POST',
+      body: JSON.stringify({ userId, code }),
+    }),
+
+  mfaDisable: (code: string) =>
+    apiFetch<{ success: boolean }>('/auth/mfa/disable', { method: 'POST', body: JSON.stringify({ code }) }),
+
+  mfaStatus: () => apiFetch<{ mfaEnabled: boolean }>('/auth/mfa/status'),
+};
+
+// ===== Backup API (Phase 4) =====
+export const backupAPI = {
+  list: () => apiFetch<{ backups: unknown[]; count: number }>('/backup'),
+  create: () => apiFetch<{ success: boolean; backup: unknown }>('/backup', { method: 'POST' }),
+  restore: (filename: string) =>
+    apiFetch<{ success: boolean }>('/backup/restore', { method: 'POST', body: JSON.stringify({ filename }) }),
+};
+
+// ===== Secrets API (Phase 4) =====
+export const secretsAPI = {
+  list: () => apiFetch<{ secrets: unknown[] }>('/secrets'),
+  get: (name: string) => apiFetch<{ name: string; value: string }>(`/secrets/${encodeURIComponent(name)}`),
+  create: (name: string, value: string) =>
+    apiFetch<{ success: boolean }>('/secrets', { method: 'POST', body: JSON.stringify({ name, value }) }),
+  rotate: (name: string, value: string) =>
+    apiFetch<{ success: boolean }>(`/secrets/${encodeURIComponent(name)}`, {
+      method: 'PUT',
+      body: JSON.stringify({ value }),
+    }),
+  delete: (name: string) =>
+    apiFetch<{ success: boolean }>(`/secrets/${encodeURIComponent(name)}`, { method: 'DELETE' }),
 };
 
 // ===== Agents API =====
