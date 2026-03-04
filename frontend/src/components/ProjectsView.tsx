@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import type { Project, Agent, Workflow } from '../types';
+<<<<<<< Updated upstream
 import {
   fetchAndAnalyzeUrl,
   generateRequirements,
   generateWorkflowFromProject,
   generateProjectFiles,
 } from '../services/projectAnalyzer';
+=======
+import { fetchAndAnalyzeUrl, generateRequirements, generateWorkflowFromProject, generateProjectFiles } from '../services/projectAnalyzer';
+>>>>>>> Stashed changes
 
 interface ProjectsProps {
   projects: Project[];
@@ -682,3 +686,4 @@ export default function ProjectsView({
     </div>
   );
 }
+

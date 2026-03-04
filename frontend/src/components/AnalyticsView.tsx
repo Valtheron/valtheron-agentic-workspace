@@ -9,7 +9,11 @@ interface AnalyticsProps {
 
 type Tab = 'trends' | 'throughput' | 'errors' | 'capacity' | 'sla' | 'success';
 
+<<<<<<< Updated upstream
 function generateTrends(agents: Agent[], _tasks: Task[]): PerformanceTrend[] {
+=======
+function generateTrends(agents: Agent[]): PerformanceTrend[] {
+>>>>>>> Stashed changes
   const now = Date.now();
   return Array.from({ length: 30 }, (_, i) => {
     const d = new Date(now - (29 - i) * 86400000);
@@ -163,9 +167,13 @@ function BarChart({
   );
 }
 
+<<<<<<< Updated upstream
 export default function AnalyticsView({ analytics: _analytics, agents, tasks }: AnalyticsProps) {
+=======
+export default function AnalyticsView({ analytics: _analytics, agents, tasks: _tasks }: AnalyticsProps) {
+>>>>>>> Stashed changes
   const [tab, setTab] = useState<Tab>('trends');
-  const trends = useMemo(() => generateTrends(agents, tasks), [agents, tasks]);
+  const trends = useMemo(() => generateTrends(agents), [agents]);
   const slas = useMemo(generateSLAs, []);
 
   const catCounts = useMemo(() => {

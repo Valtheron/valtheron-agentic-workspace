@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+<<<<<<< Updated upstream
 import type {
   Agent,
   AuditEntry,
@@ -9,6 +10,9 @@ import type {
   SharedFile,
   HealthMetric,
 } from '../types';
+=======
+import type { Agent, AuditEntry, Incident, IncidentTimelineEvent, Policy, AgentVersion, SharedFile, HealthMetric } from '../types';
+>>>>>>> Stashed changes
 
 interface EnterpriseProps {
   agents: Agent[];
@@ -22,7 +26,11 @@ function genId(prefix: string) {
 }
 
 // Generate mock data
+<<<<<<< Updated upstream
 function generateIncidents(_agents: Agent[]): Incident[] {
+=======
+function generateIncidents(): Incident[] {
+>>>>>>> Stashed changes
   return [
     {
       id: 'inc_001',
@@ -138,6 +146,7 @@ function generatePolicies(): Policy[] {
 }
 
 function generateVersions(agents: Agent[]): AgentVersion[] {
+<<<<<<< Updated upstream
   return agents.slice(0, 10).flatMap((a, _i) => [
     {
       id: genId('v'),
@@ -161,6 +170,11 @@ function generateVersions(agents: Agent[]): AgentVersion[] {
       createdAt: new Date(Date.now() - 604800000).toISOString(),
       createdBy: 'system',
     },
+=======
+  return agents.slice(0, 10).flatMap((a) => [
+    { id: genId('v'), agentId: a.id, version: 2, changes: 'System-Prompt optimiert, Temperature angepasst', snapshot: { systemPrompt: a.systemPrompt, parameters: a.parameters, personality: a.personality }, createdAt: new Date(Date.now() - 86400000).toISOString(), createdBy: 'admin' },
+    { id: genId('v'), agentId: a.id, version: 1, changes: 'Initiale Konfiguration', snapshot: { systemPrompt: `Initiale Version von ${a.name}`, parameters: { ...a.parameters, temperature: 0.5 }, personality: { ...a.personality, creativity: 50 } }, createdAt: new Date(Date.now() - 604800000).toISOString(), createdBy: 'system' },
+>>>>>>> Stashed changes
   ]);
 }
 
@@ -247,7 +261,7 @@ const actionColors: Record<string, string> = {
 
 export default function EnterpriseView({ agents, auditLog }: EnterpriseProps) {
   const [tab, setTab] = useState<Tab>('health');
-  const [incidents, setIncidents] = useState<Incident[]>(() => generateIncidents(agents));
+  const [incidents, setIncidents] = useState<Incident[]>(generateIncidents);
   const [policies, setPolicies] = useState<Policy[]>(generatePolicies);
   const [exportFormat, setExportFormat] = useState<'csv' | 'json' | 'pdf'>('csv');
   const [reportType, setReportType] = useState<'performance' | 'security' | 'compliance'>('performance');
@@ -901,3 +915,4 @@ export default function EnterpriseView({ agents, auditLog }: EnterpriseProps) {
     </div>
   );
 }
+

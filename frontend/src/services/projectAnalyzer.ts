@@ -479,10 +479,16 @@ export function generateWorkflowFromProject(project: Project, agents: Agent[]): 
 // Generate project files based on project structure (simulated code generation)
 export function generateProjectFiles(project: Project): ProjectFile[] {
   const files: ProjectFile[] = [];
+  const hasApi = project.requirements.some(r => r.category === 'api' && r.accepted);
   const ts = new Date().toISOString();
   const techStack = project.techStack;
+<<<<<<< Updated upstream
   const isReact = techStack.some((t) => /react|typescript/i.test(t));
   const isTradingBot = project.requirements.some((r) => /trading|bot|crypto/i.test(r.title));
+=======
+  const isReact = techStack.some(t => /react|typescript/i.test(t));
+  const isTradingBot = project.requirements.some(r => /trading|bot|crypto/i.test(r.title));
+>>>>>>> Stashed changes
   let fileIdx = 0;
 
   // package.json
