@@ -170,10 +170,13 @@ function App() {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         console.log(
           `Backend connected: ${health.database.agents} agents, ${health.database.tasks} tasks loaded from API`,
         );
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         const db = (health as { database?: { agents?: number; tasks?: number } }).database;
@@ -183,6 +186,9 @@ function App() {
           console.log('Backend connected: database metrics unavailable');
         }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -393,6 +399,9 @@ function App() {
   const handleNavigateWorkflow = (wfId: string) => {
     console.log('Navigate to workflow', wfId);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

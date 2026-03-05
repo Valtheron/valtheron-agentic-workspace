@@ -11,7 +11,11 @@ type Tab = 'trends' | 'throughput' | 'errors' | 'capacity' | 'sla' | 'success';
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 function generateTrends(agents: Agent[], _tasks: Task[]): PerformanceTrend[] {
+=======
+function generateTrends(agents: Agent[]): PerformanceTrend[] {
+>>>>>>> Stashed changes
 =======
 function generateTrends(agents: Agent[]): PerformanceTrend[] {
 >>>>>>> Stashed changes
@@ -173,7 +177,11 @@ function BarChart({
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 export default function AnalyticsView({ analytics: _analytics, agents, tasks }: AnalyticsProps) {
+=======
+export default function AnalyticsView({ analytics: _analytics, agents, tasks: _tasks }: AnalyticsProps) {
+>>>>>>> Stashed changes
 =======
 export default function AnalyticsView({ analytics: _analytics, agents, tasks: _tasks }: AnalyticsProps) {
 >>>>>>> Stashed changes
