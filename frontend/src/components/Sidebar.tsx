@@ -30,9 +30,9 @@ export default function Sidebar({ currentView, onViewChange, expanded, onToggle 
     <nav className={`sidebar${expanded ? ' expanded' : ''}`}>
       <div className="sidebar-logo" onClick={onToggle} title="Valtheron">
         {expanded ? (
-          <img src="/valtheron-logo.svg" alt="Valtheron" className="logo-img-full"/>
+          <img src="/valtheron-logo.gif" alt="Valtheron" className="logo-img-full"/>
         ) : (
-          <img src="/valtheron-logo.svg" alt="V" className="logo-img-icon"/>
+          <img src="/valtheron-logo.gif" alt="V" className="logo-img-icon"/>
         )}
       </div>
       <div className="sidebar-nav">
