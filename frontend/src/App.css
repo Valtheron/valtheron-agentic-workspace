@@ -1,3 +1,8 @@
+/* Login logo animations */
+@keyframes logoPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes logoFadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.login-logo { width: 200px; height: auto; animation: logoPulse 2s ease-in-out infinite, logoFadeInUp 1s ease-out; }
+
 /* App Layout */
 .app { display: flex; height: 100vh; width: 100vw; }
 .app-main { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
