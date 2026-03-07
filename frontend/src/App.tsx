@@ -552,6 +552,17 @@ function App() {
             />
           )}
         </div>
+        <footer className="app-footer">
+          <span>© 2025 BlackIceSecure</span>
+          <span className="app-footer-sep">·</span>
+          <a href="https://blackice-secure.space" target="_blank" rel="noopener noreferrer">blackice-secure.space</a>
+          <span className="app-footer-sep">·</span>
+          <a href="https://blackice-secure.space/index.html#impressum" target="_blank" rel="noopener noreferrer">Impressum</a>
+          <span className="app-footer-sep">·</span>
+          <a href="https://blackice-secure.space/index.html#datenschutz" target="_blank" rel="noopener noreferrer">Datenschutz</a>
+          <span className="app-footer-sep">·</span>
+          <a href="mailto:info@blackice-secure.space">info@blackice-secure.space</a>
+        </footer>
       </div>
       {cmdPaletteOpen && (
         <CommandPalette
