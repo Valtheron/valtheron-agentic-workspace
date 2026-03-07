@@ -5,9 +5,9 @@ interface SponsorModalProps {
 const platforms = [
   {
     id: 'github',
-    name: 'GitHub Sponsors',
-    description: 'Support directly on GitHub — one-time or recurring.',
-    url: 'https://github.com/sponsors/Valtheron',
+    name: 'GitHub — Star & Sponsor',
+    description: 'Projekt unterstützen & auf GitHub folgen.',
+    url: 'https://github.com/Valtheron/valtheron-agentic-workspace',
     color: '#e2e8f0',
     bg: 'rgba(226,232,240,0.06)',
     border: 'rgba(226,232,240,0.15)',
@@ -18,30 +18,32 @@ const platforms = [
     ),
   },
   {
-    id: 'kofi',
-    name: 'Ko-fi',
-    description: 'Buy us a coffee — quick, no account needed.',
-    url: 'https://ko-fi.com/valtheron',
-    color: '#29abe0',
-    bg: 'rgba(41,171,224,0.06)',
-    border: 'rgba(41,171,224,0.2)',
+    id: 'merch',
+    name: 'Merch Shop — Printify',
+    description: 'Valtheron Crypto Trading Shirts & mehr.',
+    url: 'https://blackice-secure.printify.me',
+    color: '#f59e0b',
+    bg: 'rgba(245,158,11,0.06)',
+    border: 'rgba(245,158,11,0.2)',
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" width={28} height={28}>
-        <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 2.interior 1.832 2.interior.14.848-.274 1.782-.109 2.311zm5.078.1c-.2.008-.42-.044-.638-.05a1.2 1.2 0 0 1-.026-.244V9.543c0-.787.643-1.43 1.435-1.43.793 0 1.436.643 1.436 1.43 0 1.566-1.215 2.516-2.207 2.516z" />
+        <path d="M20.9 8.5c0-3.5-2.8-6.3-6.3-6.3H9.4C5.9 2.2 3.1 5 3.1 8.5c0 2.8 1.8 5.2 4.3 6v5.3c0 1.1.9 2 2 2h1.2c1.1 0 2-.9 2-2v-5.3c2.5-.8 4.3-3.2 4.3-6zm-6.3 4.2c-2.3 0-4.2-1.9-4.2-4.2s1.9-4.2 4.2-4.2 4.2 1.9 4.2 4.2-1.9 4.2-4.2 4.2z" />
       </svg>
     ),
   },
   {
-    id: 'patreon',
-    name: 'Patreon',
-    description: 'Become a monthly patron and get exclusive updates.',
-    url: 'https://www.patreon.com/valtheron',
-    color: '#ff424d',
-    bg: 'rgba(255,66,77,0.06)',
-    border: 'rgba(255,66,77,0.2)',
+    id: 'blackice',
+    name: 'BlackIceSecure',
+    description: 'Dienstleistungen, Community & Kontakt.',
+    url: 'https://blackice-secure.space',
+    color: '#00e5ff',
+    bg: 'rgba(0,229,255,0.06)',
+    border: 'rgba(0,229,255,0.2)',
     icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width={28} height={28}>
-        <path d="M15.386.524a8.27 8.27 0 0 0-8.297 8.297c0 4.564 3.733 8.297 8.297 8.297 4.565 0 8.298-3.733 8.298-8.297C23.684 4.257 19.95.524 15.386.524zM.316 23.476h4.002V.524H.316v22.952z" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} width={28} height={28}>
+        <path d="M12 2L2 7l10 5 10-5-10-5z" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M2 17l10 5 10-5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
   },
@@ -55,7 +57,7 @@ export default function SponsorModal({ onClose }: SponsorModalProps) {
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        aria-label="Sponsor Valtheron"
+        aria-label="Support Valtheron"
       >
         {/* Header */}
         <div className="sponsor-header">
@@ -66,10 +68,21 @@ export default function SponsorModal({ onClose }: SponsorModalProps) {
           </div>
           <h2 className="sponsor-title">Support Valtheron</h2>
           <p className="sponsor-subtitle">
-            Valtheron Agentic Workspace is open-source and free.<br />
-            If it saves you time or sparks ideas, consider supporting the project.
+            Valtheron Agentic Workspace — entwickelt von{' '}
+            <a href="https://blackice-secure.space" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>
+              BlackIceSecure
+            </a>
+            .<br />
+            Gehostet auf{' '}
+            <a href="https://agenticworkspacegenius.sbs" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>
+              agenticworkspacegenius.sbs
+            </a>
+            {' '}·{' '}
+            <a href="https://agentworkspace.online" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>
+              agentworkspace.online
+            </a>
           </p>
-          <button className="sponsor-close" onClick={onClose} aria-label="Close">✕</button>
+          <button className="sponsor-close" onClick={onClose} aria-label="Schließen">✕</button>
         </div>
 
         {/* Platform Cards */}
@@ -99,15 +112,17 @@ export default function SponsorModal({ onClose }: SponsorModalProps) {
 
         {/* Footer */}
         <div className="sponsor-footer">
-          <span>Every contribution keeps the agents running.</span>
+          <a href="mailto:info@blackice-secure.space" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
+            info@blackice-secure.space
+          </a>
           <span style={{ color: 'var(--text-muted)', margin: '0 6px' }}>·</span>
           <a
-            href="https://github.com/Valtheron/valtheron-agentic-workspace"
+            href="https://blackice-secure.space"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}
           >
-            Star on GitHub ↗
+            blackice-secure.space ↗
           </a>
         </div>
       </div>
