@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://blackice-secure.space/valtheron-trading/images/valtheron-logo-primary.png" width="200" alt="Valtheron Logo"/>
+<img src="https://raw.githubusercontent.com/Valtheron/valtheron-agentic-workspace/claude/fix-ubuntu-startup-h7rJg/frontend/public/valtheron-logo.gif" width="200" alt="Valtheron Logo"/>
 
 # VALTHERON
 
