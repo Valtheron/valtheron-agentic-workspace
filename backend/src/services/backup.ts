@@ -3,7 +3,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { getDb } from '../db/schema.js';
+import { getDb, closeDb } from '../db/schema.js';
 
 const DEFAULT_BACKUP_DIR = path.resolve(process.cwd(), 'data/backups');
 const MAX_BACKUPS = 10; // Keep the last 10 backups
@@ -95,8 +95,8 @@ export function restoreFromBackup(backupPath: string): boolean {
   const db = getDb();
   const mainDbPath = (db as unknown as { name: string }).name;
 
-  // Close existing connection, copy backup over, re-open will happen on next getDb()
-  db.close();
+  // Close existing connection and reset singleton so next getDb() opens the restored DB
+  closeDb();
   fs.copyFileSync(backupPath, mainDbPath);
   return true;
 }
