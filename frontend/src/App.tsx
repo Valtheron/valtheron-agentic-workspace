@@ -48,6 +48,7 @@ import AnalyticsView from './components/AnalyticsView';
 import EnterpriseView from './components/EnterpriseView';
 import ChatView from './components/ChatView';
 import AuditView from './components/AuditView';
+import SponsorModal from './components/SponsorModal';
 
 const viewTitles: Record<ViewType, string> = {
   dashboard: 'Dashboard',
@@ -83,6 +84,7 @@ function App() {
   const [currentView, setCurrentView] = useState<ViewType>(() => load(KEYS.CURRENT_VIEW, 'dashboard'));
   const [sidebarExpanded, setSidebarExpanded] = useState(() => load(KEYS.SIDEBAR_EXPANDED, true));
   const [cmdPaletteOpen, setCmdPaletteOpen] = useState(false);
+  const [sponsorOpen, setSponsorOpen] = useState(false);
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(() => load(KEYS.SELECTED_AGENT, null));
 
   // Auth state
@@ -422,6 +424,17 @@ function App() {
         <header className="app-header">
           <h1>{viewTitles[currentView]}</h1>
           <div className="app-header-actions">
+            <button
+              className="btn btn-ghost btn-sm"
+              onClick={() => setSponsorOpen(true)}
+              title="Support this project"
+              style={{ color: '#ef4444', display: 'flex', alignItems: 'center', gap: 4 }}
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" width={13} height={13}>
+                <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402C1 3.439 3.024 2 5 2c1.626 0 3.376.8 4.5 2.602C10.624 2.8 12.374 2 14 2c1.976 0 4 1.44 4 5.191 0 4.105-5.37 8.863-11 14.402z" />
+              </svg>
+              Sponsor
+            </button>
             <button className="btn btn-ghost btn-sm" onClick={() => setCmdPaletteOpen(true)}>
               / Suche&hellip; <span style={{ fontSize: 10, color: 'var(--text-muted)', marginLeft: 4 }}>Ctrl+K</span>
             </button>
@@ -533,6 +546,7 @@ function App() {
           onClose={() => setCmdPaletteOpen(false)}
         />
       )}
+      {sponsorOpen && <SponsorModal onClose={() => setSponsorOpen(false)} />}
     </div>
   );
 }

@@ -85,6 +85,94 @@
 .btn-ghost:hover { border-color: var(--border-active); color: var(--text-primary); }
 .btn-sm { padding: 4px 10px; font-size: 11px; }
 
+/* Sponsor Modal */
+.sponsor-modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  width: 480px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+  overflow: hidden;
+  position: relative;
+  margin-top: -4vh;
+}
+.sponsor-header {
+  padding: 32px 28px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+.sponsor-heart-ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.25);
+  margin-bottom: 14px;
+  animation: sponsor-pulse 2.4s ease-in-out infinite;
+}
+@keyframes sponsor-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.3); }
+  50% { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+}
+.sponsor-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+.sponsor-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.sponsor-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  line-height: 1;
+}
+.sponsor-close:hover { background: var(--bg-hover); color: var(--text-secondary); }
+.sponsor-cards { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sponsor-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--sponsor-bg, rgba(255,255,255,0.04));
+  border: 1px solid var(--sponsor-border, var(--border-color));
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+.sponsor-card:hover {
+  border-color: var(--sponsor-color);
+  background: var(--sponsor-bg);
+  transform: translateY(-1px);
+}
+.sponsor-card-icon { flex-shrink: 0; }
+.sponsor-card-body { flex: 1; }
+.sponsor-card-name { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+.sponsor-card-desc { font-size: 11px; color: var(--text-muted); }
+.sponsor-footer {
+  padding: 14px 28px;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
 /* Toggle */
 .toggle { width: 36px; height: 20px; border-radius: 10px; background: var(--bg-hover); cursor: pointer; position: relative; transition: background 0.2s; border: none; }
 .toggle.on { background: var(--accent-cyan); }
