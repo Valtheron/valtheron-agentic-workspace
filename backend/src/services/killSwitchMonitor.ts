@@ -44,13 +44,13 @@ function evaluateMetric(rule: AutoTriggerRule): { value: number; breached: boole
     case 'error_rate': {
       const total = (
         db
-          .prepare('SELECT COUNT(*) as c FROM tasks WHERE updatedAt >= ? OR createdAt >= ?')
-          .get(windowCutoff, windowCutoff) as { c: number }
+          .prepare('SELECT COUNT(*) as c FROM tasks WHERE createdAt >= ?')
+          .get(windowCutoff) as { c: number }
       ).c;
       const failed = (
         db
-          .prepare("SELECT COUNT(*) as c FROM tasks WHERE status = 'failed' AND (updatedAt >= ? OR createdAt >= ?)")
-          .get(windowCutoff, windowCutoff) as { c: number }
+          .prepare("SELECT COUNT(*) as c FROM tasks WHERE status = 'failed' AND createdAt >= ?")
+          .get(windowCutoff) as { c: number }
       ).c;
       value = total > 0 ? (failed / total) * 100 : 0;
       break;
