@@ -29,14 +29,11 @@ export default function Sidebar({ currentView, onViewChange, expanded, onToggle 
   return (
     <nav className={`sidebar${expanded ? ' expanded' : ''}`}>
       <div className="sidebar-logo" onClick={onToggle} title="Valtheron">
-        <img
-          src="/valtheron-logo.png"
-          alt="Valtheron"
-          className="logo-img"
-          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; (e.currentTarget.nextElementSibling as HTMLElement).style.display = 'flex'; }}
-        />
-        <div className="logo-icon" style={{ display: 'none' }}>V</div>
-        {expanded && <span className="logo-text">Valtheron</span>}
+        {expanded ? (
+          <img src="/valtheron-logo.svg" alt="Valtheron" className="logo-img-full"/>
+        ) : (
+          <img src="/valtheron-logo.svg" alt="V" className="logo-img-icon"/>
+        )}
       </div>
       <div className="sidebar-nav">
         {navItems.map((item) => (
