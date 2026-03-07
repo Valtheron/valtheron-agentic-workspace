@@ -673,7 +673,7 @@ export default function ProjectsView({
                   fontFamily: 'monospace',
                 }}
               >
-                https://valtheron.blackice-secure.space/tradingbots/index.html
+                https://github.com/user/project
               </div>
             </div>
           </div>

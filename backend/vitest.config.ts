@@ -17,7 +17,6 @@ export default defineConfig({
         'src/db/schema.ts',
         'src/db/seed.ts',
         'src/server.ts',
-        'src/services/activitySimulator.ts',  // Demo simulation — no business logic
         'src/services/websocket.ts',          // WebSocket server — requires integration setup
         'src/services/killSwitchMonitor.ts',  // Timer-based monitor — integration only
       ],

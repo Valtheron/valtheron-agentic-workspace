@@ -104,5 +104,8 @@ export function createApp() {
 
 export function initDatabase() {
   getDb();
-  seedDatabase();
+  // Only seed demo data when explicitly requested (e.g. SEED_DEMO=true npm start)
+  if (process.env.SEED_DEMO === 'true') {
+    seedDatabase();
+  }
 }

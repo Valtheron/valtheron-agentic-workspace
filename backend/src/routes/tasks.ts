@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { getDb } from '../db/schema.js';
 import { v4 as uuid } from 'uuid';
+import { executeTask, isTaskRunning } from '../services/executionEngine.js';
 
 const router = Router();
 
@@ -20,16 +21,34 @@ router.get('/', (req: Request, res: Response) => {
   let query = 'SELECT * FROM tasks WHERE 1=1';
   const params: unknown[] = [];
 
-  if (status) { query += ' AND status = ?'; params.push(status); }
-  if (category) { query += ' AND category = ?'; params.push(category); }
-  if (kanbanColumn) { query += ' AND kanbanColumn = ?'; params.push(kanbanColumn); }
-  if (assignedAgentId) { query += ' AND assignedAgentId = ?'; params.push(assignedAgentId); }
-  if (priority) { query += ' AND priority = ?'; params.push(priority); }
+  if (status) {
+    query += ' AND status = ?';
+    params.push(status);
+  }
+  if (category) {
+    query += ' AND category = ?';
+    params.push(category);
+  }
+  if (kanbanColumn) {
+    query += ' AND kanbanColumn = ?';
+    params.push(kanbanColumn);
+  }
+  if (assignedAgentId) {
+    query += ' AND assignedAgentId = ?';
+    params.push(assignedAgentId);
+  }
+  if (priority) {
+    query += ' AND priority = ?';
+    params.push(priority);
+  }
 
   query += ' ORDER BY createdAt DESC LIMIT ? OFFSET ?';
   params.push(Number(limit), Number(offset));
 
-  const tasks = db.prepare(query).all(...params).map(t => parseTask(t as Record<string, unknown>));
+  const tasks = db
+    .prepare(query)
+    .all(...params)
+    .map((t) => parseTask(t as Record<string, unknown>));
   res.json({ tasks });
 });
 
@@ -38,14 +57,27 @@ router.get('/:id', (req: Request, res: Response) => {
   const db = getDb();
   const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(req.params.id) as Record<string, unknown> | undefined;
 
-  if (!task) { res.status(404).json({ error: 'Task not found' }); return; }
+  if (!task) {
+    res.status(404).json({ error: 'Task not found' });
+    return;
+  }
   res.json(parseTask(task));
 });
 
 // POST /api/tasks
 router.post('/', (req: Request, res: Response) => {
   const db = getDb();
-  const { title, description = '', category, priority = 'medium', assignedAgentId, taskType = 'feature', tags = [], kanbanColumn = 'backlog', estimatedHours } = req.body;
+  const {
+    title,
+    description = '',
+    category,
+    priority = 'medium',
+    assignedAgentId,
+    taskType = 'feature',
+    tags = [],
+    kanbanColumn = 'backlog',
+    estimatedHours,
+  } = req.body;
 
   if (!title || !category) {
     res.status(400).json({ error: 'title and category are required' });
@@ -53,10 +85,23 @@ router.post('/', (req: Request, res: Response) => {
   }
 
   const id = uuid();
-  db.prepare(`
+  db.prepare(
+    `
     INSERT INTO tasks (id, title, description, category, priority, assignedAgentId, taskType, tags, kanbanColumn, estimatedHours)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `).run(id, title, description, category, priority, assignedAgentId || null, taskType, JSON.stringify(tags), kanbanColumn, estimatedHours || null);
+  `,
+  ).run(
+    id,
+    title,
+    description,
+    category,
+    priority,
+    assignedAgentId || null,
+    taskType,
+    JSON.stringify(tags),
+    kanbanColumn,
+    estimatedHours || null,
+  );
 
   const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id) as Record<string, unknown>;
   res.status(201).json(parseTask(task));
@@ -67,11 +112,26 @@ router.patch('/:id', (req: Request, res: Response) => {
   const db = getDb();
   const existing = db.prepare('SELECT * FROM tasks WHERE id = ?').get(req.params.id);
 
-  if (!existing) { res.status(404).json({ error: 'Task not found' }); return; }
+  if (!existing) {
+    res.status(404).json({ error: 'Task not found' });
+    return;
+  }
 
   const updates: string[] = [];
   const params: unknown[] = [];
-  const allowed = ['title', 'description', 'status', 'priority', 'assignedAgentId', 'kanbanColumn', 'taskType', 'progress', 'estimatedHours', 'actualHours', 'deadline'];
+  const allowed = [
+    'title',
+    'description',
+    'status',
+    'priority',
+    'assignedAgentId',
+    'kanbanColumn',
+    'taskType',
+    'progress',
+    'estimatedHours',
+    'actualHours',
+    'deadline',
+  ];
 
   for (const key of allowed) {
     if (req.body[key] !== undefined) {
@@ -108,7 +168,10 @@ router.delete('/:id', (req: Request, res: Response) => {
   const db = getDb();
   const result = db.prepare('DELETE FROM tasks WHERE id = ?').run(req.params.id);
 
-  if (result.changes === 0) { res.status(404).json({ error: 'Task not found' }); return; }
+  if (result.changes === 0) {
+    res.status(404).json({ error: 'Task not found' });
+    return;
+  }
   res.json({ success: true });
 });
 
@@ -130,14 +193,58 @@ router.patch('/:id/move', (req: Request, res: Response) => {
     done: 'completed',
   };
 
-  const result = db.prepare('UPDATE tasks SET kanbanColumn = ?, status = ? WHERE id = ?').run(
-    kanbanColumn, statusMap[kanbanColumn] || 'pending', req.params.id
-  );
+  const result = db
+    .prepare('UPDATE tasks SET kanbanColumn = ?, status = ? WHERE id = ?')
+    .run(kanbanColumn, statusMap[kanbanColumn] || 'pending', req.params.id);
 
-  if (result.changes === 0) { res.status(404).json({ error: 'Task not found' }); return; }
+  if (result.changes === 0) {
+    res.status(404).json({ error: 'Task not found' });
+    return;
+  }
 
   const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(req.params.id) as Record<string, unknown>;
   res.json(parseTask(task));
+});
+
+// POST /api/tasks/:id/execute — Execute a task with its assigned agent via LLM
+router.post('/:id/execute', async (req: Request, res: Response) => {
+  const db = getDb();
+  const taskId = req.params.id as string;
+  const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(taskId) as Record<string, unknown> | undefined;
+
+  if (!task) {
+    res.status(404).json({ error: 'Task not found' });
+    return;
+  }
+
+  if (isTaskRunning(taskId)) {
+    res.status(409).json({ error: 'Task is already being executed' });
+    return;
+  }
+
+  if (task.status === 'completed') {
+    res.status(400).json({ error: 'Task is already completed' });
+    return;
+  }
+
+  // LLM config from headers or body
+  const body = req.body || {};
+  const apiKey = (req.headers['x-llm-api-key'] as string | undefined) || body.apiKey;
+  const provider = (req.headers['x-llm-provider'] as string | undefined) || body.provider;
+  const model = (req.headers['x-llm-model'] as string | undefined) || body.model;
+
+  // Respond immediately — execution runs in the background
+  res.json({
+    message: 'Task execution started',
+    taskId,
+    agentId: task.assignedAgentId,
+    status: 'in_progress',
+  });
+
+  // Fire and forget — results are broadcast via WebSocket
+  executeTask({ taskId, apiKey, provider, model }).catch((err) => {
+    console.error(`[ExecutionEngine] Task ${taskId} failed:`, err);
+  });
 });
 
 // GET /api/tasks/stats/overview
