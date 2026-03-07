@@ -28,8 +28,14 @@ interface SidebarProps {
 export default function Sidebar({ currentView, onViewChange, expanded, onToggle }: SidebarProps) {
   return (
     <nav className={`sidebar${expanded ? ' expanded' : ''}`}>
-      <div className="sidebar-logo" onClick={onToggle}>
-        <div className="logo-icon">V</div>
+      <div className="sidebar-logo" onClick={onToggle} title="Valtheron">
+        <img
+          src="/valtheron-logo.png"
+          alt="Valtheron"
+          className="logo-img"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; (e.currentTarget.nextElementSibling as HTMLElement).style.display = 'flex'; }}
+        />
+        <div className="logo-icon" style={{ display: 'none' }}>V</div>
         {expanded && <span className="logo-text">Valtheron</span>}
       </div>
       <div className="sidebar-nav">
