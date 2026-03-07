@@ -24,6 +24,16 @@ startKillSwitchMonitor();
 // Start automated database backups (every 6 hours)
 startScheduledBackups();
 
+server.on('error', (err: NodeJS.ErrnoException) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`[Server] Port ${PORT} is already in use. Is another instance running?`);
+    console.error('[Server] Stop the existing process and try again.');
+  } else {
+    console.error('[Server] Failed to start:', err.message);
+  }
+  process.exit(1);
+});
+
 server.listen(PORT, () => {
   console.log(`
 ╔══════════════════════════════════════════════════╗
