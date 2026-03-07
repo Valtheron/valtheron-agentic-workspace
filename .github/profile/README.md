@@ -39,10 +39,3 @@ Valtheron ist eine spezialisierte Plattform zur Orchestrierung autonomer KI-Agen
 - **Kill-Switch-Schutz** — Sofortstopp-Mechanismus für alle laufenden Operationen
 - **Sicherheits-Audit-Trail** — Lückenlose Protokollierung aller Aktionen
 
----
-
-<div align="center">
-
-**[🌐 Zur Website](https://valtheron.blackice-secure.space/tradingbots/)**
-
-</div>
