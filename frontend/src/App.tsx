@@ -32,6 +32,7 @@ import { save, load, KEYS } from './services/persistence';
 import { agentsAPI, tasksAPI, workflowsAPI, securityAPI, healthAPI, wsClient, authAPI, getToken } from './services/api';
 import Sidebar from './components/Sidebar';
 import LoginView from './components/LoginView';
+import WelcomeView from './components/WelcomeView';
 import CommandPalette from './components/CommandPalette';
 import DashboardView from './components/DashboardView';
 import AgentsView from './components/AgentsView';
@@ -90,6 +91,8 @@ function App() {
     null,
   );
   const [authChecked, setAuthChecked] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   // Restore session from stored token on mount
   useEffect(() => {
@@ -407,7 +410,19 @@ function App() {
 
   // In production, require authentication before showing the app
   if (authChecked && !authUser && import.meta.env.PROD) {
-    return <LoginView onLogin={(user) => setAuthUser(user)} />;
+    return (
+      <LoginView
+        onLogin={(user, isNewUser) => {
+          setAuthUser(user);
+          if (isNewUser) setShowWelcome(true);
+        }}
+      />
+    );
+  }
+
+  // Show welcome onboarding for newly registered users
+  if (showWelcome && authUser) {
+    return <WelcomeView username={authUser.username} onComplete={() => setShowWelcome(false)} />;
   }
 
   return (
@@ -448,7 +463,7 @@ function App() {
                 </button>
               </>
             ) : (
-              <button className="btn btn-ghost btn-sm" onClick={() => setAuthUser(null)}>
+              <button className="btn btn-ghost btn-sm" onClick={() => setShowLogin(true)}>
                 Anmelden
               </button>
             )}
@@ -532,6 +547,28 @@ function App() {
           onSelectAgent={handleSelectAgent}
           onClose={() => setCmdPaletteOpen(false)}
         />
+      )}
+      {showLogin && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 200 }}>
+          <div
+            style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)' }}
+            onClick={() => setShowLogin(false)}
+          />
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <LoginView
+              onLogin={(user, isNewUser) => {
+                setAuthUser(user);
+                setShowLogin(false);
+                if (isNewUser) setShowWelcome(true);
+              }}
+            />
+          </div>
+        </div>
+      )}
+      {showWelcome && authUser && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 200 }}>
+          <WelcomeView username={authUser.username} onComplete={() => setShowWelcome(false)} />
+        </div>
       )}
     </div>
   );

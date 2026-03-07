@@ -18,7 +18,7 @@ function parseAgent(row: Record<string, unknown>) {
 // GET /api/agents
 router.get('/', (req: Request, res: Response) => {
   const db = getDb();
-  const { category, status, search, limit = '200', offset = '0' } = req.query;
+  const { category, status, search, limit = '1000', offset = '0' } = req.query;
 
   let query = 'SELECT * FROM agents WHERE 1=1';
   const params: unknown[] = [];
@@ -39,7 +39,10 @@ router.get('/', (req: Request, res: Response) => {
   query += ' ORDER BY successRate DESC LIMIT ? OFFSET ?';
   params.push(Number(limit), Number(offset));
 
-  const agents = db.prepare(query).all(...params).map(a => parseAgent(a as Record<string, unknown>));
+  const agents = db
+    .prepare(query)
+    .all(...params)
+    .map((a) => parseAgent(a as Record<string, unknown>));
   const total = db.prepare('SELECT COUNT(*) as count FROM agents').get() as { count: number };
 
   res.json({ agents, total: total.count });
@@ -48,7 +51,9 @@ router.get('/', (req: Request, res: Response) => {
 // GET /api/agents/:id
 router.get('/:id', (req: Request, res: Response) => {
   const db = getDb();
-  const agent = db.prepare('SELECT * FROM agents WHERE id = ?').get(req.params.id) as Record<string, unknown> | undefined;
+  const agent = db.prepare('SELECT * FROM agents WHERE id = ?').get(req.params.id) as
+    | Record<string, unknown>
+    | undefined;
 
   if (!agent) {
     res.status(404).json({ error: 'Agent not found' });
@@ -61,7 +66,16 @@ router.get('/:id', (req: Request, res: Response) => {
 // POST /api/agents
 router.post('/', (req: Request, res: Response) => {
   const db = getDb();
-  const { name, role, category, systemPrompt = '', personality = {}, parameters = {}, llmProvider, llmModel } = req.body;
+  const {
+    name,
+    role,
+    category,
+    systemPrompt = '',
+    personality = {},
+    parameters = {},
+    llmProvider,
+    llmModel,
+  } = req.body;
 
   if (!name || !role || !category) {
     res.status(400).json({ error: 'name, role, and category are required' });
@@ -69,10 +83,23 @@ router.post('/', (req: Request, res: Response) => {
   }
 
   const id = uuid();
-  db.prepare(`
+  db.prepare(
+    `
     INSERT INTO agents (id, name, role, category, systemPrompt, personality, parameters, llmProvider, llmModel, lastActivity)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `).run(id, name, role, category, systemPrompt, JSON.stringify(personality), JSON.stringify(parameters), llmProvider || 'anthropic', llmModel || 'claude-sonnet-4-5-20250929', new Date().toISOString());
+  `,
+  ).run(
+    id,
+    name,
+    role,
+    category,
+    systemPrompt,
+    JSON.stringify(personality),
+    JSON.stringify(parameters),
+    llmProvider || 'anthropic',
+    llmModel || 'claude-sonnet-4-5-20250929',
+    new Date().toISOString(),
+  );
 
   const agent = db.prepare('SELECT * FROM agents WHERE id = ?').get(id) as Record<string, unknown>;
   res.status(201).json(parseAgent(agent));
@@ -81,7 +108,9 @@ router.post('/', (req: Request, res: Response) => {
 // PATCH /api/agents/:id
 router.patch('/:id', (req: Request, res: Response) => {
   const db = getDb();
-  const existing = db.prepare('SELECT * FROM agents WHERE id = ?').get(req.params.id) as Record<string, unknown> | undefined;
+  const existing = db.prepare('SELECT * FROM agents WHERE id = ?').get(req.params.id) as
+    | Record<string, unknown>
+    | undefined;
 
   if (!existing) {
     res.status(404).json({ error: 'Agent not found' });
@@ -138,7 +167,9 @@ router.delete('/:id', (req: Request, res: Response) => {
 // POST /api/agents/:id/suspend
 router.post('/:id/suspend', (req: Request, res: Response) => {
   const db = getDb();
-  const result = db.prepare("UPDATE agents SET status = 'suspended', lastActivity = ? WHERE id = ?").run(new Date().toISOString(), req.params.id);
+  const result = db
+    .prepare("UPDATE agents SET status = 'suspended', lastActivity = ? WHERE id = ?")
+    .run(new Date().toISOString(), req.params.id);
 
   if (result.changes === 0) {
     res.status(404).json({ error: 'Agent not found' });
@@ -151,7 +182,9 @@ router.post('/:id/suspend', (req: Request, res: Response) => {
 // POST /api/agents/:id/activate
 router.post('/:id/activate', (req: Request, res: Response) => {
   const db = getDb();
-  const result = db.prepare("UPDATE agents SET status = 'active', lastActivity = ? WHERE id = ?").run(new Date().toISOString(), req.params.id);
+  const result = db
+    .prepare("UPDATE agents SET status = 'active', lastActivity = ? WHERE id = ?")
+    .run(new Date().toISOString(), req.params.id);
 
   if (result.changes === 0) {
     res.status(404).json({ error: 'Agent not found' });
@@ -166,15 +199,23 @@ router.get('/stats/overview', (_req: Request, res: Response) => {
   const db = getDb();
 
   const total = db.prepare('SELECT COUNT(*) as count FROM agents').get() as { count: number };
-  const byStatus = db.prepare('SELECT status, COUNT(*) as count FROM agents GROUP BY status').all() as { status: string; count: number }[];
-  const byCategory = db.prepare('SELECT category, COUNT(*) as count FROM agents GROUP BY category').all() as { category: string; count: number }[];
+  const byStatus = db.prepare('SELECT status, COUNT(*) as count FROM agents GROUP BY status').all() as {
+    status: string;
+    count: number;
+  }[];
+  const byCategory = db.prepare('SELECT category, COUNT(*) as count FROM agents GROUP BY category').all() as {
+    category: string;
+    count: number;
+  }[];
   const avgSuccessRate = db.prepare('SELECT AVG(successRate) as avg FROM agents').get() as { avg: number };
-  const topPerformers = db.prepare('SELECT id, name, successRate, category FROM agents ORDER BY successRate DESC LIMIT 10').all();
+  const topPerformers = db
+    .prepare('SELECT id, name, successRate, category FROM agents ORDER BY successRate DESC LIMIT 10')
+    .all();
 
   res.json({
     total: total.count,
-    byStatus: Object.fromEntries(byStatus.map(s => [s.status, s.count])),
-    byCategory: Object.fromEntries(byCategory.map(c => [c.category, c.count])),
+    byStatus: Object.fromEntries(byStatus.map((s) => [s.status, s.count])),
+    byCategory: Object.fromEntries(byCategory.map((c) => [c.category, c.count])),
     avgSuccessRate: +(avgSuccessRate.avg || 0).toFixed(1),
     topPerformers,
   });

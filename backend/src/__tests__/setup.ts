@@ -10,11 +10,9 @@ let closeDb: (() => void) | undefined;
 
 beforeAll(async () => {
   process.env.VALTHERON_DB_PATH = testDbPath;
+  process.env.SEED_DEMO = 'true';
 
-  const [{ initDatabase }, schemaModule] = await Promise.all([
-    import('../app.js'),
-    import('../db/schema.js'),
-  ]);
+  const [{ initDatabase }, schemaModule] = await Promise.all([import('../app.js'), import('../db/schema.js')]);
 
   closeDb = schemaModule.closeDb;
   initDatabase();

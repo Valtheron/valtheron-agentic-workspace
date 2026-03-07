@@ -29,7 +29,11 @@ router.post('/sessions', (req, res) => {
   const id = uuid();
   const now = new Date().toISOString();
   db.prepare('INSERT INTO chat_sessions (id, agentId, title, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)').run(
-    id, agentId, title || 'Neue Konversation', now, now
+    id,
+    agentId,
+    title || 'Neue Konversation',
+    now,
+    now,
   );
   const session = db.prepare('SELECT * FROM chat_sessions WHERE id = ?').get(id);
   res.status(201).json(session);
@@ -47,7 +51,9 @@ router.delete('/sessions/:id', (req, res) => {
 // GET /api/chat/sessions/:id/messages
 router.get('/sessions/:id/messages', (req, res) => {
   const db = getDb();
-  const messages = db.prepare('SELECT * FROM chat_messages WHERE sessionId = ? ORDER BY timestamp ASC').all(req.params.id);
+  const messages = db
+    .prepare('SELECT * FROM chat_messages WHERE sessionId = ? ORDER BY timestamp ASC')
+    .all(req.params.id);
   res.json({ messages });
 });
 
@@ -66,9 +72,9 @@ router.post('/sessions/:id/messages', async (req, res) => {
   const now = new Date().toISOString();
 
   // Save user message
-  db.prepare('INSERT INTO chat_messages (id, sessionId, sender, senderType, content, timestamp) VALUES (?, ?, ?, ?, ?, ?)').run(
-    id, req.params.id, 'user', 'user', content, now
-  );
+  db.prepare(
+    'INSERT INTO chat_messages (id, sessionId, sender, senderType, content, timestamp) VALUES (?, ?, ?, ?, ?, ?)',
+  ).run(id, req.params.id, 'user', 'user', content, now);
   db.prepare('UPDATE chat_sessions SET updatedAt = ? WHERE id = ?').run(now, req.params.id);
   const userMsg = db.prepare('SELECT * FROM chat_messages WHERE id = ?').get(id);
 
@@ -76,20 +82,27 @@ router.post('/sessions/:id/messages', async (req, res) => {
   res.status(201).json(userMsg); // respond immediately so UI is snappy
 
   // Get agent context
-  const session = db.prepare('SELECT * FROM chat_sessions WHERE id = ?').get(req.params.id) as Record<string, unknown> | undefined;
+  const session = db.prepare('SELECT * FROM chat_sessions WHERE id = ?').get(req.params.id) as
+    | Record<string, unknown>
+    | undefined;
   if (!session) return;
-  const agent = db.prepare('SELECT * FROM agents WHERE id = ?').get(session.agentId as string) as Record<string, unknown> | undefined;
+  const agent = db.prepare('SELECT * FROM agents WHERE id = ?').get(session.agentId as string) as
+    | Record<string, unknown>
+    | undefined;
   if (!agent) return;
 
   // Get previous messages for context (last 10)
-  const history = db.prepare(
-    "SELECT senderType, content FROM chat_messages WHERE sessionId = ? AND id != ? ORDER BY timestamp DESC LIMIT 10"
-  ).all(req.params.id, id) as { senderType: string; content: string }[];
+  const history = db
+    .prepare(
+      'SELECT senderType, content FROM chat_messages WHERE sessionId = ? AND id != ? ORDER BY timestamp DESC LIMIT 10',
+    )
+    .all(req.params.id, id) as { senderType: string; content: string }[];
   history.reverse();
 
   // Build system prompt from agent config
-  const personality = typeof agent.personality === 'string' ? JSON.parse(agent.personality as string) : (agent.personality || {});
-  const params = typeof agent.parameters === 'string' ? JSON.parse(agent.parameters as string) : (agent.parameters || {});
+  const personality =
+    typeof agent.personality === 'string' ? JSON.parse(agent.personality as string) : agent.personality || {};
+  const params = typeof agent.parameters === 'string' ? JSON.parse(agent.parameters as string) : agent.parameters || {};
   const systemPrompt = buildSystemPrompt(agent, personality);
 
   let responseContent: string;
@@ -103,26 +116,39 @@ router.post('/sessions/:id/messages', async (req, res) => {
     }
   } else {
     // No API key - use simulation
-    await new Promise(r => setTimeout(r, 600 + Math.random() * 1000));
+    await new Promise((r) => setTimeout(r, 600 + Math.random() * 1000));
     responseContent = generateFallbackResponse(agent, personality);
   }
 
   const responseId = uuid();
   const responseTime = new Date().toISOString();
-  db.prepare('INSERT INTO chat_messages (id, sessionId, sender, senderType, content, timestamp) VALUES (?, ?, ?, ?, ?, ?)').run(
-    responseId, req.params.id, agent.id as string, 'agent', responseContent, responseTime
-  );
+  db.prepare(
+    'INSERT INTO chat_messages (id, sessionId, sender, senderType, content, timestamp) VALUES (?, ?, ?, ?, ?, ?)',
+  ).run(responseId, req.params.id, agent.id as string, 'agent', responseContent, responseTime);
   db.prepare('UPDATE chat_sessions SET updatedAt = ? WHERE id = ?').run(responseTime, req.params.id);
 
-  broadcast({
-    type: 'chat_message',
-    payload: { sessionId: req.params.id, message: { id: responseId, sessionId: req.params.id, sender: agent.id, senderType: 'agent', content: responseContent, timestamp: responseTime } },
-    timestamp: responseTime,
-  }, 'chat');
+  broadcast(
+    {
+      type: 'chat_message',
+      payload: {
+        sessionId: req.params.id,
+        message: {
+          id: responseId,
+          sessionId: req.params.id,
+          sender: agent.id,
+          senderType: 'agent',
+          content: responseContent,
+          timestamp: responseTime,
+        },
+      },
+      timestamp: responseTime,
+    },
+    'chat',
+  );
 });
 
 function buildSystemPrompt(agent: Record<string, unknown>, personality: Record<string, unknown>): string {
-  const basePrompt = agent.systemPrompt as string || '';
+  const basePrompt = (agent.systemPrompt as string) || '';
   const style = personality.communicationStyle || 'technical';
   const archetype = personality.archetype || 'analytiker';
   const creativity = personality.creativity || 5;
@@ -158,7 +184,7 @@ async function callLLM(opts: {
 
   // Build message history
   const messages: { role: 'user' | 'assistant'; content: string }[] = [
-    ...history.map(m => ({
+    ...history.map((m) => ({
       role: (m.senderType === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
       content: m.content,
     })),
@@ -189,6 +215,50 @@ async function callLLM(opts: {
     return response.choices[0]?.message?.content || '[Keine Antwort]';
   }
 
+  if (provider === 'ollama') {
+    const ollamaBase = (params.ollamaEndpoint as string) || 'http://localhost:11434';
+    const response = await fetch(`${ollamaBase}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: model || 'llama3.2',
+        messages: [{ role: 'system', content: systemPrompt }, ...messages],
+        stream: false,
+        options: { temperature, num_predict: Math.min(maxTokens, 2048) },
+      }),
+    });
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`Ollama ${response.status}: ${errText}`);
+    }
+    const data = (await response.json()) as { message?: { content?: string } };
+    return data.message?.content || '[Keine Antwort]';
+  }
+
+  if (provider === 'custom') {
+    const endpoint = params.customEndpoint as string;
+    if (!endpoint) throw new Error('Custom provider requires "customEndpoint" in agent parameters');
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: Math.min(maxTokens, 2048),
+        temperature,
+        messages: [{ role: 'system', content: systemPrompt }, ...messages],
+      }),
+    });
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`Custom endpoint ${response.status}: ${errText}`);
+    }
+    const data = (await response.json()) as { choices?: { message?: { content?: string } }[] };
+    return data.choices?.[0]?.message?.content || '[Keine Antwort]';
+  }
+
   throw new Error(`Unbekannter Provider: ${provider}`);
 }
 
@@ -205,16 +275,56 @@ function generateFallbackResponse(agent: Record<string, unknown>, personality: R
   };
 
   const responses: Record<string, string[]> = {
-    trading: ['Marktanalyse: Volatilität 23.5%. Empfehlung: Positionen absichern.', 'Signal: Bullish Divergenz 4h-Chart. RSI 42, MACD crossover bevorstehend.', 'Risiko-Assessment: Sharpe Ratio 1.8. Exposure akzeptabel.'],
-    security: ['Scan: 3 niedrige, 1 mittlere Schwachstelle. Bericht bereit.', 'Firewall aktualisiert. 12 IPs blockiert. GDPR-Compliance 94%.', 'Anomalie-Check: Normales Verhaltensmuster. Keine Threats.'],
-    development: ['Code-Review: 3 Optimierungen (Memoization, Re-Render, Type-Safety).', 'API implementiert. REST-konform, Validierung, Error-Handling fertig.', 'Build: 245KB gzip. Lighthouse 94. Alle Tests grün.'],
-    qa: ['247/250 Tests bestanden. 3 Flaky Tests getaggt.', 'Coverage: 87.3% Lines, 79.1% Branches. P95 Latenz 120ms.', 'E2E: Alle kritischen Flows stabil. Laufzeit Ø 4.2s.'],
-    documentation: ['15 API-Endpunkte dokumentiert. JSDoc für 45 Funktionen fertig.', 'Changelog: 23 Changes (Features/Fixes/Breaking). TypeDoc bereit.', 'Tutorial "Getting Started": 5 Schritte, Code-Snippets, Beispiele.'],
-    deployment: ['Staging-Deploy erfolgreich. Health-Checks OK. Rollback bereit.', 'K8s: 3→5 Pods skaliert. Auto-Scaling bei 70% CPU aktiv.', 'Blue-Green vorbereitet. Traffic-Switch in 30s.'],
-    analyst: ['Trend: +15% MoM. Saisonale Korrektur erwartet Q2.', 'Retention Q4: 78%. Churn-Cluster bei Segment B identifiziert.', 'A/B Test: Variante B +8.3% Conversion (p<0.05). Signifikant.'],
-    support: ['Ticket-Routing konfiguriert. SLA-Timer läuft. Tier-2 ready.', 'KB: 12 neue FAQ-Einträge. CSAT 4.6/5.0 (+0.3 MoM).', 'Auto-Reply aktiv. Erwartete Reduktion: 25% Ticket-Volumen.'],
-    integration: ['Webhook aktiv. Retry 3x Backoff. ETL: 1.2M Datensätze, 99.8% Qualität.', 'OAuth 2.0 Flow mit 5 Providern getestet. SSO bereit.', 'Kafka: 5.000 Events/s. Lag 0. Consumer-Group stabil.'],
-    monitoring: ['Status: alle Services grün. Uptime 99.99% (30 Tage).', 'Prometheus: P99 95ms stabil. Keine Anomalien. 3 Alert-Regeln angepasst.', 'Log-Analyse: 3 Error-Pattern. Korrelation mit Memory-Spikes bestätigt.'],
+    trading: [
+      'Marktanalyse: Volatilität 23.5%. Empfehlung: Positionen absichern.',
+      'Signal: Bullish Divergenz 4h-Chart. RSI 42, MACD crossover bevorstehend.',
+      'Risiko-Assessment: Sharpe Ratio 1.8. Exposure akzeptabel.',
+    ],
+    security: [
+      'Scan: 3 niedrige, 1 mittlere Schwachstelle. Bericht bereit.',
+      'Firewall aktualisiert. 12 IPs blockiert. GDPR-Compliance 94%.',
+      'Anomalie-Check: Normales Verhaltensmuster. Keine Threats.',
+    ],
+    development: [
+      'Code-Review: 3 Optimierungen (Memoization, Re-Render, Type-Safety).',
+      'API implementiert. REST-konform, Validierung, Error-Handling fertig.',
+      'Build: 245KB gzip. Lighthouse 94. Alle Tests grün.',
+    ],
+    qa: [
+      '247/250 Tests bestanden. 3 Flaky Tests getaggt.',
+      'Coverage: 87.3% Lines, 79.1% Branches. P95 Latenz 120ms.',
+      'E2E: Alle kritischen Flows stabil. Laufzeit Ø 4.2s.',
+    ],
+    documentation: [
+      '15 API-Endpunkte dokumentiert. JSDoc für 45 Funktionen fertig.',
+      'Changelog: 23 Changes (Features/Fixes/Breaking). TypeDoc bereit.',
+      'Tutorial "Getting Started": 5 Schritte, Code-Snippets, Beispiele.',
+    ],
+    deployment: [
+      'Staging-Deploy erfolgreich. Health-Checks OK. Rollback bereit.',
+      'K8s: 3→5 Pods skaliert. Auto-Scaling bei 70% CPU aktiv.',
+      'Blue-Green vorbereitet. Traffic-Switch in 30s.',
+    ],
+    analyst: [
+      'Trend: +15% MoM. Saisonale Korrektur erwartet Q2.',
+      'Retention Q4: 78%. Churn-Cluster bei Segment B identifiziert.',
+      'A/B Test: Variante B +8.3% Conversion (p<0.05). Signifikant.',
+    ],
+    support: [
+      'Ticket-Routing konfiguriert. SLA-Timer läuft. Tier-2 ready.',
+      'KB: 12 neue FAQ-Einträge. CSAT 4.6/5.0 (+0.3 MoM).',
+      'Auto-Reply aktiv. Erwartete Reduktion: 25% Ticket-Volumen.',
+    ],
+    integration: [
+      'Webhook aktiv. Retry 3x Backoff. ETL: 1.2M Datensätze, 99.8% Qualität.',
+      'OAuth 2.0 Flow mit 5 Providern getestet. SSO bereit.',
+      'Kafka: 5.000 Events/s. Lag 0. Consumer-Group stabil.',
+    ],
+    monitoring: [
+      'Status: alle Services grün. Uptime 99.99% (30 Tage).',
+      'Prometheus: P99 95ms stabil. Keine Anomalien. 3 Alert-Regeln angepasst.',
+      'Log-Analyse: 3 Error-Pattern. Korrelation mit Memory-Spikes bestätigt.',
+    ],
   };
 
   const g = (greetings[style] || greetings.technical)[Math.floor(Math.random() * 3)];
