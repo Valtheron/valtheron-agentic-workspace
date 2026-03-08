@@ -1,32 +1,81 @@
 # Valtheron Agentic Workspace — Onboarding Guide
 
-**Zielgruppe:** Neue Entwickler, KI-Agenten, externe Mitarbeiter
-**Ziel:** Vollständiger Einstieg in das Projekt ohne Rückfragen
+**Zielgruppe:** Neue Entwickler (menschlich & KI), externe Mitarbeiter
+**Ziel:** Strukturierter Einstieg mit klaren Leitplanken für Rückfragen
 **Stand:** 08.03.2026 — v1.0.0 Genesis Release
 **Eigentümer:** BlackIceSecure / Valtheron
 
 ---
 
-## 1. Projekt in 2 Minuten verstehen
+## Hinweis zum Lesen dieses Dokuments
 
-**Was ist Valtheron Agentic Workspace?**
+### Realistischer Zeitaufwand zum Einarbeiten
 
-Eine Web-Plattform zur Orchestrierung, Überwachung und Steuerung autonomer KI-Agenten. Unternehmen und Entwickler können bis zu 290 vorkonfigurierte Agenten über ein modernes Dashboard verwalten — mit Echtzeit-Chat, Kill-Switch-Schutz, vollständigem Audit-Trail und Multi-LLM-Unterstützung.
+| Profil | Zeitaufwand |
+|--------|------------|
+| KI-Agent (liest alle Docs maschinell) | 10–20 Minuten |
+| Erfahrener Entwickler (kennt den Stack) | 1–2 Arbeitstage |
+| Entwickler ohne Vorkenntnisse im Stack | 3–5 Arbeitstage à 8 Stunden |
+| Projektmanager (ohne Coding-Fokus) | 2–3 Arbeitstage |
 
-**Kernfunktionen auf einen Blick:**
-- Agent-Management (290 vorkonfigurierte Agenten, 10 Kategorien)
-- Kanban-Taskboard (5 Spalten: Backlog → In Progress → Review → Done → Archived)
-- Echtzeit-Chat mit Persönlichkeitsprofilen
-- Analytics-Dashboard (6 Tabs)
-- Kill-Switch mit Auto-Trigger-Regeln
-- MFA-Authentifizierung (TOTP + Backup Codes)
-- Secrets-Vault (AES-256-GCM)
-- Automatische Backups (6h-Intervall)
+Wer dieses Dokument noch nie gesehen hat und nichts über Valtheron weiß, braucht Zeit. Das ist normal und erwartet. Plane entsprechend.
 
-**Unternehmenskontext:**
-- **Eigentümer:** BlackIceSecure (https://blackicesecure.com)
-- **Marke:** Valtheron (https://valtheron.com)
-- **Status:** v1.0.0 produktionsreif — **Release-Priorität: SOFORT**
+### Wann sind Rückfragen erlaubt — und erwünscht?
+
+Rückfragen sind ein Zeichen sorgfältiger Arbeit, nicht von Inkompetenz. Folgendes Schema gilt:
+
+**Keine Rückfrage nötig — Antwort steht in den Docs:**
+- Wie setze ich das Projekt lokal auf? → Abschnitt 3 dieser Datei
+- Welche API-Endpunkte gibt es? → `docs/API.md`
+- Wie ist der Branch-Naming? → `CONTRIBUTING.md`
+- Welche Tests muss ich schreiben? → `CONTRIBUTING.md`
+- Wie deploye ich? → `docs/DEPLOYMENT_GUIDE.md`
+
+**Rückfragen sind ausdrücklich erwünscht bei:**
+- Unklaren Anforderungen an ein neues Feature (Was genau soll es tun?)
+- Widersprüchen zwischen zwei Dokumenten
+- Entscheidungen mit größerer Auswirkung auf die Architektur
+- Sicherheitsrelevanten Unklarheiten
+- Allem, das nicht in den Docs steht
+
+**Faustregel:** Wenn du 20 Minuten gesucht hast und keine Antwort gefunden hast — frag.
+
+---
+
+## 1. Was ist dieses Projekt?
+
+### Für jemanden der noch nie von Valtheron gehört hat
+
+Stell dir vor, du hast ein Team von 290 spezialisierten KI-Assistenten — manche analysieren Finanzmärkte, manche schreiben Code, manche testen Software, manche überwachen Systeme. Das Problem: All diese Assistenten parallel im Blick zu behalten, Aufgaben zu verteilen, zu überwachen ob sie korrekt arbeiten, und sie im Notfall sofort stoppen zu können, ist ohne ein zentrales Steuerungswerkzeug praktisch unmöglich.
+
+**Valtheron Agentic Workspace ist genau dieses Steuerungswerkzeug.**
+
+Es ist eine Web-Applikation, über die ein Unternehmen oder Entwickler:
+- KI-Agenten verwaltet (erstellen, konfigurieren, überwachen, stoppen)
+- Aufgaben zuweist und deren Bearbeitungsstatus verfolgt
+- In Echtzeit mit einzelnen Agenten chattet
+- Einen vollständigen Aktivitäts-Audit-Trail einsehen kann (wer hat was wann getan)
+- Im Notfall alle Agenten sofort per Kill-Switch stoppen kann
+- Auswertet wie performant die Agenten arbeiten (Analytics)
+
+Das System ist keine KI selbst — es ist die **Plattform zur Steuerung von KI**. Die eigentlichen KI-Modelle (GPT-4, Claude, Llama, etc.) werden über externe APIs eingebunden.
+
+### Kernfunktionen
+
+- Agent-Management — 290 vorkonfigurierte Agenten in 10 Kategorien
+- Kanban-Taskboard — 5 Spalten: Backlog → In Progress → Review → Done → Archived
+- Echtzeit-Chat — mit Persönlichkeitsprofilen pro Agent
+- Analytics-Dashboard — 6 Auswertungs-Tabs
+- Kill-Switch — Notfall-Stopp mit automatischen Trigger-Regeln
+- MFA-Authentifizierung — TOTP + Backup Codes
+- Secrets-Vault — verschlüsselter Schlüsselspeicher (AES-256-GCM)
+- Automatische Backups — 6h-Intervall, 10 Versionen vorgehalten
+
+### Kontext: Wer steckt dahinter?
+
+- **BlackIceSecure** — das Sicherheits- und Technologieunternehmen, das Eigentümer des Projekts ist (https://blackicesecure.com)
+- **Valtheron** — die Produktmarke unter der das System veröffentlicht wird (https://valtheron.com)
+- **Aktuelle Priorität:** v1.0.0 ist technisch fertig — erstes Release muss so bald wie möglich veröffentlicht werden
 
 ---
 
