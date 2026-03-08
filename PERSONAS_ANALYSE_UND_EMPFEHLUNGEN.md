@@ -2,7 +2,7 @@
 
 **Version:** 1.0  
 **Datum:** Januar 2026  
-**Autor:** Manus AI  
+**Autorenkollektiv:** Manus AI, Claude Code, Codex, BlackIceSecure
 **Thema:** Analyse der 200 Personas mit Custom Instructions und sichere digitale Identitäts-Architektur
 
 ---

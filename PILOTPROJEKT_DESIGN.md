@@ -2,7 +2,7 @@
 
 **Version:** 1.0  
 **Datum:** Januar 2026  
-**Autor:** Manus AI  
+**Autorenkollektiv:** Manus AI, Claude Code, Codex, BlackIceSecure
 **Zielgruppe:** Implementierungs-Teams, Sicherheits-Agenten, QA-Agenten
 
 ---

@@ -2,7 +2,7 @@
 
 **Version:** 1.0  
 **Datum:** Januar 2026  
-**Autor:** Manus AI  
+**Autorenkollektiv:** Manus AI, Claude Code, Codex, BlackIceSecure
 **Zielgruppe:** KI-Agenten, Entwickler, Projekt-Manager
 
 ---
