@@ -1,3 +1,8 @@
+/* Login logo animations */
+@keyframes logoPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes logoFadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.login-logo { width: 200px; height: auto; animation: logoPulse 2s ease-in-out infinite, logoFadeInUp 1s ease-out; }
+
 /* App Layout */
 .app { display: flex; height: 100vh; width: 100vw; }
 .app-main { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
@@ -14,10 +19,8 @@
 .sidebar { width: var(--sidebar-width); background: var(--bg-secondary); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; transition: width 0.2s ease; overflow: hidden; flex-shrink: 0; }
 .sidebar.expanded { width: var(--sidebar-expanded); }
 .sidebar-logo { padding: 14px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-color); cursor: pointer; white-space: nowrap; }
-.sidebar-logo .logo-img { width: 28px; height: 28px; object-fit: contain; flex-shrink: 0; }
-.sidebar.expanded .sidebar-logo .logo-img { width: 32px; height: 32px; }
-.sidebar-logo .logo-icon { width: 24px; height: 24px; background: var(--accent-cyan); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: var(--bg-primary); flex-shrink: 0; }
-.sidebar-logo .logo-text { font-size: 13px; font-weight: 600; color: var(--text-primary); overflow: hidden; }
+.sidebar-logo .logo-img-icon { width: 34px; height: 34px; object-fit: cover; object-position: left center; flex-shrink: 0; }
+.sidebar-logo .logo-img-full { height: 34px; width: auto; max-width: 170px; object-fit: contain; flex-shrink: 0; }
 .sidebar-nav { flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
 .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 6px; color: var(--text-muted); cursor: pointer; white-space: nowrap; font-size: 12px; background: none; width: 100%; text-align: left; }
 .sidebar-item:hover { background: var(--bg-hover); color: var(--text-secondary); }

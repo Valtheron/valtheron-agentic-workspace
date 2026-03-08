@@ -66,8 +66,15 @@ export default function LoginView({ onLogin }: LoginViewProps) {
           maxWidth: 380,
         }}
       >
-        <h1 style={{ margin: '0 0 0.25rem', fontSize: '1.4rem', color: 'var(--text-primary)' }}>Valtheron Workspace</h1>
-        <p style={{ margin: '0 0 1.75rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+          <img
+            src="/valtheron-logo.gif"
+            alt="Valtheron"
+            className="login-logo"
+          />
+        </div>
+        <h1 style={{ margin: '0 0 0.25rem', fontSize: '1.4rem', color: 'var(--text-primary)', textAlign: 'center' }}>Valtheron Workspace</h1>
+        <p style={{ margin: '0 0 1.75rem', fontSize: '0.85rem', color: 'var(--text-muted)', textAlign: 'center' }}>
           {mode === 'login' ? 'Sign in to continue' : 'Create a new account'}
         </p>
 
