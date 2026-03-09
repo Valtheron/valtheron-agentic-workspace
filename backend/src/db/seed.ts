@@ -384,18 +384,18 @@ export function seedDatabase() {
 
   console.log('Seeding database...');
 
-  // Create default admin user
+  // Demo users only — in production (no SEED_DEMO) first registrant becomes admin (see auth.ts)
   const adminId = uuid();
   db.prepare('INSERT INTO users (id, username, passwordHash, role) VALUES (?, ?, ?, ?)').run(
     adminId,
-    'admin',
-    hashPassword('valtheron2024'),
+    'demo_admin',
+    hashPassword('demo_only_not_for_production'),
     'admin',
   );
   db.prepare('INSERT INTO users (id, username, passwordHash, role) VALUES (?, ?, ?, ?)').run(
     uuid(),
-    'operator',
-    hashPassword('operator123'),
+    'demo_operator',
+    hashPassword('demo_only_not_for_production'),
     'operator',
   );
 
@@ -868,5 +868,5 @@ export function seedDatabase() {
   });
   seedEvents();
 
-  console.log(`Database seeded: ${agents.length} agents, 80 tasks, 3 workflows, 5 security events, 2 users`);
+  console.log(`Database seeded: ${agents.length} agents, 80 tasks, 3 workflows, 5 security events, 2 demo users`);
 }

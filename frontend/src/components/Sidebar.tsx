@@ -28,9 +28,12 @@ interface SidebarProps {
 export default function Sidebar({ currentView, onViewChange, expanded, onToggle }: SidebarProps) {
   return (
     <nav className={`sidebar${expanded ? ' expanded' : ''}`}>
-      <div className="sidebar-logo" onClick={onToggle}>
-        <div className="logo-icon">V</div>
-        {expanded && <span className="logo-text">Valtheron</span>}
+      <div className="sidebar-logo" onClick={onToggle} title="Valtheron">
+        {expanded ? (
+          <img src="/valtheron-logo.gif" alt="Valtheron" className="logo-img-full"/>
+        ) : (
+          <img src="/valtheron-logo.gif" alt="V" className="logo-img-icon"/>
+        )}
       </div>
       <div className="sidebar-nav">
         {navItems.map((item) => (

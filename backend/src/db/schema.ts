@@ -90,6 +90,7 @@ function initSchema(db: Database.Database) {
       progress INTEGER DEFAULT 0,
       estimatedHours REAL,
       actualHours REAL,
+      result TEXT,
       FOREIGN KEY (assignedAgentId) REFERENCES agents(id)
     );
 
@@ -287,6 +288,13 @@ function initSchema(db: Database.Database) {
     CREATE INDEX IF NOT EXISTS idx_metrics_history_ts ON metrics_history(timestamp);
     CREATE INDEX IF NOT EXISTS idx_workflows_status ON workflows(status);
   `);
+
+  // Migration: add result column to tasks
+  try {
+    db.exec(`ALTER TABLE tasks ADD COLUMN result TEXT`);
+  } catch {
+    /* column already exists */
+  }
 
   // Migration: add MFA columns to existing databases
   try {
