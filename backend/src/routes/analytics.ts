@@ -62,6 +62,7 @@ router.get('/dashboard', cacheResponse(15_000, 'analytics'), (_req: Request, res
   res.json({
     totalAgents,
     activeAgents,
+    completedTasks,
     tasksToday,
     successRate: +avgSuccessRate.toFixed(1),
     avgResponseTime: +avgResponseTime.toFixed(0),
