@@ -167,31 +167,15 @@ function App() {
           const { taskId, status } = data as { taskId: string; status: string };
           setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status: status as Task['status'] } : t)));
         });
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         console.log(
           `Backend connected: ${health.database.agents} agents, ${health.database.tasks} tasks loaded from API`,
         );
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         const db = (health as { database?: { agents?: number; tasks?: number } }).database;
         if (db) {
           console.log(`Backend connected: ${db.agents ?? 0} agents, ${db.tasks ?? 0} tasks loaded from API`);
         } else {
           console.log('Backend connected: database metrics unavailable');
         }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
       } catch {
         if (!cancelled) {
           setBackendConnected(false);
@@ -387,24 +371,17 @@ function App() {
   };
 
   // Project handlers
-<<<<<<< Updated upstream
+
   const handleCreateProject = (proj: Project) => setProjects((prev) => [...prev, proj]);
   const handleUpdateProject = (proj: Project) => setProjects((prev) => prev.map((p) => (p.id === proj.id ? proj : p)));
   const handleDeleteProject = (id: string) => setProjects((prev) => prev.filter((p) => p.id !== id));
   const handleNavigateWorkflow = (_wfId: string) => {
-=======
   const handleCreateProject = (proj: Project) => setProjects(prev => [...prev, proj]);
   const handleUpdateProject = (proj: Project) => setProjects(prev => prev.map(p => p.id === proj.id ? proj : p));
   const handleDeleteProject = (id: string) => setProjects(prev => prev.filter(p => p.id !== id));
   const handleNavigateWorkflow = (wfId: string) => {
     console.log('Navigate to workflow', wfId);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
     setCurrentView('workflows');
   };
 
