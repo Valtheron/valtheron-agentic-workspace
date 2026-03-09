@@ -1,300 +1,261 @@
-# Agentic Workspace for Autonomous Operations - Konzept-Dokumentation
+<div align="center">
 
-**Projektname:** Agentic Workspace for Autonomous Operations  
-**Version:** 1.0  
-**Datum:** Januar 2026  
-**Zielgruppe:** KI-Agenten, Entwickler, Projektmanager
+<img src="./frontend/public/valtheron-logo.gif" width="160" alt="Valtheron Logo"/>
 
----
+# Valtheron — Agentic Workspace
 
-## 📋 Überblick
+**Zentrale Plattform zur Orchestrierung autonomer KI-Agenten**
 
-Diese Dokumentation enthält das vollständige Konzept für die **Agentic Workspace for Autonomous Operations** - eine spezialisierte Plattform zur Orchestrierung von 200 spezialisierten KI-Agenten für autonome Operationen in den Bereichen Trading, Sicherheit, Softwareentwicklung und strategische Operationen.
+[![CI](https://github.com/Valtheron/valtheron-agentic-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/Valtheron/valtheron-agentic-workspace/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)](CHANGELOG.md)
+[![Lizenz](https://img.shields.io/badge/Lizenz-MIT-green?style=flat-square)](LICENSE)
+[![Coverage](https://img.shields.io/badge/Coverage-87.8%25-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
+[![Tests](https://img.shields.io/badge/Tests-475%2B%20bestanden-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org/)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](docker-compose.yml)
 
-Die Plattform ermöglicht Multi-Agent-Zusammenarbeit mit Echtzeit-Audit-Trails, Kill-Switch-Schutz und vollständiger Transparenz über alle Agent-Aktivitäten.
+[Schnellstart](#schnellstart) · [Dokumentation](#dokumentation) · [Architektur](#architektur) · [Mitmachen](#mitmachen) · [Sponsoren](#sponsoren)
 
----
-
-## 📚 Dokumentation-Struktur
-
-### 1. **AGENTIC_WORKSPACE_KONZEPT.md** (Hauptdokumentation)
-
-Die Hauptkonzeptdokumentation enthält:
-
-- **Projektübersicht:** Vision, Kernfunktionalität und Zielgruppe
-- **Geschäftsziele:** Primäre und sekundäre Ziele des Projekts
-- **Anforderungsanalyse:** Funktionale und nicht-funktionale Anforderungen
-- **Systemarchitektur:** Microservices-Architektur mit Komponenten-Beschreibung
-- **Benutzeroberfläche & Design:** Design-Philosophie, Farbschema, Hauptbildschirme
-- **Technologie-Stack:** Frontend, Backend, Datenbanken, DevOps
-- **Implementierungs-Roadmap:** 5 Phasen mit Meilensteinen
-- **Agent-Instruktionen:** Allgemeine Richtlinien für alle Agenten
-- **Qualitätssicherung:** Testing-Strategie und Qualitätsmetriken
-- **Deployment & Launch:** Deployment-Strategie und App-Store-Submission
-
-**Verwendung:** Agenten sollten dieses Dokument als Referenz für die Gesamtarchitektur und Anforderungen verwenden.
-
-### 2. **AGENT_INSTRUKTIONEN.md** (Agent-Spezifische Anweisungen)
-
-Detaillierte Instruktionen für alle 10 Agent-Kategorien:
-
-- **Trading Agents:** Market Analyzer, Strategy Developer, Risk Manager, Portfolio Optimizer, Signal Generator
-- **Development Agents:** Frontend Developer, Backend Developer, DevOps Engineer, Database Architect, API Developer
-- **Security Agents:** Security Auditor, Penetration Tester, Compliance Officer, Encryption Specialist, Access Control Manager
-- **QA Agents:** Unit Tester, Integration Tester, Performance Tester, Usability Tester, Regression Tester
-- **Documentation Agents:** Technical Writer, API Documenter, User Guide Writer, Code Documenter, Process Documenter
-- **Deployment Agents:** Release Manager, App Store Manager, Infrastructure Manager, Monitoring Specialist, Rollback Specialist
-- **Analyst Agents:** Requirements Analyst, Architecture Reviewer, Performance Analyst, Data Analyst, Trend Analyst
-- **Support Agents:** Issue Triager, Debugger, Optimizer, Troubleshooter, Knowledge Manager
-- **Integration Agents:** API Integrator, Third-party Connector, Data Sync Manager, Webhook Manager, Service Orchestrator
-- **Monitoring Agents:** Performance Monitor, Error Tracker, Health Checker, Metrics Collector, Alert Manager
-
-Jede Agent-Kategorie enthält spezifische Aufgaben, Anweisungen, Code-Standards und Erfolgs-Metriken.
-
-**Verwendung:** Agenten sollten die Instruktionen ihrer spezifischen Kategorie befolgen.
-
-### 3. **IMPLEMENTIERUNGS_CHECKLISTE.md** (Projekt-Tracking)
-
-Detaillierte Checkliste für alle 5 Implementierungs-Phasen:
-
-- **Phase 1:** Infrastruktur-Setup, Development-Environment, CI/CD-Pipeline, Design-System
-- **Phase 2:** Agent-Management, Task-Management, Authentifizierung, Web-Dashboard
-- **Phase 3:** Multi-Agent-Collaboration, Audit-Trail, Monitoring & Analytics, Project-Tree, Kill-Switch
-- **Phase 4:** Multi-Faktor-Authentifizierung, Verschlüsselung, Performance-Optimierung, Sicherheitsaudits
-- **Phase 5:** Unit-Tests, Integration-Tests, Performance-Tests, Security-Tests, Beta-Testing
-
-Jede Phase enthält Aufgaben, Erfolgs-Kriterien und Qualitäts-Gateways.
-
-**Verwendung:** Projekt-Manager und QA-Agenten sollten diese Checkliste verwenden, um den Fortschritt zu verfolgen.
-
-### 4. **API_SPEZIFIKATION.md** (Technische API-Referenz)
-
-Vollständige API-Spezifikation mit allen Endpunkten:
-
-- **Authentifizierung:** JWT-basierte Authentifizierung
-- **Agent-Endpunkte:** CRUD-Operationen für Agenten
-- **Task-Endpunkte:** CRUD-Operationen für Tasks
-- **Audit-Endpunkte:** Audit-Log-Abruf und Filterung
-- **Analytics-Endpunkte:** Dashboard-Metriken und Agent-Analytics
-- **Kill-Switch-Endpunkte:** Kill-Switch-Aktivierung und Status
-- **WebSocket-Endpunkte:** Echtzeit-Updates für Agent-Status und Task-Fortschritt
-- **Error-Handling:** Standardisierte Error-Codes und Formate
-- **Rate-Limiting:** API-Rate-Limits und Throttling
-
-**Verwendung:** Backend- und Frontend-Entwickler sollten diese Spezifikation verwenden, um die API zu implementieren und zu integrieren.
+</div>
 
 ---
 
-## 🎯 Kernkonzepte
+## Was ist der Agentic Workspace?
 
-### Agent-Orchestrierung
+Der **Valtheron Agentic Workspace** ist eine produktionsreife Web-Plattform zur Verwaltung, Überwachung und Koordination von bis zu **290 spezialisierten KI-Agenten** — aus einem einzigen Dashboard heraus.
 
-Die Plattform orchestriert 200 spezialisierte Agenten, die in 10 Kategorien unterteilt sind. Jeder Agent verfügt über spezialisierte Anweisungen und kann autonom Aufgaben ausführen. Agenten können zusammenarbeiten, um komplexe, mehrstufige Operationen durchzuführen.
-
-### Task-Management
-
-Tasks sind diskrete Arbeitseinheiten, die Agenten zugewiesen werden. Das System verwaltet Task-Zuweisung, Verfolgung und Completion. Tasks können Abhängigkeiten haben und werden in der richtigen Reihenfolge ausgeführt.
-
-### Audit & Compliance
-
-Jede Agent-Aktion wird protokolliert für Compliance und Debugging. Das System bietet vollständige Audit-Trails mit Zeitstempel, Agent, Aktion und Details. Dies ermöglicht vollständige Transparenz über alle Operationen.
-
-### Kill-Switch-Schutz
-
-Das System kann Agenten sofort deaktivieren, wenn sie außerhalb von Risikoparametern operieren. Dies bietet Schutz vor unkontrolliertem Agent-Verhalten und ermöglicht schnelle Reaktion auf Probleme.
-
-### Multi-Agent-Collaboration
-
-Agenten können zusammenarbeiten, um komplexe Aufgaben zu lösen. Das System bietet Shared Workspace, File Sharing, Version Control und Messaging für Zusammenarbeit.
+Die Plattform ist kein KI-System selbst, sondern der **Steuerungsraum** für autonome KI-Operationen: mit Echtzeit-Monitoring, Notfall-Kill-Switch, verschlüsseltem Secrets Vault und lückenlosem Audit-Trail.
 
 ---
 
-## 🏗️ Architektur-Übersicht
+## Funktionen
 
-Die Systemarchitektur basiert auf einer **Microservices-Architektur** mit folgenden Hauptkomponenten:
+### Kern-Features
+
+| Funktion | Beschreibung |
+|---|---|
+| **Agent-Management** | 290 vordefinierte Agenten in 10 Kategorien — CRUD, Status, Persönlichkeitsprofil |
+| **Kanban-Board** | Task-Management mit 5 Spalten: Backlog → In Progress → Review → Done → Archiviert |
+| **Echtzeit-Chat** | Direktkommunikation mit Agenten über Anthropic, OpenAI oder Ollama |
+| **Analytics-Dashboard** | 6 Metriken-Tabs: Trends, Throughput, Fehler, Kapazität, SLA, Erfolgsrate |
+| **Kill-Switch** | Sofortstopp aller laufenden Operationen — manuell oder automatisch ausgelöst |
+| **Secrets Vault** | AES-256-GCM verschlüsselter Key-Value-Store mit Key-Rotation |
+| **MFA-Authentifizierung** | TOTP via Authenticator-App + 8 Backup-Codes |
+| **Automatische Backups** | Alle 6 Stunden, bis zu 10 Rotationen, RTO < 5 Minuten |
+| **Workflow-Engine** | Sequentielle und parallele Workflows mit Ausführungshistorie |
+| **Audit-Trail** | Vollständiges Activity-Logging mit CSV-Export |
+
+### Agenten-Kategorien
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    Client Layer                          │
-│  (Web UI, Mobile App, API Clients)                      │
-└──────────────────┬──────────────────────────────────────┘
-                   │
-┌──────────────────▼──────────────────────────────────────┐
-│              API Gateway & Load Balancer                │
-│  (Authentication, Rate Limiting, Routing)              │
-└──────────────────┬──────────────────────────────────────┘
-                   │
-        ┌──────────┴──────────┬──────────────┬─────────────┐
-        │                     │              │             │
-┌───────▼────────┐  ┌────────▼────────┐  ┌─▼──────────┐  ┌▼──────────┐
-│ Agent Service  │  │ Task Service    │  │ Audit      │  │ Analytics │
-│                │  │                 │  │ Service    │  │ Service   │
-└────────────────┘  └─────────────────┘  └────────────┘  └───────────┘
-        │                    │                  │              │
-        └────────────────────┼──────────────────┼──────────────┘
-                             │
-        ┌────────────────────┴──────────────────┐
-        │                                       │
-┌───────▼──────────────┐          ┌────────────▼──────────┐
-│  Data Layer          │          │  Message Queue        │
-│  (PostgreSQL,        │          │  (RabbitMQ/Kafka)     │
-│   MongoDB, Redis)    │          │                       │
-└──────────────────────┘          └───────────────────────┘
+Trading (30)     Security (30)    Development (30)    QA (30)
+Documentation    Deployment       Analyst     (30)    Support (20)
+Integration (20) Monitoring (30)
 ```
 
----
+### Technologie-Stack
 
-## 📅 Implementierungs-Timeline
-
-Die Implementierung ist in 5 Phasen über 24 Wochen geplant:
-
-| Phase | Dauer | Fokus | Meilensteine |
-|-------|-------|-------|-------------|
-| 1 | Wochen 1-2 | Projektinitialisierung | Infrastruktur, Design-System, API-Grundstruktur |
-| 2 | Wochen 3-10 | Kernfunktionalität | Agent-Management, Task-Management, Dashboard |
-| 3 | Wochen 11-16 | Erweiterte Funktionen | Collaboration, Audit, Monitoring, Project-Tree |
-| 4 | Wochen 17-20 | Sicherheit & Optimierung | MFA, Verschlüsselung, Performance, Security-Audits |
-| 5 | Wochen 21-24 | Tests & Finalisierung | Unit-Tests, Integration-Tests, Beta-Testing, Dokumentation |
+| Bereich | Technologie |
+|---|---|
+| **Backend** | Express 5.1 · TypeScript 5.9 · SQLite (WAL) |
+| **Frontend** | React 19 · Vite 7.3 · TailwindCSS · shadcn/ui |
+| **Echtzeit** | WebSocket (ws) |
+| **Auth** | JWT · TOTP (MFA) · RBAC (Admin / Operator / Viewer) |
+| **LLM-Anbindung** | Anthropic Claude · OpenAI · Ollama |
+| **Infrastruktur** | Docker Compose · GitHub Actions CI/CD |
 
 ---
 
-## 👥 Agent-Kategorien
+## Schnellstart
 
-### 1. Trading Agents (20)
+### Voraussetzungen
 
-Spezialisiert auf Handelsoperationen und Marktanalyse. Agenten in dieser Kategorie analysieren Markttrends, entwickeln Handelsstrategien, verwalten Risiken und optimieren Portfolios.
+- [Node.js](https://nodejs.org/) 22+
+- [Docker](https://www.docker.com/) & Docker Compose (empfohlen)
+- Optional: Anthropic oder OpenAI API-Key für LLM-Chat
 
-### 2. Development Agents (20)
+### Option 1 — Docker Compose (empfohlen)
 
-Spezialisiert auf Softwareentwicklung. Agenten in dieser Kategorie entwickeln Frontend- und Backend-Komponenten, verwalten Infrastruktur und implementieren CI/CD-Pipelines.
+```bash
+# Repository klonen
+git clone https://github.com/Valtheron/valtheron-agentic-workspace.git
+cd valtheron-agentic-workspace
 
-### 3. Security Agents (20)
+# Umgebungsvariablen konfigurieren
+cp backend/.env.example backend/.env
+# .env anpassen: JWT_SECRET, ANTHROPIC_API_KEY, etc.
 
-Spezialisiert auf Sicherheit. Agenten in dieser Kategorie führen Sicherheitsaudits durch, führen Penetrationstests durch, überprüfen Compliance und implementieren Verschlüsselung.
+# Starten
+docker-compose up -d
 
-### 4. QA Agents (20)
+# Dashboard öffnen
+open http://localhost:8080
+```
 
-Spezialisiert auf Qualitätssicherung. Agenten in dieser Kategorie entwickeln und führen Tests durch, verfolgen Bugs und stellen Qualitätsstandards sicher.
+### Option 2 — Lokale Entwicklung
 
-### 5. Documentation Agents (20)
+```bash
+# Repository klonen
+git clone https://github.com/Valtheron/valtheron-agentic-workspace.git
+cd valtheron-agentic-workspace
 
-Spezialisiert auf Dokumentation. Agenten in dieser Kategorie erstellen technische Dokumentation, API-Dokumentation und Benutzerhandbücher.
+# Abhängigkeiten installieren
+npm run install:all
 
-### 6. Deployment Agents (20)
+# Umgebungsvariablen konfigurieren
+cp backend/.env.example backend/.env
 
-Spezialisiert auf Deployment und Release. Agenten in dieser Kategorie verwalten Releases, reichen Apps in App-Stores ein und verwalten Infrastruktur.
+# Backend + Frontend parallel starten
+npm run dev
 
-### 7. Analyst Agents (20)
+# Backend:  http://localhost:3001
+# Frontend: http://localhost:5173
+```
 
-Spezialisiert auf Analyse. Agenten in dieser Kategorie analysieren Anforderungen, überprüfen Architektur und analysieren Performance.
+### Erster Login
 
-### 8. Support Agents (20)
-
-Spezialisiert auf Support und Debugging. Agenten in dieser Kategorie triagieren Issues, debuggen Probleme und optimieren Code.
-
-### 9. Integration Agents (20)
-
-Spezialisiert auf Integration. Agenten in dieser Kategorie integrieren APIs, verbinden Third-Party-Services und verwalten Datensynchronisation.
-
-### 10. Monitoring Agents (20)
-
-Spezialisiert auf Überwachung. Agenten in dieser Kategorie überwachen Performance, verfolgen Fehler und verwalten Alerts.
-
----
-
-## 🚀 Verwendung dieser Dokumentation
-
-### Für Entwickler
-
-1. Lesen Sie **AGENTIC_WORKSPACE_KONZEPT.md** für die Gesamtarchitektur
-2. Lesen Sie **API_SPEZIFIKATION.md** für die API-Details
-3. Lesen Sie **AGENT_INSTRUKTIONEN.md** für Ihre spezifische Agent-Kategorie
-4. Verwenden Sie **IMPLEMENTIERUNGS_CHECKLISTE.md** um Ihren Fortschritt zu verfolgen
-
-### Für Projekt-Manager
-
-1. Lesen Sie **AGENTIC_WORKSPACE_KONZEPT.md** für die Gesamtvision
-2. Verwenden Sie **IMPLEMENTIERUNGS_CHECKLISTE.md** um den Projektfortschritt zu verfolgen
-3. Überwachen Sie die Erfolgs-Kriterien für jede Phase
-
-### Für QA-Agenten
-
-1. Lesen Sie **AGENTIC_WORKSPACE_KONZEPT.md** für die Anforderungen
-2. Lesen Sie **IMPLEMENTIERUNGS_CHECKLISTE.md** für die Test-Anforderungen
-3. Lesen Sie **AGENT_INSTRUKTIONEN.md** für QA-spezifische Anweisungen
+Nach dem Start ist standardmäßig kein Benutzer angelegt. Registrieren Sie sich unter `http://localhost:8080`. Der erste Benutzer erhält automatisch Admin-Rechte.
 
 ---
 
-## 📊 Erfolgs-Metriken
-
-Das Projekt wird anhand folgender Metriken gemessen:
-
-| Metrik | Zielwert |
-|--------|----------|
-| Code Coverage | > 85% |
-| Test Pass Rate | > 99% |
-| System Uptime | > 99.99% |
-| Average Response Time | < 200ms |
-| Agent Success Rate | > 95% |
-| Mean Time to Resolution | < 24 Stunden |
-| User Satisfaction | > 4/5 |
-| Security Vulnerabilities | 0 Critical |
-
----
-
-## 🔒 Sicherheitsstandards
-
-Das System folgt folgenden Sicherheitsstandards:
-
-- **OWASP Top 10:** Keine Vulnerabilities aus OWASP Top 10
-- **CWE:** Keine High-Severity CWEs
-- **Verschlüsselung:** End-to-End-Verschlüsselung für sensitive Daten
-- **Authentifizierung:** Multi-Faktor-Authentifizierung
-- **Audit:** Vollständige Audit-Trails für alle Operationen
-
----
-
-## 📞 Support & Kontakt
-
-Bei Fragen zur Dokumentation oder zum Projekt kontaktieren Sie den Projekt-Manager oder die relevante Agent-Kategorie.
-
----
-
-## 📝 Versionsverlauf
-
-| Version | Datum | Änderungen |
-|---------|-------|-----------|
-| 1.0 | 2026-01-03 | Initiale Konzept-Dokumentation |
-
----
-
-**Diese Dokumentation dient als Arbeitsgrundlage für spezialisierte KI-Agenten zur autonomen Entwicklung der Agentic Workspace for Autonomous Operations. Alle Agenten sollten diese Dokumentation als Referenz verwenden.**
-
----
-
-## 📂 Dokumentation-Dateien
+## Architektur
 
 ```
-agentic-workspace-concept/
-├── README.md                          (Diese Datei)
-├── AGENTIC_WORKSPACE_KONZEPT.md       (Hauptkonzept)
-├── AGENT_INSTRUKTIONEN.md             (Agent-spezifische Anweisungen)
-├── IMPLEMENTIERUNGS_CHECKLISTE.md     (Projekt-Tracking)
-├── API_SPEZIFIKATION.md               (API-Referenz)
-└── documentation/
-    ├── anforderungen/
-    ├── architektur/
-    ├── api/
-    ├── ui-ux/
-    ├── technologie/
-    ├── implementierung/
-    ├── agent-instruktionen/
-    ├── qualitaet/
-    └── deployment/
+┌─────────────────────────────────────────────────────┐
+│                   React Frontend                     │
+│    19 Views · shadcn/ui · TailwindCSS · WebSocket   │
+└────────────────────┬────────────────────────────────┘
+                     │ REST API + WebSocket
+┌────────────────────▼────────────────────────────────┐
+│                 Express Backend                      │
+│  14 API-Module · 10 Services · 6 Middleware-Module  │
+│  JWT Auth · RBAC · Rate Limiting · Audit Logger     │
+└────────────────────┬────────────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────────────┐
+│              SQLite (WAL-Modus)                      │
+│          17 Tabellen · 23 Indexes                    │
+└─────────────────────────────────────────────────────┘
+```
+
+Vollständige Architekturdokumentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+
+---
+
+## Dokumentation
+
+| Dokument | Beschreibung |
+|---|---|
+| [User Guide](docs/USER_GUIDE.md) | Benutzerhandbuch — alle Features erklärt |
+| [API-Dokumentation](docs/API.md) | 50+ Endpunkte mit Beispielen |
+| [Deployment Guide](docs/DEPLOYMENT_GUIDE.md) | Docker, Nginx, PM2, Bare Metal |
+| [Developer Guide](docs/DEVELOPER_GUIDE.md) | Entwickler-Workflow, Code-Standards, Tests |
+| [Admin Guide](docs/ADMIN_GUIDE.md) | Systemadministration, Monitoring |
+| [Architecture](docs/ARCHITECTURE.md) | Systemarchitektur, Datenmodell, ADRs |
+| [Troubleshooting](docs/TROUBLESHOOTING_GUIDE.md) | Häufige Probleme & Lösungen |
+| [Changelog](CHANGELOG.md) | Versionshistorie |
+| [Release Notes v1.0.0](RELEASE_NOTES.md) | Highlights des Genesis Release |
+
+---
+
+## Sicherheit
+
+Das Projekt wurde nach **OWASP Top 10** entwickelt und geprüft:
+
+- AES-256-GCM Verschlüsselung für sensitive Daten
+- JWT mit konfigurierbarer Ablaufzeit
+- TOTP Multi-Faktor-Authentifizierung
+- Rate Limiting (Sliding Window, 20 req/60s auf Auth-Endpunkte)
+- Vollständiger Audit-Trail aller sicherheitsrelevanten Ereignisse
+- 35+ automatisierte Security-Tests (SQL Injection, XSS, CSRF, Auth Bypass)
+- SAST-Scanning via GitHub Actions
+
+Sicherheitslücken bitte über die [Sicherheitsrichtlinie](.github/SECURITY.md) melden.
+
+---
+
+## Tests
+
+```bash
+# Backend-Tests
+cd backend && npm test
+
+# Frontend-Tests
+cd frontend && npm test
+
+# Mit Coverage-Report
+cd backend && npm run test:coverage
+```
+
+| Kategorie | Anzahl | Coverage |
+|---|---|---|
+| Backend Unit-Tests | 280+ | 87.8% Lines |
+| Frontend Unit-Tests | 98 | ~70% Lines |
+| Integration-Tests | 35 | — |
+| Performance-Tests | 27 | — |
+| Security-Tests | 35+ | — |
+| **Gesamt** | **475+** | |
+
+---
+
+## Mitmachen
+
+Beiträge sind willkommen! Bitte zuerst die Richtlinien lesen:
+
+1. [CONTRIBUTING.md](CONTRIBUTING.md) — Git-Workflow, Code-Standards, Commit-Konventionen
+2. [ONBOARDING.md](ONBOARDING.md) — Einstieg für neue Contributor
+3. Issues und Feature Requests über [GitHub Issues](https://github.com/Valtheron/valtheron-agentic-workspace/issues) einreichen
+
+```bash
+# Feature-Branch erstellen
+git checkout -b feature/mein-feature
+
+# Änderungen vornehmen, Tests schreiben und ausführen
+npm test
+
+# Commit (Husky Pre-commit Hooks laufen automatisch)
+git commit -m "feat: mein neues Feature"
+
+# Pull Request erstellen
+git push origin feature/mein-feature
 ```
 
 ---
 
-**Letztes Update:** 2026-01-03  
-**Autor:** Manus AI  
-**Status:** Konzeptphase - Bereit für Implementierung
+## Sponsoren
+
+Dieses Projekt wird durch die Unterstützung der Community ermöglicht. Falls der Agentic Workspace nützlich ist, freuen wir uns über Ihre Unterstützung:
+
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-Unterst%C3%BCtzen-EA4AAA?style=for-the-badge&logo=github-sponsors)](https://github.com/sponsors/Valtheron)
+
+---
+
+## Roadmap
+
+| Version | Status | Highlights |
+|---|---|---|
+| **v1.0.0** | Veröffentlicht | Genesis Release — vollständiges Feature-Set |
+| **v1.1.0** | Q2 2026 | PostgreSQL-Migration, optionaler Redis-Cache |
+| **v1.2.0** | Q3 2026 | Kubernetes-Unterstützung, SMS-MFA |
+| **v2.0.0** | Q4 2026 | Internationalisierung (EN/DE), Enterprise-SSO |
+
+---
+
+## Lizenz
+
+Dieses Projekt steht unter der **MIT-Lizenz** — Details in [LICENSE](LICENSE).
+
+```
+Copyright (c) 2026 Valtheron / BlackIceSecure
+```
+
+---
+
+<div align="center">
+
+**Valtheron Agentic Workspace** — Entwickelt für autonome Operationen
+
+[Website](https://valtheron.github.io/valtheron-agentic-workspace) · [Issues](https://github.com/Valtheron/valtheron-agentic-workspace/issues) · [Discussions](https://github.com/Valtheron/valtheron-agentic-workspace/discussions)
+
+</div>
