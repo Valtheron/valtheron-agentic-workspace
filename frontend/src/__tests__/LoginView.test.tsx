@@ -52,7 +52,7 @@ describe('LoginView', () => {
 
     await waitFor(() => {
       expect(mockAuthAPI.login).toHaveBeenCalledWith('admin', 'valtheron2024');
-      expect(onLogin).toHaveBeenCalledWith(fakeUser);
+      expect(onLogin).toHaveBeenCalledWith(fakeUser, false);
     });
   });
 
@@ -84,7 +84,7 @@ describe('LoginView', () => {
 
     await waitFor(() => {
       expect(mockAuthAPI.register).toHaveBeenCalledWith('newuser', 'password123');
-      expect(onLogin).toHaveBeenCalledWith(fakeUser);
+      expect(onLogin).toHaveBeenCalledWith(fakeUser, true);
     });
   });
 });

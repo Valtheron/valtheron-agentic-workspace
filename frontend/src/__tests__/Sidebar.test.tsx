@@ -12,12 +12,12 @@ describe('Sidebar', () => {
 
   it('renders the Valtheron logo text when expanded', () => {
     render(<Sidebar {...defaultProps} />);
-    expect(screen.getByText('Valtheron')).toBeInTheDocument();
+    expect(screen.getByAltText('Valtheron')).toBeInTheDocument();
   });
 
   it('hides logo text when collapsed', () => {
     render(<Sidebar {...defaultProps} expanded={false} />);
-    expect(screen.queryByText('Valtheron')).not.toBeInTheDocument();
+    expect(screen.queryByAltText('Valtheron')).not.toBeInTheDocument();
   });
 
   it('renders all navigation items', () => {
@@ -58,7 +58,7 @@ describe('Sidebar', () => {
     const onToggle = vi.fn();
     render(<Sidebar {...defaultProps} onToggle={onToggle} />);
 
-    fireEvent.click(screen.getByText('V'));
+    fireEvent.click(screen.getByTitle('Valtheron'));
     expect(onToggle).toHaveBeenCalled();
   });
 
