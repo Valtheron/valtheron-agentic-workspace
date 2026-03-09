@@ -94,7 +94,7 @@ function App() {
   );
   const [authChecked, setAuthChecked] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
+  const [, setShowLogin] = useState(false);
 
   // Restore session from stored token on mount
   useEffect(() => {
