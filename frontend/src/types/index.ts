@@ -1,6 +1,16 @@
 // Valtheron Agentic Workspace - Type Definitions
 
-export type AgentCategory = 'trading' | 'security' | 'development' | 'qa' | 'documentation' | 'deployment' | 'analyst' | 'support' | 'integration' | 'monitoring';
+export type AgentCategory =
+  | 'trading'
+  | 'security'
+  | 'development'
+  | 'qa'
+  | 'documentation'
+  | 'deployment'
+  | 'analyst'
+  | 'support'
+  | 'integration'
+  | 'monitoring';
 export type AgentStatus = 'active' | 'idle' | 'working' | 'blocked' | 'error' | 'suspended';
 export type TaskStatus = 'pending' | 'in_progress' | 'completed' | 'failed';
 export type CertStatus = 'valid' | 'expiring' | 'expired' | 'suspended' | 'revoked' | 'archived';
@@ -65,7 +75,15 @@ export interface TestResult {
   timestamp: string;
 }
 
-export type TaskType = 'feature' | 'bug' | 'improvement' | 'research' | 'documentation' | 'testing' | 'deployment' | 'review';
+export type TaskType =
+  | 'feature'
+  | 'bug'
+  | 'improvement'
+  | 'research'
+  | 'documentation'
+  | 'testing'
+  | 'deployment'
+  | 'review';
 
 export interface Task {
   id: string;
@@ -184,8 +202,21 @@ export interface SecurityConfig {
   promptInjectionDefense: boolean;
   piiDetection: { email: boolean; phone: boolean; ssn: boolean; creditCard: boolean; address: boolean; name: boolean };
   gdpr: { exportEnabled: boolean; deletionEnabled: boolean; anonymizationEnabled: boolean };
-  zeroTrust: { networkSegmentation: boolean; mfa: boolean; leastPrivilege: boolean; continuousVerification: boolean; microSegmentation: boolean };
-  threatModel: { injection: boolean; dataLeak: boolean; privilegeEscalation: boolean; dos: boolean; supplyChain: boolean; insiderThreat: boolean };
+  zeroTrust: {
+    networkSegmentation: boolean;
+    mfa: boolean;
+    leastPrivilege: boolean;
+    continuousVerification: boolean;
+    microSegmentation: boolean;
+  };
+  threatModel: {
+    injection: boolean;
+    dataLeak: boolean;
+    privilegeEscalation: boolean;
+    dos: boolean;
+    supplyChain: boolean;
+    insiderThreat: boolean;
+  };
   rbac: { roles: string[]; activeRole: string };
   encryption: { jwt: boolean; tls: boolean; aes256: boolean; securityHeaders: boolean };
 }
@@ -203,7 +234,22 @@ export interface AnalyticsData {
   uptime: number;
 }
 
-export type ViewType = 'dashboard' | 'agents' | 'security' | 'collaboration' | 'certifications' | 'kanban' | 'projektbaum' | 'llm-settings' | 'workflows' | 'projects' | 'kill-switch' | 'analytics' | 'enterprise' | 'chat';
+export type ViewType =
+  | 'dashboard'
+  | 'agents'
+  | 'security'
+  | 'collaboration'
+  | 'certifications'
+  | 'kanban'
+  | 'projektbaum'
+  | 'llm-settings'
+  | 'workflows'
+  | 'projects'
+  | 'kill-switch'
+  | 'analytics'
+  | 'enterprise'
+  | 'chat'
+  | 'audit';
 
 // Chat Types
 export interface ChatSession {
@@ -235,7 +281,14 @@ export interface CollaborationMessage {
 
 // Project Types
 
-export type ProjectStatus = 'importing' | 'analyzing' | 'planning' | 'in_development' | 'testing' | 'completed' | 'failed';
+export type ProjectStatus =
+  | 'importing'
+  | 'analyzing'
+  | 'planning'
+  | 'in_development'
+  | 'testing'
+  | 'completed'
+  | 'failed';
 
 export interface ProjectRequirement {
   id: string;
@@ -248,10 +301,10 @@ export interface ProjectRequirement {
 
 export interface ProjectFile {
   id: string;
-  path: string;           // e.g. "src/components/Dashboard.tsx"
-  language: string;        // e.g. "typescript", "html", "css"
+  path: string; // e.g. "src/components/Dashboard.tsx"
+  language: string; // e.g. "typescript", "html", "css"
   content: string;
-  generatedBy: string;     // agent ID
+  generatedBy: string; // agent ID
   generatedAt: string;
   status: 'generated' | 'reviewed' | 'approved' | 'rejected';
   size: number;
@@ -265,7 +318,7 @@ export interface Project {
   status: ProjectStatus;
   requirements: ProjectRequirement[];
   files: ProjectFile[];
-  workflowId?: string;     // linked workflow
+  workflowId?: string; // linked workflow
   techStack: string[];
   createdAt: string;
   updatedAt: string;
@@ -291,11 +344,11 @@ export interface WorkflowStep {
   description: string;
   assignedAgentId: string | null;
   status: WorkflowStepStatus;
-  dependsOn: string[];      // step IDs
-  output: string | null;     // result/output text
+  dependsOn: string[]; // step IDs
+  output: string | null; // result/output text
   startedAt?: string;
   completedAt?: string;
-  progress: number;          // 0-100
+  progress: number; // 0-100
   estimatedDuration: number; // seconds
   retries: number;
 }
@@ -315,7 +368,15 @@ export interface Workflow {
 
 // LLM Provider & Model Types
 
-export type LLMProviderType = 'openai' | 'anthropic' | 'google' | 'mistral' | 'groq' | 'ollama' | 'openrouter' | 'custom';
+export type LLMProviderType =
+  | 'openai'
+  | 'anthropic'
+  | 'google'
+  | 'mistral'
+  | 'groq'
+  | 'ollama'
+  | 'openrouter'
+  | 'custom';
 
 export interface LLMModel {
   id: string;
@@ -323,7 +384,7 @@ export interface LLMModel {
   provider: LLMProviderType;
   contextWindow: number;
   maxOutput: number;
-  costPer1kInput?: number;  // USD, undefined for local
+  costPer1kInput?: number; // USD, undefined for local
   costPer1kOutput?: number;
   capabilities: ('text' | 'vision' | 'code' | 'function-calling' | 'json-mode')[];
   isLocal: boolean;

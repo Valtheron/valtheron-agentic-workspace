@@ -2,7 +2,9 @@
 
 // Use relative paths when Vite proxy is configured, fallback to direct URLs
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
-const WS_BASE = import.meta.env.VITE_WS_URL || `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws`;
+const WS_BASE =
+  import.meta.env.VITE_WS_URL ||
+  `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws`;
 
 // Token management
 let authToken: string | null = localStorage.getItem('valtheron_token');
@@ -20,21 +22,44 @@ export function getToken(): string | null {
   return authToken;
 }
 
-// Base fetch wrapper
-async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
+// Tracks whether a token refresh is in flight to avoid cascading retries
+let refreshPromise: Promise<string> | null = null;
+
+/** Response-interceptor: on 401, silently try a token refresh then retry once. */
+async function apiFetch<T>(path: string, options: RequestInit = {}, _retry = true): Promise<T> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...(options.headers as Record<string, string> || {}),
+    ...((options.headers as Record<string, string>) || {}),
   };
 
+  // Request-interceptor: attach bearer token
   if (authToken) {
     headers['Authorization'] = `Bearer ${authToken}`;
   }
 
-  const response = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers,
-  });
+  const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
+
+  // Response-interceptor: handle 401 → try refresh → retry
+  if (response.status === 401 && _retry && authToken && path !== '/auth/refresh') {
+    try {
+      if (!refreshPromise) {
+        refreshPromise = apiFetch<{ token: string }>('/auth/refresh', { method: 'POST' }, false)
+          .then((data) => {
+            setToken(data.token);
+            return data.token;
+          })
+          .finally(() => {
+            refreshPromise = null;
+          });
+      }
+      await refreshPromise;
+      // Retry the original request once with the new token
+      return apiFetch<T>(path, options, false);
+    } catch {
+      // Refresh failed — clear token so the app can redirect to login
+      setToken(null);
+    }
+  }
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({ error: response.statusText }));
@@ -47,7 +72,12 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
 // ===== Auth API =====
 export const authAPI = {
   login: (username: string, password: string) =>
-    apiFetch<{ token: string; user: { id: string; username: string; role: string } }>('/auth/login', {
+    apiFetch<{
+      token: string;
+      user: { id: string; username: string; role: string };
+      mfaRequired?: boolean;
+      userId?: string;
+    }>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ username, password }),
     }),
@@ -59,6 +89,57 @@ export const authAPI = {
     }),
 
   me: () => apiFetch<{ user: { userId: string; username: string; role: string } }>('/auth/me'),
+
+  logout: () => apiFetch<{ success: boolean }>('/auth/logout', { method: 'POST' }).finally(() => setToken(null)),
+
+  refresh: () =>
+    apiFetch<{ token: string }>('/auth/refresh', { method: 'POST' }, false).then((data) => {
+      setToken(data.token);
+      return data;
+    }),
+
+  // MFA endpoints (Phase 4)
+  mfaSetup: () =>
+    apiFetch<{ secret: string; uri: string; qrDataUrl: string; backupCodes: string[] }>('/auth/mfa/setup', {
+      method: 'POST',
+    }),
+
+  mfaConfirm: (code: string) =>
+    apiFetch<{ success: boolean }>('/auth/mfa/confirm', { method: 'POST', body: JSON.stringify({ code }) }),
+
+  mfaVerify: (userId: string, code: string) =>
+    apiFetch<{ token: string; user: { id: string; username: string; role: string } }>('/auth/mfa/verify', {
+      method: 'POST',
+      body: JSON.stringify({ userId, code }),
+    }),
+
+  mfaDisable: (code: string) =>
+    apiFetch<{ success: boolean }>('/auth/mfa/disable', { method: 'POST', body: JSON.stringify({ code }) }),
+
+  mfaStatus: () => apiFetch<{ mfaEnabled: boolean }>('/auth/mfa/status'),
+};
+
+// ===== Backup API (Phase 4) =====
+export const backupAPI = {
+  list: () => apiFetch<{ backups: unknown[]; count: number }>('/backup'),
+  create: () => apiFetch<{ success: boolean; backup: unknown }>('/backup', { method: 'POST' }),
+  restore: (filename: string) =>
+    apiFetch<{ success: boolean }>('/backup/restore', { method: 'POST', body: JSON.stringify({ filename }) }),
+};
+
+// ===== Secrets API (Phase 4) =====
+export const secretsAPI = {
+  list: () => apiFetch<{ secrets: unknown[] }>('/secrets'),
+  get: (name: string) => apiFetch<{ name: string; value: string }>(`/secrets/${encodeURIComponent(name)}`),
+  create: (name: string, value: string) =>
+    apiFetch<{ success: boolean }>('/secrets', { method: 'POST', body: JSON.stringify({ name, value }) }),
+  rotate: (name: string, value: string) =>
+    apiFetch<{ success: boolean }>(`/secrets/${encodeURIComponent(name)}`, {
+      method: 'PUT',
+      body: JSON.stringify({ value }),
+    }),
+  delete: (name: string) =>
+    apiFetch<{ success: boolean }>(`/secrets/${encodeURIComponent(name)}`, { method: 'DELETE' }),
 };
 
 // ===== Agents API =====
@@ -76,27 +157,36 @@ export const agentsAPI = {
 
   get: (id: string) => apiFetch<unknown>(`/agents/${id}`),
 
-  create: (data: { name: string; role: string; category: string; systemPrompt?: string; personality?: unknown; parameters?: unknown }) =>
-    apiFetch<unknown>('/agents', { method: 'POST', body: JSON.stringify(data) }),
+  create: (data: {
+    name: string;
+    role: string;
+    category: string;
+    systemPrompt?: string;
+    personality?: unknown;
+    parameters?: unknown;
+  }) => apiFetch<unknown>('/agents', { method: 'POST', body: JSON.stringify(data) }),
 
   update: (id: string, data: Record<string, unknown>) =>
     apiFetch<unknown>(`/agents/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
 
-  delete: (id: string) =>
-    apiFetch<{ success: boolean }>(`/agents/${id}`, { method: 'DELETE' }),
+  delete: (id: string) => apiFetch<{ success: boolean }>(`/agents/${id}`, { method: 'DELETE' }),
 
-  suspend: (id: string) =>
-    apiFetch<{ success: boolean }>(`/agents/${id}/suspend`, { method: 'POST' }),
+  suspend: (id: string) => apiFetch<{ success: boolean }>(`/agents/${id}/suspend`, { method: 'POST' }),
 
-  activate: (id: string) =>
-    apiFetch<{ success: boolean }>(`/agents/${id}/activate`, { method: 'POST' }),
+  activate: (id: string) => apiFetch<{ success: boolean }>(`/agents/${id}/activate`, { method: 'POST' }),
 
   stats: () => apiFetch<unknown>('/agents/stats/overview'),
 };
 
 // ===== Tasks API =====
 export const tasksAPI = {
-  list: (params?: { status?: string; category?: string; kanbanColumn?: string; assignedAgentId?: string; priority?: string }) => {
+  list: (params?: {
+    status?: string;
+    category?: string;
+    kanbanColumn?: string;
+    assignedAgentId?: string;
+    priority?: string;
+  }) => {
     const query = new URLSearchParams();
     if (params) {
       for (const [key, value] of Object.entries(params)) {
@@ -109,14 +199,20 @@ export const tasksAPI = {
 
   get: (id: string) => apiFetch<unknown>(`/tasks/${id}`),
 
-  create: (data: { title: string; category: string; description?: string; priority?: string; assignedAgentId?: string; taskType?: string; tags?: string[] }) =>
-    apiFetch<unknown>('/tasks', { method: 'POST', body: JSON.stringify(data) }),
+  create: (data: {
+    title: string;
+    category: string;
+    description?: string;
+    priority?: string;
+    assignedAgentId?: string;
+    taskType?: string;
+    tags?: string[];
+  }) => apiFetch<unknown>('/tasks', { method: 'POST', body: JSON.stringify(data) }),
 
   update: (id: string, data: Record<string, unknown>) =>
     apiFetch<unknown>(`/tasks/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
 
-  delete: (id: string) =>
-    apiFetch<{ success: boolean }>(`/tasks/${id}`, { method: 'DELETE' }),
+  delete: (id: string) => apiFetch<{ success: boolean }>(`/tasks/${id}`, { method: 'DELETE' }),
 
   move: (id: string, kanbanColumn: string) =>
     apiFetch<unknown>(`/tasks/${id}/move`, { method: 'PATCH', body: JSON.stringify({ kanbanColumn }) }),
@@ -136,14 +232,11 @@ export const workflowsAPI = {
   update: (id: string, data: Record<string, unknown>) =>
     apiFetch<unknown>(`/workflows/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
 
-  delete: (id: string) =>
-    apiFetch<{ success: boolean }>(`/workflows/${id}`, { method: 'DELETE' }),
+  delete: (id: string) => apiFetch<{ success: boolean }>(`/workflows/${id}`, { method: 'DELETE' }),
 
-  start: (id: string) =>
-    apiFetch<unknown>(`/workflows/${id}/start`, { method: 'POST' }),
+  start: (id: string) => apiFetch<unknown>(`/workflows/${id}/start`, { method: 'POST' }),
 
-  pause: (id: string) =>
-    apiFetch<unknown>(`/workflows/${id}/pause`, { method: 'POST' }),
+  pause: (id: string) => apiFetch<unknown>(`/workflows/${id}/pause`, { method: 'POST' }),
 
   completeStep: (workflowId: string, stepId: string, output?: string) =>
     apiFetch<unknown>(`/workflows/${workflowId}/steps/${stepId}/complete`, {
@@ -168,8 +261,7 @@ export const securityAPI = {
   createEvent: (data: { type: string; severity: string; message: string; agentId?: string }) =>
     apiFetch<unknown>('/security/events', { method: 'POST', body: JSON.stringify(data) }),
 
-  resolveEvent: (id: string) =>
-    apiFetch<{ success: boolean }>(`/security/events/${id}/resolve`, { method: 'PATCH' }),
+  resolveEvent: (id: string) => apiFetch<{ success: boolean }>(`/security/events/${id}/resolve`, { method: 'PATCH' }),
 
   killSwitch: () => apiFetch<unknown>('/security/kill-switch'),
 
@@ -180,7 +272,9 @@ export const securityAPI = {
     }),
 
   disarmKillSwitch: () =>
-    apiFetch<{ success: boolean; armed: boolean; reactivatedAgents: number }>('/security/kill-switch/disarm', { method: 'POST' }),
+    apiFetch<{ success: boolean; armed: boolean; reactivatedAgents: number }>('/security/kill-switch/disarm', {
+      method: 'POST',
+    }),
 
   auditLog: (params?: { agentId?: string; riskLevel?: string }) => {
     const query = new URLSearchParams();
@@ -202,6 +296,9 @@ export const analyticsAPI = {
   dashboard: () => apiFetch<unknown>('/analytics/dashboard'),
   performance: () => apiFetch<unknown>('/analytics/performance'),
   sla: () => apiFetch<unknown>('/analytics/sla'),
+  agentDrillDown: (agentId: string) => apiFetch<unknown>(`/analytics/agents/${agentId}`),
+  exportReport: (type: string, format: 'json' | 'csv' = 'json') =>
+    apiFetch<unknown>(`/analytics/export?type=${type}&format=${format}`),
 };
 
 // ===== Chat API =====
@@ -214,11 +311,9 @@ export const chatAPI = {
   createSession: (agentId: string, title?: string) =>
     apiFetch<unknown>('/chat/sessions', { method: 'POST', body: JSON.stringify({ agentId, title }) }),
 
-  deleteSession: (id: string) =>
-    apiFetch<{ success: boolean }>(`/chat/sessions/${id}`, { method: 'DELETE' }),
+  deleteSession: (id: string) => apiFetch<{ success: boolean }>(`/chat/sessions/${id}`, { method: 'DELETE' }),
 
-  getMessages: (sessionId: string) =>
-    apiFetch<{ messages: unknown[] }>(`/chat/sessions/${sessionId}/messages`),
+  getMessages: (sessionId: string) => apiFetch<{ messages: unknown[] }>(`/chat/sessions/${sessionId}/messages`),
 
   sendMessage: (sessionId: string, content: string, llmHeaders?: Record<string, string>) =>
     apiFetch<unknown>(`/chat/sessions/${sessionId}/messages`, {
@@ -230,17 +325,22 @@ export const chatAPI = {
 
 // ===== Collaboration API =====
 export const collaborationAPI = {
-  listSessions: () =>
-    apiFetch<{ sessions: unknown[] }>('/collaboration/sessions'),
+  listSessions: () => apiFetch<{ sessions: unknown[] }>('/collaboration/sessions'),
 
-  createSession: (data: { name: string; agents: string[]; coordinatorPrompt?: string; delegationStrategy?: string; conflictResolution?: string; consensusThreshold?: number; maxIterations?: number }) =>
-    apiFetch<unknown>('/collaboration/sessions', { method: 'POST', body: JSON.stringify(data) }),
+  createSession: (data: {
+    name: string;
+    agents: string[];
+    coordinatorPrompt?: string;
+    delegationStrategy?: string;
+    conflictResolution?: string;
+    consensusThreshold?: number;
+    maxIterations?: number;
+  }) => apiFetch<unknown>('/collaboration/sessions', { method: 'POST', body: JSON.stringify(data) }),
 
   updateSession: (id: string, data: { status?: string; synthesis?: string }) =>
     apiFetch<unknown>(`/collaboration/sessions/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
 
-  deleteSession: (id: string) =>
-    apiFetch<{ success: boolean }>(`/collaboration/sessions/${id}`, { method: 'DELETE' }),
+  deleteSession: (id: string) => apiFetch<{ success: boolean }>(`/collaboration/sessions/${id}`, { method: 'DELETE' }),
 
   getMessages: (sessionId: string) =>
     apiFetch<{ messages: unknown[] }>(`/collaboration/sessions/${sessionId}/messages`),
@@ -252,9 +352,71 @@ export const collaborationAPI = {
     }),
 };
 
+// ===== File Sharing API =====
+export const fileAPI = {
+  listFiles: (sessionId: string) => apiFetch<{ files: unknown[] }>(`/collaboration/sessions/${sessionId}/files`),
+
+  uploadFile: (sessionId: string, data: { filename: string; content: string; mimeType?: string }) =>
+    apiFetch<unknown>(`/collaboration/sessions/${sessionId}/files`, { method: 'POST', body: JSON.stringify(data) }),
+
+  getFile: (fileId: string) => apiFetch<unknown>(`/collaboration/files/${fileId}`),
+
+  updateFile: (fileId: string, data: { content: string; changeDescription?: string }) =>
+    apiFetch<unknown>(`/collaboration/files/${fileId}`, { method: 'PUT', body: JSON.stringify(data) }),
+
+  getVersions: (fileId: string) => apiFetch<{ versions: unknown[] }>(`/collaboration/files/${fileId}/versions`),
+
+  getVersion: (fileId: string, version: number) =>
+    apiFetch<unknown>(`/collaboration/files/${fileId}/versions/${version}`),
+
+  deleteFile: (fileId: string) =>
+    apiFetch<{ success: boolean }>(`/collaboration/files/${fileId}`, { method: 'DELETE' }),
+};
+
+// ===== Project Tree API =====
+export const projectTreeAPI = {
+  getTree: () => apiFetch<{ tree: unknown[] }>('/project-tree'),
+  getFlat: () => apiFetch<{ nodes: unknown[] }>('/project-tree/flat'),
+  createNode: (data: {
+    parentId?: string;
+    name: string;
+    type?: string;
+    status?: string;
+    progress?: number;
+    agentId?: string;
+    description?: string;
+  }) => apiFetch<unknown>('/project-tree', { method: 'POST', body: JSON.stringify(data) }),
+  updateNode: (id: string, data: Record<string, unknown>) =>
+    apiFetch<unknown>(`/project-tree/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+  deleteNode: (id: string) =>
+    apiFetch<{ success: boolean; deletedCount: number }>(`/project-tree/${id}`, { method: 'DELETE' }),
+};
+
+// ===== Notifications API =====
+export const notificationsAPI = {
+  list: (params?: { read?: string; severity?: string; limit?: number }) => {
+    const query = new URLSearchParams();
+    if (params?.read !== undefined) query.set('read', params.read);
+    if (params?.severity) query.set('severity', params.severity);
+    if (params?.limit) query.set('limit', String(params.limit));
+    const qs = query.toString();
+    return apiFetch<{ notifications: unknown[]; unreadCount: number }>(`/notifications${qs ? `?${qs}` : ''}`);
+  },
+  markRead: (id: string) => apiFetch<{ success: boolean }>(`/notifications/${id}/read`, { method: 'PATCH' }),
+  markAllRead: () => apiFetch<{ success: boolean }>('/notifications/read-all', { method: 'POST' }),
+  delete: (id: string) => apiFetch<{ success: boolean }>(`/notifications/${id}`, { method: 'DELETE' }),
+};
+
 // ===== Health API =====
 export const healthAPI = {
-  check: () => apiFetch<{ status: string; version: string; timestamp: string; database: unknown; websocket: unknown }>('/health'),
+  check: () =>
+    apiFetch<{
+      status: string;
+      version: string;
+      timestamp: string;
+      database: { agents: number; tasks: number };
+      websocket: { clients: number };
+    }>('/health'),
 };
 
 // ===== WebSocket Client =====
@@ -323,7 +485,7 @@ export class ValtheronWebSocket {
   }
 
   private emit(event: string, data: unknown) {
-    this.listeners.get(event)?.forEach(cb => cb(data));
+    this.listeners.get(event)?.forEach((cb) => cb(data));
   }
 
   disconnect() {

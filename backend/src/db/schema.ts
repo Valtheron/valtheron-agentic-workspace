@@ -40,6 +40,10 @@ function initSchema(db: Database.Database) {
       username TEXT UNIQUE NOT NULL,
       passwordHash TEXT NOT NULL,
       role TEXT NOT NULL DEFAULT 'operator',
+      mfaEnabled INTEGER NOT NULL DEFAULT 0,
+      mfaSecret TEXT,
+      mfaPendingSecret TEXT,
+      mfaBackupCodes TEXT,
       createdAt TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
@@ -86,6 +90,7 @@ function initSchema(db: Database.Database) {
       progress INTEGER DEFAULT 0,
       estimatedHours REAL,
       actualHours REAL,
+      result TEXT,
       FOREIGN KEY (assignedAgentId) REFERENCES agents(id)
     );
 
@@ -193,6 +198,57 @@ function initSchema(db: Database.Database) {
       FOREIGN KEY (sessionId) REFERENCES collaboration_sessions(id)
     );
 
+    CREATE TABLE IF NOT EXISTS shared_files (
+      id TEXT PRIMARY KEY,
+      sessionId TEXT NOT NULL,
+      filename TEXT NOT NULL,
+      content TEXT NOT NULL DEFAULT '',
+      mimeType TEXT NOT NULL DEFAULT 'text/plain',
+      size INTEGER NOT NULL DEFAULT 0,
+      version INTEGER NOT NULL DEFAULT 1,
+      uploadedBy TEXT NOT NULL,
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      updatedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (sessionId) REFERENCES collaboration_sessions(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS file_versions (
+      id TEXT PRIMARY KEY,
+      fileId TEXT NOT NULL,
+      version INTEGER NOT NULL,
+      content TEXT NOT NULL DEFAULT '',
+      size INTEGER NOT NULL DEFAULT 0,
+      editedBy TEXT NOT NULL,
+      changeDescription TEXT NOT NULL DEFAULT '',
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (fileId) REFERENCES shared_files(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS notifications (
+      id TEXT PRIMARY KEY,
+      type TEXT NOT NULL,
+      title TEXT NOT NULL,
+      message TEXT NOT NULL,
+      severity TEXT NOT NULL DEFAULT 'info',
+      targetAgentId TEXT,
+      read INTEGER NOT NULL DEFAULT 0,
+      createdAt TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS project_tree (
+      id TEXT PRIMARY KEY,
+      parentId TEXT,
+      name TEXT NOT NULL,
+      type TEXT NOT NULL DEFAULT 'module',
+      status TEXT NOT NULL DEFAULT 'active',
+      progress INTEGER NOT NULL DEFAULT 0,
+      agentId TEXT,
+      description TEXT NOT NULL DEFAULT '',
+      sortOrder INTEGER NOT NULL DEFAULT 0,
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      updatedAt TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
     CREATE TABLE IF NOT EXISTS metrics_history (
       id TEXT PRIMARY KEY,
       timestamp TEXT NOT NULL DEFAULT (datetime('now')),
@@ -206,5 +262,59 @@ function initSchema(db: Database.Database) {
     );
 
     INSERT OR IGNORE INTO kill_switch (id, armed) VALUES (1, 0);
+
+    -- Performance indexes (Phase 4)
+    CREATE INDEX IF NOT EXISTS idx_agents_status ON agents(status);
+    CREATE INDEX IF NOT EXISTS idx_agents_category ON agents(category);
+    CREATE INDEX IF NOT EXISTS idx_tasks_status ON tasks(status);
+    CREATE INDEX IF NOT EXISTS idx_tasks_priority ON tasks(priority);
+    CREATE INDEX IF NOT EXISTS idx_tasks_kanban ON tasks(kanbanColumn);
+    CREATE INDEX IF NOT EXISTS idx_tasks_assigned ON tasks(assignedAgentId);
+    CREATE INDEX IF NOT EXISTS idx_tasks_category ON tasks(category);
+    CREATE INDEX IF NOT EXISTS idx_security_events_severity ON security_events(severity);
+    CREATE INDEX IF NOT EXISTS idx_security_events_type ON security_events(type);
+    CREATE INDEX IF NOT EXISTS idx_security_events_timestamp ON security_events(timestamp);
+    CREATE INDEX IF NOT EXISTS idx_audit_log_timestamp ON audit_log(timestamp);
+    CREATE INDEX IF NOT EXISTS idx_audit_log_risk ON audit_log(riskLevel);
+    CREATE INDEX IF NOT EXISTS idx_audit_log_agent ON audit_log(agentId);
+    CREATE INDEX IF NOT EXISTS idx_chat_messages_session ON chat_messages(sessionId);
+    CREATE INDEX IF NOT EXISTS idx_chat_sessions_agent ON chat_sessions(agentId);
+    CREATE INDEX IF NOT EXISTS idx_collab_messages_session ON collaboration_messages(sessionId);
+    CREATE INDEX IF NOT EXISTS idx_shared_files_session ON shared_files(sessionId);
+    CREATE INDEX IF NOT EXISTS idx_file_versions_file ON file_versions(fileId);
+    CREATE INDEX IF NOT EXISTS idx_notifications_read ON notifications(read);
+    CREATE INDEX IF NOT EXISTS idx_notifications_severity ON notifications(severity);
+    CREATE INDEX IF NOT EXISTS idx_project_tree_parent ON project_tree(parentId);
+    CREATE INDEX IF NOT EXISTS idx_metrics_history_ts ON metrics_history(timestamp);
+    CREATE INDEX IF NOT EXISTS idx_workflows_status ON workflows(status);
   `);
+
+  // Migration: add result column to tasks
+  try {
+    db.exec(`ALTER TABLE tasks ADD COLUMN result TEXT`);
+  } catch {
+    /* column already exists */
+  }
+
+  // Migration: add MFA columns to existing databases
+  try {
+    db.exec(`ALTER TABLE users ADD COLUMN mfaEnabled INTEGER NOT NULL DEFAULT 0`);
+  } catch {
+    /* column already exists */
+  }
+  try {
+    db.exec(`ALTER TABLE users ADD COLUMN mfaSecret TEXT`);
+  } catch {
+    /* column already exists */
+  }
+  try {
+    db.exec(`ALTER TABLE users ADD COLUMN mfaPendingSecret TEXT`);
+  } catch {
+    /* column already exists */
+  }
+  try {
+    db.exec(`ALTER TABLE users ADD COLUMN mfaBackupCodes TEXT`);
+  } catch {
+    /* column already exists */
+  }
 }

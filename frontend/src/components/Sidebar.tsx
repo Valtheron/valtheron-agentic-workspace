@@ -10,6 +10,7 @@ const navItems: { view: ViewType; icon: string; label: string }[] = [
   { view: 'analytics', icon: '\u2261', label: 'Analytics' },
   { view: 'projektbaum', icon: '\u2502', label: 'Projekt-Baum' },
   { view: 'security', icon: '\u26A0', label: 'Sicherheit' },
+  { view: 'audit', icon: '\u2203', label: 'Audit-Trail' },
   { view: 'chat', icon: '\u2709', label: 'Agent Chat' },
   { view: 'collaboration', icon: '\u2694', label: 'Kollaboration' },
   { view: 'certifications', icon: '\u2605', label: 'Zertifizierungen' },
@@ -27,12 +28,15 @@ interface SidebarProps {
 export default function Sidebar({ currentView, onViewChange, expanded, onToggle }: SidebarProps) {
   return (
     <nav className={`sidebar${expanded ? ' expanded' : ''}`}>
-      <div className="sidebar-logo" onClick={onToggle}>
-        <div className="logo-icon">V</div>
-        {expanded && <span className="logo-text">Valtheron</span>}
+      <div className="sidebar-logo" onClick={onToggle} title="Valtheron">
+        {expanded ? (
+          <img src="/valtheron-logo.gif" alt="Valtheron" className="logo-img-full"/>
+        ) : (
+          <img src="/valtheron-logo.gif" alt="V" className="logo-img-icon"/>
+        )}
       </div>
       <div className="sidebar-nav">
-        {navItems.map(item => (
+        {navItems.map((item) => (
           <button
             key={item.view}
             className={`sidebar-item${currentView === item.view ? ' active' : ''}`}
@@ -45,7 +49,11 @@ export default function Sidebar({ currentView, onViewChange, expanded, onToggle 
         ))}
       </div>
       <div className="sidebar-footer">
-        <button className="sidebar-item" title="Ctrl+K" onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }))}>
+        <button
+          className="sidebar-item"
+          title="Ctrl+K"
+          onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }))}
+        >
           <span className="icon">/</span>
           {expanded && <span className="label">Suche (Ctrl+K)</span>}
         </button>
