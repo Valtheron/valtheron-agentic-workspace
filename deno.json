@@ -1,0 +1,9 @@
+{
+  "exclude": [
+    "backend/",
+    "frontend/",
+    "scripts/",
+    "node_modules/",
+    "docs/"
+  ]
+}
