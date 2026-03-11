@@ -27,7 +27,9 @@
 
 ### Vision
 
-Die **Agentic Workspace for Autonomous Operations** ist eine spezialisierte Plattform zur Orchestrierung von 200 spezialisierten KI-Agenten für autonome Operationen in den Bereichen Trading, Sicherheit, Entwicklung und strategische Operationen. Die Plattform ermöglicht Multi-Agent-Zusammenarbeit mit Echtzeit-Audit-Trails und Kill-Switch-Schutz.
+Ein System, das nicht nur funktioniert — sondern das, was es tut, mit Würde tut.
+
+Der Valtheron Agentic Workspace ist nicht gebaut worden, um zu beeindrucken. Er ist gebaut worden, um zu dienen: als verlässliches Fundament für autonome Operationen, bei denen jeder Fehler Konsequenzen hat und jede Entscheidung nachvollziehbar sein muss.
 
 ### Kernfunktionalität
 
