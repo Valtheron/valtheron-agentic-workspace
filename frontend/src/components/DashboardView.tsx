@@ -103,7 +103,7 @@ export default function DashboardView({ analytics, killSwitch, securityEvents, a
                 className={`ks-button ${killSwitch.armed ? 'armed' : 'safe'}`}
                 onClick={onToggleKillSwitch}
               >
-                {killSwitch.armed ? 'ARMED' : 'SAFE'}
+                {killSwitch.armed ? 'AKTIV' : 'INAKTIV'}
               </button>
               <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 8 }}>
                 {killSwitch.armed ? 'System geschützt - Auto-Trigger aktiv' : 'Kill-Switch deaktiviert'}

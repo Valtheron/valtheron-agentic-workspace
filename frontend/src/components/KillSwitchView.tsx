@@ -153,7 +153,7 @@ export default function KillSwitchView({
               transition: 'all 0.3s ease',
             }}
           >
-            {killSwitch.armed ? 'ARMED' : 'SAFE'}
+            {killSwitch.armed ? 'AKTIV' : 'INAKTIV'}
           </button>
           <div style={{ textAlign: 'center', maxWidth: 400 }}>
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>
@@ -268,7 +268,7 @@ export default function KillSwitchView({
                         <span
                           className={`badge ${evt.action === 'armed' || evt.action === 'triggered' ? 'critical' : evt.action === 'disarmed' ? 'valid' : 'info'}`}
                         >
-                          {evt.action}
+                          {evt.action === 'armed' ? 'aktiviert' : evt.action === 'disarmed' ? 'deaktiviert' : evt.action}
                         </span>
                       </td>
                       <td>{evt.reason || '-'}</td>

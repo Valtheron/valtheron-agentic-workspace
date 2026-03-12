@@ -394,13 +394,24 @@ function App() {
     setKillSwitch(ks);
   };
 
-  const handleToggleKillSwitch = () => {
-    setKillSwitch((prev) => ({
-      ...prev,
-      armed: !prev.armed,
-      triggeredAt: !prev.armed ? undefined : new Date().toISOString(),
-      triggeredBy: !prev.armed ? undefined : 'admin',
-    }));
+  const handleToggleKillSwitch = async () => {
+    try {
+      if (killSwitch.armed) {
+        await securityAPI.disarmKillSwitch();
+      } else {
+        await securityAPI.armKillSwitch();
+      }
+      const updated = await securityAPI.killSwitch();
+      setKillSwitch(updated as KillSwitch);
+    } catch {
+      // Fallback: lokaler State wenn Backend nicht erreichbar
+      setKillSwitch((prev) => ({
+        ...prev,
+        armed: !prev.armed,
+        triggeredAt: !prev.armed ? undefined : new Date().toISOString(),
+        triggeredBy: !prev.armed ? undefined : 'admin',
+      }));
+    }
   };
 
   const handleSelectAgent = (id: string) => {
@@ -464,7 +475,7 @@ function App() {
             </span>
             {runningWorkflows > 0 && <span className="badge working">{runningWorkflows} WF läuft</span>}
             <span className={`badge ${killSwitch.armed ? 'valid' : 'critical'}`}>
-              KS: {killSwitch.armed ? 'ARMED' : 'OFF'}
+              KS: {killSwitch.armed ? 'AKTIV' : 'INAKTIV'}
             </span>
             {authUser ? (
               <>
