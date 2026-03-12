@@ -9,8 +9,8 @@
 [![CI](https://github.com/Valtheron/valtheron-agentic-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/Valtheron/valtheron-agentic-workspace/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)](CHANGELOG.md)
 [![Lizenz](https://img.shields.io/badge/Lizenz-MIT-green?style=flat-square)](LICENSE)
-[![Coverage](https://img.shields.io/badge/Coverage-87.8%25-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
-[![Tests](https://img.shields.io/badge/Tests-475%2B%20bestanden-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
+[![Coverage](https://img.shields.io/badge/Coverage-82.3%25-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
+[![Tests](https://img.shields.io/badge/Tests-468%20bestanden-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org/)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](docker-compose.yml)
@@ -148,7 +148,7 @@ Vollständige Architekturdokumentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE
 | Dokument | Beschreibung |
 |---|---|
 | [User Guide](docs/USER_GUIDE.md) | Benutzerhandbuch — alle Features erklärt |
-| [API-Dokumentation](docs/API.md) | 50+ Endpunkte mit Beispielen |
+| [API-Dokumentation](docs/API.md) | 88 Endpunkte mit Beispielen |
 | [Deployment Guide](docs/DEPLOYMENT_GUIDE.md) | Docker, Nginx, PM2, Bare Metal |
 | [Developer Guide](docs/DEVELOPER_GUIDE.md) | Entwickler-Workflow, Code-Standards, Tests |
 | [Admin Guide](docs/ADMIN_GUIDE.md) | Systemadministration, Monitoring |
