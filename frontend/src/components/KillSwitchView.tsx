@@ -61,10 +61,10 @@ export default function KillSwitchView({
   };
 
   const handleConfirmToggle = () => {
-    const action = killSwitch.armed ? 'disarmed' : 'armed';
+    const action = killSwitch.aktiv ? 'deaktiviert' : 'aktiviert';
     addEvent(
       action,
-      confirmReason || (action === 'armed' ? 'Manual activation' : 'Manual deactivation'),
+      confirmReason || (action === 'aktiviert' ? 'Manuell aktiviert' : 'Manual deactivation'),
       killSwitch.affectedAgents,
     );
     onToggleKillSwitch();
