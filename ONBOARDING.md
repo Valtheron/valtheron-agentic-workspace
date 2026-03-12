@@ -278,8 +278,8 @@ PATCH  /api/tasks/:id           Task aktualisieren (inkl. Status-Wechsel)
 GET    /api/analytics/dashboard Haupt-Metriken
 GET    /api/security/audit      Audit-Logs (+ ?limit=, ?offset=, ?action=)
 
-POST   /api/security/kill-switch/arm    Kill-Switch aktivieren
-POST   /api/security/kill-switch/disarm Kill-Switch deaktivieren
+POST   /api/security/kill-switch/aktivieren    Kill-Switch aktivieren
+POST   /api/security/kill-switch/deaktivieren Kill-Switch deaktivieren
 
 GET    /api/health              System-Gesundheitsstatus
 ```

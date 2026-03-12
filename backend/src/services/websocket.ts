@@ -134,10 +134,10 @@ export function broadcastSecurityEvent(event: { type: string; severity: string; 
   }, 'security');
 }
 
-export function broadcastKillSwitch(armed: boolean, reason?: string) {
+export function broadcastKillSwitch(aktiv: boolean, reason?: string) {
   broadcast({
     type: 'kill_switch',
-    payload: { armed, reason },
+    payload: { aktiv, reason },
     timestamp: new Date().toISOString(),
   });
 }

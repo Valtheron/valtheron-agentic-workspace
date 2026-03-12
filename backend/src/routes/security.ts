@@ -77,7 +77,7 @@ router.get('/kill-switch', (_req: Request, res: Response) => {
   const ks = db.prepare('SELECT * FROM kill_switch WHERE id = 1').get() as Record<string, unknown>;
 
   res.json({
-    armed: Boolean(ks.armed),
+    aktiv: Boolean(ks.aktiv),
     triggeredAt: ks.triggeredAt,
     triggeredBy: ks.triggeredBy,
     reason: ks.reason,
@@ -87,8 +87,8 @@ router.get('/kill-switch', (_req: Request, res: Response) => {
   });
 });
 
-// POST /api/security/kill-switch/arm
-router.post('/kill-switch/arm', (req: Request, res: Response) => {
+// POST /api/security/kill-switch/aktivieren
+router.post('/kill-switch/aktivieren', (req: Request, res: Response) => {
   const db = getDb();
   const { reason } = req.body;
   const username = req.user?.username || 'system';
@@ -98,16 +98,16 @@ router.post('/kill-switch/arm', (req: Request, res: Response) => {
 
   history.push({
     id: uuid(),
-    action: 'armed',
+    action: 'aktiviert',
     triggeredBy: username,
-    reason: reason || 'Manual arm',
+    reason: reason || 'Manuell aktiviert',
     affectedAgents: [],
     timestamp: new Date().toISOString(),
   });
 
   db.prepare(
-    'UPDATE kill_switch SET armed = 1, triggeredBy = ?, reason = ?, triggeredAt = ?, history = ? WHERE id = 1',
-  ).run(username, reason || 'Manual arm', new Date().toISOString(), JSON.stringify(history));
+    'UPDATE kill_switch SET aktiv = 1, triggeredBy = ?, reason = ?, triggeredAt = ?, history = ? WHERE id = 1',
+  ).run(username, reason || 'Manuell aktiviert', new Date().toISOString(), JSON.stringify(history));
 
   // Suspend all active agents
   const agents = db.prepare("SELECT id FROM agents WHERE status IN ('active', 'working')").all() as { id: string }[];
@@ -118,11 +118,11 @@ router.post('/kill-switch/arm', (req: Request, res: Response) => {
     db.prepare('UPDATE kill_switch SET affectedAgents = ? WHERE id = 1').run(JSON.stringify(agentIds));
   }
 
-  res.json({ success: true, armed: true, suspendedAgents: agentIds.length });
+  res.json({ success: true, aktiv: true, suspendedAgents: agentIds.length });
 });
 
-// POST /api/security/kill-switch/disarm
-router.post('/kill-switch/disarm', (req: Request, res: Response) => {
+// POST /api/security/kill-switch/deaktivieren
+router.post('/kill-switch/deaktivieren', (req: Request, res: Response) => {
   const db = getDb();
   const username = req.user?.username || 'system';
 
@@ -132,9 +132,9 @@ router.post('/kill-switch/disarm', (req: Request, res: Response) => {
 
   history.push({
     id: uuid(),
-    action: 'disarmed',
+    action: 'deaktiviert',
     triggeredBy: username,
-    reason: 'Manual disarm',
+    reason: 'Manuell deaktiviert',
     affectedAgents,
     timestamp: new Date().toISOString(),
   });
@@ -142,11 +142,11 @@ router.post('/kill-switch/disarm', (req: Request, res: Response) => {
   // Reactivate suspended agents
   db.prepare("UPDATE agents SET status = 'idle' WHERE status = 'suspended'").run();
 
-  db.prepare("UPDATE kill_switch SET armed = 0, affectedAgents = '[]', history = ? WHERE id = 1").run(
+  db.prepare("UPDATE kill_switch SET aktiv = 0, affectedAgents = '[]', history = ? WHERE id = 1").run(
     JSON.stringify(history),
   );
 
-  res.json({ success: true, armed: false, reactivatedAgents: affectedAgents.length });
+  res.json({ success: true, aktiv: false, reactivatedAgents: affectedAgents.length });
 });
 
 // ===== Audit Log =====

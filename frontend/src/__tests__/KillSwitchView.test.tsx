@@ -4,7 +4,7 @@ import KillSwitchView from '../components/KillSwitchView';
 import type { KillSwitch, Agent } from '../types';
 
 const mockKillSwitch: KillSwitch = {
-  armed: false,
+  aktiv: false,
   affectedAgents: ['a1', 'a2'],
   autoTriggerRules: [
     { id: 'r1', name: 'Error Rate Spike', condition: 'error_rate > 10%', enabled: true },
@@ -13,7 +13,7 @@ const mockKillSwitch: KillSwitch = {
   history: [
     {
       id: 'h1',
-      action: 'armed',
+      action: 'aktiviert',
       triggeredBy: 'admin',
       reason: 'Emergency',
       affectedAgents: ['a1'],
@@ -21,7 +21,7 @@ const mockKillSwitch: KillSwitch = {
     },
     {
       id: 'h2',
-      action: 'disarmed',
+      action: 'deaktiviert',
       triggeredBy: 'admin',
       reason: 'All clear',
       affectedAgents: ['a1'],
@@ -110,20 +110,20 @@ describe('KillSwitchView', () => {
     expect(screen.getByText('Batch Operations')).toBeInTheDocument();
   });
 
-  it('shows SAFE button in panel tab when not armed', () => {
+  it('shows INAKTIV button in panel tab when not aktiv', () => {
     render(<KillSwitchView {...defaultProps} />);
-    expect(screen.getByText('SAFE')).toBeInTheDocument();
+    expect(screen.getByText('INAKTIV')).toBeInTheDocument();
     expect(screen.getByText('Emergency Kill Switch')).toBeInTheDocument();
   });
 
-  it('shows ARMED button when armed', () => {
-    render(<KillSwitchView {...defaultProps} killSwitch={{ ...mockKillSwitch, armed: true }} />);
-    expect(screen.getByText('ARMED')).toBeInTheDocument();
+  it('shows AKTIV button when aktiv', () => {
+    render(<KillSwitchView {...defaultProps} killSwitch={{ ...mockKillSwitch, aktiv: true }} />);
+    expect(screen.getByText('AKTIV')).toBeInTheDocument();
   });
 
   it('opens confirmation dialog when main button clicked', () => {
     render(<KillSwitchView {...defaultProps} />);
-    fireEvent.click(screen.getByText('SAFE'));
+    fireEvent.click(screen.getByText('INAKTIV'));
     expect(screen.getByText('Kill-Switch aktivieren?')).toBeInTheDocument();
     expect(screen.getByText('AKTIVIEREN')).toBeInTheDocument();
     expect(screen.getByText('Abbrechen')).toBeInTheDocument();
@@ -131,14 +131,14 @@ describe('KillSwitchView', () => {
 
   it('closes confirmation dialog on cancel', () => {
     render(<KillSwitchView {...defaultProps} />);
-    fireEvent.click(screen.getByText('SAFE'));
+    fireEvent.click(screen.getByText('INAKTIV'));
     fireEvent.click(screen.getByText('Abbrechen'));
     expect(screen.queryByText('Kill-Switch aktivieren?')).not.toBeInTheDocument();
   });
 
   it('calls onToggleKillSwitch on confirm', () => {
     render(<KillSwitchView {...defaultProps} />);
-    fireEvent.click(screen.getByText('SAFE'));
+    fireEvent.click(screen.getByText('INAKTIV'));
     fireEvent.click(screen.getByText('AKTIVIEREN'));
     expect(onToggleKillSwitch).toHaveBeenCalledTimes(1);
     expect(onUpdateKillSwitch).toHaveBeenCalledTimes(1);

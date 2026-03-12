@@ -2,7 +2,7 @@
  * Kill-Switch Auto-Trigger Rules Engine
  *
  * Periodically evaluates auto-trigger rules stored in the kill_switch table.
- * If any enabled rule's threshold is breached, the kill switch is armed automatically.
+ * If any enabled rule's threshold is breached, the kill switch is aktiviert automatically.
  */
 
 import { getDb } from '../db/schema.js';
@@ -72,7 +72,7 @@ function evaluateMetric(rule: AutoTriggerRule): { value: number; breached: boole
   return { value, breached: compare(value, rule.threshold, rule.comparison) };
 }
 
-function armKillSwitch(rule: AutoTriggerRule, triggeredValue: number): void {
+function aktivierenKillSwitch(rule: AutoTriggerRule, triggeredValue: number): void {
   const db = getDb();
   const ks = db.prepare('SELECT * FROM kill_switch WHERE id = 1').get() as Record<string, unknown>;
   const history = JSON.parse(ks.history as string) as unknown[];
@@ -94,7 +94,7 @@ function armKillSwitch(rule: AutoTriggerRule, triggeredValue: number): void {
   }
 
   db.prepare(
-    'UPDATE kill_switch SET armed = 1, triggeredBy = ?, reason = ?, triggeredAt = ?, affectedAgents = ?, history = ? WHERE id = 1',
+    'UPDATE kill_switch SET aktiv = 1, triggeredBy = ?, reason = ?, triggeredAt = ?, affectedAgents = ?, history = ? WHERE id = 1',
   ).run('system:auto-trigger', reason, new Date().toISOString(), JSON.stringify(agentIds), JSON.stringify(history));
 
   db.prepare(
@@ -107,11 +107,11 @@ function armKillSwitch(rule: AutoTriggerRule, triggeredValue: number): void {
 function runCheck(): void {
   try {
     const db = getDb();
-    const ks = db.prepare('SELECT armed, autoTriggerRules FROM kill_switch WHERE id = 1').get() as
-      | { armed: number; autoTriggerRules: string }
+    const ks = db.prepare('SELECT aktiv, autoTriggerRules FROM kill_switch WHERE id = 1').get() as
+      | { aktiv: number; autoTriggerRules: string }
       | undefined;
 
-    if (!ks || ks.armed) return;
+    if (!ks || ks.aktiv) return;
 
     const rules: AutoTriggerRule[] = JSON.parse(ks.autoTriggerRules || '[]');
     const enabledRules = rules.filter((r) => r.enabled);
@@ -119,7 +119,7 @@ function runCheck(): void {
     for (const rule of enabledRules) {
       const { value, breached } = evaluateMetric(rule);
       if (breached) {
-        armKillSwitch(rule, value);
+        aktivierenKillSwitch(rule, value);
         break;
       }
     }

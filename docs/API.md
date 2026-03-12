@@ -219,16 +219,16 @@ Resolve a security event.
 ### GET /security/kill-switch
 Get kill switch status.
 
-### POST /security/kill-switch/arm
-Arm the kill switch (suspends all active agents).
+### POST /security/kill-switch/aktivieren
+Kill-Switch aktivieren (setzt alle aktiven Agenten auf suspended).
 
 **Body:** `{ "reason": "string" }`
-**Response (200):** `{ "success": true, "armed": true, "suspendedAgents": number }`
+**Response (200):** `{ "success": true, "aktiv": true, "suspendedAgents": number }`
 
-### POST /security/kill-switch/disarm
-Disarm the kill switch (reactivates suspended agents).
+### POST /security/kill-switch/deaktivieren
+Kill-Switch deaktivieren (reaktiviert suspended Agenten).
 
-**Response (200):** `{ "success": true, "armed": false, "reactivatedAgents": number }`
+**Response (200):** `{ "success": true, "aktiv": false, "reactivatedAgents": number }`
 
 ### GET /security/audit
 List audit log entries.

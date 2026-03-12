@@ -28,7 +28,7 @@ const mockAnalytics: AnalyticsData = {
 };
 
 const mockKillSwitch: KillSwitch = {
-  armed: false,
+  aktiv: false,
   affectedAgents: ['a1', 'a2'],
   autoTriggerRules: [
     { id: 'r1', name: 'Error Rate Spike', condition: 'error_rate > 10%', enabled: true },
@@ -157,20 +157,20 @@ describe('DashboardView', () => {
     expect(screen.getByText('1 offen')).toBeInTheDocument();
   });
 
-  it('shows kill switch in SAFE state', () => {
+  it('shows kill switch in INAKTIV state', () => {
     render(<DashboardView {...defaultProps} />);
-    expect(screen.getByText('SAFE')).toBeInTheDocument();
+    expect(screen.getByText('INAKTIV')).toBeInTheDocument();
     expect(screen.getByText('Kill-Switch deaktiviert')).toBeInTheDocument();
   });
 
-  it('shows kill switch in ARMED state', () => {
-    render(<DashboardView {...defaultProps} killSwitch={{ ...mockKillSwitch, armed: true }} />);
-    expect(screen.getByText('ARMED')).toBeInTheDocument();
+  it('shows kill switch in AKTIV state', () => {
+    render(<DashboardView {...defaultProps} killSwitch={{ ...mockKillSwitch, aktiv: true }} />);
+    expect(screen.getByText('AKTIV')).toBeInTheDocument();
   });
 
   it('calls onToggleKillSwitch when button is clicked', () => {
     render(<DashboardView {...defaultProps} />);
-    fireEvent.click(screen.getByText('SAFE'));
+    fireEvent.click(screen.getByText('INAKTIV'));
     expect(onToggleKillSwitch).toHaveBeenCalledTimes(1);
   });
 

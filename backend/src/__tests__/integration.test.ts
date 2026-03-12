@@ -199,22 +199,22 @@ describe('Integration: Security Events & Kill Switch', () => {
     expect(found).toBeTruthy();
   });
 
-  it('arms the kill switch', async () => {
-    const res = await request(app).post('/api/security/kill-switch/arm').send({ reason: 'Integration test' });
+  it('aktiviert den kill switch', async () => {
+    const res = await request(app).post('/api/security/kill-switch/aktivieren').send({ reason: 'Integration test' });
     expect(res.status).toBe(200);
-    expect(res.body.armed).toBe(true);
+    expect(res.body.aktiv).toBe(true);
   });
 
-  it('verifies kill switch is armed', async () => {
+  it('verifies kill switch is aktiv', async () => {
     const res = await request(app).get('/api/security/kill-switch');
     expect(res.status).toBe(200);
-    expect(res.body.armed).toBe(true);
+    expect(res.body.aktiv).toBe(true);
   });
 
-  it('disarms the kill switch', async () => {
-    const res = await request(app).post('/api/security/kill-switch/disarm').send();
+  it('deaktiviert den kill switch', async () => {
+    const res = await request(app).post('/api/security/kill-switch/deaktivieren').send();
     expect(res.status).toBe(200);
-    expect(res.body.armed).toBe(false);
+    expect(res.body.aktiv).toBe(false);
   });
 });
 

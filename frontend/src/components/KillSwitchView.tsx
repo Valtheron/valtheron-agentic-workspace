@@ -64,7 +64,7 @@ export default function KillSwitchView({
     const action = killSwitch.aktiv ? 'deaktiviert' : 'aktiviert';
     addEvent(
       action,
-      confirmReason || (action === 'aktiviert' ? 'Manuell aktiviert' : 'Manual deactivation'),
+      confirmReason || (action === 'aktiviert' ? 'Manuell aktiviert' : 'Manuell deaktiviert'),
       killSwitch.affectedAgents,
     );
     onToggleKillSwitch();
@@ -141,23 +141,23 @@ export default function KillSwitchView({
               borderRadius: '50%',
               border: 'none',
               cursor: 'pointer',
-              background: killSwitch.armed ? 'var(--accent-red)' : 'var(--accent-green)',
+              background: killSwitch.aktiv ? 'var(--accent-red)' : 'var(--accent-green)',
               color: 'white',
               fontWeight: 800,
               fontSize: 18,
               textTransform: 'uppercase',
               letterSpacing: 2,
-              boxShadow: killSwitch.armed
+              boxShadow: killSwitch.aktiv
                 ? '0 0 40px rgba(239,68,68,0.5), 0 0 80px rgba(239,68,68,0.2)'
                 : '0 0 40px rgba(16,185,129,0.3)',
               transition: 'all 0.3s ease',
             }}
           >
-            {killSwitch.armed ? 'AKTIV' : 'INAKTIV'}
+            {killSwitch.aktiv ? 'AKTIV' : 'INAKTIV'}
           </button>
           <div style={{ textAlign: 'center', maxWidth: 400 }}>
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>
-              {killSwitch.armed
+              {killSwitch.aktiv
                 ? 'System ist geschuetzt. Alle Agenten werden ueberwacht. Automatische Trigger sind aktiv.'
                 : 'Kill-Switch ist deaktiviert. Kein automatischer Schutz aktiv.'}
             </div>
@@ -205,14 +205,14 @@ export default function KillSwitchView({
                   style={{
                     fontSize: 16,
                     fontWeight: 700,
-                    color: killSwitch.armed ? 'var(--accent-green)' : 'var(--accent-red)',
+                    color: killSwitch.aktiv ? 'var(--accent-green)' : 'var(--accent-red)',
                     marginBottom: 16,
                   }}
                 >
-                  {killSwitch.armed ? 'Kill-Switch deaktivieren?' : 'Kill-Switch aktivieren?'}
+                  {killSwitch.aktiv ? 'Kill-Switch deaktivieren?' : 'Kill-Switch aktivieren?'}
                 </div>
                 <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 16 }}>
-                  {killSwitch.armed
+                  {killSwitch.aktiv
                     ? 'Der automatische Schutz wird deaktiviert. Sind Sie sicher?'
                     : 'Alle laufenden Agenten werden ueberwacht. Auto-Trigger werden scharf geschaltet.'}
                 </div>
@@ -227,10 +227,10 @@ export default function KillSwitchView({
                     Abbrechen
                   </button>
                   <button
-                    className={`btn ${killSwitch.armed ? 'btn-primary' : 'btn-danger'}`}
+                    className={`btn ${killSwitch.aktiv ? 'btn-primary' : 'btn-danger'}`}
                     onClick={handleConfirmToggle}
                   >
-                    {killSwitch.armed ? 'Deaktivieren' : 'AKTIVIEREN'}
+                    {killSwitch.aktiv ? 'Deaktivieren' : 'AKTIVIEREN'}
                   </button>
                 </div>
               </div>
@@ -266,9 +266,9 @@ export default function KillSwitchView({
                       <td>{new Date(evt.timestamp).toLocaleString('de-DE')}</td>
                       <td>
                         <span
-                          className={`badge ${evt.action === 'armed' || evt.action === 'triggered' ? 'critical' : evt.action === 'disarmed' ? 'valid' : 'info'}`}
+                          className={`badge ${evt.action === 'aktiviert' || evt.action === 'triggered' ? 'critical' : evt.action === 'deaktiviert' ? 'valid' : 'info'}`}
                         >
-                          {evt.action === 'armed' ? 'aktiviert' : evt.action === 'disarmed' ? 'deaktiviert' : evt.action}
+                          {evt.action}
                         </span>
                       </td>
                       <td>{evt.reason || '-'}</td>

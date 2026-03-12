@@ -96,17 +96,17 @@ export default function DashboardView({ analytics, killSwitch, securityEvents, a
         </div>
 
         <div>
-          <div className={`kill-switch-panel${killSwitch.armed ? ' armed' : ''} mb-16`}>
+          <div className={`kill-switch-panel${killSwitch.aktiv ? ' aktiv' : ''} mb-16`}>
             <div style={{ textAlign: 'center' }}>
               <div className="card-title" style={{ marginBottom: 8 }}>Kill Switch</div>
               <button
-                className={`ks-button ${killSwitch.armed ? 'armed' : 'safe'}`}
+                className={`ks-button ${killSwitch.aktiv ? 'aktiv' : 'safe'}`}
                 onClick={onToggleKillSwitch}
               >
-                {killSwitch.armed ? 'AKTIV' : 'INAKTIV'}
+                {killSwitch.aktiv ? 'AKTIV' : 'INAKTIV'}
               </button>
               <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 8 }}>
-                {killSwitch.armed ? 'System geschützt - Auto-Trigger aktiv' : 'Kill-Switch deaktiviert'}
+                {killSwitch.aktiv ? 'System geschützt - Auto-Trigger aktiv' : 'Kill-Switch deaktiviert'}
               </div>
             </div>
             <div style={{ marginTop: 12 }}>
