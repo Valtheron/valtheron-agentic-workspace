@@ -27,7 +27,8 @@ describe('Backup Service', () => {
   });
 
   it('should rotate backups (keep max)', () => {
-    // Create a few more backups
+    // Create enough backups so this test is self-contained
+    createBackup(TEST_BACKUP_DIR);
     createBackup(TEST_BACKUP_DIR);
     createBackup(TEST_BACKUP_DIR);
 

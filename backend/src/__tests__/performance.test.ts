@@ -65,8 +65,7 @@ async function measureRequest(
   body?: Record<string, unknown>,
 ) {
   const start = Date.now();
-  const res = await request(app)
-    [method](path)
+  const res = await request(app)[method](path)
     .set('Authorization', `Bearer ${authToken}`)
     .send(body ?? {});
   return { res, elapsed: Date.now() - start };

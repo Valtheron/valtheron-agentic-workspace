@@ -1,0 +1,76 @@
+
+> valtheron-backend@1.0.0 dev
+> tsx watch src/server.ts
+
+WebSocket server initialized on /ws
+[MetricsRecorder] Recording real metrics every 60s
+[KillSwitchMonitor] Auto-trigger monitor started (interval: 30s)
+[Backup] Initial backup created
+
+╔══════════════════════════════════════════════════╗
+║     VALTHERON AGENTIC WORKSPACE - Backend API    ║
+╠══════════════════════════════════════════════════╣
+║  REST API:    http://localhost:3001/api          ║
+║  WebSocket:   ws://localhost:3001/ws             ║
+║  Health:      http://localhost:3001/api/health   ║
+╠══════════════════════════════════════════════════╣
+║  Endpoints:                                      ║
+║    POST   /api/auth/login                        ║
+║    POST   /api/auth/register                     ║
+║    GET    /api/agents          (CRUD + search)   ║
+║    GET    /api/tasks           (CRUD + Kanban)   ║
+║    GET    /api/workflows       (CRUD + execute)  ║
+║    POST   /api/tasks/:id/execute  (LLM exec)    ║
+║    GET    /api/security/events (events + audit)  ║
+║    GET    /api/security/kill-switch              ║
+║    GET    /api/analytics/dashboard               ║
+╚══════════════════════════════════════════════════╝
+  
+[0mGET /api/health [32m200[0m 2.634 ms - 143[0m
+[Backup] Scheduled backup created: valtheron-backup-2026-03-10T13-27-08-614Z.db (2342912 bytes)
+
+  #  Node.js[19464]: void node::ResetStdio() at ../src/node.cc:760
+  #  Assertion failed: !(err != 0) || (err == -1 && (*__errno_location ()) == 1)
+
+----- Native stack trace -----
+
+ 1: 0xf95cf7 node::Assert(node::AssertionInfo const&) [/home/ubuntu/.nvm/versions/node/v22.13.0/bin/node]
+ 2: 0xf42264  [/home/ubuntu/.nvm/versions/node/v22.13.0/bin/node]
+ 3: 0x7f368fe45495  [/lib/x86_64-linux-gnu/libc.so.6]
+ 4: 0x7f368fe45610 on_exit [/lib/x86_64-linux-gnu/libc.so.6]
+ 5: 0xe98a4f node::DefaultProcessExitHandlerInternal(node::Environment*, node::ExitCode) [/home/ubuntu/.nvm/versions/node/v22.13.0/bin/node]
+ 6: 0xf01e4f node::Environment::Exit(node::ExitCode) [/home/ubuntu/.nvm/versions/node/v22.13.0/bin/node]
+ 7: 0x1d755e2  [/home/ubuntu/.nvm/versions/node/v22.13.0/bin/node]
+
+  #  Node.js[19464]: void node::ResetStdio() at ../src/node.cc:760
+  #  Assertion failed: !(err != 0) || (err == -1 && (*__errno_location ()) == 1)
+
+----- Native stack trace -----
+
+ 1: 0xf95cf7 node::Assert(node::AssertionInfo const&) [/home/ubuntu/.nvm/versions/node/v22.13.0/bin/node]
+ 2: 0xf42264  [/home/ubuntu/.nvm/versions/node/v22.13.0/bin/node]
+ 3: 0xf42982 node::TrapWebAssemblyOrContinue(int, siginfo_t*, void*) [/home/ubuntu/.nvm/versions/node/v22.13.0/bin/node]
+ 4: 0x7f368fe42520  [/lib/x86_64-linux-gnu/libc.so.6]
+
+  #  Node.js[19453]: void node::ResetStdio() at ../src/node.cc:760
+  #  Assertion failed: !(err != 0) || (err == -1 && (*__errno_location ()) == 1)
+
+----- Native stack trace -----
+
+ 1: 0xf95cf7 node::Assert(node::AssertionInfo const&) [node]
+ 2: 0xf42264  [node]
+ 3: 0x7fbf2bc45495  [/lib/x86_64-linux-gnu/libc.so.6]
+ 4: 0x7fbf2bc45610 on_exit [/lib/x86_64-linux-gnu/libc.so.6]
+ 5: 0xe98a4f node::DefaultProcessExitHandlerInternal(node::Environment*, node::ExitCode) [node]
+ 6: 0xf01e4f node::Environment::Exit(node::ExitCode) [node]
+ 7: 0x1d755e2  [node]
+
+  #  Node.js[19453]: void node::ResetStdio() at ../src/node.cc:760
+  #  Assertion failed: !(err != 0) || (err == -1 && (*__errno_location ()) == 1)
+
+----- Native stack trace -----
+
+ 1: 0xf95cf7 node::Assert(node::AssertionInfo const&) [node]
+ 2: 0xf42264  [node]
+ 3: 0xf42982 node::TrapWebAssemblyOrContinue(int, siginfo_t*, void*) [node]
+ 4: 0x7fbf2bc42520  [/lib/x86_64-linux-gnu/libc.so.6]

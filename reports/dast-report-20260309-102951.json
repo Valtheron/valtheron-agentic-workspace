@@ -1,0 +1,6 @@
+{
+  "scan_date": "2026-03-09T10:29:51-04:00",
+  "target": "http://localhost:3001",
+  "summary": {"pass": 5, "fail": 1, "warn": 6},
+  "results": [{"test":"Server reachable","status":"pass","detail":"Health endpoint responds"},{"test":"Authentication","status":"pass","detail":"Successfully obtained JWT token"},{"test":"X-Powered-By hidden","status":"fail","detail":"Server exposes X-Powered-By header"},{"test":"X-Content-Type-Options","status":"warn","detail":"Header missing — recommend nosniff"},{"test":"X-Frame-Options","status":"warn","detail":"Header missing — recommend DENY or SAMEORIGIN"},{"test":"HSTS","status":"warn","detail":"Header missing — recommend for production"},{"test":"SQL Injection","status":"pass","detail":"No server errors from injection payloads"},{"test":"XSS Content-Type","status":"warn","detail":"API may not return JSON content type"},{"test":"Auth on sensitive endpoints","status":"warn","detail":"Backup endpoint returned 404 without auth"},{"test":"Invalid token handling","status":"warn","detail":"Server returned 200 for fake token"},{"test":"Path traversal","status":"pass","detail":"Blocked (status 404)"},{"test":"Error info leak","status":"pass","detail":"No internal details leaked"}]
+}
