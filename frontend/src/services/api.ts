@@ -265,14 +265,14 @@ export const securityAPI = {
 
   killSwitch: () => apiFetch<unknown>('/security/kill-switch'),
 
-  armKillSwitch: (reason?: string) =>
-    apiFetch<{ success: boolean; armed: boolean; suspendedAgents: number }>('/security/kill-switch/arm', {
+  aktivierenKillSwitch: (reason?: string) =>
+    apiFetch<{ success: boolean; aktiv: boolean; suspendedAgents: number }>('/security/kill-switch/aktivieren', {
       method: 'POST',
       body: JSON.stringify({ reason }),
     }),
 
-  disarmKillSwitch: () =>
-    apiFetch<{ success: boolean; armed: boolean; reactivatedAgents: number }>('/security/kill-switch/disarm', {
+  deaktivierenKillSwitch: () =>
+    apiFetch<{ success: boolean; aktiv: boolean; reactivatedAgents: number }>('/security/kill-switch/deaktivieren', {
       method: 'POST',
     }),
 

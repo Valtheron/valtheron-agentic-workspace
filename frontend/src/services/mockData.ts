@@ -156,7 +156,7 @@ export function generateSecurityEvents(): SecurityEvent[] {
 
 export function generateKillSwitch(): KillSwitch {
   return {
-    armed: true,
+    aktiv: true,
     affectedAgents: [],
     autoTriggerRules: [
       { id: 'ks_001', name: 'High Error Rate', condition: 'errorRate > 25%', enabled: true },

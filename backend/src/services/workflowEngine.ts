@@ -127,8 +127,10 @@ async function runSteps(
 
   // Keep running until no more steps can be started
   while (true) {
-    // Find steps that are ready to run (all deps completed)
-    const ready = steps.filter((s) => s.status === 'pending' && s.dependsOn.every((depId) => completed.has(depId)));
+    // Find steps that are ready to run (all deps completed or failed)
+    const ready = steps.filter(
+      (s) => s.status === 'pending' && s.dependsOn.every((depId) => completed.has(depId) || failed.has(depId)),
+    );
 
     if (ready.length === 0) break; // Nothing more to run
 

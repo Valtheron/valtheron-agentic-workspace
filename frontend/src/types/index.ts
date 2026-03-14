@@ -158,7 +158,7 @@ export interface SecurityEvent {
 }
 
 export interface KillSwitch {
-  armed: boolean;
+  aktiv: boolean;
   triggeredAt?: string;
   triggeredBy?: string;
   reason?: string;
@@ -437,7 +437,7 @@ export interface OllamaModel {
 
 export interface KillSwitchEvent {
   id: string;
-  action: 'armed' | 'disarmed' | 'triggered' | 'rule_added' | 'rule_removed' | 'batch_stop' | 'batch_start';
+  action: 'aktiviert' | 'deaktiviert' | 'triggered' | 'rule_added' | 'rule_removed' | 'batch_stop' | 'batch_start';
   triggeredBy: string;
   reason: string;
   affectedAgents: string[];

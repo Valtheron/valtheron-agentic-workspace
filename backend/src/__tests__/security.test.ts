@@ -61,22 +61,22 @@ describe('Security Endpoints', () => {
     it('GET /api/security/kill-switch — returns kill-switch status', async () => {
       const res = await request(app).get('/api/security/kill-switch');
       expect(res.status).toBe(200);
-      expect(typeof res.body.armed).toBe('boolean');
+      expect(typeof res.body.aktiv).toBe('boolean');
     });
 
-    it('POST /api/security/kill-switch/arm — arms the kill switch', async () => {
-      const res = await request(app).post('/api/security/kill-switch/arm').send({ reason: 'Test arming' });
+    it('POST /api/security/kill-switch/aktivieren — aktiviert den kill switch', async () => {
+      const res = await request(app).post('/api/security/kill-switch/aktivieren').send({ reason: 'Test aktivierung' });
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
-      expect(res.body.armed).toBe(true);
+      expect(res.body.aktiv).toBe(true);
       expect(typeof res.body.suspendedAgents).toBe('number');
     });
 
-    it('POST /api/security/kill-switch/disarm — disarms the kill switch', async () => {
-      const res = await request(app).post('/api/security/kill-switch/disarm');
+    it('POST /api/security/kill-switch/deaktivieren — deaktiviert den kill switch', async () => {
+      const res = await request(app).post('/api/security/kill-switch/deaktivieren');
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
-      expect(res.body.armed).toBe(false);
+      expect(res.body.aktiv).toBe(false);
     });
   });
 

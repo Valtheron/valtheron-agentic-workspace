@@ -144,7 +144,7 @@ function initSchema(db: Database.Database) {
 
     CREATE TABLE IF NOT EXISTS kill_switch (
       id INTEGER PRIMARY KEY CHECK (id = 1),
-      armed INTEGER NOT NULL DEFAULT 0,
+      aktiv INTEGER NOT NULL DEFAULT 0,
       triggeredAt TEXT,
       triggeredBy TEXT,
       reason TEXT,
@@ -261,7 +261,7 @@ function initSchema(db: Database.Database) {
       successRate REAL NOT NULL DEFAULT 0
     );
 
-    INSERT OR IGNORE INTO kill_switch (id, armed) VALUES (1, 0);
+    INSERT OR IGNORE INTO kill_switch (id, aktiv) VALUES (1, 0);
 
     -- Performance indexes (Phase 4)
     CREATE INDEX IF NOT EXISTS idx_agents_status ON agents(status);
@@ -294,6 +294,13 @@ function initSchema(db: Database.Database) {
     db.exec(`ALTER TABLE tasks ADD COLUMN result TEXT`);
   } catch {
     /* column already exists */
+  }
+
+  // Migration: rename armed → aktiv in kill_switch for existing databases
+  try {
+    db.exec(`ALTER TABLE kill_switch RENAME COLUMN armed TO aktiv`);
+  } catch {
+    /* column already renamed or does not exist */
   }
 
   // Migration: add MFA columns to existing databases
