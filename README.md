@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./frontend/public/valtheron-logo.gif" width="320" alt="Valtheron Logo"/>
+<img src="./frontend/public/valtheron-logo.gif" width="480" alt="Valtheron Logo"/>
 
 # Valtheron — Agentic Workspace
 
