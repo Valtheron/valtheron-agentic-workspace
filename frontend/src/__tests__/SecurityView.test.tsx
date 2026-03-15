@@ -106,7 +106,8 @@ describe('SecurityView', () => {
 
   it('shows event type in event details', () => {
     render(<SecurityView {...defaultProps} />);
-    expect(screen.getByText(/injection/)).toBeInTheDocument();
+    const matches = screen.getAllByText(/injection/);
+    expect(matches.length).toBeGreaterThanOrEqual(1);
   });
 
   // ── Tab navigation ────────────────────────────────────────────────
