@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="./frontend/public/valtheron-logo.gif" width="160" alt="Valtheron Logo"/>
+<img src="./frontend/public/valtheron-logo.gif" width="320" alt="Valtheron Logo"/>
 
 # Valtheron — Agentic Workspace
 
-**Zentrale Plattform zur Orchestrierung autonomer KI-Agenten
+Zentrale Plattform zur Orchestrierung autonomer KI-Agenten
 
 ## Vision
 
