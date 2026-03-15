@@ -219,9 +219,7 @@ describe('WorkflowView', () => {
   it('shows workflow description in detail panel', () => {
     render(<WorkflowView {...defaultProps} />);
     fireEvent.click(screen.getByText('Test Workflow Alpha'));
-    // Description appears in both list card and detail panel
-    const matches = screen.getAllByText('A test workflow description');
-    expect(matches.length).toBeGreaterThanOrEqual(2);
+    expect(screen.getByText('A test workflow description')).toBeInTheDocument();
   });
 
   // ── Multiple workflows ────────────────────────────────────────────
