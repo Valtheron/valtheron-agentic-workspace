@@ -4,7 +4,13 @@
 
 # Valtheron — Agentic Workspace
 
-**Zentrale Plattform zur Orchestrierung autonomer KI-Agenten**
+**Zentrale Plattform zur Orchestrierung autonomer KI-Agenten
+
+## Vision
+
+Ein System, das nicht nur funktioniert — sondern das, was es tut, mit Würde tut.
+
+Der Valtheron Agentic Workspace ist nicht gebaut worden, um zu beeindrucken. Er ist gebaut worden, um zu dienen: als verlässliches Fundament für autonome Operationen, bei denen jeder Fehler Konsequenzen hat und jede Entscheidung nachvollziehbar sein muss.**
 
 [![CI](https://github.com/Valtheron/valtheron-agentic-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/Valtheron/valtheron-agentic-workspace/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)](CHANGELOG.md)
