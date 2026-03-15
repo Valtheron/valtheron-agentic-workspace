@@ -261,8 +261,6 @@ function initSchema(db: Database.Database) {
       successRate REAL NOT NULL DEFAULT 0
     );
 
-    INSERT OR IGNORE INTO kill_switch (id, aktiv) VALUES (1, 0);
-
     -- Performance indexes (Phase 4)
     CREATE INDEX IF NOT EXISTS idx_agents_status ON agents(status);
     CREATE INDEX IF NOT EXISTS idx_agents_category ON agents(category);
@@ -302,6 +300,10 @@ function initSchema(db: Database.Database) {
   } catch {
     /* column already renamed or does not exist */
   }
+
+  // Ensure the single kill_switch row exists (must run after migration)
+  db.exec(`INSERT OR IGNORE INTO kill_switch (id, aktiv) VALUES (1, 0)`);
+
 
   // Migration: add MFA columns to existing databases
   try {
