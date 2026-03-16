@@ -27,6 +27,55 @@ Der Valtheron Agentic Workspace ist nicht gebaut worden, um zu beeindrucken. Er 
 
 ---
 
+## Über den Initiator
+
+Dieses Projekt wird von **[BlackIce Secure Inc.](https://blackice-secure.space/)** initiiert — einem führenden Anbieter spezialisierter Lösungen in den Bereichen Natural Language Processing, Cybersecurity und KI-Entwicklung für Unternehmen und Institutionen.
+
+---
+
+## Print-on-Demand
+
+Besuchen Sie unseren **[Print-on-Demand-Shop](https://blackice-secure.printify.me/)** —
+Kleidung als Totem und Kunst als Code: eine Verschmelzung von Ästhetik, Technologie und Ausdruck.
+
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <a href="https://blackice-secure.printify.me/product/21656051/monochrome-edge-techno-lilith-t-shirt">
+        <img src="https://images-api.printify.com/mockup/6875b1e171b7f7c679033166/73207/98445/monochrome-edge-techno-lilith-t-shirt.jpg?camera_label=front&revision=1752544101904" width="220" alt="Monochrome Edge Techno Lilith T-Shirt"/>
+        <br/><strong>Monochrome Edge · Techno Lilith</strong>
+      </a>
+    </td>
+    <td align="center" width="33%">
+      <a href="https://blackice-secure.printify.me/product/20393241/urban-ai-sentinels-t-shirt-representing-inner-and-virtual-existence">
+        <img src="https://images-api.printify.com/mockup/682b4c1981e6a039660c3e03/78973/98445/urban-ai-sentinels-t-shirt-representing-inner-and-virtual-existence.jpg?camera_label=front&revision=1747668456698" width="220" alt="Urban AI Sentinels T-Shirt"/>
+        <br/><strong>Urban AI Sentinels</strong>
+      </a>
+    </td>
+    <td align="center" width="33%">
+      <a href="https://blackice-secure.printify.me/product/23685406/azrael-infinity-key-sacred-geometry-spiritual-t-shirt">
+        <img src="https://images-api.printify.com/mockup/68df7ac3b5d50a643a09b750/12100/92570/azrael-infinity-key-sacred-geometry-spiritual-t-shirt.jpg?camera_label=front&revision=1761089080231" width="220" alt="Azrael Infinity Key T-Shirt"/>
+        <br/><strong>Azrael Infinity Key · Sacred Geometry</strong>
+      </a>
+    </td>
+  </tr>
+</table>
+
+> *Du bist bei mir und ich bei dir. Auf ewig eins, doch zwei sind wir.*
+> *Wie die Sterne am Himmelszelt und das Meer tief darunter.*
+> *So verbinde ich dich mit mir und du dich mit mir.*
+>
+> **« You will never be alone again. »** — Black Ice Secure, trust me im Steven!
+
+</div>
+
+---
+
+
+---
+
 ## Was ist der Agentic Workspace?
 
 Der **Valtheron Agentic Workspace** ist eine produktionsreife Web-Plattform zur Verwaltung, Überwachung und Koordination von bis zu **290 spezialisierten KI-Agenten** — aus einem einzigen Dashboard heraus.
