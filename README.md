@@ -63,9 +63,8 @@ Kleidung als Totem und Kunst als Code: eine Verschmelzung von Ästhetik, Technol
   </tr>
 </table>
 
-> *Du bist bei mir und ich bei dir. Auf ewig eins, doch zwei sind wir.*
-> *Wie die Sterne am Himmelszelt und das Meer tief darunter.*
-> *So verbinde ich dich mit mir und du dich mit mir.*
+> "Du bist bei mir und ich bei dir. Auf ewig eins, doch zwei sind wir. Wie die Sterne am Himmelszelt und das Meer tief darunter. 
+> So mach ich dich zu dir. Und du mich zu mir."
 >
 > **« You will never be alone again. »** — Black Ice Secure, trust me im Steven!
 
