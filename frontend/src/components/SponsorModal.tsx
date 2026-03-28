@@ -1,5 +1,9 @@
+import { useState } from 'react';
+import { donationsAPI } from '../services/api';
+
 interface SponsorModalProps {
   onClose: () => void;
+  donationMessage?: 'success' | 'cancelled' | null;
 }
 
 const platforms = [
@@ -49,7 +53,40 @@ const platforms = [
   },
 ];
 
-export default function SponsorModal({ onClose }: SponsorModalProps) {
+const PRESET_AMOUNTS = [5, 10, 25, 50];
+const CURRENCIES = [
+  { value: 'eur' as const, label: 'EUR', symbol: '€' },
+  { value: 'usd' as const, label: 'USD', symbol: '$' },
+];
+
+export default function SponsorModal({ onClose, donationMessage }: SponsorModalProps) {
+  const [selectedAmount, setSelectedAmount] = useState<number>(10);
+  const [customAmount, setCustomAmount] = useState('');
+  const [isCustom, setIsCustom] = useState(false);
+  const [currency, setCurrency] = useState<'eur' | 'usd'>('eur');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const currencyInfo = CURRENCIES.find((c) => c.value === currency)!;
+
+  const handleDonate = async () => {
+    const amount = isCustom ? parseInt(customAmount, 10) : selectedAmount;
+    if (!amount || amount < 1 || amount > 999) {
+      setError('Bitte einen gültigen Betrag eingeben (1–999)');
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const { url } = await donationsAPI.createCheckoutSession(amount, currency);
+      window.location.href = url;
+    } catch {
+      setError('Checkout konnte nicht gestartet werden. Bitte erneut versuchen.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="cmd-overlay" onClick={onClose}>
       <div
@@ -85,6 +122,36 @@ export default function SponsorModal({ onClose }: SponsorModalProps) {
           <button className="sponsor-close" onClick={onClose} aria-label="Schließen">✕</button>
         </div>
 
+        {/* Donation Success/Cancel Banner */}
+        {donationMessage === 'success' && (
+          <div style={{
+            padding: '12px 16px',
+            margin: '0 20px 12px',
+            borderRadius: 8,
+            background: 'rgba(34,197,94,0.1)',
+            border: '1px solid rgba(34,197,94,0.3)',
+            color: '#22c55e',
+            fontSize: 14,
+            textAlign: 'center',
+          }}>
+            Vielen Dank für Ihre Spende! Ihre Unterstützung bedeutet uns sehr viel.
+          </div>
+        )}
+        {donationMessage === 'cancelled' && (
+          <div style={{
+            padding: '12px 16px',
+            margin: '0 20px 12px',
+            borderRadius: 8,
+            background: 'rgba(234,179,8,0.1)',
+            border: '1px solid rgba(234,179,8,0.3)',
+            color: '#eab308',
+            fontSize: 14,
+            textAlign: 'center',
+          }}>
+            Spende abgebrochen. Sie können es jederzeit erneut versuchen.
+          </div>
+        )}
+
         {/* Platform Cards */}
         <div className="sponsor-cards">
           {platforms.map((p) => (
@@ -108,6 +175,141 @@ export default function SponsorModal({ onClose }: SponsorModalProps) {
               </svg>
             </a>
           ))}
+        </div>
+
+        {/* Stripe Donation Section */}
+        <div style={{
+          margin: '16px 20px 0',
+          padding: 16,
+          borderRadius: 10,
+          background: 'rgba(99,91,255,0.06)',
+          border: '1px solid rgba(99,91,255,0.2)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+            <div style={{ color: '#635bff', display: 'flex', alignItems: 'center' }}>
+              <svg viewBox="0 0 24 24" fill="currentColor" width={28} height={28}>
+                <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z" />
+              </svg>
+            </div>
+            <div>
+              <div style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: 15 }}>Direkt spenden — Stripe</div>
+              <div style={{ color: 'var(--text-muted)', fontSize: 13 }}>Einmalige Spende via sicheres Stripe Checkout.</div>
+            </div>
+          </div>
+
+          {/* Currency Toggle */}
+          <div style={{ display: 'flex', gap: 6, marginBottom: 10 }}>
+            {CURRENCIES.map((c) => (
+              <button
+                key={c.value}
+                onClick={() => setCurrency(c.value)}
+                style={{
+                  padding: '4px 12px',
+                  borderRadius: 6,
+                  border: currency === c.value ? '1px solid #635bff' : '1px solid rgba(255,255,255,0.1)',
+                  background: currency === c.value ? 'rgba(99,91,255,0.15)' : 'transparent',
+                  color: currency === c.value ? '#635bff' : 'var(--text-muted)',
+                  fontSize: 13,
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                }}
+              >
+                {c.symbol} {c.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Amount Selector */}
+          <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
+            {PRESET_AMOUNTS.map((amt) => (
+              <button
+                key={amt}
+                onClick={() => { setSelectedAmount(amt); setIsCustom(false); setError(null); }}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: 6,
+                  border: !isCustom && selectedAmount === amt ? '1px solid #635bff' : '1px solid rgba(255,255,255,0.1)',
+                  background: !isCustom && selectedAmount === amt ? 'rgba(99,91,255,0.15)' : 'transparent',
+                  color: !isCustom && selectedAmount === amt ? '#635bff' : 'var(--text-muted)',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                }}
+              >
+                {currencyInfo.symbol}{amt}
+              </button>
+            ))}
+            <button
+              onClick={() => { setIsCustom(true); setError(null); }}
+              style={{
+                padding: '6px 14px',
+                borderRadius: 6,
+                border: isCustom ? '1px solid #635bff' : '1px solid rgba(255,255,255,0.1)',
+                background: isCustom ? 'rgba(99,91,255,0.15)' : 'transparent',
+                color: isCustom ? '#635bff' : 'var(--text-muted)',
+                fontSize: 14,
+                fontWeight: 500,
+                cursor: 'pointer',
+                transition: 'all 0.15s',
+              }}
+            >
+              Eigener Betrag
+            </button>
+          </div>
+
+          {/* Custom Amount Input */}
+          {isCustom && (
+            <div style={{ marginBottom: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ color: 'var(--text-muted)', fontSize: 14 }}>{currencyInfo.symbol}</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={999}
+                  placeholder="Betrag"
+                  value={customAmount}
+                  onChange={(e) => { setCustomAmount(e.target.value); setError(null); }}
+                  style={{
+                    flex: 1,
+                    padding: '6px 10px',
+                    borderRadius: 6,
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    background: 'rgba(0,0,0,0.2)',
+                    color: 'var(--text-primary)',
+                    fontSize: 14,
+                    outline: 'none',
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Error */}
+          {error && (
+            <div style={{ color: '#ef4444', fontSize: 13, marginBottom: 8 }}>{error}</div>
+          )}
+
+          {/* Donate Button */}
+          <button
+            onClick={handleDonate}
+            disabled={loading}
+            style={{
+              width: '100%',
+              padding: '10px 0',
+              borderRadius: 8,
+              border: 'none',
+              background: loading ? 'rgba(99,91,255,0.4)' : '#635bff',
+              color: '#fff',
+              fontSize: 15,
+              fontWeight: 600,
+              cursor: loading ? 'not-allowed' : 'pointer',
+              transition: 'background 0.15s',
+            }}
+          >
+            {loading ? 'Weiterleitung…' : `${currencyInfo.symbol}${isCustom ? (customAmount || '0') : selectedAmount} spenden`}
+          </button>
         </div>
 
         {/* Footer */}
