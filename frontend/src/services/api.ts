@@ -419,6 +419,15 @@ export const healthAPI = {
     }>('/health'),
 };
 
+// ===== Donations API =====
+export const donationsAPI = {
+  createCheckoutSession: (amount: number, currency: 'eur' | 'usd') =>
+    apiFetch<{ url: string }>('/donations/create-checkout-session', {
+      method: 'POST',
+      body: JSON.stringify({ amount, currency }),
+    }),
+};
+
 // ===== WebSocket Client =====
 export class ValtheronWebSocket {
   private ws: WebSocket | null = null;

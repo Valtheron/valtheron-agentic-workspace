@@ -21,6 +21,7 @@ import notificationRoutes from './routes/notifications.js';
 import mfaRoutes from './routes/mfa.js';
 import secretsRoutes from './routes/secrets.js';
 import backupRoutes from './routes/backup.js';
+import donationsRoutes from './routes/donations.js';
 import { auditLogger } from './middleware/auditLogger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { adminOnly } from './middleware/rbac.js';
@@ -79,6 +80,7 @@ export function createApp() {
   // Public routes
   app.use('/api/auth', authRoutes);
   app.use('/api/auth/mfa', mfaRoutes);
+  app.use('/api/donations', rateLimiter(60, 5), donationsRoutes);
 
   // Protected routes (require auth in production, optional in dev)
   const protect = process.env.NODE_ENV === 'production' ? authMiddleware : optionalAuth;

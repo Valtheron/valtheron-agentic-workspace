@@ -86,6 +86,7 @@ function App() {
   const [sidebarExpanded, setSidebarExpanded] = useState(() => load(KEYS.SIDEBAR_EXPANDED, true));
   const [cmdPaletteOpen, setCmdPaletteOpen] = useState(false);
   const [sponsorOpen, setSponsorOpen] = useState(false);
+  const [donationMessage, setDonationMessage] = useState<'success' | 'cancelled' | null>(null);
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(() => load(KEYS.SELECTED_AGENT, null));
 
   // Auth state
@@ -95,6 +96,17 @@ function App() {
   const [authChecked, setAuthChecked] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [_showLogin, setShowLogin] = useState(false);
+
+  // Handle Stripe donation redirect
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const donation = params.get('donation');
+    if (donation === 'success' || donation === 'cancelled') {
+      setDonationMessage(donation);
+      setSponsorOpen(true);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
 
   // Restore session from stored token on mount
   useEffect(() => {
@@ -583,7 +595,7 @@ function App() {
           onClose={() => setCmdPaletteOpen(false)}
         />
       )}
-      {sponsorOpen && <SponsorModal onClose={() => setSponsorOpen(false)} />}
+      {sponsorOpen && <SponsorModal onClose={() => { setSponsorOpen(false); setDonationMessage(null); }} donationMessage={donationMessage} />}
     </div>
   );
 }
