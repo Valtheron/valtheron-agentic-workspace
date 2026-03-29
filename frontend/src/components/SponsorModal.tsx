@@ -134,7 +134,7 @@ export default function SponsorModal({ onClose, donationMessage }: SponsorModalP
             fontSize: 14,
             textAlign: 'center',
           }}>
-            Vielen Dank für Ihre Spende! Ihre Unterstützung bedeutet uns sehr viel.
+            Vielen Dank für Ihre Unterstützung! Das bedeutet uns sehr viel.
           </div>
         )}
         {donationMessage === 'cancelled' && (
@@ -148,7 +148,7 @@ export default function SponsorModal({ onClose, donationMessage }: SponsorModalP
             fontSize: 14,
             textAlign: 'center',
           }}>
-            Spende abgebrochen. Sie können es jederzeit erneut versuchen.
+            Vorgang abgebrochen. Sie können es jederzeit erneut versuchen.
           </div>
         )}
 
@@ -192,8 +192,8 @@ export default function SponsorModal({ onClose, donationMessage }: SponsorModalP
               </svg>
             </div>
             <div>
-              <div style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: 15 }}>Direkt spenden — Stripe</div>
-              <div style={{ color: 'var(--text-muted)', fontSize: 13 }}>Einmalige Spende via sicheres Stripe Checkout.</div>
+              <div style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: 15 }}>Direkt unterstützen — Stripe</div>
+              <div style={{ color: 'var(--text-muted)', fontSize: 13 }}>Einmalige Unterstützung via sicheres Stripe Checkout.</div>
             </div>
           </div>
 
@@ -308,8 +308,11 @@ export default function SponsorModal({ onClose, donationMessage }: SponsorModalP
               transition: 'background 0.15s',
             }}
           >
-            {loading ? 'Weiterleitung…' : `${currencyInfo.symbol}${isCustom ? (customAmount || '0') : selectedAmount} spenden`}
+            {loading ? 'Weiterleitung…' : `${currencyInfo.symbol}${isCustom ? (customAmount || '0') : selectedAmount} unterstützen`}
           </button>
+          <div style={{ color: 'var(--text-muted)', fontSize: 11, marginTop: 8, lineHeight: 1.4 }}>
+            Hinweis: Diese Zuwendung ist eine freiwillige Unterstützung an BlackIce Secure Inc. und keine steuerlich absetzbare Spende im Sinne des §10b EStG.
+          </div>
         </div>
 
         {/* Footer */}
