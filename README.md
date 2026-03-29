@@ -281,9 +281,11 @@ git push origin feature/mein-feature
 
 Dieses Projekt wird durch die Unterstützung der Community ermöglicht. Falls der Agentic Workspace nützlich ist, freuen wir uns über Ihre Unterstützung:
 
-[![Stripe Donate](https://img.shields.io/badge/Stripe-Spenden-635bff?style=for-the-badge&logo=stripe&logoColor=white)](https://donate.stripe.com/14A6oJd2h3XGb1F7kM7kc00)
+[![Stripe](https://img.shields.io/badge/Stripe-Unterst%C3%BCtzen-635bff?style=for-the-badge&logo=stripe&logoColor=white)](https://donate.stripe.com/14A6oJd2h3XGb1F7kM7kc00)
 [![GitHub Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-Unterst%C3%BCtzen-EA4AAA?style=for-the-badge&logo=github-sponsors)](https://github.com/sponsors/Valtheron)
 [![Merch Shop](https://img.shields.io/badge/Merch%20Shop-Printify-f59e0b?style=for-the-badge&logo=shopify&logoColor=white)](https://blackice-secure.printify.me)
+
+> *Hinweis: Diese Zuwendung ist eine freiwillige Unterstützung an BlackIce Secure Inc. und keine steuerlich absetzbare Spende im Sinne des §10b EStG.*
 
 ---
 

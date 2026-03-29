@@ -43,8 +43,8 @@ router.post('/create-checkout-session', async (req: Request, res: Response) => {
         price_data: {
           currency,
           product_data: {
-            name: 'Valtheron Donation',
-            description: `Donation to Valtheron Agentic Workspace (${CURRENCY_SYMBOLS[currency as Currency]})`,
+            name: 'Valtheron Projekt-Unterstützung',
+            description: `Freiwillige Unterstützung für Valtheron Agentic Workspace (${CURRENCY_SYMBOLS[currency as Currency]})`,
           },
           unit_amount: amount * 100,
         },
