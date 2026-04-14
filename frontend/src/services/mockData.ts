@@ -1,81 +1,19 @@
 import type { Agent, Task, CollaborationSession, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, AgentCategory } from '../types';
-
-const categories: AgentCategory[] = ['trading', 'security', 'development', 'qa', 'documentation', 'deployment', 'analyst', 'support', 'integration', 'monitoring'];
-const roles: Record<AgentCategory, string[]> = {
-  trading: ['Market Analyzer', 'Risk Calculator', 'Portfolio Manager', 'Signal Generator', 'Arbitrage Hunter'],
-  security: ['Threat Detector', 'Vulnerability Scanner', 'Incident Responder', 'Compliance Auditor', 'Penetration Tester'],
-  development: ['Code Generator', 'Bug Fixer', 'Architecture Planner', 'API Designer', 'Database Optimizer'],
-  qa: ['Test Runner', 'Quality Checker', 'Regression Detector', 'Performance Tester', 'Coverage Analyzer'],
-  documentation: ['Doc Writer', 'API Documenter', 'Tutorial Creator', 'Changelog Manager', 'Knowledge Base Builder'],
-  deployment: ['CI/CD Manager', 'Container Orchestrator', 'Infrastructure Builder', 'Release Manager', 'Rollback Coordinator'],
-  analyst: ['Data Analyst', 'Trend Spotter', 'Pattern Recognizer', 'Metrics Collector', 'Report Generator'],
-  support: ['Ticket Handler', 'Escalation Manager', 'FAQ Responder', 'User Guide Creator', 'Feedback Processor'],
-  integration: ['API Connector', 'Webhook Manager', 'Data Transformer', 'Protocol Adapter', 'Sync Coordinator'],
-  monitoring: ['System Watcher', 'Alert Manager', 'Log Analyzer', 'Health Checker', 'SLA Tracker'],
-};
-
-const statuses: Agent['status'][] = ['active', 'idle', 'working', 'blocked'];
-const archetypes: Agent['personality']['archetype'][] = ['analytiker', 'kreativer', 'diplomat', 'commander'];
-const commStyles: Agent['personality']['communicationStyle'][] = ['formal', 'casual', 'technical', 'diplomatic'];
+import { loadValtheronAgents } from './valtheronAgents';
 
 function randomFrom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export function generateAgents(count: number = 200): Agent[] {
-  const agents: Agent[] = [];
-  for (let i = 1; i <= count; i++) {
-    const cat = categories[Math.floor((i - 1) / 20)];
-    const roleList = roles[cat];
-    const roleIdx = (i - 1) % roleList.length;
-    const num = Math.floor((i - 1) / roleList.length / categories.length) + 1;
-    agents.push({
-      id: `agent_${String(i).padStart(3, '0')}`,
-      name: `${roleList[roleIdx]} ${String(num).padStart(2, '0')}`,
-      role: roleList[roleIdx],
-      category: cat,
-      status: randomFrom(statuses),
-      successRate: 75 + Math.floor(Math.random() * 25),
-      tasksCompleted: Math.floor(Math.random() * 500),
-      failedTasks: Math.floor(Math.random() * 20),
-      avgTaskDuration: 10 + Math.floor(Math.random() * 120),
-      currentTask: Math.random() > 0.4 ? `Task-${Math.floor(Math.random() * 999)}` : null,
-      lastActivity: new Date(Date.now() - Math.floor(Math.random() * 86400000)).toISOString(),
-      systemPrompt: `Du bist ein spezialisierter ${roleList[roleIdx]}-Agent im Bereich ${cat}. Dein Fokus liegt auf präziser Analyse und autonomer Aufgabenausführung.`,
-      personality: {
-        creativity: 30 + Math.floor(Math.random() * 60),
-        analyticalDepth: 40 + Math.floor(Math.random() * 55),
-        riskTolerance: 10 + Math.floor(Math.random() * 70),
-        communicationStyle: randomFrom(commStyles),
-        archetype: randomFrom(archetypes),
-        domainFocus: cat,
-      },
-      parameters: {
-        temperature: +(0.3 + Math.random() * 0.7).toFixed(2),
-        maxTokens: [1024, 2048, 4096, 8192][Math.floor(Math.random() * 4)],
-        topP: +(0.8 + Math.random() * 0.2).toFixed(2),
-        frequencyPenalty: +(Math.random() * 0.5).toFixed(2),
-        presencePenalty: +(Math.random() * 0.5).toFixed(2),
-      },
-      certificationId: Math.random() > 0.3 ? `cert_${String(i).padStart(3, '0')}` : undefined,
-      createdAt: new Date(Date.now() - Math.floor(Math.random() * 30 * 86400000)).toISOString(),
-      certifiedAt: Math.random() > 0.3 ? new Date(Date.now() - Math.floor(Math.random() * 15 * 86400000)).toISOString() : undefined,
-      hooks: [
-        { id: `h${i}_1`, type: 'on_complete', action: 'log_result', enabled: true },
-        { id: `h${i}_2`, type: 'on_error', action: 'notify_admin', enabled: true },
-        { id: `h${i}_3`, type: 'on_timeout', action: 'escalate', enabled: Math.random() > 0.5 },
-        { id: `h${i}_4`, type: 'on_handoff', action: 'transfer_context', enabled: Math.random() > 0.5 },
-      ],
-      testResults: [
-        { id: `t${i}_1`, category: 'DOM', name: 'Domain Knowledge Test', passed: Math.random() > 0.1, duration: 2 + Math.random() * 5, timestamp: new Date().toISOString() },
-        { id: `t${i}_2`, category: 'EDGE', name: 'Edge Case Handling', passed: Math.random() > 0.15, duration: 3 + Math.random() * 8, timestamp: new Date().toISOString() },
-        { id: `t${i}_3`, category: 'PERS', name: 'Personality Consistency', passed: Math.random() > 0.1, duration: 1 + Math.random() * 3, timestamp: new Date().toISOString() },
-        { id: `t${i}_4`, category: 'KB', name: 'Knowledge Base Accuracy', passed: Math.random() > 0.12, duration: 4 + Math.random() * 6, timestamp: new Date().toISOString() },
-        { id: `t${i}_5`, category: 'GEN', name: 'General Capability', passed: Math.random() > 0.08, duration: 2 + Math.random() * 4, timestamp: new Date().toISOString() },
-      ],
-    });
-  }
-  return agents;
+/**
+ * Returns the full catalog of 290 specialized Valtheron agents sourced from
+ * `frontend/src/data/valtheron_agents_*.json`. The optional `count` parameter
+ * slices the top N entries (ordered by agent id) — callers that previously
+ * asked for 200 still get 200, while the default (no arg) returns all 290.
+ */
+export function generateAgents(count?: number): Agent[] {
+  const all = loadValtheronAgents();
+  return typeof count === 'number' ? all.slice(0, count) : all;
 }
 
 export function generateTasks(agents: Agent[]): Task[] {
@@ -173,7 +111,7 @@ export function generateAuditLog(): AuditEntry[] {
   for (let i = 1; i <= 50; i++) {
     entries.push({
       id: `audit_${i}`,
-      agentId: `agent_${String(Math.floor(Math.random() * 200) + 1).padStart(3, '0')}`,
+      agentId: `agent_${String(Math.floor(Math.random() * 290) + 1).padStart(3, '0')}`,
       action: randomFrom(['task_started', 'task_completed', 'file_accessed', 'api_call', 'config_changed', 'error_logged']),
       details: `Audit entry ${i} - automated operation log`,
       timestamp: new Date(Date.now() - i * 120000).toISOString(),
@@ -223,7 +161,11 @@ export const defaultSecurityConfig: SecurityConfig = {
 export function generateAnalytics(agents: Agent[], tasks: Task[]): AnalyticsData {
   const activeCount = agents.filter(a => a.status === 'active' || a.status === 'working').length;
   const completedToday = tasks.filter(t => t.status === 'completed').length;
-  const categories: AgentCategory[] = ['trading', 'security', 'development', 'qa', 'documentation', 'deployment', 'analyst', 'support', 'integration', 'monitoring'];
+  const categories: AgentCategory[] = [
+    'trading', 'security', 'development', 'qa', 'documentation', 'deployment',
+    'analyst', 'support', 'integration', 'monitoring',
+    'hybrid', 'meta', 'fintech', 'ai-native', 'human-centric', 'specialized-data',
+  ];
   return {
     totalAgents: agents.length,
     activeAgents: activeCount,
