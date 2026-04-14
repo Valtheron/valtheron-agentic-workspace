@@ -46,6 +46,24 @@ export interface Agent {
   llmProvider?: LLMProviderType;
   llmModel?: string;
   riskProfile?: AgentRiskProfile;
+  knowledgeScope?: KnowledgeScope;
+}
+
+export interface KnowledgeDoc {
+  id: string;
+  title: string;
+  category: string;
+  subcategory: string;
+  difficulty: string;
+  language: string;
+  format: string;
+  tags: string[];
+  summaryPath: string;
+}
+
+export interface KnowledgeScope {
+  primaryCategories: string[];
+  docs: KnowledgeDoc[];
 }
 
 export interface PersonalityConfig {

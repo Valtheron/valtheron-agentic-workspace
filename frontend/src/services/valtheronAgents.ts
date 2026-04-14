@@ -19,6 +19,10 @@ import type {
 } from '../types';
 import agents1to200 from '../data/valtheron_agents_1_200.json';
 import agents201to290 from '../data/valtheron_agents_201_290.json';
+import {
+  enrichSystemPromptWithKB,
+  getKnowledgeScopeForAgent,
+} from './knowledgeBase';
 
 interface RawAgent {
   id: number;
@@ -120,6 +124,13 @@ function toAgent(raw: RawAgent): Agent {
 
   const id = `agent_${String(raw.id).padStart(3, '0')}`;
 
+  const knowledgeScope = getKnowledgeScopeForAgent({
+    category: mappedCategory,
+    name: raw.name,
+    description: raw.description,
+  });
+  const systemPrompt = enrichSystemPromptWithKB(raw.system_prompt, knowledgeScope);
+
   return {
     id,
     name: raw.name,
@@ -132,7 +143,7 @@ function toAgent(raw: RawAgent): Agent {
     avgTaskDuration,
     currentTask: hasCurrentTask ? `Task-${Math.floor(rng() * 999)}` : null,
     lastActivity: new Date(Date.now() - Math.floor(rng() * 86400000)).toISOString(),
-    systemPrompt: raw.system_prompt,
+    systemPrompt,
     personality,
     parameters: {
       temperature: +(0.3 + rng() * 0.7).toFixed(2),
@@ -151,6 +162,7 @@ function toAgent(raw: RawAgent): Agent {
       { id: `h${raw.id}_4`, type: 'on_handoff', action: 'transfer_context', enabled: rng() > 0.5 },
     ],
     testResults,
+    knowledgeScope,
   };
 }
 

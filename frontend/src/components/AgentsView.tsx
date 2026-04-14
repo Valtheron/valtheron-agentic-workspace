@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import type { Agent } from '../types';
+import { getSummaryContent, loadKBManifest } from '../services/knowledgeBase';
 
 interface AgentsProps {
   agents: Agent[];
@@ -105,9 +106,10 @@ function Sparkline({ agent }: { agent: Agent }) {
 }
 
 export default function AgentsView({ agents, selectedAgentId, onSelectAgent }: AgentsProps) {
-  const [detailTab, setDetailTab] = useState<'subdim' | 'overview' | 'layers' | 'modifiers'>('subdim');
+  const [detailTab, setDetailTab] = useState<'subdim' | 'overview' | 'layers' | 'modifiers' | 'knowledge'>('subdim');
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [expandedSummary, setExpandedSummary] = useState<string | null>(null);
 
   const sorted = useMemo(() => {
     let filtered = agents;
@@ -197,6 +199,7 @@ export default function AgentsView({ agents, selectedAgentId, onSelectAgent }: A
               { key: 'subdim', label: '30 Sub-Dim.', icon: '\u25A3' },
               { key: 'layers', label: '5 Layers', icon: '\u2261' },
               { key: 'modifiers', label: '3 Modifiers', icon: '\u2699' },
+              { key: 'knowledge', label: 'Wissen', icon: '\u{1F4DA}' },
             ] as const).map(t => (
               <button
                 key={t.key}
@@ -333,8 +336,138 @@ export default function AgentsView({ agents, selectedAgentId, onSelectAgent }: A
               </div>
             </div>
           )}
+
+          {detailTab === 'knowledge' && (
+            <KnowledgeTab
+              agent={selectedAgent}
+              expandedSummary={expandedSummary}
+              onToggleSummary={path =>
+                setExpandedSummary(prev => (prev === path ? null : path))
+              }
+            />
+          )}
         </div>
       )}
+    </div>
+  );
+}
+
+interface KnowledgeTabProps {
+  agent: Agent;
+  expandedSummary: string | null;
+  onToggleSummary: (summaryPath: string) => void;
+}
+
+function KnowledgeTab({ agent, expandedSummary, onToggleSummary }: KnowledgeTabProps) {
+  const scope = agent.knowledgeScope;
+  const manifest = loadKBManifest();
+
+  if (!scope || scope.docs.length === 0) {
+    return (
+      <div className="card">
+        <div className="card-title mb-8">Wissensbasis-Scope</div>
+        <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+          F\u00FCr diesen Agenten wurden (noch) keine Dokumente aus der Knowledge-Base zugeordnet.
+        </div>
+      </div>
+    );
+  }
+
+  const categoryBadges = scope.primaryCategories.map(cat => {
+    const label = manifest.categories[cat]?.label ?? cat;
+    return (
+      <span
+        key={cat}
+        style={{
+          display: 'inline-block',
+          padding: '2px 8px',
+          marginRight: 6,
+          marginBottom: 4,
+          borderRadius: 4,
+          background: 'var(--border-color)',
+          color: 'var(--text-primary)',
+          fontSize: 10,
+          fontWeight: 600,
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+        }}
+      >
+        {label}
+      </span>
+    );
+  });
+
+  return (
+    <div>
+      <div className="card mb-16">
+        <div className="card-title mb-8">Wissens-Scope</div>
+        <div style={{ marginBottom: 8 }}>{categoryBadges}</div>
+        <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+          Top {scope.docs.length} Dokumente aus {scope.primaryCategories.length} Kategorie
+          {scope.primaryCategories.length === 1 ? '' : 'n'} (Tag-Ranking).
+        </div>
+      </div>
+
+      {scope.docs.map(doc => {
+        const isOpen = expandedSummary === doc.summaryPath;
+        const summary = isOpen ? getSummaryContent(doc.summaryPath) : undefined;
+        return (
+          <div key={doc.id} className="card mb-16">
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 4 }}>
+              <div style={{ fontWeight: 600, fontSize: 13 }}>{doc.title}</div>
+              <div style={{ fontSize: 10, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{doc.id}</div>
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 6 }}>
+              {manifest.categories[doc.category]?.label ?? doc.category} &middot; {doc.subcategory} &middot; {doc.difficulty}
+            </div>
+            {doc.tags.length > 0 && (
+              <div style={{ marginBottom: 6 }}>
+                {doc.tags.map(tag => (
+                  <span
+                    key={tag}
+                    style={{
+                      display: 'inline-block',
+                      padding: '1px 6px',
+                      marginRight: 4,
+                      marginBottom: 2,
+                      borderRadius: 3,
+                      border: '1px solid var(--border-color)',
+                      fontSize: 10,
+                      color: 'var(--text-muted)',
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            <button
+              className="detail-tab"
+              onClick={() => onToggleSummary(doc.summaryPath)}
+              style={{ fontSize: 11 }}
+            >
+              {isOpen ? 'Summary ausblenden' : 'Summary anzeigen'}
+            </button>
+            {isOpen && (
+              <pre
+                style={{
+                  marginTop: 8,
+                  padding: 8,
+                  background: 'var(--bg-secondary)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: 4,
+                  fontSize: 11,
+                  whiteSpace: 'pre-wrap',
+                  maxHeight: 240,
+                  overflow: 'auto',
+                }}
+              >
+                {summary ?? 'Keine Summary verfügbar.'}
+              </pre>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
