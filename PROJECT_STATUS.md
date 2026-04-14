@@ -3,7 +3,7 @@
 **Stand:** 08.03.2026
 **Version:** v1.0.0 Genesis Release
 **Aktueller Branch:** `claude/fix-ubuntu-startup-h7rJg`
-**Eigentümer:** BlackIceSecure / Valtheron
+**Eigentümer:** BlackIceSecure & blackiceguard.io / Valtheron
 **Priorität:** ERSTES RELEASE SO BALD WIE MÖGLICH
 
 ---
@@ -216,10 +216,10 @@ Vollständige ADR-Dokumentation: `docs/ARCHITECTURE.md`
 
 | Bereich | Verantwortlich |
 |---------|---------------|
-| Release-Koordination | BlackIceSecure / Valtheron Management |
+| Release-Koordination | BlackIceSecure & blackiceguard.io / Valtheron Management |
 | Backend-Entwicklung | Development Team |
 | Frontend-Entwicklung | Development Team |
-| Security | BlackIceSecure Security Team |
+| Security | BlackIceSecure Security Team (blackiceguard.io) |
 | DevOps / Deployment | Deployment Team |
 | Dokumentation | Documentation Team |
 

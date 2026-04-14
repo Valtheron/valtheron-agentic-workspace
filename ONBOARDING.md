@@ -3,7 +3,7 @@
 **Zielgruppe:** Neue Entwickler (menschlich & KI), externe Mitarbeiter
 **Ziel:** Strukturierter Einstieg mit klaren Leitplanken für Rückfragen
 **Stand:** 08.03.2026 — v1.0.0 Genesis Release
-**Eigentümer:** BlackIceSecure / Valtheron
+**Eigentümer:** BlackIceSecure & blackiceguard.io / Valtheron
 
 ---
 
@@ -73,7 +73,7 @@ Das System ist keine KI selbst — es ist die **Plattform zur Steuerung von KI**
 
 ### Kontext: Wer steckt dahinter?
 
-- **BlackIceSecure** — das Sicherheits- und Technologieunternehmen, das Eigentümer des Projekts ist (https://blackice-secure.space)
+- **BlackIceSecure & blackiceguard.io** — das Sicherheits- und Technologieunternehmen, das Eigentümer des Projekts ist (https://blackice-secure.space)
 - **Valtheron** — die Produktmarke unter der das System veröffentlicht wird (https://valtheron.github.io/valtheron-agentic-workspace/)
 - **Aktuelle Priorität:** v1.0.0 ist technisch fertig — erstes Release muss so bald wie möglich veröffentlicht werden
 
@@ -405,7 +405,7 @@ Ausführliche Hilfe: `docs/TROUBLESHOOTING_GUIDE.md`
 ## 13. Kontakt & Organisations-Links
 
 - **Organisation GitHub:** https://github.com/Valtheron
-- **BlackIceSecure:** https://blackicesecure.com
+- **BlackIceSecure & blackiceguard.io:** https://blackicesecure.com
 - **Valtheron:** https://valtheron.com
 - **Issues melden:** GitHub Issues im Repository
 

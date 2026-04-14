@@ -37,9 +37,25 @@ const platforms = [
   },
   {
     id: 'blackice',
-    name: 'BlackIceSecure',
+    name: 'BlackIceSecure & blackiceguard.io',
     description: 'Dienstleistungen, Community & Kontakt.',
     url: 'https://blackice-secure.space',
+    color: '#00e5ff',
+    bg: 'rgba(0,229,255,0.06)',
+    border: 'rgba(0,229,255,0.2)',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} width={28} height={28}>
+        <path d="M12 2L2 7l10 5 10-5-10-5z" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M2 17l10 5 10-5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    id: 'blackiceguard',
+    name: 'BlackIceGuard',
+    description: 'Weiterer offizieller Online-Auftritt.',
+    url: 'https://blackiceguard.io',
     color: '#00e5ff',
     bg: 'rgba(0,229,255,0.06)',
     border: 'rgba(0,229,255,0.2)',
@@ -107,7 +123,11 @@ export default function SponsorModal({ onClose, donationMessage }: SponsorModalP
           <p className="sponsor-subtitle">
             Valtheron Agentic Workspace — entwickelt von{' '}
             <a href="https://blackice-secure.space" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>
-              BlackIceSecure
+              BlackIceSecure & blackiceguard.io
+            </a>
+            {' '}·{' '}
+            <a href="https://blackiceguard.io" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>
+              BlackIceGuard
             </a>
             .<br />
             Gehostet auf{' '}

@@ -323,4 +323,4 @@ Beim Erstellen eines PRs, folgendes einbeziehen:
 
 ---
 
-*Letztes Update: 08.03.2026 | BlackIceSecure / Valtheron*
+*Letztes Update: 08.03.2026 | BlackIceSecure & blackiceguard.io / Valtheron*
