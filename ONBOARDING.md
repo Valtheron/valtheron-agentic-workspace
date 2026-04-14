@@ -73,8 +73,8 @@ Das System ist keine KI selbst — es ist die **Plattform zur Steuerung von KI**
 
 ### Kontext: Wer steckt dahinter?
 
-- **BlackIceSecure** — das Sicherheits- und Technologieunternehmen, das Eigentümer des Projekts ist (https://blackicesecure.com)
-- **Valtheron** — die Produktmarke unter der das System veröffentlicht wird (https://valtheron.com)
+- **BlackIceSecure** — das Sicherheits- und Technologieunternehmen, das Eigentümer des Projekts ist (https://blackice-secure.space)
+- **Valtheron** — die Produktmarke unter der das System veröffentlicht wird (https://valtheron.github.io/valtheron-agentic-workspace/)
 - **Aktuelle Priorität:** v1.0.0 ist technisch fertig — erstes Release muss so bald wie möglich veröffentlicht werden
 
 ---
@@ -345,7 +345,7 @@ cd frontend && npm run lint   # ESLint
 | Rolle | Beschreibung | Berechtigungen |
 |-------|-------------|----------------|
 | `admin` | Vollzugriff | CRUD auf alles, Kill-Switch, User-Management |
-| `operator` | Tages-Betrieb | CRUD auf Agents/Tasks, kein Kill-Switch-Arm |
+| `operator` | Tages-Betrieb | CRUD auf Agents/Tasks, kein Kill-Switch |
 | `viewer` | Nur lesen | GET-Requests, kein Schreiben |
 
 Der erste registrierte User bekommt automatisch `admin`.
