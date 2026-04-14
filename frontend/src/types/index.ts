@@ -46,6 +46,36 @@ export interface Agent {
   llmProvider?: LLMProviderType;
   llmModel?: string;
   riskProfile?: AgentRiskProfile;
+  knowledgeScope?: KnowledgeScope;
+}
+
+export interface KnowledgeDoc {
+  id: string;
+  title: string;
+  category: string;
+  subcategory: string;
+  difficulty: string;
+  language: string;
+  format: string;
+  tags: string[];
+  summaryPath: string;
+  integrityStatus?: KnowledgeDocIntegrityStatus;
+  detectedFormat?: string;
+  pageCount?: number;
+  fileSize?: number;
+}
+
+export type KnowledgeDocIntegrityStatus =
+  | 'valid'
+  | 'missing'
+  | 'empty'
+  | 'zero-pages'
+  | 'wrong-format-html'
+  | 'wrong-format-other';
+
+export interface KnowledgeScope {
+  primaryCategories: string[];
+  docs: KnowledgeDoc[];
 }
 
 export interface PersonalityConfig {
