@@ -10,7 +10,13 @@ export type AgentCategory =
   | 'analyst'
   | 'support'
   | 'integration'
-  | 'monitoring';
+  | 'monitoring'
+  | 'hybrid'
+  | 'meta'
+  | 'fintech'
+  | 'ai-native'
+  | 'human-centric'
+  | 'specialized-data';
 export type AgentStatus = 'active' | 'idle' | 'working' | 'blocked' | 'error' | 'suspended';
 export type TaskStatus = 'pending' | 'in_progress' | 'completed' | 'failed';
 export type CertStatus = 'valid' | 'expiring' | 'expired' | 'suspended' | 'revoked' | 'archived';

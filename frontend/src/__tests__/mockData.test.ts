@@ -21,8 +21,8 @@ describe('generateAgents', () => {
     expect(generateAgents(200)).toHaveLength(200);
   });
 
-  it('generates 200 agents by default', () => {
-    expect(generateAgents()).toHaveLength(200);
+  it('generates 290 agents by default (full Valtheron catalog)', () => {
+    expect(generateAgents()).toHaveLength(290);
   });
 
   it('each agent has required fields', () => {
@@ -359,9 +359,9 @@ describe('generateAnalytics', () => {
     expect(analytics.tasksTrend).toHaveLength(7);
   });
 
-  it('categoryDistribution covers all categories', () => {
+  it('categoryDistribution covers all 16 categories', () => {
     const analytics = generateAnalytics(agents, tasks);
-    expect(analytics.categoryDistribution).toHaveLength(10);
+    expect(analytics.categoryDistribution).toHaveLength(16);
   });
 
   it('uptime is 99.97', () => {
