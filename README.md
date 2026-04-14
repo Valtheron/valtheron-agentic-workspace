@@ -29,7 +29,7 @@ Die Plattform ist kein KI-System selbst, sondern der **Steuerungsraum** für aut
 
 ## Über den Initiator
 
-Dieses Projekt wird von **[BlackIce Secure Inc.](https://blackice-secure.space/)** initiiert — einem führenden Anbieter spezialisierter Lösungen in den Bereichen Natural Language Processing, Cybersecurity und KI-Entwicklung für Unternehmen und Institutionen.
+Dieses Projekt wird von **[BlackIce Secure Inc.](https://blackice-secure.space/)** initiiert — einem führenden Anbieter spezialisierter Lösungen in den Bereichen Natural Language Processing, Cybersecurity und KI-Entwicklung für Unternehmen und Institutionen. Weiterer Online-Auftritt: **[blackiceguard.io](https://blackiceguard.io/)**.
 
 ---
 
