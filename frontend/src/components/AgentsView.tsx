@@ -419,6 +419,11 @@ function KnowledgeTab({ agent, expandedSummary, onToggleSummary }: KnowledgeTabP
             </div>
             <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 6 }}>
               {manifest.categories[doc.category]?.label ?? doc.category} &middot; {doc.subcategory} &middot; {doc.difficulty}
+              {doc.integrityStatus === 'missing' && (
+                <span style={{ marginLeft: 8, color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                  &middot; Katalog-Eintrag (nur Summary)
+                </span>
+              )}
             </div>
             {doc.tags.length > 0 && (
               <div style={{ marginBottom: 6 }}>

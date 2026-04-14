@@ -77,7 +77,11 @@
         "web",
         "methodology"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-002",
@@ -94,7 +98,11 @@
         "network",
         "nmap"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-003",
@@ -112,7 +120,11 @@
         "aws",
         "azure"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-004",
@@ -129,7 +141,11 @@
         "mobile",
         "android"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-005",
@@ -146,7 +162,11 @@
         "mobile",
         "ios"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-006",
@@ -163,7 +183,11 @@
         "iot",
         "embedded"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-007",
@@ -181,7 +205,11 @@
         "scada",
         "ics"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-008",
@@ -198,7 +226,11 @@
         "web",
         "beginner"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-009",
@@ -215,7 +247,11 @@
         "web",
         "burp-suite"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-010",
@@ -232,7 +268,11 @@
         "web",
         "owasp"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-011",
@@ -249,7 +289,11 @@
         "web",
         "sql-injection"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-012",
@@ -266,7 +310,11 @@
         "web",
         "xss"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-013",
@@ -283,7 +331,11 @@
         "web",
         "ssrf"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-014",
@@ -300,7 +352,11 @@
         "web",
         "xxe"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-015",
@@ -317,7 +373,11 @@
         "web",
         "api-security"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-016",
@@ -335,7 +395,11 @@
         "graphql",
         "api-security"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-017",
@@ -352,7 +416,11 @@
         "bug-bounty",
         "methodology"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-018",
@@ -369,7 +437,11 @@
         "bug-bounty",
         "beginner"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-019",
@@ -386,7 +458,11 @@
         "bug-bounty",
         "hackerone"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-020",
@@ -404,7 +480,11 @@
         "nmap",
         "reconnaissance"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-021",
@@ -421,7 +501,11 @@
         "metasploit",
         "exploitation"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-022",
@@ -439,7 +523,11 @@
         "enumeration",
         "reconnaissance"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-023",
@@ -456,7 +544,11 @@
         "active-directory",
         "windows"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-024",
@@ -473,7 +565,11 @@
         "wireless",
         "wifi"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-025",
@@ -491,7 +587,11 @@
         "firewall",
         "bypass"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-026",
@@ -508,7 +608,11 @@
         "oscp",
         "lab"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-027",
@@ -525,7 +629,11 @@
         "oscp",
         "certification"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-028",
@@ -542,7 +650,11 @@
         "tryhackme",
         "learning"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-029",
@@ -559,7 +671,11 @@
         "hackthebox",
         "ctf"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-030",
@@ -576,7 +692,11 @@
         "reporting",
         "methodology"
       ],
-      "summary_path": "summaries/offensive/penetration-testing.md"
+      "summary_path": "summaries/offensive/penetration-testing.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-031",
@@ -593,7 +713,11 @@
         "methodology",
         "apt"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-032",
@@ -610,7 +734,11 @@
         "cobalt-strike",
         "c2"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-033",
@@ -628,7 +756,11 @@
         "mitre-attack",
         "adversary-emulation"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-034",
@@ -645,7 +777,11 @@
         "c2",
         "infrastructure"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-035",
@@ -663,7 +799,11 @@
         "edr-bypass",
         "evasion"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-036",
@@ -680,7 +820,11 @@
         "av-bypass",
         "evasion"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-037",
@@ -698,7 +842,11 @@
         "powershell",
         "evasion"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-038",
@@ -716,7 +864,11 @@
         "windows",
         "defender"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-039",
@@ -734,7 +886,11 @@
         "evasion",
         "windows"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-040",
@@ -751,7 +907,11 @@
         "mitre-attack",
         "mapping"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-041",
@@ -768,7 +928,11 @@
         "purple-team",
         "collaboration"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-042",
@@ -785,7 +949,11 @@
         "phishing",
         "social-engineering"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-043",
@@ -803,7 +971,11 @@
         "spear-phishing",
         "social-engineering"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-044",
@@ -819,7 +991,11 @@
         "red-team",
         "social-engineering"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-045",
@@ -836,7 +1012,11 @@
         "physical",
         "social-engineering"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-046",
@@ -853,7 +1033,11 @@
         "infrastructure",
         "c2"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-047",
@@ -871,7 +1055,11 @@
         "mitre-attack",
         "simulation"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-048",
@@ -888,7 +1076,11 @@
         "apt",
         "adversary-emulation"
       ],
-      "summary_path": "summaries/offensive/red-team-operations.md"
+      "summary_path": "summaries/offensive/red-team-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-049",
@@ -906,7 +1098,11 @@
         "x86",
         "shellcode"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-050",
@@ -923,7 +1119,11 @@
         "buffer-overflow",
         "x64"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-051",
@@ -940,7 +1140,11 @@
         "shellcode",
         "assembly"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-052",
@@ -957,7 +1161,11 @@
         "rop",
         "dep-bypass"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-053",
@@ -974,7 +1182,11 @@
         "heap",
         "use-after-free"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-054",
@@ -990,7 +1202,11 @@
         "exploit-dev",
         "format-string"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-055",
@@ -1007,7 +1223,11 @@
         "use-after-free",
         "heap"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-056",
@@ -1023,7 +1243,11 @@
         "exploit-dev",
         "windows"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-057",
@@ -1040,7 +1264,11 @@
         "linux",
         "kernel"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-058",
@@ -1057,7 +1285,11 @@
         "browser",
         "javascript"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-059",
@@ -1074,7 +1306,11 @@
         "cve",
         "poc"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-060",
@@ -1091,7 +1327,11 @@
         "fuzzing",
         "afl"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-061",
@@ -1108,7 +1348,11 @@
         "gdb",
         "debugging"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-062",
@@ -1125,7 +1369,11 @@
         "python",
         "pwntools"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-063",
@@ -1143,7 +1391,11 @@
         "ghidra",
         "reverse-engineering"
       ],
-      "summary_path": "summaries/offensive/exploit-development.md"
+      "summary_path": "summaries/offensive/exploit-development.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-064",
@@ -1160,7 +1412,11 @@
         "privilege-escalation",
         "windows"
       ],
-      "summary_path": "summaries/offensive/post-exploitation.md"
+      "summary_path": "summaries/offensive/post-exploitation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-065",
@@ -1177,7 +1433,11 @@
         "privilege-escalation",
         "linux"
       ],
-      "summary_path": "summaries/offensive/post-exploitation.md"
+      "summary_path": "summaries/offensive/post-exploitation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-066",
@@ -1194,7 +1454,11 @@
         "lateral-movement",
         "active-directory"
       ],
-      "summary_path": "summaries/offensive/post-exploitation.md"
+      "summary_path": "summaries/offensive/post-exploitation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-067",
@@ -1211,7 +1475,11 @@
         "credential-harvesting",
         "pass-the-hash"
       ],
-      "summary_path": "summaries/offensive/post-exploitation.md"
+      "summary_path": "summaries/offensive/post-exploitation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-068",
@@ -1228,7 +1496,11 @@
         "persistence",
         "active-directory"
       ],
-      "summary_path": "summaries/offensive/post-exploitation.md"
+      "summary_path": "summaries/offensive/post-exploitation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-069",
@@ -1244,7 +1516,11 @@
         "post-exploitation",
         "exfiltration"
       ],
-      "summary_path": "summaries/offensive/post-exploitation.md"
+      "summary_path": "summaries/offensive/post-exploitation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-070",
@@ -1262,7 +1538,11 @@
         "injection",
         "windows"
       ],
-      "summary_path": "summaries/offensive/post-exploitation.md"
+      "summary_path": "summaries/offensive/post-exploitation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-071",
@@ -1279,7 +1559,11 @@
         "evasion",
         "persistence"
       ],
-      "summary_path": "summaries/offensive/post-exploitation.md"
+      "summary_path": "summaries/offensive/post-exploitation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-072",
@@ -1295,7 +1579,11 @@
         "post-exploitation",
         "metasploit"
       ],
-      "summary_path": "summaries/offensive/post-exploitation.md"
+      "summary_path": "summaries/offensive/post-exploitation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-073",
@@ -1312,7 +1600,11 @@
         "anti-forensics",
         "evasion"
       ],
-      "summary_path": "summaries/offensive/post-exploitation.md"
+      "summary_path": "summaries/offensive/post-exploitation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-074",
@@ -1329,7 +1621,11 @@
         "career",
         "beginner"
       ],
-      "summary_path": "summaries/defensive/soc-operations.md"
+      "summary_path": "summaries/defensive/soc-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-075",
@@ -1346,7 +1642,11 @@
         "career",
         "specialist"
       ],
-      "summary_path": "summaries/defensive/soc-operations.md"
+      "summary_path": "summaries/defensive/soc-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-076",
@@ -1363,7 +1663,11 @@
         "setup",
         "operations"
       ],
-      "summary_path": "summaries/defensive/soc-operations.md"
+      "summary_path": "summaries/defensive/soc-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-077",
@@ -1380,7 +1684,11 @@
         "siem",
         "implementation"
       ],
-      "summary_path": "summaries/defensive/soc-operations.md"
+      "summary_path": "summaries/defensive/soc-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-078",
@@ -1397,7 +1705,11 @@
         "siem",
         "splunk"
       ],
-      "summary_path": "summaries/defensive/soc-operations.md"
+      "summary_path": "summaries/defensive/soc-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-079",
@@ -1415,7 +1727,11 @@
         "sentinel",
         "azure"
       ],
-      "summary_path": "summaries/defensive/soc-operations.md"
+      "summary_path": "summaries/defensive/soc-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-080",
@@ -1432,7 +1748,11 @@
         "monitoring",
         "triage"
       ],
-      "summary_path": "summaries/defensive/soc-operations.md"
+      "summary_path": "summaries/defensive/soc-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-081",
@@ -1448,7 +1768,11 @@
         "soc",
         "threat-intelligence"
       ],
-      "summary_path": "summaries/defensive/soc-operations.md"
+      "summary_path": "summaries/defensive/soc-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-082",
@@ -1465,7 +1789,11 @@
         "metrics",
         "kpi"
       ],
-      "summary_path": "summaries/defensive/soc-operations.md"
+      "summary_path": "summaries/defensive/soc-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-083",
@@ -1482,7 +1810,11 @@
         "soar",
         "automation"
       ],
-      "summary_path": "summaries/defensive/soc-operations.md"
+      "summary_path": "summaries/defensive/soc-operations.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-084",
@@ -1499,7 +1831,11 @@
         "playbook",
         "dfir"
       ],
-      "summary_path": "summaries/defensive/incident-response.md"
+      "summary_path": "summaries/defensive/incident-response.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-085",
@@ -1516,7 +1852,11 @@
         "forensics",
         "dfir"
       ],
-      "summary_path": "summaries/defensive/incident-response.md"
+      "summary_path": "summaries/defensive/incident-response.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-086",
@@ -1532,7 +1872,11 @@
         "incident-response",
         "ransomware"
       ],
-      "summary_path": "summaries/defensive/incident-response.md"
+      "summary_path": "summaries/defensive/incident-response.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-087",
@@ -1549,7 +1893,11 @@
         "data-breach",
         "compliance"
       ],
-      "summary_path": "summaries/defensive/incident-response.md"
+      "summary_path": "summaries/defensive/incident-response.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-088",
@@ -1567,7 +1915,11 @@
         "volatility",
         "memory"
       ],
-      "summary_path": "summaries/defensive/incident-response.md"
+      "summary_path": "summaries/defensive/incident-response.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-089",
@@ -1585,7 +1937,11 @@
         "network",
         "wireshark"
       ],
-      "summary_path": "summaries/defensive/incident-response.md"
+      "summary_path": "summaries/defensive/incident-response.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-090",
@@ -1602,7 +1958,11 @@
         "forensics",
         "windows"
       ],
-      "summary_path": "summaries/defensive/incident-response.md"
+      "summary_path": "summaries/defensive/incident-response.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-091",
@@ -1619,7 +1979,11 @@
         "forensics",
         "linux"
       ],
-      "summary_path": "summaries/defensive/incident-response.md"
+      "summary_path": "summaries/defensive/incident-response.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-092",
@@ -1635,7 +1999,11 @@
         "malware-analysis",
         "static-analysis"
       ],
-      "summary_path": "summaries/defensive/malware-analysis.md"
+      "summary_path": "summaries/defensive/malware-analysis.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-093",
@@ -1652,7 +2020,11 @@
         "dynamic-analysis",
         "sandbox"
       ],
-      "summary_path": "summaries/defensive/malware-analysis.md"
+      "summary_path": "summaries/defensive/malware-analysis.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-094",
@@ -1669,7 +2041,11 @@
         "reverse-engineering",
         "ghidra"
       ],
-      "summary_path": "summaries/defensive/malware-analysis.md"
+      "summary_path": "summaries/defensive/malware-analysis.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-095",
@@ -1686,7 +2062,11 @@
         "reverse-engineering",
         "ida-pro"
       ],
-      "summary_path": "summaries/defensive/malware-analysis.md"
+      "summary_path": "summaries/defensive/malware-analysis.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-096",
@@ -1703,7 +2083,11 @@
         "ransomware",
         "decryption"
       ],
-      "summary_path": "summaries/defensive/malware-analysis.md"
+      "summary_path": "summaries/defensive/malware-analysis.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-097",
@@ -1720,7 +2104,11 @@
         "trojan",
         "rat"
       ],
-      "summary_path": "summaries/defensive/malware-analysis.md"
+      "summary_path": "summaries/defensive/malware-analysis.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-098",
@@ -1736,7 +2124,11 @@
         "malware-analysis",
         "rootkit"
       ],
-      "summary_path": "summaries/defensive/malware-analysis.md"
+      "summary_path": "summaries/defensive/malware-analysis.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-099",
@@ -1752,7 +2144,11 @@
         "malware-analysis",
         "sandbox"
       ],
-      "summary_path": "summaries/defensive/malware-analysis.md"
+      "summary_path": "summaries/defensive/malware-analysis.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-100",
@@ -1768,7 +2164,11 @@
         "threat-hunting",
         "mitre-attack"
       ],
-      "summary_path": "summaries/defensive/threat-hunting.md"
+      "summary_path": "summaries/defensive/threat-hunting.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-101",
@@ -1785,7 +2185,11 @@
         "windows",
         "sysmon"
       ],
-      "summary_path": "summaries/defensive/threat-hunting.md"
+      "summary_path": "summaries/defensive/threat-hunting.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-102",
@@ -1802,7 +2206,11 @@
         "network",
         "wireshark"
       ],
-      "summary_path": "summaries/defensive/threat-hunting.md"
+      "summary_path": "summaries/defensive/threat-hunting.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-103",
@@ -1818,7 +2226,11 @@
         "threat-hunting",
         "edr"
       ],
-      "summary_path": "summaries/defensive/threat-hunting.md"
+      "summary_path": "summaries/defensive/threat-hunting.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-104",
@@ -1835,7 +2247,11 @@
         "threat-intelligence",
         "cti"
       ],
-      "summary_path": "summaries/defensive/threat-hunting.md"
+      "summary_path": "summaries/defensive/threat-hunting.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-105",
@@ -1852,7 +2268,11 @@
         "yara",
         "detection"
       ],
-      "summary_path": "summaries/defensive/threat-hunting.md"
+      "summary_path": "summaries/defensive/threat-hunting.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-106",
@@ -1869,7 +2289,11 @@
         "cloud",
         "fundamentals"
       ],
-      "summary_path": "summaries/cloud/aws-security.md"
+      "summary_path": "summaries/cloud/aws-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-107",
@@ -1886,7 +2310,11 @@
         "cloud",
         "pentesting"
       ],
-      "summary_path": "summaries/cloud/aws-security.md"
+      "summary_path": "summaries/cloud/aws-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-108",
@@ -1903,7 +2331,11 @@
         "iam",
         "cloud"
       ],
-      "summary_path": "summaries/cloud/aws-security.md"
+      "summary_path": "summaries/cloud/aws-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-109",
@@ -1920,7 +2352,11 @@
         "cloud",
         "architecture"
       ],
-      "summary_path": "summaries/cloud/aws-security.md"
+      "summary_path": "summaries/cloud/aws-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-110",
@@ -1937,7 +2373,11 @@
         "s3",
         "cloud"
       ],
-      "summary_path": "summaries/cloud/aws-security.md"
+      "summary_path": "summaries/cloud/aws-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-111",
@@ -1955,7 +2395,11 @@
         "lab",
         "pentesting"
       ],
-      "summary_path": "summaries/cloud/aws-security.md"
+      "summary_path": "summaries/cloud/aws-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-112",
@@ -1972,7 +2416,11 @@
         "cloud",
         "fundamentals"
       ],
-      "summary_path": "summaries/cloud/azure-security.md"
+      "summary_path": "summaries/cloud/azure-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-113",
@@ -1989,7 +2437,11 @@
         "azure-ad",
         "active-directory"
       ],
-      "summary_path": "summaries/cloud/azure-security.md"
+      "summary_path": "summaries/cloud/azure-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-114",
@@ -2007,7 +2459,11 @@
         "kubernetes",
         "cloud"
       ],
-      "summary_path": "summaries/cloud/azure-security.md"
+      "summary_path": "summaries/cloud/azure-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-115",
@@ -2024,7 +2480,11 @@
         "cloud",
         "pentesting"
       ],
-      "summary_path": "summaries/cloud/azure-security.md"
+      "summary_path": "summaries/cloud/azure-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-116",
@@ -2041,7 +2501,11 @@
         "cloud",
         "fundamentals"
       ],
-      "summary_path": "summaries/cloud/gcp-security.md"
+      "summary_path": "summaries/cloud/gcp-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-117",
@@ -2058,7 +2522,11 @@
         "cloud",
         "pentesting"
       ],
-      "summary_path": "summaries/cloud/gcp-security.md"
+      "summary_path": "summaries/cloud/gcp-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-118",
@@ -2076,7 +2544,11 @@
         "kubernetes",
         "cloud"
       ],
-      "summary_path": "summaries/cloud/gcp-security.md"
+      "summary_path": "summaries/cloud/gcp-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-119",
@@ -2093,7 +2565,11 @@
         "containers",
         "cloud"
       ],
-      "summary_path": "summaries/cloud/container-security.md"
+      "summary_path": "summaries/cloud/container-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-120",
@@ -2110,7 +2586,11 @@
         "containers",
         "cloud"
       ],
-      "summary_path": "summaries/cloud/container-security.md"
+      "summary_path": "summaries/cloud/container-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-121",
@@ -2128,7 +2608,11 @@
         "kubernetes",
         "escape"
       ],
-      "summary_path": "summaries/cloud/container-security.md"
+      "summary_path": "summaries/cloud/container-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-122",
@@ -2145,7 +2629,11 @@
         "containers",
         "pentesting"
       ],
-      "summary_path": "summaries/cloud/container-security.md"
+      "summary_path": "summaries/cloud/container-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-123",
@@ -2163,7 +2651,11 @@
         "runtime",
         "falco"
       ],
-      "summary_path": "summaries/cloud/container-security.md"
+      "summary_path": "summaries/cloud/container-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-124",
@@ -2180,7 +2672,11 @@
         "owasp",
         "beginner"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-125",
@@ -2198,7 +2694,11 @@
         "testing",
         "methodology"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-126",
@@ -2215,7 +2715,11 @@
         "xss",
         "prevention"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-127",
@@ -2232,7 +2736,11 @@
         "sql-injection",
         "defense"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-128",
@@ -2249,7 +2757,11 @@
         "authentication",
         "session"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-129",
@@ -2267,7 +2779,11 @@
         "authentication",
         "api-security"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-130",
@@ -2284,7 +2800,11 @@
         "jwt",
         "authentication"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-131",
@@ -2302,7 +2822,11 @@
         "blockchain",
         "solidity"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-132",
@@ -2319,7 +2843,11 @@
         "blockchain",
         "fundamentals"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-133",
@@ -2335,7 +2863,11 @@
         "web",
         "cache-poisoning"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-134",
@@ -2352,7 +2884,11 @@
         "http",
         "smuggling"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-135",
@@ -2369,7 +2905,11 @@
         "cors",
         "misconfiguration"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-136",
@@ -2386,7 +2926,11 @@
         "waf",
         "bypass"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-137",
@@ -2403,7 +2947,11 @@
         "code-review",
         "devsecops"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-138",
@@ -2420,7 +2968,11 @@
         "devsecops",
         "ci-cd"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-139",
@@ -2437,7 +2989,11 @@
         "developers",
         "beginner"
       ],
-      "summary_path": "summaries/appsec/web-application-security.md"
+      "summary_path": "summaries/appsec/web-application-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-140",
@@ -2454,7 +3010,11 @@
         "android",
         "pentesting"
       ],
-      "summary_path": "summaries/appsec/mobile-security.md"
+      "summary_path": "summaries/appsec/mobile-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-141",
@@ -2471,7 +3031,11 @@
         "ios",
         "pentesting"
       ],
-      "summary_path": "summaries/appsec/mobile-security.md"
+      "summary_path": "summaries/appsec/mobile-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-142",
@@ -2488,7 +3052,11 @@
         "owasp",
         "beginner"
       ],
-      "summary_path": "summaries/appsec/mobile-security.md"
+      "summary_path": "summaries/appsec/mobile-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-143",
@@ -2505,7 +3073,11 @@
         "testing",
         "methodology"
       ],
-      "summary_path": "summaries/appsec/mobile-security.md"
+      "summary_path": "summaries/appsec/mobile-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-144",
@@ -2522,7 +3094,11 @@
         "android",
         "malware-analysis"
       ],
-      "summary_path": "summaries/appsec/mobile-security.md"
+      "summary_path": "summaries/appsec/mobile-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-145",
@@ -2539,7 +3115,11 @@
         "frida",
         "instrumentation"
       ],
-      "summary_path": "summaries/appsec/mobile-security.md"
+      "summary_path": "summaries/appsec/mobile-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-146",
@@ -2556,7 +3136,11 @@
         "fundamentals",
         "methodology"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-147",
@@ -2573,7 +3157,11 @@
         "google-dorking",
         "reconnaissance"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-148",
@@ -2589,7 +3177,11 @@
         "osint",
         "social-media"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-149",
@@ -2606,7 +3198,11 @@
         "dark-web",
         "tor"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-150",
@@ -2623,7 +3219,11 @@
         "email",
         "tracking"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-151",
@@ -2641,7 +3241,11 @@
         "ip",
         "whois"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-152",
@@ -2658,7 +3262,11 @@
         "corporate",
         "intelligence"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-153",
@@ -2675,7 +3283,11 @@
         "maltego",
         "visualization"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-154",
@@ -2692,7 +3304,11 @@
         "shodan",
         "reconnaissance"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-155",
@@ -2709,7 +3325,11 @@
         "ethics",
         "people"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-156",
@@ -2727,7 +3347,11 @@
         "image",
         "exif"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-157",
@@ -2744,7 +3368,11 @@
         "username",
         "social-media"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-158",
@@ -2761,7 +3389,11 @@
         "python",
         "automation"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-159",
@@ -2778,7 +3410,11 @@
         "threat-intelligence",
         "profiling"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-160",
@@ -2795,7 +3431,11 @@
         "reporting",
         "methodology"
       ],
-      "summary_path": "summaries/osint/osint-techniques.md"
+      "summary_path": "summaries/osint/osint-techniques.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-161",
@@ -2811,7 +3451,11 @@
         "iot",
         "fundamentals"
       ],
-      "summary_path": "summaries/iot-ot/iot-ot-security.md"
+      "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-162",
@@ -2827,7 +3471,11 @@
         "iot",
         "pentesting"
       ],
-      "summary_path": "summaries/iot-ot/iot-ot-security.md"
+      "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-163",
@@ -2844,7 +3492,11 @@
         "scada",
         "ics"
       ],
-      "summary_path": "summaries/iot-ot/iot-ot-security.md"
+      "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-164",
@@ -2862,7 +3514,11 @@
         "scada",
         "attacks"
       ],
-      "summary_path": "summaries/iot-ot/iot-ot-security.md"
+      "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-165",
@@ -2879,7 +3535,11 @@
         "hardware-hacking",
         "embedded"
       ],
-      "summary_path": "summaries/iot-ot/iot-ot-security.md"
+      "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-166",
@@ -2897,7 +3557,11 @@
         "binwalk",
         "embedded"
       ],
-      "summary_path": "summaries/iot-ot/iot-ot-security.md"
+      "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-167",
@@ -2914,7 +3578,11 @@
         "embedded",
         "testing"
       ],
-      "summary_path": "summaries/iot-ot/iot-ot-security.md"
+      "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-168",
@@ -2932,7 +3600,11 @@
         "jtag",
         "hardware-hacking"
       ],
-      "summary_path": "summaries/iot-ot/iot-ot-security.md"
+      "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-169",
@@ -2950,7 +3622,11 @@
         "sdr",
         "wireless"
       ],
-      "summary_path": "summaries/iot-ot/iot-ot-security.md"
+      "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-170",
@@ -2967,7 +3643,11 @@
         "network",
         "segmentation"
       ],
-      "summary_path": "summaries/iot-ot/iot-ot-security.md"
+      "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-171",
@@ -2984,7 +3664,11 @@
         "certification",
         "exam-prep"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-172",
@@ -3001,7 +3685,11 @@
         "lab",
         "certification"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-173",
@@ -3018,7 +3706,11 @@
         "pwk",
         "kali-linux"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-174",
@@ -3035,7 +3727,11 @@
         "buffer-overflow",
         "exploit-dev"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-175",
@@ -3052,7 +3748,11 @@
         "active-directory",
         "exam-prep"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-176",
@@ -3069,7 +3769,11 @@
         "exam-strategy",
         "tips"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-177",
@@ -3087,7 +3791,11 @@
         "exam-prep",
         "pt-br"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-178",
@@ -3104,7 +3812,11 @@
         "red-team",
         "certification"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-179",
@@ -3121,7 +3833,11 @@
         "red-team",
         "exam-prep"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-180",
@@ -3138,7 +3854,11 @@
         "elearnsecurity",
         "certification"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-181",
@@ -3155,7 +3875,11 @@
         "elearnsecurity",
         "certification"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-182",
@@ -3172,7 +3896,11 @@
         "roadmap",
         "career"
       ],
-      "summary_path": "summaries/certifications/oscp-preparation.md"
+      "summary_path": "summaries/certifications/oscp-preparation.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-183",
@@ -3190,7 +3918,11 @@
         "certification",
         "exam-prep"
       ],
-      "summary_path": "summaries/certifications/ceh-fundamentals.md"
+      "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-184",
@@ -3207,7 +3939,11 @@
         "fundamentals",
         "beginner"
       ],
-      "summary_path": "summaries/certifications/ceh-fundamentals.md"
+      "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-185",
@@ -3224,7 +3960,11 @@
         "exam-prep",
         "tips"
       ],
-      "summary_path": "summaries/certifications/ceh-fundamentals.md"
+      "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-186",
@@ -3241,7 +3981,11 @@
         "practice",
         "exam-prep"
       ],
-      "summary_path": "summaries/certifications/ceh-fundamentals.md"
+      "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-187",
@@ -3258,7 +4002,11 @@
         "lab",
         "practical"
       ],
-      "summary_path": "summaries/certifications/ceh-fundamentals.md"
+      "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-188",
@@ -3275,7 +4023,11 @@
         "notes",
         "modules"
       ],
-      "summary_path": "summaries/certifications/ceh-fundamentals.md"
+      "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-189",
@@ -3292,7 +4044,11 @@
         "certification",
         "pt-br"
       ],
-      "summary_path": "summaries/certifications/ceh-fundamentals.md"
+      "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-190",
@@ -3310,7 +4066,11 @@
         "comparison",
         "career"
       ],
-      "summary_path": "summaries/certifications/ceh-fundamentals.md"
+      "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-191",
@@ -3328,7 +4088,11 @@
         "certification",
         "beginner"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-192",
@@ -3345,7 +4109,11 @@
         "comptia",
         "exam-prep"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-193",
@@ -3363,7 +4131,11 @@
         "certification",
         "soc"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-194",
@@ -3381,7 +4153,11 @@
         "certification",
         "advanced"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-195",
@@ -3398,7 +4174,11 @@
         "comptia",
         "certification"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-196",
@@ -3415,7 +4195,11 @@
         "comptia",
         "practice"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-197",
@@ -3432,7 +4216,11 @@
         "progression",
         "roadmap"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-198",
@@ -3450,7 +4238,11 @@
         "roadmap",
         "beginner"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-199",
@@ -3467,7 +4259,11 @@
         "interview",
         "job"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-200",
@@ -3484,7 +4280,11 @@
         "beginner",
         "transition"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-201",
@@ -3501,7 +4301,11 @@
         "salary",
         "job-market"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-202",
@@ -3518,7 +4322,11 @@
         "comparison",
         "career"
       ],
-      "summary_path": "summaries/certifications/comptia-security-plus.md"
+      "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-203",
@@ -3536,7 +4344,11 @@
         "internet-safety",
         "beginner"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-204",
@@ -3553,7 +4365,11 @@
         "kids",
         "internet-safety"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-205",
@@ -3570,7 +4386,11 @@
         "cyberbullying",
         "teenagers"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-206",
@@ -3587,7 +4407,11 @@
         "teenagers",
         "internet-safety"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-207",
@@ -3604,7 +4428,11 @@
         "parents",
         "social-media"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-208",
@@ -3621,7 +4449,11 @@
         "password",
         "family"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-209",
@@ -3638,7 +4470,11 @@
         "phishing",
         "training"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-210",
@@ -3654,7 +4490,11 @@
         "awareness",
         "campaign"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-211",
@@ -3672,7 +4512,11 @@
         "internet-safety",
         "pt-br"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-212",
@@ -3689,7 +4533,11 @@
         "cyberbullying",
         "pt-br"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-213",
@@ -3707,7 +4555,11 @@
         "internet-safety",
         "pt-br"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-214",
@@ -3724,7 +4576,11 @@
         "school",
         "program"
       ],
-      "summary_path": "summaries/education/cybersecurity-awareness.md"
+      "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-215",
@@ -3741,7 +4597,11 @@
         "chatgpt",
         "cybersecurity"
       ],
-      "summary_path": null
+      "summary_path": null,
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-216",
@@ -3758,7 +4618,11 @@
         "emerging-tech",
         "security"
       ],
-      "summary_path": null
+      "summary_path": null,
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-217",
@@ -3775,7 +4639,11 @@
         "architecture",
         "strategy"
       ],
-      "summary_path": null
+      "summary_path": null,
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-218",
@@ -3792,7 +4660,11 @@
         "emerging-tech",
         "overview"
       ],
-      "summary_path": null
+      "summary_path": null,
+      "integrityStatus": "missing",
+      "detectedFormat": "missing",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-219",
@@ -3809,7 +4681,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/meta/Meta-Private-Processing-Whitepaper.md"
+      "summary_path": "summaries/meta/Meta-Private-Processing-Whitepaper.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 759136,
+      "pageCount": 53
     },
     {
       "id": "doc-220",
@@ -3826,7 +4702,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/meta/Meta-CyberSecEval-2.md"
+      "summary_path": "summaries/meta/Meta-CyberSecEval-2.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1578070,
+      "pageCount": 21
     },
     {
       "id": "doc-221",
@@ -3843,7 +4723,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/meta/GenAI-Enterprise-Landscape-Meta.md"
+      "summary_path": "summaries/meta/GenAI-Enterprise-Landscape-Meta.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2260835,
+      "pageCount": 9
     },
     {
       "id": "doc-222",
@@ -3860,7 +4744,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/meta/National-Cyber-Threat-Assessment-2025.md"
+      "summary_path": "summaries/meta/National-Cyber-Threat-Assessment-2025.md",
+      "integrityStatus": "zero-pages",
+      "detectedFormat": "pdf",
+      "fileSize": 4323135,
+      "pageCount": 0
     },
     {
       "id": "doc-223",
@@ -3877,7 +4765,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/meta/AIMETA-Club-Whitepaper.md"
+      "summary_path": "summaries/meta/AIMETA-Club-Whitepaper.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 423501,
+      "pageCount": 27
     },
     {
       "id": "doc-224",
@@ -3894,7 +4786,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/meta/HubSpot-AI-Security-Whitepaper.md"
+      "summary_path": "summaries/meta/HubSpot-AI-Security-Whitepaper.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 3218396,
+      "pageCount": 27
     },
     {
       "id": "doc-225",
@@ -3911,7 +4807,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/ai-native/CrowdStrike-AI-Native-SOC.md"
+      "summary_path": "summaries/ai-native/CrowdStrike-AI-Native-SOC.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 3481572,
+      "pageCount": 25
     },
     {
       "id": "doc-226",
@@ -3928,7 +4828,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/ai-native/Kyndryl-Journey-to-AI-Native.md"
+      "summary_path": "summaries/ai-native/Kyndryl-Journey-to-AI-Native.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 8800216,
+      "pageCount": 23
     },
     {
       "id": "doc-227",
@@ -3945,7 +4849,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/ai-native/PwC-AI-Native-SOC.md"
+      "summary_path": "summaries/ai-native/PwC-AI-Native-SOC.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1885529,
+      "pageCount": 10
     },
     {
       "id": "doc-228",
@@ -3962,7 +4870,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/ai-native/AI-Native-LLM-Security.md"
+      "summary_path": "summaries/ai-native/AI-Native-LLM-Security.md",
+      "integrityStatus": "wrong-format-html",
+      "detectedFormat": "html",
+      "fileSize": 266784,
+      "pageCount": 0
     },
     {
       "id": "doc-229",
@@ -3979,7 +4891,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/ai-native/Versa-Building-AI-Native-Enterprise.md"
+      "summary_path": "summaries/ai-native/Versa-Building-AI-Native-Enterprise.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 6362225,
+      "pageCount": 58
     },
     {
       "id": "doc-230",
@@ -3996,7 +4912,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/ai-native/OSFI-AI-Uses-and-Risks.md"
+      "summary_path": "summaries/ai-native/OSFI-AI-Uses-and-Risks.md",
+      "integrityStatus": "wrong-format-html",
+      "detectedFormat": "html",
+      "fileSize": 18109,
+      "pageCount": 0
     },
     {
       "id": "doc-231",
@@ -4013,7 +4933,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/fintech/Citi-Fintech-Compliance.md"
+      "summary_path": "summaries/fintech/Citi-Fintech-Compliance.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 647525,
+      "pageCount": 4
     },
     {
       "id": "doc-232",
@@ -4030,7 +4954,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/fintech/PwC-Fintech-Cybersecurity.md"
+      "summary_path": "summaries/fintech/PwC-Fintech-Cybersecurity.md",
+      "integrityStatus": "empty",
+      "detectedFormat": "empty",
+      "fileSize": 0,
+      "pageCount": 0
     },
     {
       "id": "doc-233",
@@ -4047,7 +4975,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/fintech/Fintech-Cybersecurity-Challenges.md"
+      "summary_path": "summaries/fintech/Fintech-Cybersecurity-Challenges.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 548281,
+      "pageCount": 12
     },
     {
       "id": "doc-234",
@@ -4064,7 +4996,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/fintech/KPMG-Pulse-of-Fintech-2025.md"
+      "summary_path": "summaries/fintech/KPMG-Pulse-of-Fintech-2025.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2944780,
+      "pageCount": 68
     },
     {
       "id": "doc-235",
@@ -4081,7 +5017,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/fintech/Fed-Cybersecurity-Financial-Resilience.md"
+      "summary_path": "summaries/fintech/Fed-Cybersecurity-Financial-Resilience.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1603860,
+      "pageCount": 32
     },
     {
       "id": "doc-236",
@@ -4098,7 +5038,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/fintech/WJARR-Fintech-Data-Protection.md"
+      "summary_path": "summaries/fintech/WJARR-Fintech-Data-Protection.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 822931,
+      "pageCount": 21
     },
     {
       "id": "doc-237",
@@ -4115,7 +5059,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/fintech/IJAMSR-Fintech-Cybersecurity-Challenges.md"
+      "summary_path": "summaries/fintech/IJAMSR-Fintech-Cybersecurity-Challenges.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 191505,
+      "pageCount": 10
     },
     {
       "id": "doc-238",
@@ -4132,7 +5080,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/fintech/DWT-Fintech-Law-Report.md"
+      "summary_path": "summaries/fintech/DWT-Fintech-Law-Report.md",
+      "integrityStatus": "wrong-format-other",
+      "detectedFormat": "other",
+      "fileSize": 2520594,
+      "pageCount": 0
     },
     {
       "id": "doc-239",
@@ -4149,7 +5101,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/trading/CNMV-Cybersecurity-Market-Infrastructures.md"
+      "summary_path": "summaries/trading/CNMV-Cybersecurity-Market-Infrastructures.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 416380,
+      "pageCount": 30
     },
     {
       "id": "doc-240",
@@ -4166,7 +5122,11 @@
         "security",
         "whitepaper"
       ],
-      "summary_path": "summaries/trading/Cornell-Algorithmic-Trading-Risk-Diversification.md"
+      "summary_path": "summaries/trading/Cornell-Algorithmic-Trading-Risk-Diversification.md",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1067537,
+      "pageCount": 172
     }
   ]
 }

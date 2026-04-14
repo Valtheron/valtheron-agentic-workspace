@@ -13,7 +13,12 @@
 //   getKnowledgeScopeForAgent(...) — deterministic scope (top-5 docs + primary categories)
 //   enrichSystemPromptWithKB(...)  — appends "## Wissensbasis" section
 
-import type { AgentCategory, KnowledgeDoc, KnowledgeScope } from '../types';
+import type {
+  AgentCategory,
+  KnowledgeDoc,
+  KnowledgeDocIntegrityStatus,
+  KnowledgeScope,
+} from '../types';
 import manifestJson from '../data/kb/manifest.json';
 import summariesJson from '../data/kb/summaries.json';
 
@@ -29,6 +34,23 @@ interface RawManifestDoc {
   format: string;
   tags: string[];
   summary_path: string;
+  integrityStatus?: KnowledgeDocIntegrityStatus;
+  detectedFormat?: string;
+  pageCount?: number;
+  fileSize?: number;
+}
+
+// Integrity states considered usable for agent scoping. "missing" covers the
+// 218 original catalog entries whose PDFs are placeholders — the summary is
+// still valuable context. "valid" covers all binary-complete PDFs.
+const SCOPE_ELIGIBLE_STATUSES: ReadonlySet<KnowledgeDocIntegrityStatus> = new Set([
+  'valid',
+  'missing',
+]);
+
+export function isDocScopeEligible(doc: KnowledgeDoc): boolean {
+  if (!doc.integrityStatus) return true; // fallback when not annotated
+  return SCOPE_ELIGIBLE_STATUSES.has(doc.integrityStatus);
 }
 
 interface RawManifest {
@@ -61,6 +83,10 @@ function normaliseDoc(raw: RawManifestDoc): KnowledgeDoc {
     format: raw.format,
     tags: raw.tags ?? [],
     summaryPath: raw.summary_path,
+    integrityStatus: raw.integrityStatus,
+    detectedFormat: raw.detectedFormat,
+    pageCount: raw.pageCount,
+    fileSize: raw.fileSize,
   };
 }
 
@@ -154,8 +180,8 @@ export function getKnowledgeScopeForAgent(agent: ScopeInput): KnowledgeScope {
     ...tokenise(agent.description ?? ''),
   ]);
 
-  const candidates = manifest.documents.filter(d =>
-    primaryCategories.includes(d.category),
+  const candidates = manifest.documents.filter(
+    d => primaryCategories.includes(d.category) && isDocScopeEligible(d),
   );
 
   // Category-priority index: earlier → better.

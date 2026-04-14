@@ -5,6 +5,7 @@ import {
   enrichSystemPromptWithKB,
   getKnowledgeScopeForAgent,
   getSummaryContent,
+  isDocScopeEligible,
   loadKBManifest,
 } from '../services/knowledgeBase';
 import { loadValtheronAgents } from '../services/valtheronAgents';
@@ -120,6 +121,48 @@ describe('getKnowledgeScopeForAgent', () => {
     for (const doc of scope.docs) {
       expect(['specialized-data', 'ai-native']).toContain(doc.category);
     }
+  });
+});
+
+describe('integrity filtering', () => {
+  it('every doc carries an integrityStatus after sync', () => {
+    const manifest = loadKBManifest();
+    const missingStatus = manifest.documents.filter(d => !d.integrityStatus);
+    expect(missingStatus.length).toBe(0);
+  });
+
+  it('flags the known-bad Manus uploads', () => {
+    const manifest = loadKBManifest();
+    const expectBad: Record<string, string> = {
+      'doc-222': 'zero-pages',
+      'doc-228': 'wrong-format-html',
+      'doc-230': 'wrong-format-html',
+      'doc-232': 'empty',
+      'doc-238': 'wrong-format-other',
+    };
+    for (const [id, expected] of Object.entries(expectBad)) {
+      const doc = manifest.documents.find(d => d.id === id);
+      expect(doc, `manifest must still contain ${id}`).toBeDefined();
+      expect(doc!.integrityStatus).toBe(expected);
+    }
+  });
+
+  it('broken docs are excluded from agent scopes', () => {
+    const brokenIds = new Set(['doc-222', 'doc-228', 'doc-230', 'doc-232', 'doc-238']);
+    const agents = loadValtheronAgents();
+    for (const a of agents) {
+      for (const doc of a.knowledgeScope?.docs ?? []) {
+        expect(brokenIds.has(doc.id)).toBe(false);
+        expect(isDocScopeEligible(doc)).toBe(true);
+      }
+    }
+  });
+
+  it('placeholder catalog entries (missing files) are still scope-eligible', () => {
+    const manifest = loadKBManifest();
+    const catalog = manifest.documents.filter(d => d.integrityStatus === 'missing');
+    expect(catalog.length).toBeGreaterThan(100); // ~218 catalog placeholders
+    expect(isDocScopeEligible(catalog[0])).toBe(true);
   });
 });
 
