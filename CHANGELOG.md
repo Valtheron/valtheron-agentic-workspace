@@ -6,6 +6,48 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ---
 
+## [Unreleased]
+
+### Hinzugefügt
+
+- **Wissensbasis-Integration für 290 Agenten**: Jeder Agent erhält einen
+  kategorie-basierten `knowledgeScope` mit bis zu 5 Dokument-Verweisen und
+  einen um eine "## Wissensbasis"-Sektion angereicherten System-Prompt.
+- **Neuer "Wissen"-Tab** in `AgentsView` mit Kategorien, aufklappbaren
+  Summaries und Hinweis auf Katalog-Einträge ohne Binärdatei.
+- **KB-Sync-Pipeline** (`scripts/sync-kb-to-frontend.mjs`): bündelt
+  `knowledge-base/manifest.json` und 47 Summaries in
+  `frontend/src/data/kb/`. Erweitert um das flache
+  `valtheron-cybersec-database/`-Verzeichnis, wodurch 216 reale PDFs als
+  `doc-db-NNN`-Einträge ins Manifest einfließen (gesamt 456 Dokumente).
+- **Integrity-Annotation**: jedes Dokument wird mit
+  `integrityStatus` (`valid` / `missing` / `empty` / `zero-pages` /
+  `wrong-format-html` / `wrong-format-other`), `pageCount`, `fileSize`
+  und `detectedFormat` versehen. Broken Files werden aus Agent-Scopes
+  ausgeschlossen; bei Gleichstand im Tag-Score gewinnen reale PDFs vor
+  Katalog-Platzhaltern.
+- **Neue Typen** `KnowledgeDoc`, `KnowledgeScope`, `KnowledgeDocSource`
+  und optionales `Agent.knowledgeScope`-Feld in `types/index.ts`.
+- **Service** `frontend/src/services/knowledgeBase.ts` mit
+  `loadKBManifest()`, `getKnowledgeScopeForAgent()`,
+  `enrichSystemPromptWithKB()` und `getSummaryContent()`.
+- **23 neue Vitest-Tests** in `__tests__/knowledgeBase.test.ts` decken
+  Mapping, Ranking, Integrity-Filter und das 290-Agenten-Ingest ab.
+
+### Geändert
+
+- `scripts/sync-kb-to-frontend.mjs` scannt jetzt zwei Quellverzeichnisse
+  und schreibt ein zusammengeführtes Manifest mit `source`-Feld.
+- Frontend-Build zieht KB-Manifest (`frontend/src/data/kb/*.json`) zur
+  Build-Zeit als statischen Import — keine Runtime-Fetches.
+
+### Dokumentation
+
+- README um Abschnitt "Wissensbasis (Knowledge Base)" erweitert mit
+  Sync-Befehl und Verzeichnis-Layout.
+
+---
+
 ## [1.0.0] — 2026-02-26
 
 ### Phase 1: Projektinitialisierung
