@@ -213,6 +213,39 @@ Vollständige Architekturdokumentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE
 
 ---
 
+## Wissensbasis (Knowledge Base)
+
+Das Repository enthält eine kuratierte Wissensbasis, die jedem der
+290 Agenten zur Expertise-Anreicherung zugeordnet wird.
+
+**Quellverzeichnisse:**
+
+```
+knowledge-base/                  Kuratierter Manus-Katalog (Manifest + 47 Summaries)
+valtheron-cybersec-database/     216 reale PDFs (Offensive, Defensive, AppSec, …)
+```
+
+**Frontend-Bundle** (wird beim Build automatisch gelesen):
+
+```
+frontend/src/data/kb/manifest.json   Zusammengeführtes Manifest (456 Dokumente)
+frontend/src/data/kb/summaries.json  Alle Markdown-Summaries als JSON-Map
+```
+
+**Manuelle Re-Synchronisation** nach Änderungen in den Quellverzeichnissen:
+
+```bash
+node scripts/sync-kb-to-frontend.mjs
+```
+
+Das Skript führt zusätzlich einen Integrity-Check durch (PDF-Magic-Bytes,
+Seitenanzahl, HTML-Erkennung) und markiert jedes Dokument mit einem
+`integrityStatus`. Kaputte Dateien werden aus den Agenten-Scopes
+ausgefiltert, Katalog-Platzhalter (Summary ohne Binärdatei) bleiben als
+Kontext verfügbar.
+
+---
+
 ## Sicherheit
 
 Das Projekt wurde nach **OWASP Top 10** entwickelt und geprüft:

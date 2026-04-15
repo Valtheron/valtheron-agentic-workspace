@@ -63,7 +63,10 @@ export interface KnowledgeDoc {
   detectedFormat?: string;
   pageCount?: number;
   fileSize?: number;
+  source?: KnowledgeDocSource;
 }
+
+export type KnowledgeDocSource = 'knowledge-base' | 'cybersec-database';
 
 export type KnowledgeDocIntegrityStatus =
   | 'valid'
