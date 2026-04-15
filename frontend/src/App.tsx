@@ -69,6 +69,22 @@ const viewTitles: Record<ViewType, string> = {
   audit: 'Audit-Trail',
 };
 
+// Bump when the agent catalog schema changes so stale localStorage caches
+// (e.g. pre-v2 bundles with only 200 agents in 10 categories) are invalidated
+// and the full 290/16 catalog is regenerated on first load.
+const AGENTS_CACHE_VERSION = 2;
+
+function loadAgentsWithMigration(): Agent[] {
+  const cachedVersion = load<number>('agents_version', 0);
+  if (cachedVersion !== AGENTS_CACHE_VERSION) {
+    const fresh = generateAgents();
+    save('agents', fresh);
+    save('agents_version', AGENTS_CACHE_VERSION);
+    return fresh;
+  }
+  return load<Agent[]>('agents', generateAgents());
+}
+
 // Simulated output messages for running agents
 const simulatedOutputs = [
   'Analysiere Eingabedaten...',
@@ -131,7 +147,7 @@ function App() {
   const [backendConnected, setBackendConnected] = useState(false);
   const [dataSource, setDataSource] = useState<'loading' | 'api' | 'mock'>('loading');
 
-  const [agents, setAgents] = useState<Agent[]>(() => load('agents', generateAgents()));
+  const [agents, setAgents] = useState<Agent[]>(loadAgentsWithMigration);
   const [tasks, setTasks] = useState<Task[]>(() => load(KEYS.TASKS, generateTasks(agents)));
   // collaboration sessions are now loaded from the backend by CollaborationView
   const [certifications] = useState<Certification[]>(() => generateCertifications(agents));
