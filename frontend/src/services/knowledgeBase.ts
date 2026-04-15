@@ -17,6 +17,7 @@ import type {
   AgentCategory,
   KnowledgeDoc,
   KnowledgeDocIntegrityStatus,
+  KnowledgeDocSource,
   KnowledgeScope,
 } from '../types';
 import manifestJson from '../data/kb/manifest.json';
@@ -38,6 +39,7 @@ interface RawManifestDoc {
   detectedFormat?: string;
   pageCount?: number;
   fileSize?: number;
+  source?: KnowledgeDocSource;
 }
 
 // Integrity states considered usable for agent scoping. "missing" covers the
@@ -87,6 +89,7 @@ function normaliseDoc(raw: RawManifestDoc): KnowledgeDoc {
     detectedFormat: raw.detectedFormat,
     pageCount: raw.pageCount,
     fileSize: raw.fileSize,
+    source: raw.source,
   };
 }
 
@@ -187,10 +190,20 @@ export function getKnowledgeScopeForAgent(agent: ScopeInput): KnowledgeScope {
   // Category-priority index: earlier → better.
   const catPriority = new Map(primaryCategories.map((c, i) => [c, i]));
 
+  // Integrity priority: real docs (valid) outrank placeholders (missing).
+  const integrityRank = (doc: KnowledgeDoc): number => {
+    if (doc.integrityStatus === 'valid') return 0;
+    if (doc.integrityStatus === 'missing') return 1;
+    return 2;
+  };
+
   const ranked = [...candidates].sort((a, b) => {
     const sa = scoreDoc(a, tokens);
     const sb = scoreDoc(b, tokens);
     if (sa !== sb) return sb - sa;
+    const ia = integrityRank(a);
+    const ib = integrityRank(b);
+    if (ia !== ib) return ia - ib;
     const pa = catPriority.get(a.category) ?? 999;
     const pb = catPriority.get(b.category) ?? 999;
     if (pa !== pb) return pa - pb;

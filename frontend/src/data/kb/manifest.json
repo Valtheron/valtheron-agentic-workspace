@@ -1,52 +1,52 @@
 {
   "version": "1.0.0",
   "generated": "2026-03-15",
-  "total_documents": 240,
+  "total_documents": 456,
   "schema_version": "1",
   "categories": {
     "offensive": {
       "label": "Offensive Security",
-      "document_count": 73
+      "document_count": 135
     },
     "defensive": {
       "label": "Defensive Security",
-      "document_count": 32
+      "document_count": 54
     },
     "cloud": {
       "label": "Cloud & Container Security",
-      "document_count": 18
+      "document_count": 25
     },
     "appsec": {
       "label": "Application Security",
-      "document_count": 22
+      "document_count": 42
     },
     "osint": {
       "label": "OSINT",
-      "document_count": 15
+      "document_count": 25
     },
     "iot-ot": {
       "label": "IoT / OT Security",
-      "document_count": 10
+      "document_count": 12
     },
     "certifications": {
       "label": "Certifications & Career",
-      "document_count": 32
+      "document_count": 57
     },
     "education": {
       "label": "Education & Awareness",
-      "document_count": 12
+      "document_count": 25
     },
     "misc": {
       "label": "Miscellaneous",
-      "document_count": 4
+      "document_count": 53
     },
     "meta": {
       "label": "Meta & Metaverse Security",
-      "document_count": 6
+      "document_count": 8
     },
     "ai-native": {
       "label": "AI-Native Security",
-      "document_count": 6
+      "document_count": 10
     },
     "fintech": {
       "label": "Fintech Security",
@@ -78,6 +78,7 @@
         "methodology"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -99,6 +100,7 @@
         "nmap"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -121,6 +123,7 @@
         "azure"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -142,6 +145,7 @@
         "android"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -163,6 +167,7 @@
         "ios"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -184,6 +189,7 @@
         "embedded"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -206,6 +212,7 @@
         "ics"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -227,6 +234,7 @@
         "beginner"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -248,6 +256,7 @@
         "burp-suite"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -269,6 +278,7 @@
         "owasp"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -290,6 +300,7 @@
         "sql-injection"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -311,6 +322,7 @@
         "xss"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -332,6 +344,7 @@
         "ssrf"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -353,6 +366,7 @@
         "xxe"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -374,6 +388,7 @@
         "api-security"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -396,6 +411,7 @@
         "api-security"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -417,6 +433,7 @@
         "methodology"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -438,6 +455,7 @@
         "beginner"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -459,6 +477,7 @@
         "hackerone"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -481,6 +500,7 @@
         "reconnaissance"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -502,6 +522,7 @@
         "exploitation"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -524,6 +545,7 @@
         "reconnaissance"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -545,6 +567,7 @@
         "windows"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -566,6 +589,7 @@
         "wifi"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -588,6 +612,7 @@
         "bypass"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -609,6 +634,7 @@
         "lab"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -630,6 +656,7 @@
         "certification"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -651,6 +678,7 @@
         "learning"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -672,6 +700,7 @@
         "ctf"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -693,6 +722,7 @@
         "methodology"
       ],
       "summary_path": "summaries/offensive/penetration-testing.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -714,6 +744,7 @@
         "apt"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -735,6 +766,7 @@
         "c2"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -757,6 +789,7 @@
         "adversary-emulation"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -778,6 +811,7 @@
         "infrastructure"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -800,6 +834,7 @@
         "evasion"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -821,6 +856,7 @@
         "evasion"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -843,6 +879,7 @@
         "evasion"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -865,6 +902,7 @@
         "defender"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -887,6 +925,7 @@
         "windows"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -908,6 +947,7 @@
         "mapping"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -929,6 +969,7 @@
         "collaboration"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -950,6 +991,7 @@
         "social-engineering"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -972,6 +1014,7 @@
         "social-engineering"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -992,6 +1035,7 @@
         "social-engineering"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1013,6 +1057,7 @@
         "social-engineering"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1034,6 +1079,7 @@
         "c2"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1056,6 +1102,7 @@
         "simulation"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1077,6 +1124,7 @@
         "adversary-emulation"
       ],
       "summary_path": "summaries/offensive/red-team-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1099,6 +1147,7 @@
         "shellcode"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1120,6 +1169,7 @@
         "x64"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1141,6 +1191,7 @@
         "assembly"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1162,6 +1213,7 @@
         "dep-bypass"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1183,6 +1235,7 @@
         "use-after-free"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1203,6 +1256,7 @@
         "format-string"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1224,6 +1278,7 @@
         "heap"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1244,6 +1299,7 @@
         "windows"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1265,6 +1321,7 @@
         "kernel"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1286,6 +1343,7 @@
         "javascript"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1307,6 +1365,7 @@
         "poc"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1328,6 +1387,7 @@
         "afl"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1349,6 +1409,7 @@
         "debugging"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1370,6 +1431,7 @@
         "pwntools"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1392,6 +1454,7 @@
         "reverse-engineering"
       ],
       "summary_path": "summaries/offensive/exploit-development.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1413,6 +1476,7 @@
         "windows"
       ],
       "summary_path": "summaries/offensive/post-exploitation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1434,6 +1498,7 @@
         "linux"
       ],
       "summary_path": "summaries/offensive/post-exploitation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1455,6 +1520,7 @@
         "active-directory"
       ],
       "summary_path": "summaries/offensive/post-exploitation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1476,6 +1542,7 @@
         "pass-the-hash"
       ],
       "summary_path": "summaries/offensive/post-exploitation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1497,6 +1564,7 @@
         "active-directory"
       ],
       "summary_path": "summaries/offensive/post-exploitation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1517,6 +1585,7 @@
         "exfiltration"
       ],
       "summary_path": "summaries/offensive/post-exploitation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1539,6 +1608,7 @@
         "windows"
       ],
       "summary_path": "summaries/offensive/post-exploitation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1560,6 +1630,7 @@
         "persistence"
       ],
       "summary_path": "summaries/offensive/post-exploitation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1580,6 +1651,7 @@
         "metasploit"
       ],
       "summary_path": "summaries/offensive/post-exploitation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1601,6 +1673,7 @@
         "evasion"
       ],
       "summary_path": "summaries/offensive/post-exploitation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1622,6 +1695,7 @@
         "beginner"
       ],
       "summary_path": "summaries/defensive/soc-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1643,6 +1717,7 @@
         "specialist"
       ],
       "summary_path": "summaries/defensive/soc-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1664,6 +1739,7 @@
         "operations"
       ],
       "summary_path": "summaries/defensive/soc-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1685,6 +1761,7 @@
         "implementation"
       ],
       "summary_path": "summaries/defensive/soc-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1706,6 +1783,7 @@
         "splunk"
       ],
       "summary_path": "summaries/defensive/soc-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1728,6 +1806,7 @@
         "azure"
       ],
       "summary_path": "summaries/defensive/soc-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1749,6 +1828,7 @@
         "triage"
       ],
       "summary_path": "summaries/defensive/soc-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1769,6 +1849,7 @@
         "threat-intelligence"
       ],
       "summary_path": "summaries/defensive/soc-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1790,6 +1871,7 @@
         "kpi"
       ],
       "summary_path": "summaries/defensive/soc-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1811,6 +1893,7 @@
         "automation"
       ],
       "summary_path": "summaries/defensive/soc-operations.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1832,6 +1915,7 @@
         "dfir"
       ],
       "summary_path": "summaries/defensive/incident-response.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1853,6 +1937,7 @@
         "dfir"
       ],
       "summary_path": "summaries/defensive/incident-response.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1873,6 +1958,7 @@
         "ransomware"
       ],
       "summary_path": "summaries/defensive/incident-response.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1894,6 +1980,7 @@
         "compliance"
       ],
       "summary_path": "summaries/defensive/incident-response.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1916,6 +2003,7 @@
         "memory"
       ],
       "summary_path": "summaries/defensive/incident-response.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1938,6 +2026,7 @@
         "wireshark"
       ],
       "summary_path": "summaries/defensive/incident-response.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1959,6 +2048,7 @@
         "windows"
       ],
       "summary_path": "summaries/defensive/incident-response.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -1980,6 +2070,7 @@
         "linux"
       ],
       "summary_path": "summaries/defensive/incident-response.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2000,6 +2091,7 @@
         "static-analysis"
       ],
       "summary_path": "summaries/defensive/malware-analysis.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2021,6 +2113,7 @@
         "sandbox"
       ],
       "summary_path": "summaries/defensive/malware-analysis.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2042,6 +2135,7 @@
         "ghidra"
       ],
       "summary_path": "summaries/defensive/malware-analysis.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2063,6 +2157,7 @@
         "ida-pro"
       ],
       "summary_path": "summaries/defensive/malware-analysis.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2084,6 +2179,7 @@
         "decryption"
       ],
       "summary_path": "summaries/defensive/malware-analysis.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2105,6 +2201,7 @@
         "rat"
       ],
       "summary_path": "summaries/defensive/malware-analysis.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2125,6 +2222,7 @@
         "rootkit"
       ],
       "summary_path": "summaries/defensive/malware-analysis.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2145,6 +2243,7 @@
         "sandbox"
       ],
       "summary_path": "summaries/defensive/malware-analysis.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2165,6 +2264,7 @@
         "mitre-attack"
       ],
       "summary_path": "summaries/defensive/threat-hunting.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2186,6 +2286,7 @@
         "sysmon"
       ],
       "summary_path": "summaries/defensive/threat-hunting.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2207,6 +2308,7 @@
         "wireshark"
       ],
       "summary_path": "summaries/defensive/threat-hunting.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2227,6 +2329,7 @@
         "edr"
       ],
       "summary_path": "summaries/defensive/threat-hunting.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2248,6 +2351,7 @@
         "cti"
       ],
       "summary_path": "summaries/defensive/threat-hunting.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2269,6 +2373,7 @@
         "detection"
       ],
       "summary_path": "summaries/defensive/threat-hunting.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2290,6 +2395,7 @@
         "fundamentals"
       ],
       "summary_path": "summaries/cloud/aws-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2311,6 +2417,7 @@
         "pentesting"
       ],
       "summary_path": "summaries/cloud/aws-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2332,6 +2439,7 @@
         "cloud"
       ],
       "summary_path": "summaries/cloud/aws-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2353,6 +2461,7 @@
         "architecture"
       ],
       "summary_path": "summaries/cloud/aws-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2374,6 +2483,7 @@
         "cloud"
       ],
       "summary_path": "summaries/cloud/aws-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2396,6 +2506,7 @@
         "pentesting"
       ],
       "summary_path": "summaries/cloud/aws-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2417,6 +2528,7 @@
         "fundamentals"
       ],
       "summary_path": "summaries/cloud/azure-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2438,6 +2550,7 @@
         "active-directory"
       ],
       "summary_path": "summaries/cloud/azure-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2460,6 +2573,7 @@
         "cloud"
       ],
       "summary_path": "summaries/cloud/azure-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2481,6 +2595,7 @@
         "pentesting"
       ],
       "summary_path": "summaries/cloud/azure-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2502,6 +2617,7 @@
         "fundamentals"
       ],
       "summary_path": "summaries/cloud/gcp-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2523,6 +2639,7 @@
         "pentesting"
       ],
       "summary_path": "summaries/cloud/gcp-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2545,6 +2662,7 @@
         "cloud"
       ],
       "summary_path": "summaries/cloud/gcp-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2566,6 +2684,7 @@
         "cloud"
       ],
       "summary_path": "summaries/cloud/container-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2587,6 +2706,7 @@
         "cloud"
       ],
       "summary_path": "summaries/cloud/container-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2609,6 +2729,7 @@
         "escape"
       ],
       "summary_path": "summaries/cloud/container-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2630,6 +2751,7 @@
         "pentesting"
       ],
       "summary_path": "summaries/cloud/container-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2652,6 +2774,7 @@
         "falco"
       ],
       "summary_path": "summaries/cloud/container-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2673,6 +2796,7 @@
         "beginner"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2695,6 +2819,7 @@
         "methodology"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2716,6 +2841,7 @@
         "prevention"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2737,6 +2863,7 @@
         "defense"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2758,6 +2885,7 @@
         "session"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2780,6 +2908,7 @@
         "api-security"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2801,6 +2930,7 @@
         "authentication"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2823,6 +2953,7 @@
         "solidity"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2844,6 +2975,7 @@
         "fundamentals"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2864,6 +2996,7 @@
         "cache-poisoning"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2885,6 +3018,7 @@
         "smuggling"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2906,6 +3040,7 @@
         "misconfiguration"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2927,6 +3062,7 @@
         "bypass"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2948,6 +3084,7 @@
         "devsecops"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2969,6 +3106,7 @@
         "ci-cd"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -2990,6 +3128,7 @@
         "beginner"
       ],
       "summary_path": "summaries/appsec/web-application-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3011,6 +3150,7 @@
         "pentesting"
       ],
       "summary_path": "summaries/appsec/mobile-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3032,6 +3172,7 @@
         "pentesting"
       ],
       "summary_path": "summaries/appsec/mobile-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3053,6 +3194,7 @@
         "beginner"
       ],
       "summary_path": "summaries/appsec/mobile-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3074,6 +3216,7 @@
         "methodology"
       ],
       "summary_path": "summaries/appsec/mobile-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3095,6 +3238,7 @@
         "malware-analysis"
       ],
       "summary_path": "summaries/appsec/mobile-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3116,6 +3260,7 @@
         "instrumentation"
       ],
       "summary_path": "summaries/appsec/mobile-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3137,6 +3282,7 @@
         "methodology"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3158,6 +3304,7 @@
         "reconnaissance"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3178,6 +3325,7 @@
         "social-media"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3199,6 +3347,7 @@
         "tor"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3220,6 +3369,7 @@
         "tracking"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3242,6 +3392,7 @@
         "whois"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3263,6 +3414,7 @@
         "intelligence"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3284,6 +3436,7 @@
         "visualization"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3305,6 +3458,7 @@
         "reconnaissance"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3326,6 +3480,7 @@
         "people"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3348,6 +3503,7 @@
         "exif"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3369,6 +3525,7 @@
         "social-media"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3390,6 +3547,7 @@
         "automation"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3411,6 +3569,7 @@
         "profiling"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3432,6 +3591,7 @@
         "methodology"
       ],
       "summary_path": "summaries/osint/osint-techniques.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3452,6 +3612,7 @@
         "fundamentals"
       ],
       "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3472,6 +3633,7 @@
         "pentesting"
       ],
       "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3493,6 +3655,7 @@
         "ics"
       ],
       "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3515,6 +3678,7 @@
         "attacks"
       ],
       "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3536,6 +3700,7 @@
         "embedded"
       ],
       "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3558,6 +3723,7 @@
         "embedded"
       ],
       "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3579,6 +3745,7 @@
         "testing"
       ],
       "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3601,6 +3768,7 @@
         "hardware-hacking"
       ],
       "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3623,6 +3791,7 @@
         "wireless"
       ],
       "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3644,6 +3813,7 @@
         "segmentation"
       ],
       "summary_path": "summaries/iot-ot/iot-ot-security.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3665,6 +3835,7 @@
         "exam-prep"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3686,6 +3857,7 @@
         "certification"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3707,6 +3879,7 @@
         "kali-linux"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3728,6 +3901,7 @@
         "exploit-dev"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3749,6 +3923,7 @@
         "exam-prep"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3770,6 +3945,7 @@
         "tips"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3792,6 +3968,7 @@
         "pt-br"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3813,6 +3990,7 @@
         "certification"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3834,6 +4012,7 @@
         "exam-prep"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3855,6 +4034,7 @@
         "certification"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3876,6 +4056,7 @@
         "certification"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3897,6 +4078,7 @@
         "career"
       ],
       "summary_path": "summaries/certifications/oscp-preparation.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3919,6 +4101,7 @@
         "exam-prep"
       ],
       "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3940,6 +4123,7 @@
         "beginner"
       ],
       "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3961,6 +4145,7 @@
         "tips"
       ],
       "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -3982,6 +4167,7 @@
         "exam-prep"
       ],
       "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4003,6 +4189,7 @@
         "practical"
       ],
       "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4024,6 +4211,7 @@
         "modules"
       ],
       "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4045,6 +4233,7 @@
         "pt-br"
       ],
       "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4067,6 +4256,7 @@
         "career"
       ],
       "summary_path": "summaries/certifications/ceh-fundamentals.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4089,6 +4279,7 @@
         "beginner"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4110,6 +4301,7 @@
         "exam-prep"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4132,6 +4324,7 @@
         "soc"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4154,6 +4347,7 @@
         "advanced"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4175,6 +4369,7 @@
         "certification"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4196,6 +4391,7 @@
         "practice"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4217,6 +4413,7 @@
         "roadmap"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4239,6 +4436,7 @@
         "beginner"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4260,6 +4458,7 @@
         "job"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4281,6 +4480,7 @@
         "transition"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4302,6 +4502,7 @@
         "job-market"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4323,6 +4524,7 @@
         "career"
       ],
       "summary_path": "summaries/certifications/comptia-security-plus.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4345,6 +4547,7 @@
         "beginner"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4366,6 +4569,7 @@
         "internet-safety"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4387,6 +4591,7 @@
         "teenagers"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4408,6 +4613,7 @@
         "internet-safety"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4429,6 +4635,7 @@
         "social-media"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4450,6 +4657,7 @@
         "family"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4471,6 +4679,7 @@
         "training"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4491,6 +4700,7 @@
         "campaign"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4513,6 +4723,7 @@
         "pt-br"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4534,6 +4745,7 @@
         "pt-br"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4556,6 +4768,7 @@
         "pt-br"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4577,6 +4790,7 @@
         "program"
       ],
       "summary_path": "summaries/education/cybersecurity-awareness.md",
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4598,6 +4812,7 @@
         "cybersecurity"
       ],
       "summary_path": null,
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4619,6 +4834,7 @@
         "security"
       ],
       "summary_path": null,
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4640,6 +4856,7 @@
         "strategy"
       ],
       "summary_path": null,
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4661,6 +4878,7 @@
         "overview"
       ],
       "summary_path": null,
+      "source": "knowledge-base",
       "integrityStatus": "missing",
       "detectedFormat": "missing",
       "fileSize": 0,
@@ -4682,6 +4900,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/meta/Meta-Private-Processing-Whitepaper.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 759136,
@@ -4703,6 +4922,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/meta/Meta-CyberSecEval-2.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 1578070,
@@ -4724,6 +4944,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/meta/GenAI-Enterprise-Landscape-Meta.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 2260835,
@@ -4745,6 +4966,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/meta/National-Cyber-Threat-Assessment-2025.md",
+      "source": "knowledge-base",
       "integrityStatus": "zero-pages",
       "detectedFormat": "pdf",
       "fileSize": 4323135,
@@ -4766,6 +4988,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/meta/AIMETA-Club-Whitepaper.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 423501,
@@ -4787,6 +5010,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/meta/HubSpot-AI-Security-Whitepaper.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 3218396,
@@ -4808,6 +5032,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/ai-native/CrowdStrike-AI-Native-SOC.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 3481572,
@@ -4829,6 +5054,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/ai-native/Kyndryl-Journey-to-AI-Native.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 8800216,
@@ -4850,6 +5076,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/ai-native/PwC-AI-Native-SOC.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 1885529,
@@ -4871,6 +5098,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/ai-native/AI-Native-LLM-Security.md",
+      "source": "knowledge-base",
       "integrityStatus": "wrong-format-html",
       "detectedFormat": "html",
       "fileSize": 266784,
@@ -4892,6 +5120,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/ai-native/Versa-Building-AI-Native-Enterprise.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 6362225,
@@ -4913,6 +5142,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/ai-native/OSFI-AI-Uses-and-Risks.md",
+      "source": "knowledge-base",
       "integrityStatus": "wrong-format-html",
       "detectedFormat": "html",
       "fileSize": 18109,
@@ -4934,6 +5164,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/fintech/Citi-Fintech-Compliance.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 647525,
@@ -4955,6 +5186,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/fintech/PwC-Fintech-Cybersecurity.md",
+      "source": "knowledge-base",
       "integrityStatus": "empty",
       "detectedFormat": "empty",
       "fileSize": 0,
@@ -4976,6 +5208,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/fintech/Fintech-Cybersecurity-Challenges.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 548281,
@@ -4997,6 +5230,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/fintech/KPMG-Pulse-of-Fintech-2025.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 2944780,
@@ -5018,6 +5252,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/fintech/Fed-Cybersecurity-Financial-Resilience.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 1603860,
@@ -5039,6 +5274,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/fintech/WJARR-Fintech-Data-Protection.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 822931,
@@ -5060,6 +5296,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/fintech/IJAMSR-Fintech-Cybersecurity-Challenges.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 191505,
@@ -5081,6 +5318,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/fintech/DWT-Fintech-Law-Report.md",
+      "source": "knowledge-base",
       "integrityStatus": "wrong-format-other",
       "detectedFormat": "other",
       "fileSize": 2520594,
@@ -5102,6 +5340,7 @@
         "whitepaper"
       ],
       "summary_path": "summaries/trading/CNMV-Cybersecurity-Market-Infrastructures.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 416380,
@@ -5123,10 +5362,4250 @@
         "whitepaper"
       ],
       "summary_path": "summaries/trading/Cornell-Algorithmic-Trading-Risk-Diversification.md",
+      "source": "knowledge-base",
       "integrityStatus": "valid",
       "detectedFormat": "pdf",
       "fileSize": 1067537,
       "pageCount": 172
+    },
+    {
+      "id": "doc-db-001",
+      "filename": "100 Security Operation Center Tools.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "100 Security Operation Center Tools",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1225436,
+      "pageCount": 101
+    },
+    {
+      "id": "doc-db-002",
+      "filename": "12 Best Career in Cyber Security 2023.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "12 Best Career in Cyber Security 2023",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "career"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 175687,
+      "pageCount": 14
+    },
+    {
+      "id": "doc-db-003",
+      "filename": "30 days of Practice PenTest 2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "30 days of Practice PenTest 2",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 99456,
+      "pageCount": 4
+    },
+    {
+      "id": "doc-db-004",
+      "filename": "30 days of Practice PenTest.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "30 days of Practice PenTest",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 58693,
+      "pageCount": 4
+    },
+    {
+      "id": "doc-db-005",
+      "filename": "ADVERSARY EMULATION MATRIX by Joas.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "ADVERSARY EMULATION MATRIX by Joas",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "adversary-emulation"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 160068,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-006",
+      "filename": "APOSTILA A ARTE DO OSINT PARA PENTESTERS.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "APOSTILA A ARTE DO OSINT PARA PENTESTERS",
+      "category": "osint",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "osint"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 312546,
+      "pageCount": 18
+    },
+    {
+      "id": "doc-db-007",
+      "filename": "APOSTILA ATAQUES WEB - BÁSICO.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "APOSTILA ATAQUES WEB - BÁSICO",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "web"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 710946,
+      "pageCount": 37
+    },
+    {
+      "id": "doc-db-008",
+      "filename": "APOSTILA DICAS PARA PENTEST.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "APOSTILA DICAS PARA PENTEST",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "pentest"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 102578,
+      "pageCount": 15
+    },
+    {
+      "id": "doc-db-009",
+      "filename": "APT28 - Understanding a group specialized in attacks against intelligence sectors.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "APT28 - Understanding a group specialized in attacks against intelligence sectors",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 856233,
+      "pageCount": 19
+    },
+    {
+      "id": "doc-db-010",
+      "filename": "AV and EDR Bypass Techniques for new Hackers - Update 2022.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "AV and EDR Bypass Techniques for new Hackers - Update 2022",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "edr",
+        "bypass"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1148362,
+      "pageCount": 33
+    },
+    {
+      "id": "doc-db-011",
+      "filename": "AV_EDR Bypass Red Team Village PT-BR.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "AV_EDR Bypass Red Team Village PT-BR",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "red-team",
+        "bypass"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 775518,
+      "pageCount": 20
+    },
+    {
+      "id": "doc-db-012",
+      "filename": "Adversary Emulation Services.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Adversary Emulation Services",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "adversary-emulation"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 937874,
+      "pageCount": 29
+    },
+    {
+      "id": "doc-db-013",
+      "filename": "Adversary Emulation and Cracking The Bridge – Overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Adversary Emulation and Cracking The Bridge – Overview",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "adversary-emulation"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 498991,
+      "pageCount": 30
+    },
+    {
+      "id": "doc-db-014",
+      "filename": "Adversary Emulation com Cobalt Strike.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Adversary Emulation com Cobalt Strike",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "adversary-emulation",
+        "cobalt-strike"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2734847,
+      "pageCount": 30
+    },
+    {
+      "id": "doc-db-015",
+      "filename": "Adversary Simulation with Caldera and Mitre.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Adversary Simulation with Caldera and Mitre",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "mitre",
+        "caldera"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2240206,
+      "pageCount": 18
+    },
+    {
+      "id": "doc-db-016",
+      "filename": "Application Security Introduction - Overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Application Security Introduction - Overview",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 3051230,
+      "pageCount": 73
+    },
+    {
+      "id": "doc-db-017",
+      "filename": "Application Security Introduction – Overview PT 2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Application Security Introduction – Overview PT 2",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2374612,
+      "pageCount": 40
+    },
+    {
+      "id": "doc-db-018",
+      "filename": "BRAZILIAN PENTEST CERTIFICATION.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "BRAZILIAN PENTEST CERTIFICATION",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "certification"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 613098,
+      "pageCount": 2
+    },
+    {
+      "id": "doc-db-019",
+      "filename": "Blockchain and Smart Contract Testing Security.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Blockchain and Smart Contract Testing Security",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "smart-contract",
+        "blockchain"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 349153,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-020",
+      "filename": "Blue e Red Team - Mercado de Trabalho.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Blue e Red Team - Mercado de Trabalho",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 529574,
+      "pageCount": 13
+    },
+    {
+      "id": "doc-db-021",
+      "filename": "Buffer Overflow Guide 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Buffer Overflow Guide 1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "buffer-overflow"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 660273,
+      "pageCount": 32
+    },
+    {
+      "id": "doc-db-022",
+      "filename": "Buffer Overflow Introduction.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Buffer Overflow Introduction",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "buffer-overflow"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1980164,
+      "pageCount": 66
+    },
+    {
+      "id": "doc-db-023",
+      "filename": "Buffer Overflow for Beginners Joas.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Buffer Overflow for Beginners Joas",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "buffer-overflow"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 106438,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-024",
+      "filename": "Bug Bounty Career.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Bug Bounty Career",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "career",
+        "bug-bounty"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 970153,
+      "pageCount": 19
+    },
+    {
+      "id": "doc-db-025",
+      "filename": "Bug Bounty, how to start.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Bug Bounty, how to start",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "bug-bounty"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1437612,
+      "pageCount": 27
+    },
+    {
+      "id": "doc-db-026",
+      "filename": "Burp Suite Plugin Development.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Burp Suite Plugin Development",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "burp"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1317274,
+      "pageCount": 31
+    },
+    {
+      "id": "doc-db-027",
+      "filename": "Bypassing defenses in layers.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Bypassing defenses in layers",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1941481,
+      "pageCount": 22
+    },
+    {
+      "id": "doc-db-028",
+      "filename": "C for Hackers – Overview PT.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "C for Hackers – Overview PT",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 594408,
+      "pageCount": 20
+    },
+    {
+      "id": "doc-db-029",
+      "filename": "C# for PenTest.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "C# for PenTest",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 14379742,
+      "pageCount": 17
+    },
+    {
+      "id": "doc-db-030",
+      "filename": "CEH Fundamentals.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "CEH Fundamentals",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "ceh"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 456119,
+      "pageCount": 50
+    },
+    {
+      "id": "doc-db-031",
+      "filename": "CERTIFIED RED TEAM LEADER (RTO II) – Overview to Study.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "CERTIFIED RED TEAM LEADER (RTO II) – Overview to Study",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 968985,
+      "pageCount": 41
+    },
+    {
+      "id": "doc-db-032",
+      "filename": "CONTAINER SECURITY – OVERVIEW PT 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "CONTAINER SECURITY – OVERVIEW PT 1",
+      "category": "cloud",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "container"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 515181,
+      "pageCount": 14
+    },
+    {
+      "id": "doc-db-033",
+      "filename": "CRTO – Notes to Exam Preparation.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "CRTO – Notes to Exam Preparation",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "crto"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 5776046,
+      "pageCount": 91
+    },
+    {
+      "id": "doc-db-034",
+      "filename": "Carreira em Cyber Security Jr ao Especialista.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Carreira em Cyber Security Jr ao Especialista",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1187468,
+      "pageCount": 8
+    },
+    {
+      "id": "doc-db-035",
+      "filename": "Carreira em Desenvolvimento Mobile.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Carreira em Desenvolvimento Mobile",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "mobile"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 703833,
+      "pageCount": 28
+    },
+    {
+      "id": "doc-db-036",
+      "filename": "Certifications Preparation Guide.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Certifications Preparation Guide",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1977697,
+      "pageCount": 71
+    },
+    {
+      "id": "doc-db-037",
+      "filename": "Certified Red Team Physical PenTest Leader – Quick Training.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Certified Red Team Physical PenTest Leader – Quick Training",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2638808,
+      "pageCount": 83
+    },
+    {
+      "id": "doc-db-038",
+      "filename": "ChatGPT for CyberSecurity #1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "ChatGPT for CyberSecurity #1",
+      "category": "ai-native",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "chatgpt"
+      ],
+      "summary_path": "summaries/ai-native/overview.md",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1201625,
+      "pageCount": 26
+    },
+    {
+      "id": "doc-db-039",
+      "filename": "ChatGPT for CyberSecurity #2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "ChatGPT for CyberSecurity #2",
+      "category": "ai-native",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "chatgpt"
+      ],
+      "summary_path": "summaries/ai-native/overview.md",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1113093,
+      "pageCount": 28
+    },
+    {
+      "id": "doc-db-040",
+      "filename": "ChatGPT for Cybersecurity #3.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "ChatGPT for Cybersecurity #3",
+      "category": "ai-native",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "chatgpt"
+      ],
+      "summary_path": "summaries/ai-native/overview.md",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1913651,
+      "pageCount": 40
+    },
+    {
+      "id": "doc-db-041",
+      "filename": "ChatGPT for Cybersecurity #4.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "ChatGPT for Cybersecurity #4",
+      "category": "ai-native",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "chatgpt"
+      ],
+      "summary_path": "summaries/ai-native/overview.md",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2511857,
+      "pageCount": 63
+    },
+    {
+      "id": "doc-db-042",
+      "filename": "Communs Web Attack Reference PT.1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Communs Web Attack Reference PT.1",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "web"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 714132,
+      "pageCount": 7
+    },
+    {
+      "id": "doc-db-043",
+      "filename": "Como gerenciar um Red Team.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Como gerenciar um Red Team",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1561927,
+      "pageCount": 11
+    },
+    {
+      "id": "doc-db-044",
+      "filename": "CompTIA PenTest+ - Tips and Tricks.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "CompTIA PenTest+ - Tips and Tricks",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "comptia"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 121378,
+      "pageCount": 11
+    },
+    {
+      "id": "doc-db-045",
+      "filename": "CompTIA Security+ - Tips and Tricks.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "CompTIA Security+ - Tips and Tricks",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "comptia"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 54661,
+      "pageCount": 9
+    },
+    {
+      "id": "doc-db-046",
+      "filename": "Competências Essenciais para Liderar uma Equipe de Pentest.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Competências Essenciais para Liderar uma Equipe de Pentest",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "pentest"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 600066,
+      "pageCount": 11
+    },
+    {
+      "id": "doc-db-047",
+      "filename": "Complete Bug Bounty Cheat Sheet.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Complete Bug Bounty Cheat Sheet",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "bug-bounty"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 134486,
+      "pageCount": 5
+    },
+    {
+      "id": "doc-db-048",
+      "filename": "Computer Forensic – Overview PT.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Computer Forensic – Overview PT",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 803713,
+      "pageCount": 40
+    },
+    {
+      "id": "doc-db-049",
+      "filename": "Conceitos básicos de pós exploração 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Conceitos básicos de pós exploração 1",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 972254,
+      "pageCount": 66
+    },
+    {
+      "id": "doc-db-050",
+      "filename": "Cyber Security - Five Challenge 2022.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cyber Security - Five Challenge 2022",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 418697,
+      "pageCount": 7
+    },
+    {
+      "id": "doc-db-051",
+      "filename": "Cyber Security Career for Children PT 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cyber Security Career for Children PT 1",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "career"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1182636,
+      "pageCount": 30
+    },
+    {
+      "id": "doc-db-052",
+      "filename": "Cyber Security Career in 2024.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cyber Security Career in 2024",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "career"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 216604,
+      "pageCount": 16
+    },
+    {
+      "id": "doc-db-053",
+      "filename": "Cyber Security Complete Journey – Red Team #1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cyber Security Complete Journey – Red Team #1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 3133196,
+      "pageCount": 32
+    },
+    {
+      "id": "doc-db-054",
+      "filename": "Cyber Security Services.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cyber Security Services",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 9994027,
+      "pageCount": 22
+    },
+    {
+      "id": "doc-db-055",
+      "filename": "Cyber Security for Kids 2.1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cyber Security for Kids 2.1",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "kids"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1536559,
+      "pageCount": 19
+    },
+    {
+      "id": "doc-db-056",
+      "filename": "Cyber Security for Kids 2.1.pptx",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cyber Security for Kids 2.1",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pptx",
+      "tags": [
+        "kids"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "other",
+      "fileSize": 3779857,
+      "pageCount": 0
+    },
+    {
+      "id": "doc-db-057",
+      "filename": "Cyber Security for Kids 2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cyber Security for Kids 2",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "kids"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1468545,
+      "pageCount": 16
+    },
+    {
+      "id": "doc-db-058",
+      "filename": "Cyber ​​security for kids.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cyber ​​security for kids",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "kids"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2285601,
+      "pageCount": 50
+    },
+    {
+      "id": "doc-db-059",
+      "filename": "CyberSec Certifications 2023.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "CyberSec Certifications 2023",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 358650,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-060",
+      "filename": "Cyberbullying and its consequences.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cyberbullying and its consequences",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "cyberbullying"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2765841,
+      "pageCount": 32
+    },
+    {
+      "id": "doc-db-061",
+      "filename": "Cyberbullying e as consequências.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cyberbullying e as consequências",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "cyberbullying"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2981667,
+      "pageCount": 34
+    },
+    {
+      "id": "doc-db-062",
+      "filename": "Cybersecurity and Cyberbullying Education for Kids.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cybersecurity and Cyberbullying Education for Kids",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "kids",
+        "cyberbullying"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 312778,
+      "pageCount": 2
+    },
+    {
+      "id": "doc-db-063",
+      "filename": "Cybersecurity flaws in the Metaverse #1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cybersecurity flaws in the Metaverse #1",
+      "category": "meta",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "metaverse"
+      ],
+      "summary_path": "summaries/meta/overview.md",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1129843,
+      "pageCount": 15
+    },
+    {
+      "id": "doc-db-064",
+      "filename": "Cybersecurity for Kids - English.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cybersecurity for Kids - English",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "kids"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2475451,
+      "pageCount": 13
+    },
+    {
+      "id": "doc-db-065",
+      "filename": "Cybersecurity for Kids - PT-BR.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Cybersecurity for Kids - PT-BR",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "kids"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2481697,
+      "pageCount": 13
+    },
+    {
+      "id": "doc-db-066",
+      "filename": "DLL Hijacking Overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "DLL Hijacking Overview",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 255040,
+      "pageCount": 15
+    },
+    {
+      "id": "doc-db-067",
+      "filename": "Diary of a Red Team - Challenges for you to practice your skills #1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Diary of a Red Team - Challenges for you to practice your skills #1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 186247,
+      "pageCount": 9
+    },
+    {
+      "id": "doc-db-068",
+      "filename": "Dicas básicas para ingressar no mercado de segurança.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Dicas básicas para ingressar no mercado de segurança",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 4255781,
+      "pageCount": 8
+    },
+    {
+      "id": "doc-db-069",
+      "filename": "Dicas como Reportar uma Falha.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Dicas como Reportar uma Falha",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 904931,
+      "pageCount": 22
+    },
+    {
+      "id": "doc-db-070",
+      "filename": "Enumeração de Grupos de TI e Segurança para Tech Recruiters.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Enumeração de Grupos de TI e Segurança para Tech Recruiters",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 42239,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-071",
+      "filename": "FUNDAMENTOS DE DESENVOLVIMENTO DE EXPLOITS - OVERVIEW.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "FUNDAMENTOS DE DESENVOLVIMENTO DE EXPLOITS - OVERVIEW",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 541634,
+      "pageCount": 41
+    },
+    {
+      "id": "doc-db-072",
+      "filename": "FUNDAMENTOS DE FIREWALL.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "FUNDAMENTOS DE FIREWALL",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 670927,
+      "pageCount": 29
+    },
+    {
+      "id": "doc-db-073",
+      "filename": "FUNDAMENTOS DE OSINT.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "FUNDAMENTOS DE OSINT",
+      "category": "osint",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "osint"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 3749563,
+      "pageCount": 92
+    },
+    {
+      "id": "doc-db-074",
+      "filename": "Fundamentals Cracking the Perimeter.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Fundamentals Cracking the Perimeter",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 3710691,
+      "pageCount": 47
+    },
+    {
+      "id": "doc-db-075",
+      "filename": "Fundamentos de Firewall .pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Fundamentos de Firewall",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1176621,
+      "pageCount": 60
+    },
+    {
+      "id": "doc-db-076",
+      "filename": "Game Hacking 1 – Anti Cheat BYPASS.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Game Hacking 1 – Anti Cheat BYPASS",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "bypass",
+        "game-hacking"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 652318,
+      "pageCount": 19
+    },
+    {
+      "id": "doc-db-077",
+      "filename": "Golpe do perfil falso no WhatsApp – Medidas preventivas.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Golpe do perfil falso no WhatsApp – Medidas preventivas",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 391814,
+      "pageCount": 7
+    },
+    {
+      "id": "doc-db-078",
+      "filename": "Google Cloud – Attack OVERVIEW PT1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Google Cloud – Attack OVERVIEW PT1",
+      "category": "cloud",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "cloud"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 527330,
+      "pageCount": 22
+    },
+    {
+      "id": "doc-db-079",
+      "filename": "Hardware Hacking Introduction - Overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Hardware Hacking Introduction - Overview",
+      "category": "iot-ot",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "hardware"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 622707,
+      "pageCount": 28
+    },
+    {
+      "id": "doc-db-080",
+      "filename": "How to report a vulnerability and generate its CVE.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "How to report a vulnerability and generate its CVE",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 886130,
+      "pageCount": 31
+    },
+    {
+      "id": "doc-db-081",
+      "filename": "How to start at once in the PenTest.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "How to start at once in the PenTest",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 640680,
+      "pageCount": 12
+    },
+    {
+      "id": "doc-db-082",
+      "filename": "INFOSEC PROEFICIENCY COLORS.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "INFOSEC PROEFICIENCY COLORS",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 155916,
+      "pageCount": 7
+    },
+    {
+      "id": "doc-db-083",
+      "filename": "INICIANDO SUA CARREIRA EM PENTEST.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "INICIANDO SUA CARREIRA EM PENTEST",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "pentest"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 984469,
+      "pageCount": 3
+    },
+    {
+      "id": "doc-db-084",
+      "filename": "INTERVIEW QUESTION TIPS – PENTEST, RED TEAM, APPSEC AND BLUE TEAM.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "INTERVIEW QUESTION TIPS – PENTEST, RED TEAM, APPSEC AND BLUE TEAM",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "red-team",
+        "blue-team",
+        "interview"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 269486,
+      "pageCount": 22
+    },
+    {
+      "id": "doc-db-085",
+      "filename": "INTRODUÇÃO A ENGENHARIA SOCIAL PRÁTICA.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "INTRODUÇÃO A ENGENHARIA SOCIAL PRÁTICA",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 494174,
+      "pageCount": 45
+    },
+    {
+      "id": "doc-db-086",
+      "filename": "INTRODUÇÃO A PÓS EXPLORAÇÃO.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "INTRODUÇÃO A PÓS EXPLORAÇÃO",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2868778,
+      "pageCount": 35
+    },
+    {
+      "id": "doc-db-087",
+      "filename": "INTRODUÇÃO A SEGURANÇA DA APLICAÇÃO - UNICIV.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "INTRODUÇÃO A SEGURANÇA DA APLICAÇÃO - UNICIV",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 3761466,
+      "pageCount": 36
+    },
+    {
+      "id": "doc-db-088",
+      "filename": "INTRODUÇÃO AO DESENVOLVIMENTO DE EXPLOITS 2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "INTRODUÇÃO AO DESENVOLVIMENTO DE EXPLOITS 2",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1531594,
+      "pageCount": 100
+    },
+    {
+      "id": "doc-db-089",
+      "filename": "INTRODUÇÃO AO DESENVOLVIMENTO DE EXPLOITS.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "INTRODUÇÃO AO DESENVOLVIMENTO DE EXPLOITS",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 539562,
+      "pageCount": 53
+    },
+    {
+      "id": "doc-db-090",
+      "filename": "Incident Response Simulation 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Incident Response Simulation 1",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 147920,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-091",
+      "filename": "Incident response - overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Incident response - overview",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 97058,
+      "pageCount": 8
+    },
+    {
+      "id": "doc-db-092",
+      "filename": "Information Security Training by Joas.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Information Security Training by Joas",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 68944407,
+      "pageCount": 1720
+    },
+    {
+      "id": "doc-db-093",
+      "filename": "Informática para concurso.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Informática para concurso",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1501629,
+      "pageCount": 150
+    },
+    {
+      "id": "doc-db-094",
+      "filename": "Instagram – social network security.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Instagram – social network security",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 822311,
+      "pageCount": 11
+    },
+    {
+      "id": "doc-db-095",
+      "filename": "Internet Safety - Sexual Predators and Stalkers, how to protect yourself.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Internet Safety - Sexual Predators and Stalkers, how to protect yourself",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "internet-safety"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 882728,
+      "pageCount": 59
+    },
+    {
+      "id": "doc-db-096",
+      "filename": "Introdução Básica a Analise de Malware 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Introdução Básica a Analise de Malware 1",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "malware"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1196157,
+      "pageCount": 73
+    },
+    {
+      "id": "doc-db-097",
+      "filename": "Introdução a Network Security 1.0.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Introdução a Network Security 1.0",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1999187,
+      "pageCount": 147
+    },
+    {
+      "id": "doc-db-098",
+      "filename": "Introdução a Network Security e Firewall.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Introdução a Network Security e Firewall",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 4030348,
+      "pageCount": 207
+    },
+    {
+      "id": "doc-db-099",
+      "filename": "Introdução ao Buffer overflow 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Introdução ao Buffer overflow 1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "buffer-overflow"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1088243,
+      "pageCount": 66
+    },
+    {
+      "id": "doc-db-100",
+      "filename": "Introdução ao Mitre Att&ck e ao Cyber Kill Chain.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Introdução ao Mitre Att&ck e ao Cyber Kill Chain",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "mitre"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 3006798,
+      "pageCount": 40
+    },
+    {
+      "id": "doc-db-101",
+      "filename": "Introdução ao pentest mobile PT-1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Introdução ao pentest mobile PT-1",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "mobile"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 23264437,
+      "pageCount": 52
+    },
+    {
+      "id": "doc-db-102",
+      "filename": "Investigation using OSINT with a focus on Intelligence operations and Dark Web operations - Training.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Investigation using OSINT with a focus on Intelligence operations and Dark Web operations - Training",
+      "category": "osint",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "osint",
+        "dark-web",
+        "web"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 4724110,
+      "pageCount": 117
+    },
+    {
+      "id": "doc-db-103",
+      "filename": "JavaScript for Hackers 2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "JavaScript for Hackers 2",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 964030,
+      "pageCount": 31
+    },
+    {
+      "id": "doc-db-104",
+      "filename": "JavaScript for Hackers.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "JavaScript for Hackers",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 715016,
+      "pageCount": 51
+    },
+    {
+      "id": "doc-db-105",
+      "filename": "Kubernetes Exploitation Introduction CheatSheet.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Kubernetes Exploitation Introduction CheatSheet",
+      "category": "cloud",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "kubernetes"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 381543,
+      "pageCount": 14
+    },
+    {
+      "id": "doc-db-106",
+      "filename": "Linux Privilege Escalation – Overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Linux Privilege Escalation – Overview",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "privilege-escalation",
+        "linux"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 896919,
+      "pageCount": 21
+    },
+    {
+      "id": "doc-db-107",
+      "filename": "Low Cost Red Team Tools .pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Low Cost Red Team Tools",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 320414,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-108",
+      "filename": "Low Cost Red Team Tools v2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Low Cost Red Team Tools v2",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 975129,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-109",
+      "filename": "Low Cost SOC Tools 2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Low Cost SOC Tools 2",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "soc"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 150544,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-110",
+      "filename": "Low-cost SOC.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Low-cost SOC",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "soc"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 236720,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-111",
+      "filename": "METAVERSO E A INOVAÇÃO TECNOLÓGICA.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "METAVERSO E A INOVAÇÃO TECNOLÓGICA",
+      "category": "meta",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "summaries/meta/overview.md",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1796744,
+      "pageCount": 22
+    },
+    {
+      "id": "doc-db-112",
+      "filename": "MULTI-CLOUD RED TEAM – PT 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "MULTI-CLOUD RED TEAM – PT 1",
+      "category": "cloud",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team",
+        "cloud"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 643696,
+      "pageCount": 18
+    },
+    {
+      "id": "doc-db-113",
+      "filename": "Maltego Introduction - Creating a simple local Transform EN.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Maltego Introduction - Creating a simple local Transform EN",
+      "category": "osint",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "maltego"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 842864,
+      "pageCount": 19
+    },
+    {
+      "id": "doc-db-114",
+      "filename": "Maltego Introduction - Creating a simple local Transform PT-BR.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Maltego Introduction - Creating a simple local Transform PT-BR",
+      "category": "osint",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "maltego"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 851091,
+      "pageCount": 20
+    },
+    {
+      "id": "doc-db-115",
+      "filename": "Malware Hunting & Threat Hunter – overview 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Malware Hunting & Threat Hunter – overview 1",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "malware"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 354415,
+      "pageCount": 17
+    },
+    {
+      "id": "doc-db-116",
+      "filename": "Malware and Reverse Engineering Complete Collection by Joas.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Malware and Reverse Engineering Complete Collection by Joas",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "malware",
+        "reverse-engineering"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 140894,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-117",
+      "filename": "Mitre Att&ck Study Overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Mitre Att&ck Study Overview",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "mitre"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 334545,
+      "pageCount": 12
+    },
+    {
+      "id": "doc-db-118",
+      "filename": "Most critical failure in corporate environments.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Most critical failure in corporate environments",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1369944,
+      "pageCount": 29
+    },
+    {
+      "id": "doc-db-119",
+      "filename": "OFFENSIVE SECURITY EVASION TECHNIQUES PT.1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "OFFENSIVE SECURITY EVASION TECHNIQUES PT.1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "evasion"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 513630,
+      "pageCount": 42
+    },
+    {
+      "id": "doc-db-120",
+      "filename": "OFFENSIVE SECURITY MATERIALS FOR STUDIES AND CERTIFICATIONS.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "OFFENSIVE SECURITY MATERIALS FOR STUDIES AND CERTIFICATIONS",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 335385,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-121",
+      "filename": "OFFENSIVE SECURITY WIRELESS FUNDAMENTALS.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "OFFENSIVE SECURITY WIRELESS FUNDAMENTALS",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "wireless"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 27861208,
+      "pageCount": 200
+    },
+    {
+      "id": "doc-db-122",
+      "filename": "OFFENSIVE SECURITY WIRELESS.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "OFFENSIVE SECURITY WIRELESS",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "wireless"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1747322,
+      "pageCount": 193
+    },
+    {
+      "id": "doc-db-123",
+      "filename": "OSCP LABS TO PRACTICE 2023.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "OSCP LABS TO PRACTICE 2023",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "oscp"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 231847,
+      "pageCount": 2
+    },
+    {
+      "id": "doc-db-124",
+      "filename": "OSCP Like Vulns Machines.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "OSCP Like Vulns Machines",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "oscp"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 257864,
+      "pageCount": 21
+    },
+    {
+      "id": "doc-db-125",
+      "filename": "OSINT Overview PT.1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "OSINT Overview PT.1",
+      "category": "osint",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "osint"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 19703777,
+      "pageCount": 277
+    },
+    {
+      "id": "doc-db-126",
+      "filename": "OSWA (Offensive Security Web Attacks) – Study Overview PT.1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "OSWA (Offensive Security Web Attacks) – Study Overview PT.1",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "web"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 12065851,
+      "pageCount": 399
+    },
+    {
+      "id": "doc-db-127",
+      "filename": "OVERVIEW – Windows API_s and Internals & Reverse Engineering.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "OVERVIEW – Windows API_s and Internals & Reverse Engineering",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "windows",
+        "reverse-engineering"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 844741,
+      "pageCount": 28
+    },
+    {
+      "id": "doc-db-128",
+      "filename": "Offensive Security Consultant - Spider Labs.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Offensive Security Consultant - Spider Labs",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 682828,
+      "pageCount": 17
+    },
+    {
+      "id": "doc-db-129",
+      "filename": "Offensive Security Defense Analyst Overview PT.1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Offensive Security Defense Analyst Overview PT.1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 10934852,
+      "pageCount": 299
+    },
+    {
+      "id": "doc-db-130",
+      "filename": "Offensive Security Exploit Development Windows - Overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Offensive Security Exploit Development Windows - Overview",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "exploit",
+        "windows"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 541396,
+      "pageCount": 26
+    },
+    {
+      "id": "doc-db-131",
+      "filename": "Offensive Security MAC Control Bypass Notes PT.1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Offensive Security MAC Control Bypass Notes PT.1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "bypass"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 8987900,
+      "pageCount": 338
+    },
+    {
+      "id": "doc-db-132",
+      "filename": "Offensive Security Professional Overview Survival.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Offensive Security Professional Overview Survival",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 298422,
+      "pageCount": 27
+    },
+    {
+      "id": "doc-db-133",
+      "filename": "Offensive Security Web Exploitation 2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Offensive Security Web Exploitation 2",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "web"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 12867021,
+      "pageCount": 182
+    },
+    {
+      "id": "doc-db-134",
+      "filename": "Offensive Security Web Exploitation.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Offensive Security Web Exploitation",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "web"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 5967279,
+      "pageCount": 54
+    },
+    {
+      "id": "doc-db-135",
+      "filename": "Offensive Security and Web Exploitation 2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Offensive Security and Web Exploitation 2",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "web"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 15721079,
+      "pageCount": 70
+    },
+    {
+      "id": "doc-db-136",
+      "filename": "Offsec Certification and Courses 2024.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Offsec Certification and Courses 2024",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "certification"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 114968,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-137",
+      "filename": "PYTHON FOR HACKERS PT 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "PYTHON FOR HACKERS PT 1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1030848,
+      "pageCount": 34
+    },
+    {
+      "id": "doc-db-138",
+      "filename": "PenTest - Skills Development.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "PenTest - Skills Development",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 126426,
+      "pageCount": 3
+    },
+    {
+      "id": "doc-db-139",
+      "filename": "PenTest Toolkit.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "PenTest Toolkit",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 195625,
+      "pageCount": 3
+    },
+    {
+      "id": "doc-db-140",
+      "filename": "PenTest Web do Black Box ao White Box.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "PenTest Web do Black Box ao White Box",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "web"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1340535,
+      "pageCount": 29
+    },
+    {
+      "id": "doc-db-141",
+      "filename": "PenTest and Red Team Books.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "PenTest and Red Team Books",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1739759,
+      "pageCount": 8
+    },
+    {
+      "id": "doc-db-142",
+      "filename": "PenTest and Red Teams Tools by Joas and S3cur3Th1sSh1t.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "PenTest and Red Teams Tools by Joas and S3cur3Th1sSh1t",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 221172,
+      "pageCount": 2
+    },
+    {
+      "id": "doc-db-143",
+      "filename": "PenTest em Ambientes Cloud 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "PenTest em Ambientes Cloud 1",
+      "category": "cloud",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "cloud"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1908406,
+      "pageCount": 36
+    },
+    {
+      "id": "doc-db-144",
+      "filename": "Penetration Testing Career - Jr to Specialist.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Penetration Testing Career - Jr to Specialist",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "career"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 992579,
+      "pageCount": 24
+    },
+    {
+      "id": "doc-db-145",
+      "filename": "Pentest IoT and OT - Overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Pentest IoT and OT - Overview",
+      "category": "iot-ot",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "iot",
+        "ot"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 316625,
+      "pageCount": 25
+    },
+    {
+      "id": "doc-db-146",
+      "filename": "Pentest com POWERSHELL – overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Pentest com POWERSHELL – overview",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "powershell"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 25764636,
+      "pageCount": 31
+    },
+    {
+      "id": "doc-db-147",
+      "filename": "Pentest in Office365 and Security.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Pentest in Office365 and Security",
+      "category": "cloud",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 228018,
+      "pageCount": 10
+    },
+    {
+      "id": "doc-db-148",
+      "filename": "Pentest with metasploit - overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Pentest with metasploit - overview",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "metasploit"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1415439,
+      "pageCount": 42
+    },
+    {
+      "id": "doc-db-149",
+      "filename": "Plano de Estudos Cyber Security -  Parte 1 Red Team.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Plano de Estudos Cyber Security - Parte 1 Red Team",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 791229,
+      "pageCount": 26
+    },
+    {
+      "id": "doc-db-150",
+      "filename": "Programming Language for Hacking Books.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Programming Language for Hacking Books",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1116252,
+      "pageCount": 10
+    },
+    {
+      "id": "doc-db-151",
+      "filename": "Purple Team Lab 01 – Wazuh and Win2016 .pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Purple Team Lab 01 – Wazuh and Win2016",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "purple-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 3842530,
+      "pageCount": 44
+    },
+    {
+      "id": "doc-db-152",
+      "filename": "Python Libs for Security PT.1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Python Libs for Security PT.1",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 588428,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-153",
+      "filename": "Python for Hackers - Bootcamp.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Python for Hackers - Bootcamp",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 881005,
+      "pageCount": 46
+    },
+    {
+      "id": "doc-db-154",
+      "filename": "RED TEAM TOOLKIT 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "RED TEAM TOOLKIT 1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 104808,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-155",
+      "filename": "RED TEAM ≠ PENTEST English.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "RED TEAM ≠ PENTEST English",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1910261,
+      "pageCount": 31
+    },
+    {
+      "id": "doc-db-156",
+      "filename": "REVERSE ENGINEERING RESEARCH - STORM.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "REVERSE ENGINEERING RESEARCH - STORM",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "reverse-engineering"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 701463,
+      "pageCount": 19
+    },
+    {
+      "id": "doc-db-157",
+      "filename": "ROADMAP – SEGURANÇA DA INFORMAÇÃO PT.1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "ROADMAP – SEGURANÇA DA INFORMAÇÃO PT.1",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "roadmap"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 736695,
+      "pageCount": 5
+    },
+    {
+      "id": "doc-db-158",
+      "filename": "Ransomware Investigation (osint and hunting) - Overview PT1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Ransomware Investigation (osint and hunting) - Overview PT1",
+      "category": "osint",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "osint",
+        "ransomware"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 3412309,
+      "pageCount": 48
+    },
+    {
+      "id": "doc-db-159",
+      "filename": "Red Team Career Tips #1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Red Team Career Tips #1",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team",
+        "career"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 161375,
+      "pageCount": 9
+    },
+    {
+      "id": "doc-db-160",
+      "filename": "Red Team MacOS Att&ck - Overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Red Team MacOS Att&ck - Overview",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 10663526,
+      "pageCount": 17
+    },
+    {
+      "id": "doc-db-161",
+      "filename": "Red Team Operations - Overview PT.1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Red Team Operations - Overview PT.1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 199578,
+      "pageCount": 27
+    },
+    {
+      "id": "doc-db-162",
+      "filename": "Red Team Operations - Overview PT.2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Red Team Operations - Overview PT.2",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 798891,
+      "pageCount": 40
+    },
+    {
+      "id": "doc-db-163",
+      "filename": "Red Team Operations – Concepts #1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Red Team Operations – Concepts #1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 929273,
+      "pageCount": 31
+    },
+    {
+      "id": "doc-db-164",
+      "filename": "Red Team Operations – Development PT 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Red Team Operations – Development PT 1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1383247,
+      "pageCount": 25
+    },
+    {
+      "id": "doc-db-165",
+      "filename": "Red Team and Blue Team Labs and CTF.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Red Team and Blue Team Labs and CTF",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team",
+        "blue-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "zero-pages",
+      "detectedFormat": "pdf",
+      "fileSize": 1088139,
+      "pageCount": 0
+    },
+    {
+      "id": "doc-db-166",
+      "filename": "Red_Team_x_Blue_Team.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Red_Team_x_Blue_Team",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1103207,
+      "pageCount": 13
+    },
+    {
+      "id": "doc-db-167",
+      "filename": "Redes Sociais - O Lado sombrio do Discord.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Redes Sociais - O Lado sombrio do Discord",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1886733,
+      "pageCount": 15
+    },
+    {
+      "id": "doc-db-168",
+      "filename": "Resume PenTest Career by Joas A Santos .pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Resume PenTest Career by Joas A Santos",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "career"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 64128,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-169",
+      "filename": "Resume Web PenTest by Joas.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Resume Web PenTest by Joas",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "web"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 67784,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-170",
+      "filename": "Reverse Engineering – Content Study #1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Reverse Engineering – Content Study #1",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "reverse-engineering"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 228962,
+      "pageCount": 11
+    },
+    {
+      "id": "doc-db-171",
+      "filename": "SOC Analyst - Career.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "SOC Analyst - Career",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "soc",
+        "career"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 704625,
+      "pageCount": 11
+    },
+    {
+      "id": "doc-db-172",
+      "filename": "SOC Open Source Tools.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "SOC Open Source Tools",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "soc"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1022544,
+      "pageCount": 6
+    },
+    {
+      "id": "doc-db-173",
+      "filename": "SOCIAL ENGINEERING PRACTICAL - OVERVIEW.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "SOCIAL ENGINEERING PRACTICAL - OVERVIEW",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 689841,
+      "pageCount": 27
+    },
+    {
+      "id": "doc-db-174",
+      "filename": "Security Operation Center - Open Source.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Security Operation Center - Open Source",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1512302,
+      "pageCount": 21
+    },
+    {
+      "id": "doc-db-175",
+      "filename": "Security Operation Center - Open Source.pt.en.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Security Operation Center - Open Source.pt.en",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1822758,
+      "pageCount": 21
+    },
+    {
+      "id": "doc-db-176",
+      "filename": "Security Operation Center - Operations Development.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Security Operation Center - Operations Development",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1948614,
+      "pageCount": 71
+    },
+    {
+      "id": "doc-db-177",
+      "filename": "Security Operation Center 40 Tools .pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Security Operation Center 40 Tools",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1054847,
+      "pageCount": 40
+    },
+    {
+      "id": "doc-db-178",
+      "filename": "Security Operation Center and Analysis.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Security Operation Center and Analysis",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1305083,
+      "pageCount": 36
+    },
+    {
+      "id": "doc-db-179",
+      "filename": "Security Operation Center – Study and Career 2022.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Security Operation Center – Study and Career 2022",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "career"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 142151,
+      "pageCount": 9
+    },
+    {
+      "id": "doc-db-180",
+      "filename": "Segurança na Internet para Crianças.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Segurança na Internet para Crianças",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2066678,
+      "pageCount": 38
+    },
+    {
+      "id": "doc-db-181",
+      "filename": "Shellcode Development #2.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Shellcode Development #2",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "shellcode"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1181660,
+      "pageCount": 30
+    },
+    {
+      "id": "doc-db-182",
+      "filename": "Shellcode Development.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Shellcode Development",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "shellcode"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 599335,
+      "pageCount": 33
+    },
+    {
+      "id": "doc-db-183",
+      "filename": "Smart Contract Security – Overview PT 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Smart Contract Security – Overview PT 1",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "smart-contract"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 439721,
+      "pageCount": 16
+    },
+    {
+      "id": "doc-db-184",
+      "filename": "Sobrevivendo a um Ataque Escolar.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Sobrevivendo a um Ataque Escolar",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1144855,
+      "pageCount": 12
+    },
+    {
+      "id": "doc-db-185",
+      "filename": "Surviving a School Attack.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Surviving a School Attack",
+      "category": "education",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1136240,
+      "pageCount": 12
+    },
+    {
+      "id": "doc-db-186",
+      "filename": "TDC2021 - Mitre Att&ck.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "TDC2021 - Mitre Att&ck",
+      "category": "defensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "mitre"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 852723,
+      "pageCount": 18
+    },
+    {
+      "id": "doc-db-187",
+      "filename": "The Complete Guide for Cyber Security Career English.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "The Complete Guide for Cyber Security Career English",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "career"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1059206,
+      "pageCount": 15
+    },
+    {
+      "id": "doc-db-188",
+      "filename": "The Complete Guide for Cyber Security Career.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "The Complete Guide for Cyber Security Career",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "career"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 856257,
+      "pageCount": 15
+    },
+    {
+      "id": "doc-db-189",
+      "filename": "The Onion Router – Overview PT 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "The Onion Router – Overview PT 1",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 947343,
+      "pageCount": 28
+    },
+    {
+      "id": "doc-db-190",
+      "filename": "Using OSINT Techniques to Investigate Human Trafficking and Missing Persons PT.1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Using OSINT Techniques to Investigate Human Trafficking and Missing Persons PT.1",
+      "category": "osint",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "osint"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1284370,
+      "pageCount": 37
+    },
+    {
+      "id": "doc-db-191",
+      "filename": "Using OSINT to Investigate Human Trafficking and Missing Persons.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Using OSINT to Investigate Human Trafficking and Missing Persons",
+      "category": "osint",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "osint"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2981968,
+      "pageCount": 24
+    },
+    {
+      "id": "doc-db-192",
+      "filename": "Using OSINT to Investigate School Shooters.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Using OSINT to Investigate School Shooters",
+      "category": "osint",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "osint"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 3491390,
+      "pageCount": 33
+    },
+    {
+      "id": "doc-db-193",
+      "filename": "WSTG (Web Application Security Testing) OWASP - Mind Map.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "WSTG (Web Application Security Testing) OWASP - Mind Map",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "web",
+        "owasp"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 324333,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-194",
+      "filename": "Web PenTesting Checklist by Joas.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Web PenTesting Checklist by Joas",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentesting",
+        "web"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 73046,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-195",
+      "filename": "What it takes to be a Red Team.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "What it takes to be a Red Team",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 139689,
+      "pageCount": 7
+    },
+    {
+      "id": "doc-db-196",
+      "filename": "Windows API for Red Team 101 - English.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Windows API for Red Team 101 - English",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team",
+        "api",
+        "windows"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 974159,
+      "pageCount": 24
+    },
+    {
+      "id": "doc-db-197",
+      "filename": "Windows API for Red Team 101 - Portuguese.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Windows API for Red Team 101 - Portuguese",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team",
+        "api",
+        "windows"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 987574,
+      "pageCount": 26
+    },
+    {
+      "id": "doc-db-198",
+      "filename": "Windows API for Red Team 102 English.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Windows API for Red Team 102 English",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team",
+        "api",
+        "windows"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 530158,
+      "pageCount": 25
+    },
+    {
+      "id": "doc-db-199",
+      "filename": "Windows API for Red Team 102 Portugues.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Windows API for Red Team 102 Portugues",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "red-team",
+        "api",
+        "windows"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 548434,
+      "pageCount": 27
+    },
+    {
+      "id": "doc-db-200",
+      "filename": "Windows Enterprise Network PenTest.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Windows Enterprise Network PenTest",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "windows"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 567057,
+      "pageCount": 27
+    },
+    {
+      "id": "doc-db-201",
+      "filename": "Windows Persistence Techniques.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Windows Persistence Techniques",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "persistence",
+        "windows"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 779493,
+      "pageCount": 22
+    },
+    {
+      "id": "doc-db-202",
+      "filename": "Windows Privilege Escalation - Overview.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Windows Privilege Escalation - Overview",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "privilege-escalation",
+        "windows"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 772182,
+      "pageCount": 20
+    },
+    {
+      "id": "doc-db-203",
+      "filename": "Windows Server AD and O365 Advanced PenTest.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Windows Server AD and O365 Advanced PenTest",
+      "category": "cloud",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "o365",
+        "windows"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 28199738,
+      "pageCount": 125
+    },
+    {
+      "id": "doc-db-204",
+      "filename": "Windows Server and Active Directory - PenTest.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Windows Server and Active Directory - PenTest",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "pentest",
+        "active-directory",
+        "windows"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 728470,
+      "pageCount": 42
+    },
+    {
+      "id": "doc-db-205",
+      "filename": "Zero Trust Testing Checklist.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Zero Trust Testing Checklist",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 45548,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-206",
+      "filename": "[VERSAO FINAL ATUALIZADA] Vulnerabilidades Comuns em Aplicações Web - RoadSec 2023.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "Vulnerabilidades Comuns em Aplicações Web - RoadSec 2023",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "web"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 2048200,
+      "pageCount": 20
+    },
+    {
+      "id": "doc-db-207",
+      "filename": "eLearnSecurity Certified Incident Response (eCIR) – Guide Study to Exam.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "eLearnSecurity Certified Incident Response (eCIR) – Guide Study to Exam",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 11786621,
+      "pageCount": 253
+    },
+    {
+      "id": "doc-db-208",
+      "filename": "eLearnSecurity Certified Threat Hunting Introduction PT 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "eLearnSecurity Certified Threat Hunting Introduction PT 1",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "threat-hunting"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1498061,
+      "pageCount": 59
+    },
+    {
+      "id": "doc-db-209",
+      "filename": "eLearnSecurity Exploit Development Student Notes by Joas.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "eLearnSecurity Exploit Development Student Notes by Joas",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "exploit"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 27367039,
+      "pageCount": 474
+    },
+    {
+      "id": "doc-db-210",
+      "filename": "eLearnSecurity Mobile Application Penetration Testing.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "eLearnSecurity Mobile Application Penetration Testing",
+      "category": "appsec",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [
+        "mobile"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 6579686,
+      "pageCount": 223
+    },
+    {
+      "id": "doc-db-211",
+      "filename": "eLearnSecurity eCPPT Notes Exam.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "eLearnSecurity eCPPT Notes Exam",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 7037944,
+      "pageCount": 157
+    },
+    {
+      "id": "doc-db-212",
+      "filename": "eLearnSecurity eCPTXv2 Notes.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "eLearnSecurity eCPTXv2 Notes",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 14360541,
+      "pageCount": 333
+    },
+    {
+      "id": "doc-db-213",
+      "filename": "eLearnSecurity eCXD Preparation .pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "eLearnSecurity eCXD Preparation",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "en",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 78718,
+      "pageCount": 1
+    },
+    {
+      "id": "doc-db-214",
+      "filename": "eLearnSecurity eWPT Notes.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "eLearnSecurity eWPT Notes",
+      "category": "certifications",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 21466980,
+      "pageCount": 370
+    },
+    {
+      "id": "doc-db-215",
+      "filename": "eLearnSecurity eWPTX Notes Basic by Joas.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "eLearnSecurity eWPTX Notes Basic by Joas",
+      "category": "misc",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 14470149,
+      "pageCount": 311
+    },
+    {
+      "id": "doc-db-216",
+      "filename": "ebook Invadindo com Metasploit VL 1.pdf",
+      "path": "valtheron-cybersec-database/",
+      "title": "ebook Invadindo com Metasploit VL 1",
+      "category": "offensive",
+      "subcategory": "general",
+      "difficulty": "intermediate",
+      "language": "pt",
+      "format": "pdf",
+      "tags": [
+        "metasploit"
+      ],
+      "summary_path": "",
+      "source": "cybersec-database",
+      "integrityStatus": "valid",
+      "detectedFormat": "pdf",
+      "fileSize": 1980395,
+      "pageCount": 40
     }
   ]
 }
