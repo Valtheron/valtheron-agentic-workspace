@@ -46,6 +46,28 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 - README um Abschnitt "Wissensbasis (Knowledge Base)" erweitert mit
   Sync-Befehl und Verzeichnis-Layout.
 
+### Behoben
+
+- `App.tsx`: versionierte Agent-Cache-Migration. Existierende
+  localStorage-Einträge mit dem alten 200-Agenten-/10-Kategorien-Bundle
+  werden beim nächsten Dashboard-Start durch den vollen 290-Agenten-
+  Katalog (16 Kategorien) ersetzt. `AGENTS_CACHE_VERSION` kann bei
+  weiteren Katalog-Änderungen erhöht werden, um Migrationen erneut
+  auszulösen.
+- `App.tsx`: Migration ist jetzt zusätzlich selbstheilend — wenn das
+  gecachte `agents`-Array kürzer als `EXPECTED_AGENT_COUNT` (290) ist,
+  wird unabhängig vom Versionsstand neu generiert. Schützt vor
+  Edge-Cases, in denen ein anderer Codepfad das Array nach der
+  Versions-Migration wieder auf 200 Einträge zurückgeschrieben hat.
+
+### Dev-Tooling
+
+- `.claude/settings.json`: neuer `PostToolUse`-Hook auf `Bash(git push*)`,
+  der nach jedem Push einen Reminder zur Post-Push-Checklist
+  (CHANGELOG / README / PR-Body / Test + Lint) in den Model-Kontext
+  injiziert. Greift in neu gestarteten Sessions; einmalig `/hooks`
+  öffnen oder neu starten, falls bereits eine Session läuft.
+
 ---
 
 ## [1.0.0] — 2026-02-26
