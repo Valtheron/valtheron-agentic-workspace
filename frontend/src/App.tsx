@@ -73,16 +73,28 @@ const viewTitles: Record<ViewType, string> = {
 // (e.g. pre-v2 bundles with only 200 agents in 10 categories) are invalidated
 // and the full 290/16 catalog is regenerated on first load.
 const AGENTS_CACHE_VERSION = 2;
+const EXPECTED_AGENT_COUNT = 290;
 
 function loadAgentsWithMigration(): Agent[] {
   const cachedVersion = load<number>('agents_version', 0);
-  if (cachedVersion !== AGENTS_CACHE_VERSION) {
+  const cached = load<Agent[] | null>('agents', null);
+
+  // Trigger a regeneration whenever the schema version is outdated, the cache
+  // is missing, or the cached array is shorter than the expected catalog
+  // (covers edge cases where a stale 200-agent payload was written back after
+  // the version bump landed).
+  const needsRegeneration =
+    cachedVersion !== AGENTS_CACHE_VERSION ||
+    !Array.isArray(cached) ||
+    cached.length < EXPECTED_AGENT_COUNT;
+
+  if (needsRegeneration) {
     const fresh = generateAgents();
     save('agents', fresh);
     save('agents_version', AGENTS_CACHE_VERSION);
     return fresh;
   }
-  return load<Agent[]>('agents', generateAgents());
+  return cached as Agent[];
 }
 
 // Simulated output messages for running agents
