@@ -46,6 +46,14 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 - README um Abschnitt "Wissensbasis (Knowledge Base)" erweitert mit
   Sync-Befehl und Verzeichnis-Layout.
 
+### Dev-Tooling
+
+- `.claude/settings.json`: neuer `PostToolUse`-Hook auf `Bash(git push*)`,
+  der nach jedem Push einen Reminder zur Post-Push-Checklist
+  (CHANGELOG / README / PR-Body / Test + Lint) in den Model-Kontext
+  injiziert. Greift in neu gestarteten Sessions; einmalig `/hooks`
+  öffnen oder neu starten, falls bereits eine Session läuft.
+
 ---
 
 ## [1.0.0] — 2026-02-26
