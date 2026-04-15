@@ -54,6 +54,11 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
   Katalog (16 Kategorien) ersetzt. `AGENTS_CACHE_VERSION` kann bei
   weiteren Katalog-Änderungen erhöht werden, um Migrationen erneut
   auszulösen.
+- `App.tsx`: Migration ist jetzt zusätzlich selbstheilend — wenn das
+  gecachte `agents`-Array kürzer als `EXPECTED_AGENT_COUNT` (290) ist,
+  wird unabhängig vom Versionsstand neu generiert. Schützt vor
+  Edge-Cases, in denen ein anderer Codepfad das Array nach der
+  Versions-Migration wieder auf 200 Einträge zurückgeschrieben hat.
 
 ### Dev-Tooling
 
