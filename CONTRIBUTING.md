@@ -279,7 +279,7 @@ Wenn du folgendes änderst, aktualisiere auch die entsprechende Doku:
 | Änderung | Dokument updaten |
 |----------|-----------------|
 | Neuer API-Endpunkt | `docs/API.md` |
-| Neue Konfiguration | `docs/DEPLOYMENT_GUIDE.md` + `ONBOARDING.md` |
+| Neue Konfiguration | `docs/DEPLOYMENT_GUIDE.md` + `docs/ONBOARDING.md` |
 | Neue DB-Tabelle/Spalte | `docs/ARCHITECTURE.md` |
 | Neue UI-Funktionalität | `docs/USER_GUIDE.md` |
 | Breaking Changes | `CHANGELOG.md` + `RELEASE_NOTES.md` |
