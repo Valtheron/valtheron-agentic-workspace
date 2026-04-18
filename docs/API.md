@@ -157,6 +157,11 @@ Move task to a different kanban column.
 
 **Body:** `{ "kanbanColumn": "backlog|todo|in_progress|review|done" }`
 
+### POST /tasks/:id/execute
+Execute a task via the configured LLM provider.
+
+**Response (200):** `{ "success": true, "result": "string", "model": "string", "completedAt": "ISO" }`
+
 ### GET /tasks/stats/overview
 Get task statistics.
 
@@ -239,6 +244,26 @@ List audit log entries.
 Create an audit entry.
 
 **Body:** `{ "agentId": "string", "action": "string", "details": "string", "riskLevel": "critical|high|medium|low|info" }`
+
+### GET /security/audit/export
+Export the full audit log as CSV.
+
+**Response (200):** CSV-Datei mit Content-Type `text/csv`.
+
+### GET /security/kill-switch/auto-trigger-rules
+Read the current auto-trigger rule set for the kill-switch.
+
+**Response (200):** `{ "rules": AutoTriggerRule[] }`
+
+### PUT /security/kill-switch/auto-trigger-rules
+Replace the complete auto-trigger rule set.
+
+**Body:** `{ "rules": AutoTriggerRule[] }`
+
+### PATCH /security/kill-switch/auto-trigger-rules/:ruleId
+Update a single auto-trigger rule (e.g. toggle enabled, change threshold).
+
+**Body:** `{ "enabled"?: boolean, "threshold"?: number, "windowMinutes"?: number }`
 
 ---
 
@@ -394,6 +419,11 @@ List notifications.
 
 **Query:** `?read=true|false&severity=&limit=`
 
+### POST /notifications
+Create a new notification and broadcast it via WebSocket.
+
+**Body:** `{ "type": "string", "title": "string", "message": "string", "severity"?: "info|warning|critical", "targetAgentId"?: "string" }`
+
 ### PATCH /notifications/:id/read
 Mark notification as read.
 
@@ -426,6 +456,11 @@ Rotate (update) a secret.
 ### DELETE /secrets/:name
 Delete a secret.
 
+### POST /secrets/generate-key
+Generate a new random encryption key (32 bytes, hex-encoded).
+
+**Response (200):** `{ "key": "string" }`
+
 ---
 
 ## Backup (Admin only)
@@ -440,6 +475,16 @@ Create a new backup.
 Restore from a backup.
 
 **Body:** `{ "filename": "string" }`
+
+---
+
+## Donations
+
+### POST /donations/create-checkout-session
+Create a Stripe checkout session for donations. Rate-limited to 5 requests per 60 seconds per IP. No authentication required.
+
+**Body:** `{ "amount": number, "currency"?: "string", "successUrl": "string", "cancelUrl": "string" }`
+**Response (200):** `{ "sessionId": "string", "url": "string" }`
 
 ---
 

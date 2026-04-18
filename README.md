@@ -16,7 +16,7 @@ Die Plattform ist kein KI-System selbst, sondern der **Steuerungsraum** für aut
 [![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)](CHANGELOG.md)
 [![Lizenz](https://img.shields.io/badge/Lizenz-MIT-green?style=flat-square)](LICENSE)
 [![Coverage](https://img.shields.io/badge/Coverage-87.8%25-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
-[![Tests](https://img.shields.io/badge/Tests-468%20bestanden-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
+[![Tests](https://img.shields.io/badge/Tests-614%20bestanden-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org/)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](docker-compose.yml)
@@ -102,10 +102,17 @@ Die Plattform ist kein KI-System selbst, sondern der **Steuerungsraum** für aut
 
 ### Agenten-Kategorien
 
+290 Agenten verteilt auf 16 Kategorien:
+
 ```
-Trading (30)     Security (30)    Development (30)    QA (30)
-Documentation    Deployment       Analyst     (30)    Support (20)
-Integration (20) Monitoring (30)
+Trading Agents (20)             Development Agents (20)
+Security Agents (20)            QA Agents (20)
+Documentation Agents (20)       Deployment Agents (20)
+Analyst Agents (20)             Support Agents (20)
+Integration Agents (20)         Monitoring Agents (20)
+AI-Native Agents (20)           Hybrid Agents (15)
+FinTech Agents (15)             Human-Centric Agents (15)
+Specialized Data Agents (15)    Meta Agents (10)
 ```
 
 ### Technologie-Stack
@@ -178,7 +185,7 @@ Nach dem Start ist standardmäßig kein Benutzer angelegt. Registrieren Sie sich
 ```
 ┌─────────────────────────────────────────────────────┐
 │                   React Frontend                     │
-│    19 Views · shadcn/ui · TailwindCSS · WebSocket   │
+│   15 Views · 21 .tsx-Dateien · TailwindCSS · WS     │
 └────────────────────┬────────────────────────────────┘
                      │ REST API + WebSocket
 ┌────────────────────▼────────────────────────────────┐
