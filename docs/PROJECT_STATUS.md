@@ -49,9 +49,9 @@ Release:       🔴 AUSSTEHEND — HÖCHSTE PRIORITÄT
 
 - **290 vorkonfigurierte Agenten** in 10 Kategorien
 - **19 Frontend-Views** (Dashboard, Agents, Kanban, Chat, Analytics, Kill-Switch, ...)
-- **13 Backend-API-Module** (50+ Endpunkte)
+- **15 Backend-API-Module** (89 Endpunkte)
 - **10 Backend-Services** (Encryption, WebSocket, LLM, Backup, MFA, ...)
-- **17 Datenbank-Tabellen** mit 23 Performance-Indizes
+- **17 Datenbank-Tabellen** mit 20 Performance-Indizes
 - **Multi-LLM-Support** (Anthropic, OpenAI, Ollama, Custom)
 - **JWT + TOTP-MFA** Authentifizierung
 - **AES-256-GCM** Secrets-Vault
@@ -196,13 +196,13 @@ Vollständige ADR-Dokumentation: `docs/ARCHITECTURE.md`
 | Codezeilen | ~16.866 |
 | Backend TypeScript-Dateien | ~70 |
 | Frontend TSX-Dateien | ~50 |
-| Test-Dateien | 37 |
+| Test-Dateien | 48 |
 | Tests gesamt | 475+ |
 | Backend Test Coverage | 87.8% |
 | Frontend Test Coverage | ~70% |
-| API-Endpunkte | 50+ |
+| API-Endpunkte | 89 |
 | Datenbank-Tabellen | 17 |
-| Datenbank-Indizes | 23 |
+| Datenbank-Indizes | 20 |
 | Frontend-Views | 19 |
 | Backend-Services | 10 |
 | Vorkonfigurierte Agenten | 290 |
