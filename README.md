@@ -211,6 +211,20 @@ Vollständige Architekturdokumentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE
 | [Changelog](CHANGELOG.md) | Versionshistorie |
 | [Release Notes v1.0.0](RELEASE_NOTES.md) | Highlights des Genesis Release |
 
+### Projekt- & Konzeptdokumente
+
+| Dokument | Beschreibung |
+|---|---|
+| [Onboarding](docs/ONBOARDING.md) | Einstieg für neue Contributor und KI-Agenten |
+| [Project Status](docs/PROJECT_STATUS.md) | Aktueller Projektstatus und Release-Roadmap |
+| [Agentic Workspace Konzept](docs/AGENTIC_WORKSPACE_KONZEPT.md) | Gesamtkonzept, Vision und System-Architektur |
+| [Master-Anleitung](docs/MASTER_ANLEITUNG.md) | 200-Personas-System: Struktur und Nutzung |
+| [Agent-Instruktionen](docs/AGENT_INSTRUKTIONEN.md) | Verhaltensrichtlinien je Agent-Kategorie |
+| [Technical Implementation Guide](docs/TECHNICAL_IMPLEMENTATION_GUIDE.md) | Tiefe technische Referenz (EN) |
+| [Implementierungs-Checkliste](docs/IMPLEMENTIERUNGS_CHECKLISTE.md) | Phasenübersicht der Umsetzung |
+| [Personas-Analyse](docs/PERSONAS_ANALYSE_UND_EMPFEHLUNGEN.md) | Analyse und Empfehlungen zum Personas-Framework |
+| [Pilotprojekt-Design](docs/PILOTPROJEKT_DESIGN.md) | 12-Wochen-Pilotdesign für sichere digitale Identitäten |
+
 ---
 
 ## Wissensbasis (Knowledge Base)
@@ -291,7 +305,7 @@ cd backend && npm run test:coverage
 Beiträge sind willkommen! Bitte zuerst die Richtlinien lesen:
 
 1. [CONTRIBUTING.md](CONTRIBUTING.md) — Git-Workflow, Code-Standards, Commit-Konventionen
-2. [ONBOARDING.md](ONBOARDING.md) — Einstieg für neue Contributor
+2. [docs/ONBOARDING.md](docs/ONBOARDING.md) — Einstieg für neue Contributor
 3. Issues und Feature Requests über [GitHub Issues](https://github.com/Valtheron/valtheron-agentic-workspace/issues) einreichen
 
 ```bash

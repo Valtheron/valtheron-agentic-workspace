@@ -167,16 +167,21 @@ docker-compose up --build
 ```
 valtheron-agentic-workspace/
 │
-├── ONBOARDING.md               ← DIESE DATEI — Startpunkt für neue Mitarbeiter
-├── PROJECT_STATUS.md           ← Aktueller Projektstatus + Release-Roadmap
-├── CONTRIBUTING.md             ← Git-Workflow, Branch-Naming, PR-Regeln
-│
 ├── README.md                   ← Projektübersicht (Konzept-Ebene)
+├── CONTRIBUTING.md             ← Git-Workflow, Branch-Naming, PR-Regeln
 ├── CHANGELOG.md                ← Vollständige Versionshistorie
 ├── RELEASE_NOTES.md            ← v1.0.0 Release Highlights
-├── TECHNICAL_IMPLEMENTATION_GUIDE.md  ← Technische Tiefen-Dokumentation
 │
-├── docs/                       ← Betriebsdokumentation
+├── docs/                       ← Gesamte Projektdokumentation
+│   ├── ONBOARDING.md           ← DIESE DATEI — Startpunkt für neue Mitarbeiter
+│   ├── PROJECT_STATUS.md       ← Aktueller Projektstatus + Release-Roadmap
+│   ├── AGENTIC_WORKSPACE_KONZEPT.md  ← Gesamtkonzept, Vision, Architektur
+│   ├── MASTER_ANLEITUNG.md     ← 200-Personas-System
+│   ├── AGENT_INSTRUKTIONEN.md  ← Verhaltensrichtlinien je Agent-Kategorie
+│   ├── PERSONAS_ANALYSE_UND_EMPFEHLUNGEN.md  ← Personas-Analyse
+│   ├── PILOTPROJEKT_DESIGN.md  ← 12-Wochen-Pilotdesign
+│   ├── IMPLEMENTIERUNGS_CHECKLISTE.md  ← Phasenübersicht der Umsetzung
+│   ├── TECHNICAL_IMPLEMENTATION_GUIDE.md  ← Technische Tiefen-Dokumentation (EN)
 │   ├── API.md                  ← Alle 50+ API-Endpunkte mit Beispielen
 │   ├── ARCHITECTURE.md         ← Systemarchitektur + Datenmodell + ADRs
 │   ├── DEVELOPER_GUIDE.md      ← Entwickler-Workflow + Code-Standards
@@ -395,10 +400,10 @@ Ausführliche Hilfe: `docs/TROUBLESHOOTING_GUIDE.md`
 | Deployment einrichten | `docs/DEPLOYMENT_GUIDE.md` |
 | Als Admin das System verwalten | `docs/ADMIN_GUIDE.md` |
 | Code beitragen / PR erstellen | `CONTRIBUTING.md` |
-| Aktueller Projektstatus + Prioritäten | `PROJECT_STATUS.md` |
-| Agent-Kategorien & Personas | `AGENT_INSTRUKTIONEN.md` |
-| Vollständige technische Details | `TECHNICAL_IMPLEMENTATION_GUIDE.md` |
-| Gesamtkonzept & Vision | `AGENTIC_WORKSPACE_KONZEPT.md` |
+| Aktueller Projektstatus + Prioritäten | `docs/PROJECT_STATUS.md` |
+| Agent-Kategorien & Personas | `docs/AGENT_INSTRUKTIONEN.md` |
+| Vollständige technische Details | `docs/TECHNICAL_IMPLEMENTATION_GUIDE.md` |
+| Gesamtkonzept & Vision | `docs/AGENTIC_WORKSPACE_KONZEPT.md` |
 
 ---
 
