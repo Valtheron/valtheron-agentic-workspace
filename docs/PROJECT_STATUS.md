@@ -1,8 +1,8 @@
 # Project Status — Valtheron Agentic Workspace
 
-**Stand:** 08.03.2026
+**Stand:** 18.04.2026
 **Version:** v1.0.0 Genesis Release
-**Aktueller Branch:** `claude/fix-ubuntu-startup-h7rJg`
+**Aktueller Branch:** `main`
 **Eigentümer:** BlackIceSecure & blackiceguard.io / Valtheron
 **Priorität:** ERSTES RELEASE SO BALD WIE MÖGLICH
 
@@ -13,7 +13,7 @@
 ```
 ████████████████████████████████████████████████████  100%
 Entwicklung:   ✅ ABGESCHLOSSEN (alle 5 Phasen)
-Tests:         ✅ BESTANDEN (475+ Tests, 87.8% Coverage)
+Tests:         ✅ BESTANDEN (614 Tests, 87.8% Coverage)
 Security:      ✅ GEPRÜFT (0 Critical Findings)
 Dokumentation: ✅ VOLLSTÄNDIG (8 Guides + Konzeptdocs)
 Deployment:    ✅ BEREIT (Docker, CI/CD aktiv)
@@ -47,11 +47,11 @@ Release:       🔴 AUSSTEHEND — HÖCHSTE PRIORITÄT
 
 ### Implementierte Features (vollständig)
 
-- **290 vorkonfigurierte Agenten** in 10 Kategorien
-- **19 Frontend-Views** (Dashboard, Agents, Kanban, Chat, Analytics, Kill-Switch, ...)
-- **13 Backend-API-Module** (50+ Endpunkte)
+- **290 vorkonfigurierte Agenten** in 16 Kategorien
+- **15 Frontend-Views** (ViewType-Routen) bzw. **21 Komponenten-Dateien** (inkl. LoginView, Sidebar, CommandPalette, SponsorModal, WelcomeView)
+- **15 Backend-API-Module** (89 Endpunkte)
 - **10 Backend-Services** (Encryption, WebSocket, LLM, Backup, MFA, ...)
-- **17 Datenbank-Tabellen** mit 23 Performance-Indizes
+- **17 Datenbank-Tabellen** mit 20 Performance-Indizes
 - **Multi-LLM-Support** (Anthropic, OpenAI, Ollama, Custom)
 - **JWT + TOTP-MFA** Authentifizierung
 - **AES-256-GCM** Secrets-Vault
@@ -196,14 +196,14 @@ Vollständige ADR-Dokumentation: `docs/ARCHITECTURE.md`
 | Codezeilen | ~16.866 |
 | Backend TypeScript-Dateien | ~70 |
 | Frontend TSX-Dateien | ~50 |
-| Test-Dateien | 37 |
-| Tests gesamt | 475+ |
+| Test-Dateien | 46 (30 Backend + 16 Frontend) |
+| Tests gesamt | 614 |
 | Backend Test Coverage | 87.8% |
 | Frontend Test Coverage | ~70% |
-| API-Endpunkte | 50+ |
+| API-Endpunkte | 89 |
 | Datenbank-Tabellen | 17 |
-| Datenbank-Indizes | 23 |
-| Frontend-Views | 19 |
+| Datenbank-Indizes | 20 |
+| Frontend-Views | 15 Routen / 21 .tsx-Dateien |
 | Backend-Services | 10 |
 | Vorkonfigurierte Agenten | 290 |
 | Offene kritische Bugs | 0 |

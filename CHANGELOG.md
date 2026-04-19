@@ -45,6 +45,23 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 - README um Abschnitt "Wissensbasis (Knowledge Base)" erweitert mit
   Sync-Befehl und Verzeichnis-Layout.
+- Projekt-Dokumente aus dem Repo-Root nach `docs/` verschoben
+  (9 Dateien inkl. `ONBOARDING.md`, `PROJECT_STATUS.md`,
+  `AGENTIC_WORKSPACE_KONZEPT.md`, `MASTER_ANLEITUNG.md`,
+  `TECHNICAL_IMPLEMENTATION_GUIDE.md`); Duplikat
+  `API_SPEZIFIKATION.md` entfernt (`docs/API.md` ist kanonisch).
+  Interne Verweise in `README.md`, `CONTRIBUTING.md` und
+  `docs/ONBOARDING.md` aktualisiert.
+- README, `docs/API.md`, `docs/ARCHITECTURE.md`,
+  `docs/DEVELOPER_GUIDE.md` und `docs/PROJECT_STATUS.md` gegen
+  den aktuellen Codebasis-Stand abgeglichen: Test-Badge 468 → 614,
+  Agent-Kategorien 10 → 16 mit realer Verteilung, View-Zählweisen
+  (15 Routen / 21 `.tsx`-Dateien), DB-Indizes 23 → 20,
+  API-Endpunkte 89. `docs/API.md` um 8 fehlende Endpunkte
+  ergänzt (u. a. `POST /tasks/:id/execute`,
+  `GET /security/audit/export`, Kill-Switch-Auto-Trigger-Rules,
+  `POST /notifications`, `POST /secrets/generate-key`, neue
+  Donations-Sektion mit `POST /donations/create-checkout-session`).
 
 ### Behoben
 

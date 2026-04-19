@@ -59,7 +59,7 @@ Valtheron Agentic Workspace ist eine Plattform zur Verwaltung, Orchestrierung un
 ┌─────────────────────────┼───────────────────────────────────┐
 │                    DATENBANK                                  │
 │  SQLite (better-sqlite3) + WAL-Modus                         │
-│  17 Tabellen │ 23 Indexes │ Foreign Keys                     │
+│  17 Tabellen │ 20 Indexes │ Foreign Keys                     │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -147,7 +147,7 @@ workflow_definitions ──── workflow_steps
 
 ### 3.3 Indexes
 
-23 Performance-Indexes auf häufig abgefragten Spalten:
+20 Performance-Indexes auf häufig abgefragten Spalten:
 - `agents(status)`, `agents(category)`, `agents(name)`
 - `tasks(status)`, `tasks(priority)`, `tasks(assignedAgentId)`
 - `security_events(type)`, `security_events(severity)`, `security_events(createdAt)`
