@@ -43,6 +43,14 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Dokumentation
 
+- **Workspace-weite `.env.example`** im Repo-Root hinzugefügt: Expert-Level
+  Template für die Claude-Cloud-Session-Konfiguration und Docker-Compose-
+  Orchestrierung. Deckt Runtime (Node/TZ/Locale), Backend/Frontend,
+  SQLite-Pragmas inkl. generischer Pool-Parameter, API-Retry &
+  Circuit-Breaker-Policies, LLM-Provider-Tuning (Anthropic/OpenAI),
+  Cache, Observability (Logs/Metrics/OTel), Health-Endpunkte,
+  Security-Header, Session/JWT-Policy, Feature-Flags sowie Build-
+  Metadaten ab — strikt ohne Secrets/Credentials.
 - README um Abschnitt "Wissensbasis (Knowledge Base)" erweitert mit
   Sync-Befehl und Verzeichnis-Layout.
 - Projekt-Dokumente aus dem Repo-Root nach `docs/` verschoben
