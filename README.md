@@ -132,9 +132,16 @@ Specialized Data Agents (15)    Meta Agents (10)
 
 ### Voraussetzungen
 
-- [Node.js](https://nodejs.org/) 22+
-- [Docker](https://www.docker.com/) & Docker Compose (empfohlen)
+- [Node.js](https://nodejs.org/) 22+ (inkl. `npm`)
+- [Docker](https://www.docker.com/) Engine 20.10+ mit Compose-Plugin (`docker compose`) — nur für Option 1
+- `git`
 - Optional: Anthropic oder OpenAI API-Key für LLM-Chat
+
+> **Linux-Hinweis:** Docker-Befehle ohne `sudo` erfordern die Zugehörigkeit zur `docker`-Gruppe:
+> `sudo usermod -aG docker $USER && newgrp docker`. Ohne das scheitert `docker compose up` mit
+> `permission denied on /var/run/docker.sock`.
+
+Alle Befehle im folgenden Abschnitt werden **im Repo-Root** ausgeführt (das Verzeichnis, das `README.md` und `package.json` enthält).
 
 ### Option 1 — Docker Compose (empfohlen)
 
@@ -143,12 +150,13 @@ Specialized Data Agents (15)    Meta Agents (10)
 git clone https://github.com/Valtheron/valtheron-agentic-workspace.git
 cd valtheron-agentic-workspace
 
-# Umgebungsvariablen konfigurieren
+# Umgebungsvariablen konfigurieren (im Repo-Root ausführen)
 cp backend/.env.example backend/.env
-# .env anpassen: JWT_SECRET, ANTHROPIC_API_KEY, etc.
+# .env anpassen: JWT_SECRET (unbedingt austauschen, z. B. `openssl rand -hex 32`),
+# ANTHROPIC_API_KEY, etc.
 
 # Starten
-docker-compose up -d
+docker compose up -d --build
 
 # Dashboard öffnen
 open http://localhost:8080
@@ -161,13 +169,14 @@ open http://localhost:8080
 git clone https://github.com/Valtheron/valtheron-agentic-workspace.git
 cd valtheron-agentic-workspace
 
-# Abhängigkeiten installieren
+# Abhängigkeiten installieren (Backend + Frontend + Root-Tooling)
 npm run install:all
 
-# Umgebungsvariablen konfigurieren
+# Umgebungsvariablen konfigurieren (im Repo-Root ausführen)
 cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
 
-# Backend + Frontend parallel starten
+# Backend + Frontend parallel starten (läuft plattformübergreifend via `concurrently`)
 npm run dev
 
 # Backend:  http://localhost:3001
@@ -176,7 +185,20 @@ npm run dev
 
 ### Erster Login
 
-Nach dem Start ist standardmäßig kein Benutzer angelegt. Registrieren Sie sich unter `http://localhost:8080`. Der erste Benutzer erhält automatisch Admin-Rechte.
+Nach dem Start ist standardmäßig kein Benutzer angelegt. Der **erste Registrant wird automatisch Admin**; alle weiteren Nutzer erhalten die Rolle `operator` (frei anpassbar im Admin-Panel).
+
+- **Docker / Produktion:** `http://localhost:8080` öffnen → „Registrieren" → Admin-Account anlegen.
+- **Lokale Entwicklung:** `http://localhost:5173` öffnet das Dashboard standardmäßig **ohne Login** (Schnellstart-Komfort). Um den produktiven Auth-Flow lokal zu testen:
+
+  ```bash
+  # Backend: Auth erzwingen
+  echo 'VALTHERON_REQUIRE_AUTH=true' >> backend/.env
+  # Frontend: Login-Screen einblenden
+  echo 'VITE_VALTHERON_REQUIRE_AUTH=true' >> frontend/.env
+  npm run dev
+  ```
+
+  Dann erscheint auf `http://localhost:5173` derselbe Login-Screen wie in Produktion.
 
 ---
 

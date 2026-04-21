@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "npm run dev:backend & npm run dev:frontend",
+    "dev": "concurrently --kill-others-on-fail --names backend,frontend --prefix-colors cyan,magenta \"npm:dev:backend\" \"npm:dev:frontend\"",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
     "build": "cd frontend && npm run build",
-    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install && npm install",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -19,6 +19,7 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^9.1.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "prettier": "^3.8.1"

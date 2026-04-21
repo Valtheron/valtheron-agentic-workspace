@@ -3,7 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { optionalAuth, authMiddleware } from './middleware/auth.js';
 import { getDb } from './db/schema.js';
-import { seedDatabase } from './db/seed.js';
+import { seedDatabase, seedAgentCatalog } from './db/seed.js';
 import { getClientCount } from './services/websocket.js';
 
 // Routes
@@ -82,10 +82,12 @@ export function createApp() {
   app.use('/api/auth/mfa', mfaRoutes);
   app.use('/api/donations', rateLimiter(60, 5), donationsRoutes);
 
-  // Protected routes (require auth in production, optional in dev)
-  const protect = process.env.NODE_ENV === 'production' ? authMiddleware : optionalAuth;
-  // Admin-only guard — enforced in production; passthrough in dev
-  const adminGuard = process.env.NODE_ENV === 'production' ? adminOnly : optionalAuth;
+  // Protected routes: auth enforced in production, or whenever VALTHERON_REQUIRE_AUTH=true.
+  // Dev mode (default) leaves endpoints open for local experimentation.
+  const requireAuth = process.env.NODE_ENV === 'production' || process.env.VALTHERON_REQUIRE_AUTH === 'true';
+  const protect = requireAuth ? authMiddleware : optionalAuth;
+  // Admin-only guard — enforced whenever auth is required; passthrough otherwise
+  const adminGuard = requireAuth ? adminOnly : optionalAuth;
 
   app.use('/api/agents', protect, agentRoutes);
   app.use('/api/tasks', protect, taskRoutes);
@@ -115,8 +117,13 @@ export function createApp() {
 
 export function initDatabase() {
   getDb();
-  // Only seed demo data when explicitly requested (e.g. SEED_DEMO=true npm start)
+  // Full demo data (agents + users + tasks + workflows) only when explicitly requested
   if (process.env.SEED_DEMO === 'true') {
     seedDatabase();
+    return;
+  }
+  // Always ensure the 290-agent catalog is available on fresh installs (skip under test)
+  if (process.env.NODE_ENV !== 'test') {
+    seedAgentCatalog();
   }
 }
