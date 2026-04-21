@@ -65,6 +65,37 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Behoben
 
+- **Onboarding-Walkthrough 2026-04-20 — 10 Defekte (D-1 bis D-10) behoben:**
+  - **D-1 (blocker):** Agent-Katalog wird nun automatisch bei leerer DB geladen.
+    `seedAgentCatalog()` aus `seedDatabase()` extrahiert; `initDatabase()` ruft sie
+    außerhalb von Tests auf, sofern `SEED_DEMO` nicht gesetzt ist. Dadurch erhält
+    jede Neu-Installation die beworbenen 290 Agenten, und `POST /api/chat/sessions`
+    scheitert nicht mehr am `SQLITE_CONSTRAINT_FOREIGNKEY`.
+  - **D-2 (major):** Neuer ENV-Flag `VALTHERON_REQUIRE_AUTH`
+    (Backend, `backend/src/app.ts`) und `VITE_VALTHERON_REQUIRE_AUTH`
+    (Frontend, `frontend/src/App.tsx`) erzwingt den Produktions-Auth-Flow auch im
+    Dev-Modus. README um Dev-vs-Prod-Login-Abschnitt ergänzt.
+  - **D-3 (minor):** Vite `base` ist nur noch für `command === 'build'` auf
+    `/valtheron-agentic-workspace/` gesetzt; Dev-Server läuft wieder unter `/`
+    (`http://localhost:5173/` funktioniert ohne Redirect).
+  - **D-4 (minor):** README erwähnt jetzt `cp frontend/.env.example frontend/.env`.
+  - **D-5 (major):** Root-`package.json`: `dev`-Script nutzt `concurrently`
+    statt `&` → funktioniert plattformübergreifend (Linux/macOS/Windows),
+    propagiert Kill-Signale und bricht bei Absturz beider Prozesse ab.
+  - **D-6 (minor):** `docker-compose.yml` ohne obsoleten `version:`-Key;
+    README referenziert `docker compose` (v2-Syntax) statt `docker-compose`.
+  - **D-7 (major):** README-Voraussetzungen erwähnen den Docker-Gruppen-Workaround
+    (`sudo usermod -aG docker $USER`), damit Linux-Ersttnutzer nicht an
+    `permission denied on /var/run/docker.sock` scheitern.
+  - **D-8 (major):** `backend/src/middleware/auth.ts` prüft beim Boot, ob
+    `JWT_SECRET` noch auf dem Default-Wert steht. In `NODE_ENV=production` bricht
+    der Start mit klarer Fehlermeldung ab; im Dev-Modus erscheint eine Warnung.
+  - **D-9 (minor):** `npm audit fix` auf Root-, Backend- und Frontend-Paket
+    angewandt (Vite, path-to-regexp, picomatch, flatted, brace-expansion).
+    `npm audit` meldet jetzt 0 Vulnerabilities.
+  - **D-10 (minor):** README macht explizit, dass alle Setup-Befehle im Repo-Root
+    laufen; `.env`-Pfade mit `# (im Repo-Root ausführen)` annotiert.
+  - Befundbericht: `reports/onboarding-walkthrough-2026-04-20.md`.
 - `App.tsx`: versionierte Agent-Cache-Migration. Existierende
   localStorage-Einträge mit dem alten 200-Agenten-/10-Kategorien-Bundle
   werden beim nächsten Dashboard-Start durch den vollen 290-Agenten-

@@ -84,9 +84,7 @@ function loadAgentsWithMigration(): Agent[] {
   // (covers edge cases where a stale 200-agent payload was written back after
   // the version bump landed).
   const needsRegeneration =
-    cachedVersion !== AGENTS_CACHE_VERSION ||
-    !Array.isArray(cached) ||
-    cached.length < EXPECTED_AGENT_COUNT;
+    cachedVersion !== AGENTS_CACHE_VERSION || !Array.isArray(cached) || cached.length < EXPECTED_AGENT_COUNT;
 
   if (needsRegeneration) {
     const fresh = generateAgents();
@@ -461,8 +459,11 @@ function App() {
 
   const runningWorkflows = workflows.filter((w) => w.status === 'running').length;
 
-  // In production, require authentication before showing the app
-  if (authChecked && !authUser && import.meta.env.PROD) {
+  // Require authentication before showing the app when:
+  //  * running a production build, or
+  //  * VITE_VALTHERON_REQUIRE_AUTH=true (for testing prod-style login in dev)
+  const requireAuth = import.meta.env.PROD || import.meta.env.VITE_VALTHERON_REQUIRE_AUTH === 'true';
+  if (authChecked && !authUser && requireAuth) {
     return (
       <LoginView
         onLogin={(user, isNewUser) => {
@@ -606,11 +607,17 @@ function App() {
         <footer className="app-footer">
           <span>© 2025 BlackIceSecure</span>
           <span className="app-footer-sep">·</span>
-          <a href="https://blackice-secure.space" target="_blank" rel="noopener noreferrer">blackice-secure.space</a>
+          <a href="https://blackice-secure.space" target="_blank" rel="noopener noreferrer">
+            blackice-secure.space
+          </a>
           <span className="app-footer-sep">·</span>
-          <a href="https://blackice-secure.space/index.html#impressum" target="_blank" rel="noopener noreferrer">Impressum</a>
+          <a href="https://blackice-secure.space/index.html#impressum" target="_blank" rel="noopener noreferrer">
+            Impressum
+          </a>
           <span className="app-footer-sep">·</span>
-          <a href="https://blackice-secure.space/index.html#datenschutz" target="_blank" rel="noopener noreferrer">Datenschutz</a>
+          <a href="https://blackice-secure.space/index.html#datenschutz" target="_blank" rel="noopener noreferrer">
+            Datenschutz
+          </a>
           <span className="app-footer-sep">·</span>
           <a href="mailto:info@blackice-secure.space">info@blackice-secure.space</a>
         </footer>
@@ -623,7 +630,15 @@ function App() {
           onClose={() => setCmdPaletteOpen(false)}
         />
       )}
-      {sponsorOpen && <SponsorModal onClose={() => { setSponsorOpen(false); setDonationMessage(null); }} donationMessage={donationMessage} />}
+      {sponsorOpen && (
+        <SponsorModal
+          onClose={() => {
+            setSponsorOpen(false);
+            setDonationMessage(null);
+          }}
+          donationMessage={donationMessage}
+        />
+      )}
     </div>
   );
 }

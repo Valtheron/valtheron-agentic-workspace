@@ -372,40 +372,18 @@ function hashPassword(password: string): string {
   return crypto.createHash('sha256').update(password).digest('hex');
 }
 
-export function seedDatabase() {
+export function seedAgentCatalog() {
   const db = getDb();
 
-  // Check if already seeded
   const agentCount = db.prepare('SELECT COUNT(*) as count FROM agents').get() as { count: number };
   if (agentCount.count > 0) {
-    console.log(`Database already seeded with ${agentCount.count} agents.`);
-    return;
+    return { seeded: 0, skipped: agentCount.count };
   }
 
-  console.log('Seeding database...');
-
-  // Demo users only — in production (no SEED_DEMO) first registrant becomes admin (see auth.ts)
-  const adminId = uuid();
-  db.prepare('INSERT INTO users (id, username, passwordHash, role) VALUES (?, ?, ?, ?)').run(
-    adminId,
-    'demo_admin',
-    hashPassword('demo_only_not_for_production'),
-    'admin',
-  );
-  db.prepare('INSERT INTO users (id, username, passwordHash, role) VALUES (?, ?, ?, ?)').run(
-    uuid(),
-    'demo_operator',
-    hashPassword('demo_only_not_for_production'),
-    'operator',
-  );
-
-  // Create 290 agents (29 per category)
   const insertAgent = db.prepare(`
     INSERT INTO agents (id, name, role, category, status, successRate, tasksCompleted, failedTasks, avgTaskDuration, lastActivity, systemPrompt, personality, parameters, hooks, testResults, llmProvider, llmModel, riskProfile)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
-
-  const agents: { id: string; category: string }[] = [];
 
   const seedAgents = db.transaction(() => {
     for (const category of CATEGORIES) {
@@ -470,11 +448,47 @@ export function seedDatabase() {
           'claude-sonnet-4-5-20250929',
           riskProfile,
         );
-        agents.push({ id, category });
       }
     }
   });
   seedAgents();
+
+  const count = (db.prepare('SELECT COUNT(*) as count FROM agents').get() as { count: number }).count;
+  console.log(`Agent catalog loaded: ${count} agents across ${CATEGORIES.length} categories.`);
+  return { seeded: count, skipped: 0 };
+}
+
+export function seedDatabase() {
+  const db = getDb();
+
+  // Check if already seeded
+  const agentCount = db.prepare('SELECT COUNT(*) as count FROM agents').get() as { count: number };
+  if (agentCount.count > 0) {
+    console.log(`Database already seeded with ${agentCount.count} agents.`);
+    return;
+  }
+
+  console.log('Seeding database...');
+
+  // Demo users only — in production (no SEED_DEMO) first registrant becomes admin (see auth.ts)
+  const adminId = uuid();
+  db.prepare('INSERT INTO users (id, username, passwordHash, role) VALUES (?, ?, ?, ?)').run(
+    adminId,
+    'demo_admin',
+    hashPassword('demo_only_not_for_production'),
+    'admin',
+  );
+  db.prepare('INSERT INTO users (id, username, passwordHash, role) VALUES (?, ?, ?, ?)').run(
+    uuid(),
+    'demo_operator',
+    hashPassword('demo_only_not_for_production'),
+    'operator',
+  );
+
+  seedAgentCatalog();
+
+  // Load agents we just inserted so we can reference them in demo tasks
+  const agents = db.prepare('SELECT id, category FROM agents').all() as { id: string; category: string }[];
 
   // Create 80 tasks
   const TASK_TYPES = ['feature', 'bug', 'improvement', 'research', 'documentation', 'testing', 'deployment', 'review'];
