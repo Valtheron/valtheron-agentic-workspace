@@ -65,6 +65,15 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Behoben
 
+- **Hotfix für D-5 (`install:all`):** Die Kette
+  `cd backend && npm install && cd ../frontend && npm install && npm install`
+  hinterließ die Shell im `frontend/`-Verzeichnis, sodass der dritte
+  `npm install` nicht im Repo-Root lief. `concurrently` wurde deshalb nie
+  gezogen und `npm run dev` scheiterte auf frischen Maschinen mit
+  `sh: 1: concurrently: not found`. Script nutzt jetzt
+  `npm install --prefix backend && npm install --prefix frontend && npm install`,
+  wodurch jeder Aufruf ein absolutes Ziel hat und kein `cd`-State zwischen
+  Schritten leckt.
 - **Onboarding-Walkthrough 2026-04-20 — 10 Defekte (D-1 bis D-10) behoben:**
   - **D-1 (blocker):** Agent-Katalog wird nun automatisch bei leerer DB geladen.
     `seedAgentCatalog()` aus `seedDatabase()` extrahiert; `initDatabase()` ruft sie
