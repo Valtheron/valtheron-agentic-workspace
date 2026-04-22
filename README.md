@@ -304,9 +304,10 @@ frontend/src/data/kb/summaries.json  Alle Markdown-Summaries als JSON-Map
 Nach Änderungen in den kanonischen Quellverzeichnissen:
 
 ```bash
-npm run sync:agents   # the-290-agent-database/ → frontend + backend
-npm run sync:kb       # knowledge-base/ + valtheron-cybersec-database/ → frontend
-npm run sync:all      # beides in einem Schritt
+npm run sync:agents      # the-290-agent-database/ → frontend + backend
+npm run sync:kb          # knowledge-base/ + valtheron-cybersec-database/ → frontend
+npm run sync:capability  # the-290-agent-database/capability-model/ → frontend + backend
+npm run sync:all         # alle drei in einem Schritt
 ```
 
 Das KB-Sync-Skript führt zusätzlich einen Integrity-Check durch

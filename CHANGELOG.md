@@ -10,6 +10,23 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Hinzugefügt
 
+- **Agent Capability Model (Branch 2, Commit 1):** Kanonische Spezifikation
+  unter `the-290-agent-database/capability-model/`:
+  5 Layers × 6 Sub-Dimensions = 30 Metriken (Skala 0-9), 3 Modifier-Achsen
+  (Personality Influence, Performance History, Test Results), deterministische
+  Index-Variation `(i % 3 - 1) * 0.3` — keine `Math.sin`-Dekoration,
+  vollständig reproduzierbar. Strukturell extrahiert aus
+  `frontend/src/components/AgentsView.tsx:11-84` und `:307-336` (Quelle in
+  `provenance.md` dokumentiert). State-Invariante:
+  `State = {value: b ∈ ℬ, status: S, timestamp: t, pendingReason: r} mit b ≠ 1` —
+  keine Capability-Zelle beansprucht absolute Autorität. Sovereign Null:
+  Fehlende Inputs → SQL NULL, kein Ersatz-JSON. Neuer Sync-Befehl
+  `npm run sync:capability`; `sync:all` läuft jetzt Agents + KB + Capability.
+  `scripts/sync-capability-model.mjs` validiert 5 × 6 = 30, drei Modifier-Keys,
+  sowie Präsenz von `b ∈ ℬ` und `b ≠ 1` in der Invariante vor dem Schreiben;
+  Post-Write MD5-Identity-Check. Backend 399/399 grün, keine Schema-Änderung
+  in diesem Commit — folgende Commits: Schema-Migration + Seed + API +
+  AgentsView-Integration.
 - **Wissensbasis-Integration für 290 Agenten**: Jeder Agent erhält einen
   kategorie-basierten `knowledgeScope` mit bis zu 5 Dokument-Verweisen und
   einen um eine "## Wissensbasis"-Sektion angereicherten System-Prompt.
