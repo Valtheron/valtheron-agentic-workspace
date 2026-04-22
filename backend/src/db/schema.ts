@@ -249,6 +249,15 @@ function initSchema(db: Database.Database) {
       updatedAt TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS agent_forseti_profiles (
+      agentId TEXT PRIMARY KEY,
+      status TEXT NOT NULL DEFAULT 'pending',
+      profile TEXT,
+      pendingReason TEXT,
+      computedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (agentId) REFERENCES agents(id) ON DELETE CASCADE
+    );
+
     CREATE TABLE IF NOT EXISTS metrics_history (
       id TEXT PRIMARY KEY,
       timestamp TEXT NOT NULL DEFAULT (datetime('now')),
@@ -303,7 +312,6 @@ function initSchema(db: Database.Database) {
 
   // Ensure the single kill_switch row exists (must run after migration)
   db.exec(`INSERT OR IGNORE INTO kill_switch (id, aktiv) VALUES (1, 0)`);
-
 
   // Migration: add MFA columns to existing databases
   try {
