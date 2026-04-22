@@ -8,6 +8,9 @@
     "dev:frontend": "cd frontend && npm run dev",
     "build": "cd frontend && npm run build",
     "install:all": "npm install --prefix backend && npm install --prefix frontend && npm install",
+    "sync:agents": "node scripts/sync-agents.mjs",
+    "sync:kb": "node scripts/sync-kb-to-frontend.mjs",
+    "sync:all": "npm run sync:agents && npm run sync:kb",
     "prepare": "husky"
   },
   "lint-staged": {
