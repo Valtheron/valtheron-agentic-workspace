@@ -10,7 +10,8 @@
     "install:all": "npm install --prefix backend && npm install --prefix frontend && npm install",
     "sync:agents": "node scripts/sync-agents.mjs",
     "sync:kb": "node scripts/sync-kb-to-frontend.mjs",
-    "sync:all": "npm run sync:agents && npm run sync:kb",
+    "sync:forseti": "node scripts/sync-forseti.mjs",
+    "sync:all": "npm run sync:agents && npm run sync:kb && npm run sync:forseti",
     "prepare": "husky"
   },
   "lint-staged": {
