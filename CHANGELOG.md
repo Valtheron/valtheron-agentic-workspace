@@ -32,6 +32,20 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
   sichtbar leerer Zustand im UI statt fingierter Werte
   (Details in `the-290-agent-database/forseti/provenance.md`).
   8 neue Backend-Tests (`forsetiScoring.test.ts`) — 407/407 grün.
+- **Forseti State Wrapper mit `b ≠ 1`-Invariante (Branch 2, Inkrement 2b):**
+  Neue Typ-Ebene und Laufzeit-Guard für `agent_forseti_profiles`-Zeilen
+  gemäß autorisierter Spezifikation
+  `State = {value: b ∈ ℬ, status: S, timestamp: t, pendingReason: r}`
+  mit `b ≠ 1`. `ForsetiState.value` ist als Literal `false` typisiert —
+  der `true`-Zweig ist vom TypeScript-Compiler ausgeschlossen. Kein
+  Forseti-Datensatz, computed oder pending, beansprucht absolute
+  Autorität (value = 1). `wrapAsForsetiState()` + `assertForsetiState()`
+  in `backend/src/services/forsetiScoring.ts` setzen die Invariante an
+  API-Grenzen durch. Keine DB-Schema-Änderung — `profile = NULL` bleibt
+  NULL für pending Zeilen, der State-Wrapper wird beim Lesen
+  rekonstruiert. 8 neue Tests decken `value=true`- und `value=1`-Manipulation
+  sowie Computed↔Profile-, Pending↔Null- und Pending↔Reason-Konsistenz ab
+  (415/415 grün).
 - **Wissensbasis-Integration für 290 Agenten**: Jeder Agent erhält einen
   kategorie-basierten `knowledgeScope` mit bis zu 5 Dokument-Verweisen und
   einen um eine "## Wissensbasis"-Sektion angereicherten System-Prompt.
