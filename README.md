@@ -256,15 +256,39 @@ Vollständige Architekturdokumentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE
 
 ---
 
-## Wissensbasis (Knowledge Base)
+## Kanonische Quellen & Sync
 
-Das Repository enthält eine kuratierte Wissensbasis, die jedem der
-290 Agenten zur Expertise-Anreicherung zugeordnet wird.
+Das Repository folgt einem strikten **Canonical-Source-Prinzip**: Die
+Wahrheit liegt an der Wurzel, die Derivate in den Workspaces sind
+Build-Artefakte.
 
-**Quellverzeichnisse:**
+### 290-Agenten-Katalog
+
+**Kanonische Quellen** (einzige bearbeitbare JSONs):
 
 ```
-knowledge-base/                  Kuratierter Manus-Katalog (Manifest + 47 Summaries)
+the-290-agent-database/.../valtheron_system_prompts.json    IDs   1-200 (10 Basis-Kategorien)
+the-290-agent-database/.../valtheron_extended_agents.json   IDs 201-290 (6 Extensions-Kategorien)
+```
+
+**Derivate** (generiert, nicht direkt editieren):
+
+```
+frontend/src/data/valtheron_agents_1_200.json    byte-identische Kopie
+frontend/src/data/valtheron_agents_201_290.json  byte-identische Kopie
+backend/src/data/valtheron_agents_1_200.json     byte-identische Kopie (im Docker-Image gebündelt)
+backend/src/data/valtheron_agents_201_290.json   byte-identische Kopie
+```
+
+Das Backend liest die Kopien direkt beim Seed — keine zusätzlichen
+Volume-Mounts im Docker-Image nötig.
+
+### Wissensbasis (Knowledge Base)
+
+**Kanonische Quellen:**
+
+```
+knowledge-base/                  240 Dokumente / 14 Kategorien (index.yaml ist autoritativ)
 valtheron-cybersec-database/     216 reale PDFs (Offensive, Defensive, AppSec, …)
 ```
 
@@ -275,17 +299,23 @@ frontend/src/data/kb/manifest.json   Zusammengeführtes Manifest (456 Dokumente)
 frontend/src/data/kb/summaries.json  Alle Markdown-Summaries als JSON-Map
 ```
 
-**Manuelle Re-Synchronisation** nach Änderungen in den Quellverzeichnissen:
+### Manuelle Re-Synchronisation
+
+Nach Änderungen in den kanonischen Quellverzeichnissen:
 
 ```bash
-node scripts/sync-kb-to-frontend.mjs
+npm run sync:agents   # the-290-agent-database/ → frontend + backend
+npm run sync:kb       # knowledge-base/ + valtheron-cybersec-database/ → frontend
+npm run sync:all      # beides in einem Schritt
 ```
 
-Das Skript führt zusätzlich einen Integrity-Check durch (PDF-Magic-Bytes,
-Seitenanzahl, HTML-Erkennung) und markiert jedes Dokument mit einem
-`integrityStatus`. Kaputte Dateien werden aus den Agenten-Scopes
-ausgefiltert, Katalog-Platzhalter (Summary ohne Binärdatei) bleiben als
-Kontext verfügbar.
+Das KB-Sync-Skript führt zusätzlich einen Integrity-Check durch
+(PDF-Magic-Bytes, Seitenanzahl, HTML-Erkennung) und markiert jedes
+Dokument mit einem `integrityStatus`. Kaputte Dateien werden aus den
+Agenten-Scopes ausgefiltert, Katalog-Platzhalter (Summary ohne
+Binärdatei) bleiben als Kontext verfügbar. Das Agent-Sync-Skript
+validiert vor dem Schreiben Agent-Count, ID-Bereich und Pflichtfelder
+und verifiziert nachträglich die MD5-Identität aller Derivate.
 
 ---
 
