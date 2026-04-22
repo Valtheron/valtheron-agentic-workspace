@@ -36,6 +36,21 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Geändert
 
+- **Canonical-Agent-Source-Sync:** Backend-Seed (`backend/src/db/seed.ts`)
+  liest den 290-Agenten-Katalog jetzt aus den kanonischen JSONs unter
+  `the-290-agent-database/` — nicht mehr aus einer placeholder
+  `AGENT_NAMES`-Tabelle mit 290 zufälligen Namen in 10 Kategorien. Jeder
+  Agent behält seinen authored System-Prompt, die kategorie-Zuordnung
+  (alle 16 realen Kategorien) und die Beschreibung. Runtime-Attribute
+  (successRate, personality, parameters, hooks, testResults) werden
+  deterministisch aus der Agent-ID abgeleitet, damit Reseeds stabil
+  bleiben. Neuer Sync-Pfad:
+  `the-290-agent-database/ → frontend/src/data/ + backend/src/data/` via
+  `scripts/sync-agents.mjs` (Checksum-Verifikation, Byte-Identität
+  erzwungen). Root-`package.json` bekommt `sync:agents`, `sync:kb` und
+  `sync:all`. `backend/.gitignore` wurde von `data/` auf `/data/`
+  verengt, damit die Laufzeit-SQLite-DB ignoriert bleibt, während
+  `backend/src/data/` als Build-Artefakt getrackt wird.
 - `scripts/sync-kb-to-frontend.mjs` scannt jetzt zwei Quellverzeichnisse
   und schreibt ein zusammengeführtes Manifest mit `source`-Feld.
 - Frontend-Build zieht KB-Manifest (`frontend/src/data/kb/*.json`) zur
@@ -43,6 +58,10 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Dokumentation
 
+- `knowledge-base/README.md` an `index.yaml` angeglichen: 218 Dokumente
+  / 9 Kategorien → 240 Dokumente / 14 Kategorien (fehlende Sektionen
+  Meta, AI-Native, Fintech, Trading, Specialized Data ergänzt).
+  `index.yaml` wird als autoritative Quelle markiert.
 - README um Abschnitt "Wissensbasis (Knowledge Base)" erweitert mit
   Sync-Befehl und Verzeichnis-Layout.
 - Projekt-Dokumente aus dem Repo-Root nach `docs/` verschoben
