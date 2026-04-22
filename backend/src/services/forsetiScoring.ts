@@ -48,6 +48,68 @@ export interface ForsetiPending {
 
 export type ForsetiResult = ForsetiProfile | ForsetiPending;
 
+/**
+ * Formal state wrapper for an agent_forseti_profiles row.
+ *
+ *   State = { value: b ∈ ℬ, status: S, timestamp: t, pendingReason: r }
+ *   mit b ≠ 1
+ *
+ * `value` is boolean and constitutionally `false` (= 0). The value `true`
+ * (= 1) is excluded by type — no profile, computed or pending, claims
+ * absolute authority. The measurable 5 %-layer is always accompanied by
+ * the unmeasured 19-fold substrate; therefore b ≠ 1 holds across the
+ * union. Any future refactor must preserve this invariant: do not widen
+ * `value` to `boolean`, and do not remove the `assertForsetiState()`
+ * runtime check in the API layer.
+ */
+export interface ForsetiState {
+  value: false;
+  status: 'computed' | 'pending';
+  timestamp: string;
+  pendingReason: string | null;
+  profile: ForsetiProfile | null;
+}
+
+export function wrapAsForsetiState(result: ForsetiResult, computedAt: string): ForsetiState {
+  if (isForsetiPending(result)) {
+    return {
+      value: false,
+      status: 'pending',
+      timestamp: computedAt,
+      pendingReason: result.reason,
+      profile: null,
+    };
+  }
+  return {
+    value: false,
+    status: 'computed',
+    timestamp: computedAt,
+    pendingReason: null,
+    profile: result,
+  };
+}
+
+export function assertForsetiState(s: ForsetiState): void {
+  // Type-level guarantees (`value: false`) are stripped at runtime. This
+  // assertion is the last line of defence before the state crosses an
+  // API boundary.
+  if ((s.value as unknown) !== false) {
+    throw new Error('ForsetiState invariant violated: value must be false (b ≠ 1)');
+  }
+  if (s.status !== 'computed' && s.status !== 'pending') {
+    throw new Error(`ForsetiState invariant violated: status "${s.status}" not in {computed, pending}`);
+  }
+  if (s.status === 'computed' && s.profile === null) {
+    throw new Error('ForsetiState invariant violated: status=computed requires profile ≠ null');
+  }
+  if (s.status === 'pending' && s.profile !== null) {
+    throw new Error('ForsetiState invariant violated: status=pending requires profile === null');
+  }
+  if (s.status === 'pending' && !s.pendingReason) {
+    throw new Error('ForsetiState invariant violated: status=pending requires pendingReason');
+  }
+}
+
 interface ScoringInput {
   valtheronCategory: string;
   agentName: string;

@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { computeForsetiProfile, isForsetiPending, type ForsetiProfile } from '../services/forsetiScoring.js';
+import {
+  computeForsetiProfile,
+  isForsetiPending,
+  wrapAsForsetiState,
+  assertForsetiState,
+  type ForsetiProfile,
+  type ForsetiState,
+} from '../services/forsetiScoring.js';
 
 describe('Forseti Power Framework scoring', () => {
   describe('computeForsetiProfile — mapped categories', () => {
@@ -138,6 +145,126 @@ describe('Forseti Power Framework scoring', () => {
       expect(isForsetiPending(result)).toBe(true);
       if (!isForsetiPending(result)) throw new Error('type narrowing');
       expect(result.reason).toMatch(/Unknown Valtheron category/);
+    });
+  });
+
+  describe('ForsetiState wrapper — b ≠ 1 invariant', () => {
+    const now = '2026-04-22T09:00:00.000Z';
+
+    it('wraps a computed profile with value=false, status=computed, profile set', () => {
+      const result = computeForsetiProfile({
+        valtheronCategory: 'trading',
+        agentName: 'Market Data Harvester',
+        agentDescription: 'Sammelt Daten von Finanzmärkten.',
+        modelName: 'claude-sonnet-4-5-20250929',
+      });
+      const state: ForsetiState = wrapAsForsetiState(result, now);
+
+      expect(state.value).toBe(false);
+      expect(state.status).toBe('computed');
+      expect(state.timestamp).toBe(now);
+      expect(state.pendingReason).toBeNull();
+      expect(state.profile).not.toBeNull();
+    });
+
+    it('wraps a pending result with value=false, status=pending, profile=null', () => {
+      const result = computeForsetiProfile({
+        valtheronCategory: 'security',
+        agentName: 'Firewall Guard',
+        agentDescription: '',
+        modelName: 'claude-sonnet-4-5-20250929',
+      });
+      const state = wrapAsForsetiState(result, now);
+
+      expect(state.value).toBe(false);
+      expect(state.status).toBe('pending');
+      expect(state.profile).toBeNull();
+      expect(state.pendingReason).toMatch(/Sicherheits-Domäne/);
+    });
+
+    it('assertForsetiState passes for well-formed states', () => {
+      const computed = wrapAsForsetiState(
+        computeForsetiProfile({
+          valtheronCategory: 'development',
+          agentName: 'X',
+          agentDescription: '',
+          modelName: 'claude-sonnet-4-5-20250929',
+        }),
+        now,
+      );
+      const pending = wrapAsForsetiState(
+        computeForsetiProfile({
+          valtheronCategory: 'support',
+          agentName: 'X',
+          agentDescription: '',
+          modelName: '',
+        }),
+        now,
+      );
+
+      expect(() => assertForsetiState(computed)).not.toThrow();
+      expect(() => assertForsetiState(pending)).not.toThrow();
+    });
+
+    it('assertForsetiState rejects value=true (b ≠ 1 is the invariant)', () => {
+      const tampered = {
+        value: true as unknown as false,
+        status: 'computed' as const,
+        timestamp: now,
+        pendingReason: null,
+        profile: null,
+      };
+      expect(() => assertForsetiState(tampered as ForsetiState)).toThrow(/value must be false/);
+    });
+
+    it('assertForsetiState rejects value=1 (numeric truthy form of b = 1)', () => {
+      const tampered = {
+        value: 1 as unknown as false,
+        status: 'computed' as const,
+        timestamp: now,
+        pendingReason: null,
+        profile: null,
+      };
+      expect(() => assertForsetiState(tampered as ForsetiState)).toThrow(/value must be false/);
+    });
+
+    it('assertForsetiState rejects computed without profile', () => {
+      const broken = {
+        value: false as const,
+        status: 'computed' as const,
+        timestamp: now,
+        pendingReason: null,
+        profile: null,
+      };
+      expect(() => assertForsetiState(broken)).toThrow(/requires profile ≠ null/);
+    });
+
+    it('assertForsetiState rejects pending with a profile attached', () => {
+      const profile = computeForsetiProfile({
+        valtheronCategory: 'trading',
+        agentName: 'X',
+        agentDescription: '',
+        modelName: 'claude-sonnet-4-5-20250929',
+      }) as ForsetiProfile;
+      const broken = {
+        value: false as const,
+        status: 'pending' as const,
+        timestamp: now,
+        pendingReason: 'some reason',
+        profile,
+      };
+      expect(() => assertForsetiState(broken)).toThrow(/requires profile === null/);
+    });
+
+    it('assertForsetiState rejects pending without reason', () => {
+      const broken = {
+        value: false as const,
+        status: 'pending' as const,
+        timestamp: now,
+        pendingReason: null,
+        profile: null,
+      };
+      expect(() => assertForsetiState(broken)).toThrow(/requires pendingReason/);
     });
   });
 

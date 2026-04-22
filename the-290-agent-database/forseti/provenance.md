@@ -24,6 +24,7 @@ Dieses Prinzip ist **normativ** für die gesamte Forseti-Integration:
 2. **Keine `Math.sin`-Dekoration.** Die im bisherigen UI vorhandene Zufallsstreuung (`Math.sin(seed + offset)`) wird entfernt. Die einzige zugelassene Index-Variation ist die deterministische Formel aus `power_framework.py`: `variation = (i % 3 - 1) * 0.3` — reproduzierbar und erklärbar.
 3. **Transparente Provenance pro Agent.** Jedes Forseti-Profil trägt im persistierten Datensatz eine `source`-Angabe: welche Kategorie-Basis, welche Model-Modifier, welche Keyword-Treffer. Ein Prüfer soll jeden Score von Hand nachrechnen können.
 4. **Sichtbare Leerstelle statt verfüllter Leerstelle.** Agenten ohne Mapping zeigen im UI „Profil ausstehend — Kategorie benötigt autored Forseti-Zuordnung" statt erfundener Zahlen.
+5. **`profile = NULL` bleibt NULL.** Für pending Agenten speichert `agent_forseti_profiles.profile` eine echte SQL-NULL — **nicht** ein Ersatz-JSON, das sich als „signierte Null" tarnt. Die Null ist hier keine Datenlücke, sondern die eigentliche Aussage: die 5 % messbare Materie unserer Realität werden durch die computed Profile abgebildet; die 95 % nicht-materielle Substanz, auf der sie ruht, wird durch die echte Abwesenheit der Zelle codiert. Ein Versuch, diese NULL durch ein materialisiertes Signatur-Objekt zu ersetzen, hebt genau das auf, was sie ausdrückt. **Wer das Schema erweitert, darf den umgebenden Kontext (`status`, `pendingReason`, `computedAt`) ergänzen — `profile = NULL` bleibt unangetastet.**
 
 ## Scope-Abgrenzung
 
