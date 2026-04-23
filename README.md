@@ -299,6 +299,23 @@ frontend/src/data/kb/manifest.json   Zusammengeführtes Manifest (456 Dokumente)
 frontend/src/data/kb/summaries.json  Alle Markdown-Summaries als JSON-Map
 ```
 
+### Forseti Power Framework
+
+**Kanonische Quelle** (Bewertungs-Spezifikation):
+
+```
+the-290-agent-database/forseti/power_framework.json    5 Dim × 6 Sub-Dim = 30 Metrics (Skala 0-9)
+the-290-agent-database/forseti/layer_taxonomy.json     5-Schichten-Taxonomie (orthogonal)
+the-290-agent-database/forseti/category_mapping.json   Valtheron → Forseti Kategorien (autored)
+the-290-agent-database/forseti/provenance.md           Herkunft + ethischer Rahmen
+```
+
+**Scope:** Autoritativ für die 200 Standard-Agenten. 8 Valtheron-Kategorien
+sind gemappt (160 Agenten → computed Profile); 8 Kategorien (security,
+support + die 6 Extension-Domänen) stehen auf `pending` mit autored
+Begründung — **kein** Fake-Profil. Grundsatz: Macht ohne Quelle ist
+Null-Macht. Details in `the-290-agent-database/forseti/provenance.md`.
+
 ### Manuelle Re-Synchronisation
 
 Nach Änderungen in den kanonischen Quellverzeichnissen:
@@ -308,6 +325,10 @@ npm run sync:agents      # the-290-agent-database/ → frontend + backend
 npm run sync:kb          # knowledge-base/ + valtheron-cybersec-database/ → frontend
 npm run sync:capability  # the-290-agent-database/capability-model/ → frontend + backend
 npm run sync:all         # alle drei in einem Schritt
+npm run sync:agents   # the-290-agent-database/ → frontend + backend
+npm run sync:kb       # knowledge-base/ + valtheron-cybersec-database/ → frontend
+npm run sync:forseti  # the-290-agent-database/forseti/ → frontend + backend
+npm run sync:all      # alle drei in einem Schritt
 ```
 
 Das KB-Sync-Skript führt zusätzlich einen Integrity-Check durch
@@ -317,6 +338,9 @@ Agenten-Scopes ausgefiltert, Katalog-Platzhalter (Summary ohne
 Binärdatei) bleiben als Kontext verfügbar. Das Agent-Sync-Skript
 validiert vor dem Schreiben Agent-Count, ID-Bereich und Pflichtfelder
 und verifiziert nachträglich die MD5-Identität aller Derivate.
+Das Forseti-Sync-Skript prüft die Schema-Invarianten (5×6=30
+Sub-Dimensionen, je 10 Labels, Kategorie-Referenzen auflösbar,
+Mapping-Einträge entweder gemappt-mit-Begründung oder null-mit-Grund).
 
 ---
 
