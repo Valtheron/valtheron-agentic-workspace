@@ -321,6 +321,10 @@ Null-Macht. Details in `the-290-agent-database/forseti/provenance.md`.
 Nach Änderungen in den kanonischen Quellverzeichnissen:
 
 ```bash
+npm run sync:agents      # the-290-agent-database/ → frontend + backend
+npm run sync:kb          # knowledge-base/ + valtheron-cybersec-database/ → frontend
+npm run sync:capability  # the-290-agent-database/capability-model/ → frontend + backend
+npm run sync:all         # alle drei in einem Schritt
 npm run sync:agents   # the-290-agent-database/ → frontend + backend
 npm run sync:kb       # knowledge-base/ + valtheron-cybersec-database/ → frontend
 npm run sync:forseti  # the-290-agent-database/forseti/ → frontend + backend
