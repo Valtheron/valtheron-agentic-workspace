@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 import crypto from 'crypto';
 import agents1to200 from '../data/valtheron_agents_1_200.json' with { type: 'json' };
 import agents201to290 from '../data/valtheron_agents_201_290.json' with { type: 'json' };
+import { computeForsetiProfile, isForsetiPending } from '../services/forsetiScoring.js';
 
 // Loader for the canonical 290-agent catalog maintained under
 // the-290-agent-database/ at the repo root. The JSON files in src/data/ are
@@ -213,9 +214,52 @@ export function seedAgentCatalog() {
   });
   seedAgents();
 
+  // Forseti profiles: compute + persist per agent. Categories without an
+  // authored mapping produce a 'pending' row — no invented profile.
+  const insertForseti = db.prepare(`
+    INSERT OR REPLACE INTO agent_forseti_profiles (agentId, status, profile, pendingReason, computedAt)
+    VALUES (?, ?, ?, ?, datetime('now'))
+  `);
+  const persistedAgents = db.prepare('SELECT id, name, category FROM agents').all() as {
+    id: string;
+    name: string;
+    category: string;
+  }[];
+  const byName = new Map<string, RawAgent>();
+  for (const r of rawAgents) byName.set(r.name, r);
+
+  let forsetiMapped = 0;
+  let forsetiPending = 0;
+
+  const seedForseti = db.transaction(() => {
+    for (const persisted of persistedAgents) {
+      // Match persisted agent → canonical RawAgent by name (stable because
+      // names are unique within the 290-catalog).
+      const raw = byName.get(persisted.name);
+      const description = raw?.description ?? '';
+      const result = computeForsetiProfile({
+        valtheronCategory: persisted.category,
+        agentName: persisted.name,
+        agentDescription: description,
+        modelName: 'claude-sonnet-4-5-20250929',
+      });
+      if (isForsetiPending(result)) {
+        insertForseti.run(persisted.id, 'pending', null, result.reason);
+        forsetiPending++;
+      } else {
+        insertForseti.run(persisted.id, 'computed', JSON.stringify(result), null);
+        forsetiMapped++;
+      }
+    }
+  });
+  seedForseti();
+
   const count = (db.prepare('SELECT COUNT(*) as count FROM agents').get() as { count: number }).count;
   const categoryCount = new Set(rawAgents.map((a) => CATEGORY_MAP[a.category] ?? 'development')).size;
-  console.log(`Agent catalog loaded: ${count} agents across ${categoryCount} categories.`);
+  console.log(
+    `Agent catalog loaded: ${count} agents across ${categoryCount} categories. ` +
+      `Forseti: ${forsetiMapped} computed, ${forsetiPending} pending.`,
+  );
   return { seeded: count, skipped: 0 };
 }
 

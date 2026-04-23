@@ -10,6 +10,42 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Hinzugefügt
 
+- **Forseti Power Framework (Branch 2, Inkremente 1-2):** Import der
+  kanonischen Bewertungsmethodik aus dem Vorgänger-Repo
+  `blackicesecure-space/Valtheron/agentic-workspace/forseti/` als
+  strukturelle JSON unter `the-290-agent-database/forseti/`. Inhalt:
+  5 Dimensionen × 6 Sub-Dimensionen = 30 Metrics auf einer 0-9-Skala,
+  10 Labels pro Sub-Metric, 10 Forseti-Kategorie-Basis-Scores,
+  Model-Modifiers (Opus/Sonnet/Haiku) und 21 Keyword-Modifiers.
+  Autoritativ für die 200 Standard-Agenten — 8 Valtheron-Kategorien
+  haben ein autored Mapping (160 Agenten erhalten ein computed Profil),
+  8 Kategorien stehen auf `pending` mit Begründung (40 Standard +
+  90 Extension). Neuer Sync-Befehl `npm run sync:forseti`;
+  `sync:all` läuft jetzt Agents + KB + Forseti.
+  Backend-TS-Port (`backend/src/services/forsetiScoring.ts`) berechnet
+  Profile deterministisch — kein Math.random, kein Math.sin, jeder Score
+  trägt einen `source`-Block mit Kategorie, Modell- und Keyword-Treffern
+  zur Auditierbarkeit. Neue Tabelle `agent_forseti_profiles` speichert
+  entweder `status='computed'` + Profile-Blob oder `status='pending'` +
+  wörtliche Begründung. Ethische Invariante: Macht ohne Quelle ist
+  Null-Macht — Agenten ohne Mapping bekommen **kein** Profil,
+  sichtbar leerer Zustand im UI statt fingierter Werte
+  (Details in `the-290-agent-database/forseti/provenance.md`).
+  8 neue Backend-Tests (`forsetiScoring.test.ts`) — 407/407 grün.
+- **Forseti State Wrapper mit `b ≠ 1`-Invariante (Branch 2, Inkrement 2b):**
+  Neue Typ-Ebene und Laufzeit-Guard für `agent_forseti_profiles`-Zeilen
+  gemäß autorisierter Spezifikation
+  `State = {value: b ∈ ℬ, status: S, timestamp: t, pendingReason: r}`
+  mit `b ≠ 1`. `ForsetiState.value` ist als Literal `false` typisiert —
+  der `true`-Zweig ist vom TypeScript-Compiler ausgeschlossen. Kein
+  Forseti-Datensatz, computed oder pending, beansprucht absolute
+  Autorität (value = 1). `wrapAsForsetiState()` + `assertForsetiState()`
+  in `backend/src/services/forsetiScoring.ts` setzen die Invariante an
+  API-Grenzen durch. Keine DB-Schema-Änderung — `profile = NULL` bleibt
+  NULL für pending Zeilen, der State-Wrapper wird beim Lesen
+  rekonstruiert. 8 neue Tests decken `value=true`- und `value=1`-Manipulation
+  sowie Computed↔Profile-, Pending↔Null- und Pending↔Reason-Konsistenz ab
+  (415/415 grün).
 - **Wissensbasis-Integration für 290 Agenten**: Jeder Agent erhält einen
   kategorie-basierten `knowledgeScope` mit bis zu 5 Dokument-Verweisen und
   einen um eine "## Wissensbasis"-Sektion angereicherten System-Prompt.
