@@ -1,7 +1,124 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import AgentsView from '../components/AgentsView';
-import type { Agent } from '../types';
+import type { Agent, CapabilityState } from '../types';
+
+const LAYER_DEFS: Array<{
+  key: string;
+  name: string;
+  cssClass: string;
+  color: string;
+  subs: Array<{ key: string; label: string; desc: string }>;
+}> = [
+  {
+    key: 'information_access',
+    name: 'Information Access',
+    cssClass: 'info-access',
+    color: '#00e5ff',
+    subs: [
+      { key: 'scope', label: 'Scope', desc: 'Umfang' },
+      { key: 'restriction', label: 'Restriction', desc: 'Restriktion' },
+      { key: 'temporal', label: 'Temporal', desc: 'Zeit' },
+      { key: 'sources', label: 'Sources', desc: 'Quellen' },
+      { key: 'granularity', label: 'Granularity', desc: 'Granularität' },
+      { key: 'verification', label: 'Verification', desc: 'Verifikation' },
+    ],
+  },
+  {
+    key: 'resource_control',
+    name: 'Resource Control',
+    cssClass: 'resource',
+    color: '#10b981',
+    subs: [
+      { key: 'computational', label: 'Computational', desc: 'Rechen' },
+      { key: 'financial', label: 'Financial', desc: 'Finanzen' },
+      { key: 'infrastructure', label: 'Infrastructure', desc: 'Infrastruktur' },
+      { key: 'human', label: 'Human', desc: 'Mensch' },
+      { key: 'energy', label: 'Energy', desc: 'Energie' },
+      { key: 'time', label: 'Time', desc: 'Zeit' },
+    ],
+  },
+  {
+    key: 'network_position',
+    name: 'Network Position',
+    cssClass: 'network',
+    color: '#3b82f6',
+    subs: [
+      { key: 'trust', label: 'Trust', desc: 'Vertrauen' },
+      { key: 'dependencies', label: 'Dependencies', desc: 'Abhängigkeiten' },
+      { key: 'gatekeeping', label: 'Gatekeeping', desc: 'Gatekeeping' },
+      { key: 'influence', label: 'Influence', desc: 'Einfluss' },
+      { key: 'reputation', label: 'Reputation', desc: 'Reputation' },
+      { key: 'mobilization', label: 'Mobilization', desc: 'Mobilisierung' },
+    ],
+  },
+  {
+    key: 'authority_permission',
+    name: 'Authority & Permission',
+    cssClass: 'authority',
+    color: '#8b5cf6',
+    subs: [
+      { key: 'legal', label: 'Legal', desc: 'Recht' },
+      { key: 'jurisdictional', label: 'Jurisdictional', desc: 'Jurisdiktion' },
+      { key: 'hierarchical', label: 'Hierarchical', desc: 'Hierarchie' },
+      { key: 'financial', label: 'Financial', desc: 'Finanzen' },
+      { key: 'territorial', label: 'Territorial', desc: 'Territorium' },
+      { key: 'ethical', label: 'Ethical', desc: 'Ethik' },
+    ],
+  },
+  {
+    key: 'synthesis_application',
+    name: 'Synthesis & Application',
+    cssClass: 'synthesis',
+    color: '#14b8a6',
+    subs: [
+      { key: 'synthesis', label: 'Synthesis', desc: 'Synthese' },
+      { key: 'creativity', label: 'Creativity', desc: 'Kreativität' },
+      { key: 'planning', label: 'Planning', desc: 'Planung' },
+      { key: 'decision', label: 'Decision', desc: 'Entscheidung' },
+      { key: 'learning', label: 'Learning', desc: 'Lernen' },
+      { key: 'memory', label: 'Memory', desc: 'Gedächtnis' },
+    ],
+  },
+];
+
+function buildComputedState(): CapabilityState {
+  return {
+    value: false,
+    status: 'computed',
+    timestamp: '2026-04-22T12:00:00.000Z',
+    pendingReason: null,
+    profile: {
+      layers: LAYER_DEFS.map((l) => ({
+        key: l.key,
+        name: l.name,
+        cssClass: l.cssClass,
+        color: l.color,
+        score: 75,
+        sub_dimensions: l.subs.map((s) => ({ key: s.key, label: s.label, desc: s.desc, value: 6 })),
+      })),
+      modifiers: [
+        {
+          key: 'personality_influence',
+          name: 'Personality Influence',
+          archetype: 'analytiker',
+          communication_style: 'technical',
+          creativity_impact: 12,
+          depth_impact: 8,
+        },
+        {
+          key: 'performance_history',
+          name: 'Performance History',
+          success_rate: 97,
+          tasks_total: 206,
+          reliability_index: 92.2,
+        },
+        { key: 'test_results', name: 'Test Results', tests: [] },
+      ],
+      source: { inputs: { rate: 0.97, depth: 0.7, creativity: 0.8 }, model_version: '1.0.0' },
+    },
+  };
+}
 
 const createAgent = (overrides: Partial<Agent> = {}): Agent => ({
   id: 'a1',
@@ -31,6 +148,7 @@ const createAgent = (overrides: Partial<Agent> = {}): Agent => ({
     { id: 'tr1', category: 'DOM', name: 'Domain Test', passed: true, duration: 1.2, timestamp: '2024-01-01' },
     { id: 'tr2', category: 'EDGE', name: 'Edge Case', passed: false, duration: 2.5, timestamp: '2024-01-01' },
   ],
+  capabilities: buildComputedState(),
   ...overrides,
 });
 
@@ -153,5 +271,42 @@ describe('AgentsView', () => {
   it('renders with empty agents list', () => {
     render(<AgentsView agents={[]} selectedAgentId={null} onSelectAgent={onSelectAgent} />);
     expect(screen.getByPlaceholderText('Agent suchen...')).toBeInTheDocument();
+  });
+
+  it('renders capability values from the server-side state (no client generation)', () => {
+    const agent = createAgent({ id: 'aX' });
+    render(<AgentsView agents={[agent]} selectedAgentId="aX" onSelectAgent={onSelectAgent} />);
+    // Every sub-dim was seeded with value=6 in buildComputedState().
+    // We expect at least one "6/9" rendering to appear in the sub-dim cards.
+    const sixOfNine = screen.getAllByText('6/9');
+    expect(sixOfNine.length).toBeGreaterThan(0);
+  });
+
+  it('shows the sovereign-null placeholder when capabilities are pending', () => {
+    const pendingAgent = createAgent({
+      id: 'pend',
+      name: 'Pending Agent',
+      capabilities: {
+        value: false,
+        status: 'pending',
+        timestamp: '2026-04-22T12:00:00.000Z',
+        pendingReason: 'No capability row for this agent — run seedAgentCatalog',
+        profile: null,
+      },
+    });
+    render(<AgentsView agents={[pendingAgent]} selectedAgentId="pend" onSelectAgent={onSelectAgent} />);
+    expect(screen.getByTestId('capability-pending')).toBeInTheDocument();
+    expect(screen.getByText(/Profil ausstehend/)).toBeInTheDocument();
+    expect(screen.getByText(/run seedAgentCatalog/)).toBeInTheDocument();
+    // Critically: no fake values should be shown.
+    expect(screen.queryByText('Information Access')).not.toBeInTheDocument();
+  });
+
+  it('shows the placeholder when capabilities field is undefined (no client-side fallback)', () => {
+    const agentNoCaps = createAgent({ id: 'noc', name: 'No Caps' });
+    delete (agentNoCaps as { capabilities?: unknown }).capabilities;
+    render(<AgentsView agents={[agentNoCaps]} selectedAgentId="noc" onSelectAgent={onSelectAgent} />);
+    expect(screen.getByTestId('capability-pending')).toBeInTheDocument();
+    expect(screen.queryByText('Information Access')).not.toBeInTheDocument();
   });
 });
