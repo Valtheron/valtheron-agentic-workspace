@@ -46,6 +46,63 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
   rekonstruiert. 8 neue Tests decken `value=true`- und `value=1`-Manipulation
   sowie Computed↔Profile-, Pending↔Null- und Pending↔Reason-Konsistenz ab
   (415/415 grün).
+- **Agent Capability Model — Backend-Persistenz und Scoring (Branch 2,
+  Commit 3):** Neue Tabelle `agent_capabilities` (agentId PK, status,
+  profile JSON, pendingReason, computedAt, ON DELETE CASCADE) + neuer
+  Service `backend/src/services/capabilityScoring.ts`. Berechnet 5 Layers
+  × 6 Sub-Dim = 30 Metriken plus 3 Modifier deterministisch aus den
+  Inputs (creativity, analyticalDepth, successRate) — kein Math.random,
+  kein Math.sin, jede Zelle hat ein `source.inputs`-Feld zur
+  Auditierbarkeit. Formeln werden einmal beim Modul-Load aus der
+  kanonischen `model.json` kompiliert (whitelisted Regex). Seed schreibt
+  290/290 computed Profile bei jedem `seedAgentCatalog()`. Type-Level
+  `b ≠ 1`-Invariante: `value: false` als Literal-Type;
+  `assertCapabilityState` wirft bei Manipulation. 20 Backend-Tests
+  decken Shape, Determinismus, Modifier-Formeln, Clamping, State-Wrapper
+  und Formel-Sicherheit ab.
+- **Agent Capability Model — API-Exposure (Branch 2, Commit 4):**
+  `GET /api/agents/:id` liefert jetzt `capabilities` mit vollem
+  `CapabilityState` (5 Layers / 30 Sub-Dim / 3 Modifier). `GET /api/agents`
+  liefert eine `CapabilitySummary` ohne Profile-Blob — die `b ≠ 1`-Invariante
+  bleibt auf der Liste sichtbar (`value: false`), das schwere Profil ist
+  ausschließlich am Detail-Endpoint zu finden. Performance-Tests
+  (100 concurrent, 5 burst cycles) bleiben unter ihrem 5 s-Budget.
+  Manuell erstellte Agenten (`POST /api/agents`) starten in `pending`
+  mit autorisierter Begründung — kein automatisches Compute am Create-Pfad.
+  3 neue Integration-Tests; Backend-Suite 422/422 grün.
+- **Agent Capability Model — Frontend-Konsum (Branch 2, Commit 5):**
+  `frontend/src/types/index.ts` spiegelt das Backend mit `CapabilityState`,
+  `CapabilitySummary`, `CapabilityProfile`, `CapabilityLayer`,
+  `CapabilitySubDimension`, `CapabilityModifier` (Discriminated Union)
+  und einer `isCapabilityState` Type-Guard. `AgentsView.tsx`:
+  `generateDimensions()` mit Math.sin/Math.random **entfernt**; neue
+  `dimensionsFromCapabilities()` adaptiert das Server-Profil — keine
+  Wertumformung, kein Fallback. Pending-State zeigt eine
+  Sovereign-Null-Karte mit der wörtlichen `pendingReason` aus dem Backend
+  („Es werden hier nur authentische Werte gezeigt. Eine leere Anzeige ist
+  die korrekte Darstellung — keine Platzhalterzahlen."). 3 neue
+  Render-Tests; Frontend-Suite 218/218 grün, Production-Build clean.
+- **End-to-End-Smoke (Branch 2, Verifikation):** Frische DB →
+  `seedAgentCatalog` → `/api/health` zeigt 290 Agenten. Detail-Response
+  liefert `value: false`, `status: computed`, 5 Layers, 30 Sub-Dim,
+  Modifier-Trio. List-Response liefert Slim-Summary ohne `profile`-Blob.
+- **Agent Capability Model (Branch 2, Commit 1):** Kanonische Spezifikation
+  unter `the-290-agent-database/capability-model/`:
+  5 Layers × 6 Sub-Dimensions = 30 Metriken (Skala 0-9), 3 Modifier-Achsen
+  (Personality Influence, Performance History, Test Results), deterministische
+  Index-Variation `(i % 3 - 1) * 0.3` — keine `Math.sin`-Dekoration,
+  vollständig reproduzierbar. Strukturell extrahiert aus
+  `frontend/src/components/AgentsView.tsx:11-84` und `:307-336` (Quelle in
+  `provenance.md` dokumentiert). State-Invariante:
+  `State = {value: b ∈ ℬ, status: S, timestamp: t, pendingReason: r} mit b ≠ 1` —
+  keine Capability-Zelle beansprucht absolute Autorität. Sovereign Null:
+  Fehlende Inputs → SQL NULL, kein Ersatz-JSON. Neuer Sync-Befehl
+  `npm run sync:capability`; `sync:all` läuft jetzt Agents + KB + Capability.
+  `scripts/sync-capability-model.mjs` validiert 5 × 6 = 30, drei Modifier-Keys,
+  sowie Präsenz von `b ∈ ℬ` und `b ≠ 1` in der Invariante vor dem Schreiben;
+  Post-Write MD5-Identity-Check. Backend 399/399 grün, keine Schema-Änderung
+  in diesem Commit — folgende Commits: Schema-Migration + Seed + API +
+  AgentsView-Integration.
 - **Wissensbasis-Integration für 290 Agenten**: Jeder Agent erhält einen
   kategorie-basierten `knowledgeScope` mit bis zu 5 Dokument-Verweisen und
   einen um eine "## Wissensbasis"-Sektion angereicherten System-Prompt.
