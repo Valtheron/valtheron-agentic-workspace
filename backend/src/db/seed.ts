@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import agents1to200 from '../data/valtheron_agents_1_200.json' with { type: 'json' };
 import agents201to290 from '../data/valtheron_agents_201_290.json' with { type: 'json' };
 import { computeForsetiProfile, isForsetiPending } from '../services/forsetiScoring.js';
+import { computeCapabilityProfile } from '../services/capabilityScoring.js';
 
 // Loader for the canonical 290-agent catalog maintained under
 // the-290-agent-database/ at the repo root. The JSON files in src/data/ are
@@ -220,11 +221,9 @@ export function seedAgentCatalog() {
     INSERT OR REPLACE INTO agent_forseti_profiles (agentId, status, profile, pendingReason, computedAt)
     VALUES (?, ?, ?, ?, datetime('now'))
   `);
-  const persistedAgents = db.prepare('SELECT id, name, category FROM agents').all() as {
-    id: string;
-    name: string;
-    category: string;
-  }[];
+  const persistedForForseti = db
+    .prepare('SELECT id, name, category FROM agents')
+    .all() as { id: string; name: string; category: string }[];
   const byName = new Map<string, RawAgent>();
   for (const r of rawAgents) byName.set(r.name, r);
 
@@ -232,7 +231,7 @@ export function seedAgentCatalog() {
   let forsetiPending = 0;
 
   const seedForseti = db.transaction(() => {
-    for (const persisted of persistedAgents) {
+    for (const persisted of persistedForForseti) {
       // Match persisted agent → canonical RawAgent by name (stable because
       // names are unique within the 290-catalog).
       const raw = byName.get(persisted.name);
@@ -254,11 +253,68 @@ export function seedAgentCatalog() {
   });
   seedForseti();
 
+  // Capability profiles: compute deterministically from the persisted
+  // agent row's personality + performance inputs, using the canonical
+  // formulas in the-290-agent-database/capability-model/model.json.
+  // Every agent gets a computed profile — unlike the Forseti pathway,
+  // the generic capability model covers all 16 categories without
+  // authored category mapping.
+  const insertCapability = db.prepare(`
+    INSERT OR REPLACE INTO agent_capabilities (agentId, status, profile, pendingReason, computedAt)
+    VALUES (?, 'computed', ?, NULL, datetime('now'))
+  `);
+  const persistedForCap = db
+    .prepare('SELECT id, personality, successRate, tasksCompleted, failedTasks, testResults FROM agents')
+    .all() as Array<{
+    id: string;
+    personality: string;
+    successRate: number;
+    tasksCompleted: number;
+    failedTasks: number;
+    testResults: string;
+  }>;
+
+  let capComputed = 0;
+  const seedCapabilities = db.transaction(() => {
+    for (const row of persistedForCap) {
+      const personality = JSON.parse(row.personality) as {
+        creativity: number;
+        analyticalDepth: number;
+        archetype: string;
+        communicationStyle: string;
+      };
+      const testResults = JSON.parse(row.testResults) as Array<{
+        id: string;
+        category: string;
+        name: string;
+        passed: boolean;
+        duration: number;
+        timestamp: string;
+      }>;
+      const profile = computeCapabilityProfile({
+        personality: {
+          creativity: personality.creativity,
+          analyticalDepth: personality.analyticalDepth,
+          archetype: personality.archetype,
+          communicationStyle: personality.communicationStyle,
+        },
+        successRate: row.successRate,
+        tasksCompleted: row.tasksCompleted,
+        failedTasks: row.failedTasks,
+        testResults,
+      });
+      insertCapability.run(row.id, JSON.stringify(profile));
+      capComputed++;
+    }
+  });
+  seedCapabilities();
+
   const count = (db.prepare('SELECT COUNT(*) as count FROM agents').get() as { count: number }).count;
   const categoryCount = new Set(rawAgents.map((a) => CATEGORY_MAP[a.category] ?? 'development')).size;
   console.log(
     `Agent catalog loaded: ${count} agents across ${categoryCount} categories. ` +
-      `Forseti: ${forsetiMapped} computed, ${forsetiPending} pending.`,
+      `Forseti: ${forsetiMapped} computed, ${forsetiPending} pending. ` +
+      `Capabilities: ${capComputed} computed.`,
   );
   return { seeded: count, skipped: 0 };
 }

@@ -43,14 +43,12 @@ describe('Agents Endpoints', () => {
 
   describe('POST /api/agents', () => {
     it('creates a new agent', async () => {
-      const res = await request(app)
-        .post('/api/agents')
-        .send({
-          name: 'Test Agent',
-          role: 'Test Runner',
-          category: 'qa',
-          systemPrompt: 'You are a test agent.',
-        });
+      const res = await request(app).post('/api/agents').send({
+        name: 'Test Agent',
+        role: 'Test Runner',
+        category: 'qa',
+        systemPrompt: 'You are a test agent.',
+      });
 
       expect(res.status).toBe(201);
       expect(res.body.name).toBe('Test Agent');
@@ -61,9 +59,7 @@ describe('Agents Endpoints', () => {
     });
 
     it('rejects missing required fields', async () => {
-      const res = await request(app)
-        .post('/api/agents')
-        .send({ name: 'Incomplete Agent' });
+      const res = await request(app).post('/api/agents').send({ name: 'Incomplete Agent' });
 
       expect(res.status).toBe(400);
     });
@@ -97,9 +93,7 @@ describe('Agents Endpoints', () => {
     });
 
     it('returns 404 for nonexistent agent', async () => {
-      const res = await request(app)
-        .patch('/api/agents/nonexistent-id')
-        .send({ name: 'Ghost' });
+      const res = await request(app).patch('/api/agents/nonexistent-id').send({ name: 'Ghost' });
 
       expect(res.status).toBe(404);
     });
@@ -133,6 +127,72 @@ describe('Agents Endpoints', () => {
       const res = await request(app).delete(`/api/agents/${createdAgentId}`);
 
       expect(res.status).toBe(404);
+    });
+  });
+
+  describe('Capability state on agent responses', () => {
+    it('GET /api/agents/:id includes a computed capability state for seeded agents', async () => {
+      const list = await request(app).get('/api/agents?limit=1');
+      const seedAgent = list.body.agents.find((a: { name: string }) => a.name === 'Market Data Harvester');
+      const targetId = seedAgent ? seedAgent.id : list.body.agents[0].id;
+      const res = await request(app).get(`/api/agents/${targetId}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.capabilities).toBeDefined();
+      expect(res.body.capabilities.value).toBe(false);
+      expect(['computed', 'pending']).toContain(res.body.capabilities.status);
+      if (res.body.capabilities.status === 'computed') {
+        expect(res.body.capabilities.profile).not.toBeNull();
+        expect(res.body.capabilities.profile.layers).toHaveLength(5);
+        const subs = res.body.capabilities.profile.layers.flatMap(
+          (l: { sub_dimensions: unknown[] }) => l.sub_dimensions,
+        );
+        expect(subs).toHaveLength(30);
+        expect(res.body.capabilities.profile.modifiers).toHaveLength(3);
+        const modKeys = res.body.capabilities.profile.modifiers.map((m: { key: string }) => m.key);
+        expect(modKeys).toEqual(
+          expect.arrayContaining(['personality_influence', 'performance_history', 'test_results']),
+        );
+      } else {
+        expect(res.body.capabilities.profile).toBeNull();
+        expect(res.body.capabilities.pendingReason).toBeTruthy();
+      }
+    });
+
+    it('GET /api/agents lists every entry with a slim capability summary respecting b ≠ 1', async () => {
+      const res = await request(app).get('/api/agents?limit=10');
+      expect(res.status).toBe(200);
+      for (const agent of res.body.agents) {
+        expect(agent.capabilities).toBeDefined();
+        expect(agent.capabilities.value).toBe(false); // b ≠ 1 invariant on the wire
+        expect(['computed', 'pending']).toContain(agent.capabilities.status);
+        // List path returns slim summary — no profile blob, only status / timestamp / pendingReason.
+        expect(agent.capabilities).not.toHaveProperty('profile');
+        expect(agent.capabilities.timestamp).toBeTruthy();
+      }
+    });
+
+    it('manually-created agent (no seed) gets a pending capability state', async () => {
+      const create = await request(app)
+        .post('/api/agents')
+        .send({
+          name: 'Manual Pending Test Agent',
+          role: 'Manual Tester',
+          category: 'qa',
+          systemPrompt: 'manual',
+          personality: { creativity: 50, analyticalDepth: 60 },
+        });
+      expect(create.status).toBe(201);
+      const id = create.body.id;
+      // The POST handler does not run capability scoring yet — we expect
+      // pending state with the documented reason.
+      expect(create.body.capabilities.value).toBe(false);
+      expect(create.body.capabilities.status).toBe('pending');
+      expect(create.body.capabilities.profile).toBeNull();
+      expect(create.body.capabilities.pendingReason).toMatch(/No capability row|profile not yet computed/);
+
+      // Cleanup
+      await request(app).delete(`/api/agents/${id}`);
     });
   });
 });
