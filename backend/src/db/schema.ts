@@ -258,6 +258,15 @@ function initSchema(db: Database.Database) {
       FOREIGN KEY (agentId) REFERENCES agents(id) ON DELETE CASCADE
     );
 
+    CREATE TABLE IF NOT EXISTS agent_capabilities (
+      agentId TEXT PRIMARY KEY,
+      status TEXT NOT NULL DEFAULT 'computed',
+      profile TEXT,
+      pendingReason TEXT,
+      computedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (agentId) REFERENCES agents(id) ON DELETE CASCADE
+    );
+
     CREATE TABLE IF NOT EXISTS metrics_history (
       id TEXT PRIMARY KEY,
       timestamp TEXT NOT NULL DEFAULT (datetime('now')),
