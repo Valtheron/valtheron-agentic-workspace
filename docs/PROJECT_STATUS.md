@@ -86,7 +86,7 @@ Das System ist technisch bereit. Es gibt **keine technischen Blocker** für den 
   ```bash
   docker-compose pull
   docker-compose up -d --build
-  # Oder PM2 für Bare-Metal (siehe docs/DEPLOYMENT_GUIDE.md)
+  # Oder PM2 für Bare-Metal (siehe docs/guides/DEPLOYMENT_GUIDE.md)
   ```
 
 - [ ] **Post-Release-Monitoring einrichten**
@@ -185,7 +185,7 @@ Warum wurde was so entschieden — für neue Mitarbeiter:
 | JWT statt Sessions | Zustandslos, skalierbar, kein Server-Side-Session-Store nötig |
 | TOTP statt SMS-MFA | Kein externer SMS-Provider, offline-fähig, sicherer |
 
-Vollständige ADR-Dokumentation: `docs/ARCHITECTURE.md`
+Vollständige ADR-Dokumentation: `docs/reference/ARCHITECTURE.md`
 
 ---
 

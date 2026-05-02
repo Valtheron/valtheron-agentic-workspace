@@ -181,6 +181,17 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Dokumentation
 
+- **Doku-Reorganisation:** `docs/`-Verzeichnis in `guides/` (ONBOARDING,
+  USER, ADMIN, DEVELOPER, DEPLOYMENT, TROUBLESHOOTING, BETA_TESTING),
+  `reference/` (API, ARCHITECTURE) und `archive/` (7 Konzeptdokumente
+  aus der Januar-2026-Phase) gegliedert. Neuer Markdown-Index
+  `docs/README.md` und Archiv-Hinweis `docs/archive/README.md`.
+  `docs/index.html` (GitHub-Pages-Landing) bleibt unangetastet, Links
+  darin auf neue `guides/`-Pfade aktualisiert. Drei neue Kapitel
+  „Vision & Geschäftsziele", „Anforderungen (FR/NFR)", „Personas &
+  Agent-Modell" aus den Konzeptdokumenten in `reference/ARCHITECTURE.md`
+  übernommen. Cross-References in `README.md`, `CONTRIBUTING.md` und
+  `RELEASE_NOTES.md` auf neue Pfade gezogen.
 - `knowledge-base/README.md` an `index.yaml` angeglichen: 218 Dokumente
   / 9 Kategorien → 240 Dokumente / 14 Kategorien (fehlende Sektionen
   Meta, AI-Native, Fintech, Trading, Specialized Data ergänzt).

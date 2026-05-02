@@ -323,7 +323,7 @@ app.use('/api/secrets', requireAuth, requireRole('admin'), secretsRouter);
 
 ### 6.3 Vollständige API-Referenz
 
-Siehe `docs/API.md` für alle 89 Endpunkte mit Request/Response-Formaten.
+Siehe `docs/reference/API.md` für alle 89 Endpunkte mit Request/Response-Formaten.
 
 ---
 
