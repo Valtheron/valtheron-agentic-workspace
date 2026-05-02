@@ -267,7 +267,7 @@ bash scripts/security-audit.sh
 
 **Neue Umgebungsvariablen:**
 1. In `backend/.env.example` und `frontend/.env.example` dokumentieren
-2. In `docs/DEPLOYMENT_GUIDE.md` erklären
+2. In `docs/guides/DEPLOYMENT_GUIDE.md` erklären
 3. Nie echte Werte committen (`.gitignore` prüfen)
 
 ---
@@ -278,10 +278,10 @@ Wenn du folgendes änderst, aktualisiere auch die entsprechende Doku:
 
 | Änderung | Dokument updaten |
 |----------|-----------------|
-| Neuer API-Endpunkt | `docs/API.md` |
-| Neue Konfiguration | `docs/DEPLOYMENT_GUIDE.md` + `docs/ONBOARDING.md` |
-| Neue DB-Tabelle/Spalte | `docs/ARCHITECTURE.md` |
-| Neue UI-Funktionalität | `docs/USER_GUIDE.md` |
+| Neuer API-Endpunkt | `docs/reference/API.md` |
+| Neue Konfiguration | `docs/guides/DEPLOYMENT_GUIDE.md` + `docs/guides/ONBOARDING.md` |
+| Neue DB-Tabelle/Spalte | `docs/reference/ARCHITECTURE.md` |
+| Neue UI-Funktionalität | `docs/guides/USER_GUIDE.md` |
 | Breaking Changes | `CHANGELOG.md` + `RELEASE_NOTES.md` |
 
 ---

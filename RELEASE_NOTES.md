@@ -112,9 +112,9 @@ cd frontend && npm install && npm run build && npm run preview
 ```
 
 Für detaillierte Anleitungen siehe:
-- `docs/DEPLOYMENT_GUIDE.md`
-- `docs/ADMIN_GUIDE.md`
-- `docs/USER_GUIDE.md`
+- `docs/guides/DEPLOYMENT_GUIDE.md`
+- `docs/guides/ADMIN_GUIDE.md`
+- `docs/guides/USER_GUIDE.md`
 
 ---
 
