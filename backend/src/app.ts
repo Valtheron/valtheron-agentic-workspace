@@ -22,6 +22,7 @@ import mfaRoutes from './routes/mfa.js';
 import secretsRoutes from './routes/secrets.js';
 import backupRoutes from './routes/backup.js';
 import donationsRoutes from './routes/donations.js';
+import interactionRoutes from './routes/interactions.js';
 import { auditLogger } from './middleware/auditLogger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { adminOnly } from './middleware/rbac.js';
@@ -100,6 +101,7 @@ export function createApp() {
   app.use('/api/collaboration', protect, fileRoutes);
   app.use('/api/project-tree', protect, projectTreeRoutes);
   app.use('/api/notifications', protect, notificationRoutes);
+  app.use('/api/interactions', protect, interactionRoutes);
   // Admin-only: secrets management and backup/restore
   app.use('/api/secrets', protect, adminGuard, secretsRoutes);
   app.use('/api/backup', protect, adminGuard, backupRoutes);
