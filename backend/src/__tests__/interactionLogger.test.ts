@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import fs from 'node:fs';
 import { getDb, closeDb } from '../db/schema.js';
 import {
   startInteraction,
@@ -21,12 +22,12 @@ beforeAll(() => {
   process.env.VALTHERON_DB_PATH = TEST_DB;
   closeDb();
   // Force a clean DB for this test file.
-  try {
-    require('fs').unlinkSync(TEST_DB);
-    require('fs').unlinkSync(TEST_DB + '-wal');
-    require('fs').unlinkSync(TEST_DB + '-shm');
-  } catch {
-    /* ok */
+  for (const suffix of ['', '-wal', '-shm']) {
+    try {
+      fs.unlinkSync(TEST_DB + suffix);
+    } catch {
+      /* ok */
+    }
   }
   const db = getDb();
   agentId = uuid();
