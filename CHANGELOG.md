@@ -10,6 +10,36 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Hinzugefügt
 
+- **Evolution Foundation — Interaction Capture Layer (Branch 3, Phase 1):**
+  Phase-1-Implementierung des Evolutionären Agenten-Systems gemäß
+  `the-290-agent-database/.../evolutionary_agent_system.md` §74-101.
+  Zwei neue Tabellen:
+  `agent_versions` (id PK, agentId FK, version, systemPromptHash,
+  parametersHash, deployedAt, retiredAt, evolutionTrigger, notes) und
+  `agent_interactions` (id PK, agentId, agentVersionId, taskId, userId,
+  requestPrompt, requestParams, requestContext, responseContent,
+  responseReasoning, startedAt, finishedAt, durationMs, input/output/totalTokens,
+  costUsd, outcome, errorClass, errorMessage, feedbackScore, feedbackText,
+  feedbackAt, createdAt) plus 6 Indizes für die typischen Phase-2-Queries.
+  Neuer Service `backend/src/services/interactionLogger.ts`:
+  `startInteraction()` legt eine pending-Zeile an und ankert sie an die
+  aktuelle Agenten-Version (`ensureCurrentVersion()` legt automatisch
+  v1.0.0 an oder bumpt einen Patch, wenn `systemPrompt`/`parameters` sich
+  geändert haben — Bumps tragen `evolutionTrigger`).
+  `finishInteraction()` ist idempotent (zweiter Aufruf wird ignoriert).
+  `recordFeedback()`, `listInteractions()`, `countInteractions()`,
+  `aggregateInteractions()` (Success-Rate, Token-Mittel, Kosten,
+  Feedback-Counts) und `getInteractionById()` runden die API ab.
+  `executionEngine.ts` hängt sich vor und nach jedem `callLLM()`-Run
+  ein — Logging-Fehler werden geschluckt, blockieren niemals die
+  Task-Ausführung. Neue REST-Routen unter `/api/interactions`:
+  `GET /` (mit agentId/taskId/outcome/since/until/limit/offset Filter),
+  `GET /:id`, `POST /:id/feedback`, `GET /agent/:agentId/aggregates`.
+  10 neue Backend-Tests (`interactionLogger.test.ts`) decken Start/Finish-
+  Lifecycle, Idempotenz, Feedback, Filter, Pagination, Aggregates und die
+  Versions-Registry (Bump bei Prompt-Drift). Backend-Suite 448/448 grün,
+  E2E-Smoke gegen frische DB liefert korrekte Aggregates.
+
 - **Forseti Power Framework (Branch 2, Inkremente 1-2):** Import der
   kanonischen Bewertungsmethodik aus dem Vorgänger-Repo
   `blackicesecure-space/Valtheron/agentic-workspace/forseti/` als

@@ -2,6 +2,7 @@ import { getDb } from '../db/schema.js';
 import { broadcast } from './websocket.js';
 import { callLLM } from './llmClient.js';
 import { v4 as uuid } from 'uuid';
+import { startInteraction, finishInteraction } from './interactionLogger.js';
 
 export interface ExecutionRequest {
   taskId: string;
@@ -97,11 +98,38 @@ export async function executeTask(req: ExecutionRequest): Promise<ExecutionResul
 
   const startTime = Date.now();
 
-  try {
-    // Build the prompt
-    const systemPrompt = buildExecutionPrompt(agent ?? null, agentPersonality, task);
-    const userMessage = buildTaskMessage(task);
+  // Build the prompt up front so we can log it whether the LLM call
+  // succeeds or fails.
+  const systemPrompt = buildExecutionPrompt(agent ?? null, agentPersonality, task);
+  const userMessage = buildTaskMessage(task);
 
+  // Phase 1 of evolutionary_agent_system.md: capture the interaction.
+  // Only seeded agents have a row to anchor to; for ad-hoc executions
+  // without a persisted agent, skip logging (the audit_log still records
+  // the action).
+  let interactionId: string | null = null;
+  if (agentId) {
+    try {
+      const started = startInteraction({
+        agentId,
+        taskId,
+        requestPrompt: userMessage,
+        requestParams: {
+          provider,
+          model,
+          temperature: (agentParams.temperature as number) ?? null,
+          maxTokens: (agentParams.maxTokens as number) ?? null,
+        },
+        requestContext: systemPrompt,
+      });
+      interactionId = started.interactionId;
+    } catch (loggerErr) {
+      // Logging must never block execution.
+      console.warn('[interactionLogger] startInteraction failed:', loggerErr);
+    }
+  }
+
+  try {
     // Progress: 20% — sending to LLM
     db.prepare('UPDATE tasks SET progress = 20 WHERE id = ?').run(taskId);
     broadcastTaskState(taskId, { progress: 20 });
@@ -118,6 +146,17 @@ export async function executeTask(req: ExecutionRequest): Promise<ExecutionResul
     });
 
     const durationMs = Date.now() - startTime;
+
+    if (interactionId) {
+      try {
+        finishInteraction(interactionId, {
+          outcome: 'success',
+          responseContent: output,
+        });
+      } catch (loggerErr) {
+        console.warn('[interactionLogger] finishInteraction(success) failed:', loggerErr);
+      }
+    }
 
     // Mark completed
     const completedAt = new Date().toISOString();
@@ -177,6 +216,18 @@ export async function executeTask(req: ExecutionRequest): Promise<ExecutionResul
     db.prepare(
       'INSERT INTO audit_log (id, agentId, action, details, timestamp, riskLevel) VALUES (?, ?, ?, ?, ?, ?)',
     ).run(uuid(), agentId || 'system', 'task_failed', `Task "${task.title}" failed: ${errorMsg}`, failedAt, 'warning');
+
+    if (interactionId) {
+      try {
+        finishInteraction(interactionId, {
+          outcome: 'failure',
+          errorClass: err instanceof Error ? err.name : 'Error',
+          errorMessage: errorMsg,
+        });
+      } catch (loggerErr) {
+        console.warn('[interactionLogger] finishInteraction(failure) failed:', loggerErr);
+      }
+    }
 
     runningTasks.delete(taskId);
     return { success: false, taskId, agentId, output: '', durationMs, error: errorMsg };
