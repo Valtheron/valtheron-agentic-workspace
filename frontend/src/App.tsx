@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 import type {
   ViewType,
@@ -16,20 +16,20 @@ import type {
   Workflow,
   Project,
 } from './types';
-import {
-  generateAgents,
-  generateTasks,
-  generateCertifications,
-  generateSecurityEvents,
-  generateKillSwitch,
-  generateAuditLog,
-  generateProjektBaum,
-  defaultSecurityConfig,
-  generateAnalytics,
-} from './services/mockData';
+import { defaultSecurityConfig } from './services/defaults';
 import { defaultLLMConfig } from './services/llmProviders';
 import { save, load, KEYS } from './services/persistence';
-import { agentsAPI, tasksAPI, workflowsAPI, securityAPI, healthAPI, wsClient, authAPI, getToken } from './services/api';
+import {
+  agentsAPI,
+  tasksAPI,
+  workflowsAPI,
+  securityAPI,
+  analyticsAPI,
+  healthAPI,
+  wsClient,
+  authAPI,
+  getToken,
+} from './services/api';
 import Sidebar from './components/Sidebar';
 import LoginView from './components/LoginView';
 import WelcomeView from './components/WelcomeView';
@@ -69,33 +69,12 @@ const viewTitles: Record<ViewType, string> = {
   audit: 'Audit-Trail',
 };
 
-// Bump when the agent catalog schema changes so stale localStorage caches
-// (e.g. pre-v2 bundles with only 200 agents in 10 categories) are invalidated
-// and the full 290/16 catalog is regenerated on first load.
-const AGENTS_CACHE_VERSION = 2;
-const EXPECTED_AGENT_COUNT = 290;
+import { defaultKillSwitch, defaultProjektBaum, defaultAnalytics } from './services/defaults';
 
-function loadAgentsWithMigration(): Agent[] {
-  const cachedVersion = load<number>('agents_version', 0);
-  const cached = load<Agent[] | null>('agents', null);
-
-  // Trigger a regeneration whenever the schema version is outdated, the cache
-  // is missing, or the cached array is shorter than the expected catalog
-  // (covers edge cases where a stale 200-agent payload was written back after
-  // the version bump landed).
-  const needsRegeneration =
-    cachedVersion !== AGENTS_CACHE_VERSION || !Array.isArray(cached) || cached.length < EXPECTED_AGENT_COUNT;
-
-  if (needsRegeneration) {
-    const fresh = generateAgents();
-    save('agents', fresh);
-    save('agents_version', AGENTS_CACHE_VERSION);
-    return fresh;
-  }
-  return cached as Agent[];
-}
-
-// Simulated output messages for running agents
+// Local frontend simulation of workflow step output. The real engine lives in
+// backend/src/services/workflowEngine.ts; this fallback is used only when
+// workflows are run client-side for prototyping. Move workflow execution to
+// the backend to retire this list (tracked separately).
 const simulatedOutputs = [
   'Analysiere Eingabedaten...',
   'Verarbeite Anfrage mit LLM...',
@@ -157,21 +136,20 @@ function App() {
   const [backendConnected, setBackendConnected] = useState(false);
   const [dataSource, setDataSource] = useState<'loading' | 'api' | 'mock'>('loading');
 
-  const [agents, setAgents] = useState<Agent[]>(loadAgentsWithMigration);
-  const [tasks, setTasks] = useState<Task[]>(() => load(KEYS.TASKS, generateTasks(agents)));
-  // collaboration sessions are now loaded from the backend by CollaborationView
-  const [certifications] = useState<Certification[]>(() => generateCertifications(agents));
-  const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>(generateSecurityEvents);
-  const [killSwitch, setKillSwitch] = useState<KillSwitch>(() => load(KEYS.KILL_SWITCH, generateKillSwitch()));
-  const [auditLog] = useState<AuditEntry[]>(generateAuditLog);
-  const [projektBaum] = useState<ProjektBaumNode>(generateProjektBaum);
+  const [agents, setAgents] = useState<Agent[]>(() => load<Agent[]>('agents', []));
+  const [tasks, setTasks] = useState<Task[]>(() => load<Task[]>(KEYS.TASKS, []));
+  const [certifications] = useState<Certification[]>([]);
+  const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>([]);
+  const [killSwitch, setKillSwitch] = useState<KillSwitch>(() => load(KEYS.KILL_SWITCH, defaultKillSwitch));
+  const [auditLog] = useState<AuditEntry[]>([]);
+  const [projektBaum] = useState<ProjektBaumNode>(defaultProjektBaum);
   const [securityConfig, setSecurityConfig] = useState<SecurityConfig>(() =>
     load(KEYS.SECURITY_CONFIG, defaultSecurityConfig),
   );
   const [llmConfig, setLLMConfig] = useState<LLMConfig>(() => load(KEYS.LLM_CONFIG, defaultLLMConfig));
   const [workflows, setWorkflows] = useState<Workflow[]>(() => load('workflows', []));
   const [projects, setProjects] = useState<Project[]>(() => load('projects_data', []));
-  const analytics = useMemo<AnalyticsData>(() => generateAnalytics(agents, tasks), [agents, tasks]);
+  const [analytics, setAnalytics] = useState<AnalyticsData>(defaultAnalytics);
 
   // Try to connect to backend API on mount
   useEffect(() => {
@@ -182,12 +160,13 @@ function App() {
         if (cancelled || health.status !== 'healthy') throw new Error('Backend unhealthy');
 
         // Load all data from API in parallel
-        const [agentsRes, tasksRes, workflowsRes, secEventsRes, ksRes] = await Promise.all([
+        const [agentsRes, tasksRes, workflowsRes, secEventsRes, ksRes, analyticsRes] = await Promise.all([
           agentsAPI.list({ limit: 300 }),
           tasksAPI.list(),
           workflowsAPI.list(),
           securityAPI.events(),
           securityAPI.killSwitch(),
+          analyticsAPI.dashboard(),
         ]);
 
         if (cancelled) return;
@@ -197,6 +176,7 @@ function App() {
         setWorkflows(workflowsRes.workflows as Workflow[]);
         setSecurityEvents(secEventsRes.events as SecurityEvent[]);
         setKillSwitch(ksRes as KillSwitch);
+        setAnalytics(analyticsRes as AnalyticsData);
         setBackendConnected(true);
         setDataSource('api');
 
@@ -210,6 +190,18 @@ function App() {
           const { taskId, status } = data as { taskId: string; status: string };
           setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status: status as Task['status'] } : t)));
         });
+        wsClient.on('metric_change', () => {
+          // Re-fetch dashboard analytics whenever the backend records a new
+          // metrics snapshot — never re-derive from local mock helpers.
+          analyticsAPI
+            .dashboard()
+            .then((data) => {
+              if (!cancelled) setAnalytics(data as AnalyticsData);
+            })
+            .catch(() => {
+              /* transient — keep last known analytics */
+            });
+        });
 
         console.log(
           `Backend connected: ${health.database.agents} agents, ${health.database.tasks} tasks loaded from API`,
@@ -218,13 +210,27 @@ function App() {
         if (!cancelled) {
           setBackendConnected(false);
           setDataSource('mock');
-          console.log('Backend not available, using mock data');
+          console.log('Backend not available — analytics, tasks and security data will be empty until reconnect');
         }
       }
     }
     loadFromAPI();
+    // Refresh analytics every 30s while the dashboard is open. The 15s server
+    // cache means at most every other call hits the DB.
+    const analyticsTimer = setInterval(() => {
+      if (cancelled) return;
+      analyticsAPI
+        .dashboard()
+        .then((data) => {
+          if (!cancelled) setAnalytics(data as AnalyticsData);
+        })
+        .catch(() => {
+          /* keep last known analytics */
+        });
+    }, 30_000);
     return () => {
       cancelled = true;
+      clearInterval(analyticsTimer);
       wsClient.disconnect();
     };
   }, []);

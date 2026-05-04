@@ -4,6 +4,8 @@ import { cacheResponse } from '../middleware/cacheMiddleware.js';
 
 const router = Router();
 
+const PROCESS_START_MS = Date.now();
+
 // GET /api/analytics/dashboard (cached 15s)
 router.get('/dashboard', cacheResponse(15_000, 'analytics'), (_req: Request, res: Response) => {
   const db = getDb();
@@ -58,17 +60,22 @@ router.get('/dashboard', cacheResponse(15_000, 'analytics'), (_req: Request, res
     .all();
 
   const errorRate = totalTasks > 0 ? +((failedTasks / totalTasks) * 100).toFixed(1) : 0;
+  const uptimeSeconds = Math.floor((Date.now() - PROCESS_START_MS) / 1000);
 
   res.json({
     totalAgents,
     activeAgents,
     tasksToday,
+    tasksTotal: totalTasks,
+    tasksCompleted: completedTasks,
+    tasksFailed: failedTasks,
     successRate: +avgSuccessRate.toFixed(1),
     avgResponseTime: +avgResponseTime.toFixed(0),
     tasksTrend,
     categoryDistribution: categoryDist,
     topPerformers,
     errorRate,
+    uptimeSeconds,
   });
 });
 
