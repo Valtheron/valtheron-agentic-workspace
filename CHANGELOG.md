@@ -218,6 +218,25 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Behoben
 
+- **Beta-Test 2026-05-03 — Dashboard ohne fabricated Demo-Daten (D-8…D-14):**
+  Das Dashboard rendert nicht mehr `mockData.ts` (Random `tasksTrend`,
+  `Math.random()`-`avgResponseTime`, hardcoded `uptime: 99.97`, String-Literal
+  `"von 80 total"`). `App.tsx` lädt `analytics` jetzt aus dem echten Endpoint
+  `analyticsAPI.dashboard()` und reagiert auf `metric_change`-WebSocket-Events
+  plus 30 s-Poll. `DashboardView.tsx` zeigt `tasksTotal` aus dem Backend,
+  formatiert `uptimeSeconds` als „Xd Yh", und rendert Empty-States solange
+  noch keine Tasks ausgeführt wurden. `AnalyticsView.tsx` zieht `trends` und
+  `slas` aus `/api/analytics/performance` bzw. `/api/analytics/sla` (kein
+  lokales `generateTrends`/`generateSLAs` mit Sin+Random mehr). Backend-Endpoint
+  `/api/analytics/dashboard` liefert zwei neue Felder: `tasksTotal`
+  (`SELECT COUNT(*) FROM tasks`) und `uptimeSeconds` (Prozess-Laufzeit seit
+  Start). Initial-States für `tasks`, `securityEvents`, `auditLog`,
+  `projektBaum`, `certifications` sind leer; der API-Mount-Effect befüllt sie.
+  Neue Datei `frontend/src/services/defaults.ts` hält echte Konfig-Defaults
+  (`defaultSecurityConfig` mit `rbac`/`encryption`, `defaultKillSwitch.aktiv:
+  false` statt mock-`true`, leerer `defaultProjektBaum`, neutrale
+  `defaultAnalytics`). `mockData.ts` wird nur noch von Tests importiert.
+  Frontend-Suite: 219/219 grün, Backend-Suite: 448/448 grün.
 - **Hotfix für D-5 (`install:all`):** Die Kette
   `cd backend && npm install && cd ../frontend && npm install && npm install`
   hinterließ die Shell im `frontend/`-Verzeichnis, sodass der dritte
