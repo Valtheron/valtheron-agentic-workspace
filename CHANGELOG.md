@@ -235,6 +235,31 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Behoben
 
+- **Beta-Test 2026-05-03 — Agent-Seed ohne fabricated Runtime-State + klare
+  Kill-Switch-Labels:** `backend/src/db/seed.ts` hat pro Agent
+  `status/successRate/tasksCompleted/failedTasks/avgTaskDuration` aus einem
+  ID-keyed RNG vorbelegt — exakt deshalb tauchten auf einer frischen
+  Installation "144 aktiv", "72 working", 88.5 % Erfolgsrate und eine
+  Top-Performer-Liste mit 99/99/99/99/99 auf, obwohl noch kein Agent eine
+  Task ausgeführt hatte. Neue Seeds setzen alle Runtime-Felder auf
+  `status='idle'`, `successRate=0`, `tasksCompleted=0`, `failedTasks=0`,
+  `avgTaskDuration=0`; ExecutionEngine/WorkflowEngine flippen sie sobald
+  echte Tasks laufen. `backend/src/routes/analytics.ts` Top-Performers-Query
+  filtert jetzt `WHERE tasksCompleted > 0`, damit die Dashboard-Karte den
+  Empty-State trifft statt Seed-Defaults zu listen.
+- **Kill-Switch-Labels semantisch korrigiert:** Header-Badge und
+  Dashboard-Button rendern `aktiv=true` jetzt als **rotes "GEZÜNDET"** mit
+  Untertitel "Alle Agenten suspendiert", `aktiv=false` als **grünes
+  "STANDBY"** mit "Bereit — wird bei Auto-Trigger-Verletzung aktiviert".
+  Vorher waren Farbe (grün bei `aktiv=true`) und Begriff ("AKTIV") für die
+  Gefahrenstellung invers — ein gezündeter Kill-Switch sah aus wie ein
+  gesundes System. Tooltips erläutern jeweils, was ein Klick auslöst.
+  `KillSwitchView` zieht denselben Begriff. Pro-Regel-Toggle ("AKTIV/AUS")
+  bleibt unverändert, weil semantisch anders (Regel aktiviert vs. deaktiviert).
+
+  Bestehende Lokalinstallationen behalten den alten Seed solange
+  `backend/data/valtheron.db` nicht gelöscht wird — `seedAgentCatalog`
+  short-circuit bei vorhandenen Agenten.
 - **Beta-Test 2026-05-03 — EnterpriseView, ProjektBaumView und Certifications
   entmockt (Phase 5/6/7):** Aufbauend auf dem Dashboard-Cleanup wurden alle
   übrigen Sidebar-Tabs auf echte Daten oder explizite Empty-States umgestellt.
