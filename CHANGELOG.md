@@ -235,6 +235,31 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Behoben
 
+- **Block A Critical-Findings D-4 und D-7 (Auth-Sicherheit):**
+  `backend/src/routes/auth.ts` hat Passwörter mit `crypto.createHash('sha256')`
+  ohne Salt und ohne Work-Factor gehasht — Rainbow-Table-trivial,
+  GPU-Brute-Force in Sekunden. Ersetzt durch **bcryptjs mit Cost 12** in
+  Produktion (~250 ms pro Hash, exponentiell teurer für Angreifer); Test-Suite
+  läuft mit Cost 4 damit `security-pentest.test.ts` interaktiv bleibt.
+  `verifyPassword()` unterstützt beide Formate parallel: bcrypt-Strings
+  (`$2a$/$2b$/$2y$`-Prefix) werden direkt verifiziert, alte
+  SHA-256-Hex-Strings per `crypto.timingSafeEqual` (kein Timing-Leak) — und
+  bei erfolgreichem Login transparent in bcrypt-Form überschrieben.
+  Migrations-Script entfällt damit. Login führt den bcrypt-Compare auch bei
+  unbekanntem Username gegen einen Referenz-Hash aus, damit Antwortzeiten
+  nicht mehr Existenz oder Nicht-Existenz eines Accounts verraten.
+  **Login-Rate-Limit von 20/Min auf 5/15Min verschärft:** der allgemeine
+  `/api/auth`-Limiter (20 req/min) ließ 10 Fehl-Logins in 16 ms durch — beim
+  Beta-Run nachgewiesen. Neuer dedizierter `loginRateLimiter` (5 Versuche /
+  15 Min / IP, OWASP ASVS 2.2.1) hängt direkt am `/login`-Handler. Der
+  `rateLimiter()` aus `backend/src/middleware/rateLimiter.ts` bekommt einen
+  optionalen `keyScope`-Parameter, damit der strenge Login-Limiter nicht
+  denselben IP-Bucket mit dem breiteren Auth-Limiter teilt.
+  `backend/src/db/seed.ts` Demo-Seed nutzt ebenfalls bcrypt (Cost 10) für
+  Konsistenz; der ungenutzte `crypto`-Import entfällt.
+  Live-Verifikation: 5 Fehlversuche → 401 (~420 ms je bcrypt-Compare),
+  6.–8. Versuch → 429 mit `Retry-After`-Header. Stored Hash: `$2b$12$…`,
+  60 Zeichen. Tests: 219/219 frontend + 448/448 backend pass.
 - **Beta-Test 2026-05-03 — Agent-Seed ohne fabricated Runtime-State + klare
   Kill-Switch-Labels:** `backend/src/db/seed.ts` hat pro Agent
   `status/successRate/tasksCompleted/failedTasks/avgTaskDuration` aus einem
