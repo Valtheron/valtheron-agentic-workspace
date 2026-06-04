@@ -55,8 +55,14 @@ router.get('/dashboard', cacheResponse(15_000, 'analytics'), (_req: Request, res
     .prepare('SELECT category, COUNT(*) as count FROM agents GROUP BY category ORDER BY count DESC')
     .all() as { category: string; count: number }[];
 
+  // Only surface real Top Performers — i.e. agents that have actually
+  // executed at least one task. On a fresh install every agent reports
+  // tasksCompleted=0, so the dashboard correctly shows the empty-state
+  // instead of a "99/99/99/99/99" list derived from seed defaults.
   const topPerformers = db
-    .prepare('SELECT id as agentId, name, successRate as score FROM agents ORDER BY successRate DESC LIMIT 5')
+    .prepare(
+      'SELECT id as agentId, name, successRate as score FROM agents WHERE tasksCompleted > 0 ORDER BY successRate DESC, tasksCompleted DESC LIMIT 5',
+    )
     .all();
 
   const errorRate = totalTasks > 0 ? +((failedTasks / totalTasks) * 100).toFixed(1) : 0;

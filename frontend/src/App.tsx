@@ -522,8 +522,15 @@ function App() {
               {agents.filter((a) => a.status === 'active' || a.status === 'working').length} aktiv
             </span>
             {runningWorkflows > 0 && <span className="badge working">{runningWorkflows} WF läuft</span>}
-            <span className={`badge ${killSwitch.aktiv ? 'valid' : 'critical'}`}>
-              KS: {killSwitch.aktiv ? 'AKTIV' : 'INAKTIV'}
+            <span
+              className={`badge ${killSwitch.aktiv ? 'critical' : 'valid'}`}
+              title={
+                killSwitch.aktiv
+                  ? 'Kill-Switch GEZÜNDET — Agenten suspendiert'
+                  : 'Kill-Switch im Standby — Auto-Trigger aktiv'
+              }
+            >
+              KS: {killSwitch.aktiv ? 'GEZÜNDET' : 'STANDBY'}
             </span>
             {authUser ? (
               <>

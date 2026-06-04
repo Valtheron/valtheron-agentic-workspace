@@ -159,20 +159,21 @@ describe('DashboardView', () => {
     expect(screen.getByText('1 offen')).toBeInTheDocument();
   });
 
-  it('shows kill switch in INAKTIV state', () => {
+  it('shows kill switch in STANDBY state', () => {
     render(<DashboardView {...defaultProps} />);
-    expect(screen.getByText('INAKTIV')).toBeInTheDocument();
-    expect(screen.getByText('Kill-Switch deaktiviert')).toBeInTheDocument();
+    expect(screen.getByText('STANDBY')).toBeInTheDocument();
+    expect(screen.getByText('Bereit — wird bei Auto-Trigger-Verletzung aktiviert')).toBeInTheDocument();
   });
 
-  it('shows kill switch in AKTIV state', () => {
+  it('shows kill switch in GEZÜNDET state', () => {
     render(<DashboardView {...defaultProps} killSwitch={{ ...mockKillSwitch, aktiv: true }} />);
-    expect(screen.getByText('AKTIV')).toBeInTheDocument();
+    expect(screen.getByText('GEZÜNDET')).toBeInTheDocument();
+    expect(screen.getByText('Alle Agenten suspendiert')).toBeInTheDocument();
   });
 
   it('calls onToggleKillSwitch when button is clicked', () => {
     render(<DashboardView {...defaultProps} />);
-    fireEvent.click(screen.getByText('INAKTIV'));
+    fireEvent.click(screen.getByText('STANDBY'));
     expect(onToggleKillSwitch).toHaveBeenCalledTimes(1);
   });
 

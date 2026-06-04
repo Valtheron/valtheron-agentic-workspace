@@ -130,11 +130,19 @@ export default function DashboardView({
               <div className="card-title" style={{ marginBottom: 8 }}>
                 Kill Switch
               </div>
-              <button className={`ks-button ${killSwitch.aktiv ? 'aktiv' : 'safe'}`} onClick={onToggleKillSwitch}>
-                {killSwitch.aktiv ? 'AKTIV' : 'INAKTIV'}
+              <button
+                className={`ks-button ${killSwitch.aktiv ? 'aktiv' : 'safe'}`}
+                onClick={onToggleKillSwitch}
+                title={
+                  killSwitch.aktiv
+                    ? 'Klicken um den Kill-Switch zurückzusetzen'
+                    : 'Klicken um den Kill-Switch zu zünden'
+                }
+              >
+                {killSwitch.aktiv ? 'GEZÜNDET' : 'STANDBY'}
               </button>
               <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 8 }}>
-                {killSwitch.aktiv ? 'System geschützt - Auto-Trigger aktiv' : 'Kill-Switch deaktiviert'}
+                {killSwitch.aktiv ? 'Alle Agenten suspendiert' : 'Bereit — wird bei Auto-Trigger-Verletzung aktiviert'}
               </div>
             </div>
             <div style={{ marginTop: 12 }}>
