@@ -125,8 +125,11 @@ export default function ChatView({ agents }: ChatViewProps) {
     inputRef.current?.focus();
   }, [inputText, selectedSessionId, sending]);
 
+  const [newChatError, setNewChatError] = useState<string | null>(null);
+
   const handleNewChat = async (agentId: string) => {
     const agent = agents.find((a) => a.id === agentId);
+    setNewChatError(null);
     try {
       const session = await chatAPI.createSession(agentId, `Chat mit ${agent?.name || 'Agent'}`);
       const newSession = session as ChatSession;
@@ -134,8 +137,14 @@ export default function ChatView({ agents }: ChatViewProps) {
       setSelectedSessionId(newSession.id);
       setShowNewChat(false);
       setAgentSearch('');
-    } catch {
-      // ignore
+    } catch (err) {
+      // Surface the failure instead of swallowing it. The most common cause
+      // on a freshly seeded DB is a stale agent UUID in localStorage that
+      // doesn't match any agent in the new DB (FK constraint → 500 here).
+      const message =
+        err instanceof Error ? err.message : typeof err === 'string' ? err : 'Unbekannter Fehler beim Chat-Start';
+      console.error('chat.createSession failed:', err);
+      setNewChatError(message);
     }
   };
 
@@ -200,11 +209,29 @@ export default function ChatView({ agents }: ChatViewProps) {
                   onClick={() => {
                     setShowNewChat(false);
                     setAgentSearch('');
+                    setNewChatError(null);
                   }}
                 >
                   ×
                 </button>
               </div>
+              {newChatError && (
+                <div
+                  style={{
+                    background: 'rgba(239,68,68,0.12)',
+                    border: '1px solid var(--accent-red)',
+                    color: 'var(--accent-red)',
+                    padding: '8px 10px',
+                    borderRadius: 6,
+                    fontSize: 11,
+                    marginBottom: 10,
+                  }}
+                >
+                  Chat konnte nicht gestartet werden: {newChatError}
+                  {' — '}falls Du gerade die Backend-DB neu aufgesetzt hast, einmal Strg+Shift+R drücken (lokale
+                  Agenten-Liste hat veraltete UUIDs).
+                </div>
+              )}
               <input
                 className="chat-search-input"
                 placeholder="Agent suchen..."

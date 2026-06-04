@@ -152,10 +152,17 @@ function App() {
   const [projects, setProjects] = useState<Project[]>(() => load('projects_data', []));
   const [analytics, setAnalytics] = useState<AnalyticsData>(defaultAnalytics);
 
-  // Try to connect to backend API on mount
+  // Try to connect to backend API on mount. The first attempt can race the
+  // backend boot (Vite is usually ready ~0.5 s before tsx finishes hydrating
+  // express + sqlite + WS), so we retry on failure with capped exponential
+  // backoff until the backend answers. Until then, dataSource stays
+  // 'loading' so the badge doesn't lie about a "mock" state.
   useEffect(() => {
     let cancelled = false;
-    async function loadFromAPI() {
+    let retryTimer: ReturnType<typeof setTimeout> | null = null;
+    let attempt = 0;
+
+    async function loadFromAPI(): Promise<void> {
       try {
         const health = await healthAPI.check();
         if (cancelled || health.status !== 'healthy') throw new Error('Backend unhealthy');
@@ -207,15 +214,23 @@ function App() {
         console.log(
           `Backend connected: ${health.database.agents} agents, ${health.database.tasks} tasks loaded from API`,
         );
-      } catch {
-        if (!cancelled) {
-          setBackendConnected(false);
-          setDataSource('mock');
-          console.log('Backend not available — analytics, tasks and security data will be empty until reconnect');
-        }
+      } catch (err) {
+        if (cancelled) return;
+        attempt += 1;
+        const delay = Math.min(15_000, 500 * 2 ** Math.min(attempt - 1, 5));
+        setBackendConnected(false);
+        setDataSource('loading');
+        console.warn(
+          `[boot] Backend connect attempt ${attempt} failed (${err instanceof Error ? err.message : err}). ` +
+            `Retrying in ${delay} ms.`,
+        );
+        retryTimer = setTimeout(() => {
+          if (!cancelled) loadFromAPI();
+        }, delay);
       }
     }
     loadFromAPI();
+
     // Refresh analytics every 30s while the dashboard is open. The 15s server
     // cache means at most every other call hits the DB.
     const analyticsTimer = setInterval(() => {
@@ -231,6 +246,7 @@ function App() {
     }, 30_000);
     return () => {
       cancelled = true;
+      if (retryTimer) clearTimeout(retryTimer);
       clearInterval(analyticsTimer);
       wsClient.disconnect();
     };
