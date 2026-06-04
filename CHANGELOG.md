@@ -218,6 +218,33 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Behoben
 
+- **Beta-Test 2026-05-03 — EnterpriseView, ProjektBaumView und Certifications
+  entmockt (Phase 5/6/7):** Aufbauend auf dem Dashboard-Cleanup wurden alle
+  übrigen Sidebar-Tabs auf echte Daten oder explizite Empty-States umgestellt.
+  `ProjektBaumView.tsx` lädt den Baum jetzt aus `/api/project-tree` (mit
+  Empty-State "Noch keine Projekt-Knoten angelegt"), der 2,5-Sekunden-
+  `setInterval`, der zufällige „Live-Updates" wie „Build erfolgreich" oder
+  „Test-Suite gestartet" fabriziert hat, ist ersatzlos gestrichen — Updates
+  abonnieren stattdessen reale Backend-WebSocket-Events (`agent_status`,
+  `task_progress`, `node_update`, `security_event`, `metric_change`). Die
+  Agent-Präsenz wird deterministisch aus dem realen Agent-Status abgeleitet
+  statt per `Math.random` zugewiesen. `EnterpriseView.tsx` hatte fünf
+  Generator-Funktionen (Incidents, Policies, Agent-Versionen, Shared Files,
+  Health-Metriken) die jeden Tab mit Random-Fixtures gefüllt haben — alle
+  ersetzt durch leere Defaults und Empty-State-Cards, die jeweils den
+  Backend-Endpoint nennen, der die Tab-Daten künftig liefern soll
+  (`/api/interactions` für Versionen,
+  `/api/collaboration/sessions/:id/files` für Shared Workspace,
+  `/api/security/audit` für die Audit-Preview). Reports-Tab guardet
+  Division-durch-Null in Erfolgsrate-/Avg-Duration-/Policy-Compliance-
+  Aggregaten (vorher `NaN%`). `CertificationsView.tsx` zeigt einen
+  Empty-State statt einer leeren Tabelle. Backend `seedDefaultTree` legt
+  Projekt-Module mit `status='planned'` und `progress=0` an statt mit
+  fabrizierten 45 %/70 %/60 %/55 %-Werten. `App.tsx` markiert die
+  verbleibende `simulatedOutputs`-/`tickWorkflows`-Workflow-Simulation
+  explizit als SIMULATED-Fallback samt Verweis auf den echten Backend-
+  Workflow-Engine als nächsten Cleanup-Schritt.
+  Frontend-Suite: 219/219 grün, Backend-Suite: 448/448 grün.
 - **Beta-Test 2026-05-03 — Dashboard ohne fabricated Demo-Daten (D-8…D-14):**
   Das Dashboard rendert nicht mehr `mockData.ts` (Random `tasksTrend`,
   `Math.random()`-`avgResponseTime`, hardcoded `uptime: 99.97`, String-Literal
