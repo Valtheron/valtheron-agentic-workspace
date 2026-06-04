@@ -1,6 +1,6 @@
 import { getDb } from './schema.js';
 import { v4 as uuid } from 'uuid';
-import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import agents1to200 from '../data/valtheron_agents_1_200.json' with { type: 'json' };
 import agents201to290 from '../data/valtheron_agents_201_290.json' with { type: 'json' };
 import { computeForsetiProfile, isForsetiPending } from '../services/forsetiScoring.js';
@@ -76,7 +76,9 @@ function deriveRole(rawCategory: string, name: string): string {
 }
 
 function hashPassword(password: string): string {
-  return crypto.createHash('sha256').update(password).digest('hex');
+  // Demo-only seeds — still bcrypt so the seed never produces a hash format
+  // weaker than what auth.ts writes for real users.
+  return bcrypt.hashSync(password, 10);
 }
 
 function loadCanonicalAgents(): RawAgent[] {
