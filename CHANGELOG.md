@@ -216,6 +216,18 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
   `POST /notifications`, `POST /secrets/generate-key`, neue
   Donations-Sektion mit `POST /donations/create-checkout-session`).
 
+### Geändert
+
+- **Dev-Server-Port von 5173 auf 3055 umgestellt:** `frontend/vite.config.ts`
+  pinnt jetzt `server.port: 3055` mit `strictPort: true`, damit Vite bei
+  Konflikten laut fehlschlägt statt stillschweigend auf einen anderen Port
+  auszuweichen. Backend-CORS-Allowlist in `backend/src/app.ts` ergänzt um
+  `http://localhost:3055` (5173/5174/3000 bleiben als Fallback für laufende
+  Lokal-Setups). `STRIPE_FRONTEND_URL`-Default in
+  `backend/src/routes/donations.ts` ebenfalls auf 3055; Produktion überschreibt
+  den Wert weiterhin per Env-Var. README, USER_GUIDE, ONBOARDING,
+  DEVELOPER_GUIDE und DEPLOYMENT_GUIDE überall mit der neuen URL.
+
 ### Behoben
 
 - **Beta-Test 2026-05-03 — EnterpriseView, ProjektBaumView und Certifications
