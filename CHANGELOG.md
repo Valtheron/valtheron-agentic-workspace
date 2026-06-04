@@ -235,6 +235,28 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Behoben
 
+- **Block F Defekt D-19 (Boot-Race + lautlose Chat-Fehler):** Beim ersten
+  Mount-Effect in `frontend/src/App.tsx` lief `healthAPI.check()` genau einmal.
+  Vite ist im Schnitt 0,5–3 s früher fertig als das Backend (Express + sqlite
+  + WS-Hydration), der Initialaufruf bekam `ECONNREFUSED`, der Catch-Pfad
+  setzte `dataSource: 'mock'` — und wurde nie wieder probiert. Folge: das
+  Header-Badge zeigte "Mock" obwohl das Backend kurz später da war, der
+  agents-State blieb auf den Initialwerten aus dem localStorage (alte UUIDs
+  einer früheren DB), und ein Klick im Agenten-Picker erzeugte stille 500er
+  vom Backend (FK-Constraint), weil `handleNewChat` ein
+  `catch { /* ignore */ }` hatte.
+
+  `loadFromAPI` retryed jetzt mit gedeckeltem Exponential-Backoff
+  (500 ms → 1 s → 2 s → 4 s → 8 s → ab dann 15 s) bis das Backend antwortet.
+  Während des Retry bleibt `dataSource: 'loading'` — das Badge schreibt
+  "Verbinde..." statt fälschlich "Mock". Jeder fehlgeschlagene Versuch
+  loggt eine kontrollierte Warnung mit Versuchsnummer in die Konsole;
+  der Cleanup räumt den pending-Timer mit auf.
+
+  `ChatView.handleNewChat` zeigt einen roten Fehler-Banner über dem
+  Agenten-Picker statt zu schlucken — mit Originaltext und Hinweis dass
+  Strg+Shift+R den lokalen Agenten-Cache leert, falls das Backend gerade
+  neu geseedet wurde.
 - **Block F Defekt D-18 (Chat lieferte stets Simulation trotz konfiguriertem
   API-Key):** Jede Chat-Antwort kam mit dem Marker
   `*(Simulation — kein API-Key konfiguriert)*` und kategorie-spezifischen
