@@ -55,11 +55,31 @@ Test-Account: `beta-tester-2026-05-03` (Passwort separat, nicht im Report). UUID
 
 ### 2.B Agenten
 
-| ID | Beschreibung | UI | API | Status | Notiz |
+Run-Datum: 2026-06-04 (gleicher Branch, neue DB nach Seed-Cleanup; Test-User `beta-block-b`, Token via Register).
+
+| ID | Beschreibung | UI | API (Claude) | Status | Notiz |
 |---|---|---|---|---|---|
-| B1 | Agent erstellen | ⬜ | ⬜ | ⬜ | |
-| B6 | Agent-Detail | ⬜ | ⬜ | ⬜ | |
-| B4 | Agent-Suche | ⬜ | ⬜ | ⬜ | |
+| B1 | Agent erstellen | ⬜ | ✅ `POST /api/agents` HTTP 201 in 4.7 ms — Agent `Beta Test Researcher` mit `status='idle'`, `successRate=0`, `tasksCompleted=0` korrekt persistiert; DB: 290 → 291 Agenten | ✅ | Beobachtungen N-1 (`capabilities.status='pending'` — kein Recompute auf Anlage) und N-2 (`lastActivity` wird auf Anlage-Zeit gesetzt statt null) |
+| B4 | Agent-Suche | ⬜ | ✅ `GET /api/agents?search=Beta` HTTP 200 in 3.9 ms · 1 Treffer · SQL-Injection-Probe `?search=' OR 1=1--` → 0 Treffer (parametrisiert, gut) | 🟡 | Defekt D-16: Response-Feld `total: 291` ist Gesamtzahl der Tabelle, nicht der Suchergebnisse (1) — Pagination-irreführend |
+| B6 | Agent-Detail | ⬜ | ✅ `GET /api/agents/:id` HTTP 200 in 2.8 ms · Edge-Case: nicht-existente UUID → HTTP 404 mit `{"error":"Agent not found"}` | ❌ | Kritischer Sekundär-Befund D-17 ist Block-spannend (siehe unten) |
+
+**Defekt D-17 — Vollständiger Auth-Bypass im Dev-Modus (Critical):**
+Backend setzt unter `NODE_ENV !== 'production'` und `VALTHERON_REQUIRE_AUTH !== 'true'` die `optionalAuth`-Middleware ein, nicht `authMiddleware`. Damit liefert **jeder** der folgenden Endpoints **ohne `Authorization`-Header** HTTP 200:
+
+| Endpoint | Status (ohne Token) |
+|---|---|
+| `GET /api/agents` | 200 |
+| `GET /api/agents/:id` | 200 |
+| `GET /api/tasks` | 200 |
+| `GET /api/workflows` | 200 |
+| `GET /api/security/events` | 200 |
+| `GET /api/security/audit` | 200 |
+| `GET /api/security/kill-switch` | 200 |
+| `GET /api/chat/sessions` | 200 |
+| `GET /api/notifications` | 200 |
+| `GET /api/analytics/dashboard` | 200 |
+
+Per Design dokumentiert in `backend/src/app.ts:88` als "Dev mode leaves endpoints open for local experimentation". Auf einer Beta-Staging-Maschine die das ENV-Flag nicht setzt ist die komplette API public — inklusive **Security-Audit-Log und Kill-Switch-Steuerung**. Fix-Vorschlag: `VALTHERON_REQUIRE_AUTH=true` muss in `.env.example` als Default für `npm run dev` stehen, ODER der Dev-Bypass wird auf ein Allowlist von Endpoints (z. B. `/api/health`, `/api/agents` GET) eingeschränkt.
 
 ### 2.F Agenten-Chat (Hauptfokus)
 
@@ -122,6 +142,8 @@ Wird in E1 gefüllt. Ziel: API p95 < 200 ms.
 | D-13 | E | **"Anmelden"-Button oben rechts** sichtbar, obwohl User direkt das Dashboard sieht → keine Auth-Wand davor. Bestätigt Onboarding-Report D-2: Dev-Modus überspringt LoginView via `import.meta.env.PROD`-Gate. Für eine Beta in "echter Anwenderumgebung" ist das gefährlich (Tester könnten meinen, das System sei im Produktionsmodus public-zugänglich). | `frontend/src/App.tsx:465` (laut Onboarding-Report), `npm run dev` | High | Dev-Auth-Bypass abschaltbar machen (`VITE_VALTHERON_REQUIRE_AUTH=true`) und im README-Beta-Abschnitt als Pflicht für Beta-Tester. |
 | D-14 | E | **Kill-Switch-Karte** zeigt rote AKTIV-Kugel + Text "System geschützt — Auto-Trigger aktiv" + Badge "0 Auto-Trigger-Regeln". "AKTIV" ist mehrdeutig (Kill-Switch zündet gerade vs. Schutzfunktion läuft). Backend-Default ist tatsächlich `armed=false` — die UI zeigt also den **Schutz-Modus** als "AKTIV", was vom Wort her das Gegenteil suggeriert. | `frontend/src/components/KillSwitch*`, `backend/src/services/killSwitchMonitor.ts` | Medium | Begriff klären: "Schutz: aktiv" vs. "Kill-Switch: GEZÜNDET". Farbcodierung anpassen (Rot = Kill, Grün = Schutz). |
 | D-15 | G | `secrets`-Tabelle existiert nicht im Schema, obwohl `backend/src/routes/secrets.ts` als Route registriert ist. BETA_TESTING.md §2.7 G3 erwartet Secrets-Vault-CRUD. | `backend/src/db/schema.ts` (kein CREATE TABLE secrets), `backend/src/routes/secrets.ts` | High | Tabelle anlegen oder Feature aus der Doc nehmen. (Detail folgt im G-Block.) |
+| D-16 | B | `GET /api/agents?search=...` Response-Feld `total` zählt die Gesamttabelle (291) statt der gefilterten Treffer (1). UI-Pagination, die `total` für `Math.ceil(total/limit)` verwendet, zeigt 291 Seiten an obwohl nur eine Seite existiert. | `backend/src/routes/agents.ts` GET-Handler, Search-Branch | Medium | Bei aktivem `search`/`category`/`status`-Filter `total` aus `COUNT(*) FROM agents WHERE …` mit denselben Filtern berechnen, nicht aus `SELECT COUNT(*) FROM agents`. |
+| D-17 | B | **Vollständiger Auth-Bypass im Dev-Modus:** 9/9 sensible Endpoints (Agents, Tasks, Workflows, Security-Events, Audit-Log, Kill-Switch, Chat, Notifications, Analytics) liefern ohne `Authorization`-Header HTTP 200. Steuerbar über `VALTHERON_REQUIRE_AUTH=true`, aber Default beim `npm run dev` ist Bypass aktiv. | `backend/src/app.ts:86-91` (`requireAuth = process.env.NODE_ENV === 'production' \|\| VALTHERON_REQUIRE_AUTH === 'true'`) | **Critical** | `VALTHERON_REQUIRE_AUTH=true` als Default in `backend/.env.example` setzen UND warnung beim Boot loggen, wenn das Flag nicht gesetzt ist. Alternativ: Bypass auf eine kleine Allowlist (`/api/health`) einschränken, alle anderen Routen erfordern immer Auth. |
 
 **Legende Schweregrade:** **Critical** = Datenverlust, Sicherheit, kompletter Flow blockiert · **High** = Kern-Feature unbenutzbar, kein Workaround · **Medium** = Feature funktioniert eingeschränkt, Workaround möglich · **Low** = kosmetisch / Edge-Case.
 

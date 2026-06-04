@@ -104,9 +104,9 @@ describe('Secrets API Endpoints', () => {
     expect(res.status).toBe(404);
   });
 
-  // In dev/test mode, adminGuard = optionalAuth, so all users can access
-  it('GET /api/secrets — accessible in dev mode without admin role', async () => {
+  // /api/secrets always requires admin auth (Block-A D-17 fix) — even in dev mode.
+  it('GET /api/secrets — rejects requests without auth', async () => {
     const res = await request(app).get('/api/secrets');
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(401);
   });
 });

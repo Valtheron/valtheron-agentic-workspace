@@ -235,6 +235,27 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Behoben
 
+- **Block B Critical-Finding D-17 (Auth-Bypass auf Security-Routen):**
+  Der Beta-Run hat dokumentiert, dass `/api/security/*`, `/api/secrets`,
+  `/api/backup` sowie alle übrigen Produktrouten im Dev-Modus
+  (`NODE_ENV !== 'production'` und `VALTHERON_REQUIRE_AUTH !== 'true'`) ohne
+  `Authorization`-Header HTTP 200 lieferten — inklusive Audit-Log,
+  Kill-Switch-Steuerung und Secrets-CRUD. `backend/src/app.ts` setzt jetzt
+  `adminGuard` unkonditional auf `adminOnly` und mountet
+  `/api/security`, `/api/secrets` und `/api/backup` immer hinter
+  `authMiddleware` + `adminGuard`, egal in welchem Modus. Produktrouten
+  (`/api/agents`, `/tasks`, `/workflows`, `/analytics`, `/chat`,
+  `/collaboration`, `/project-tree`, `/notifications`, `/interactions`)
+  behalten den optionalAuth-Fallback in Dev für lokales Klick-Testen, aber
+  beim Boot wird jetzt eine deutliche Warnung geloggt, welche Routen offen
+  sind und wie man (via `VALTHERON_REQUIRE_AUTH=true`) den
+  Produktionspfad spiegelt. Live-Scope-Test nach dem Fix:
+  Security-/Secrets-/Backup-Routen ⇒ 401, übrige Produktrouten ⇒ 200.
+  Tests in `security.test.ts`, `secrets-api.test.ts`, `backup-api.test.ts`,
+  `middleware.test.ts` und `integration.test.ts` registrieren jetzt einen
+  Admin und hängen den Token an die geschützten Calls; ein neuer
+  Negativ-Test stellt sicher, dass anonyme Aufrufe auf `/api/security/events`
+  weiterhin mit 401 abgewiesen werden.
 - **Block A Critical-Findings D-4 und D-7 (Auth-Sicherheit):**
   `backend/src/routes/auth.ts` hat Passwörter mit `crypto.createHash('sha256')`
   ohne Salt und ohne Work-Factor gehasht — Rainbow-Table-trivial,
