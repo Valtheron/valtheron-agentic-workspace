@@ -131,14 +131,14 @@ npm run dev
 cd frontend
 npm install
 npm run dev
-# Läuft auf http://localhost:5173
+# Läuft auf http://localhost:3055
 ```
 
 ### Schritt 4 — Ersten Admin-Account anlegen
 
 Das System hat **keine** Default-Credentials. Der erste registrierte User wird automatisch Admin.
 
-1. Öffne http://localhost:5173
+1. Öffne http://localhost:3055
 2. Klicke auf "Registrieren"
 3. Erstelle deinen Admin-Account
 4. Du hast sofort vollen Admin-Zugriff
