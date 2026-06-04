@@ -235,6 +235,19 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Behoben
 
+- **Block F Defekt D-18 (Chat lieferte stets Simulation trotz konfiguriertem
+  API-Key):** Jede Chat-Antwort kam mit dem Marker
+  `*(Simulation — kein API-Key konfiguriert)*` und kategorie-spezifischen
+  fabrizierten Business-Zahlen ("Retention Q4: 78%. Churn-Cluster bei Segment
+  B identifiziert."), selbst wenn der User in `LLM Provider`-Settings Anthropic
+  mit Key verbunden hatte. Ursache: `frontend/src/components/ChatView.tsx`
+  griff per `localStorage.getItem('llmConfig')` (camelCase) auf einen
+  Schlüssel zu, den App.tsx unter `KEYS.LLM_CONFIG = 'llm_config'`
+  (snake_case) schreibt. `getLLMHeaders()` retournierte daher immer
+  `undefined`, der `x-llm-api-key`-Header fehlte am Chat-Request und der
+  Backend-Handler landete unkonditional in `generateFallbackResponse()`.
+  ChatView importiert jetzt `KEYS` aus `services/persistence` und liest den
+  LLM-Config unter demselben Schlüssel, den der Rest der App schreibt.
 - **Block B Critical-Finding D-17 (Auth-Bypass auf Security-Routen):**
   Der Beta-Run hat dokumentiert, dass `/api/security/*`, `/api/secrets`,
   `/api/backup` sowie alle übrigen Produktrouten im Dev-Modus
