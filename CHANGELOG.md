@@ -218,6 +218,11 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Geändert
 
+- **Frontend-Paket-Metadaten konsolidiert:** `frontend/package.json` trug noch
+  die Vite-Scaffolding-Defaults `name: "frontend"` und `version: "0.0.0"`. Beide
+  passen jetzt zu Backend und Root: `name: "valtheron-frontend"`,
+  `version: "1.0.0"`. Reine Metadaten-Änderung — kein Code liest die Felder,
+  Build und Tests laufen unverändert.
 - **Dev-Server-Port von 5173 auf 3055 umgestellt:** `frontend/vite.config.ts`
   pinnt jetzt `server.port: 3055` mit `strictPort: true`, damit Vite bei
   Konflikten laut fehlschlägt statt stillschweigend auf einen anderen Port
