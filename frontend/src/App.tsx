@@ -71,10 +71,11 @@ const viewTitles: Record<ViewType, string> = {
 
 import { defaultKillSwitch, defaultProjektBaum, defaultAnalytics } from './services/defaults';
 
-// Local frontend simulation of workflow step output. The real engine lives in
-// backend/src/services/workflowEngine.ts; this fallback is used only when
-// workflows are run client-side for prototyping. Move workflow execution to
-// the backend to retire this list (tracked separately).
+// SIMULATED — frontend fallback for workflow step output when the user runs
+// workflows locally via the Workflows tab. Production execution flows through
+// backend/src/services/workflowEngine.ts (`workflowsAPI.start()` + WS
+// updates). This array stays only until the local "Run" button is wired to
+// the backend; remove it together with the tickWorkflows interval below.
 const simulatedOutputs = [
   'Analysiere Eingabedaten...',
   'Verarbeite Anfrage mit LLM...',
