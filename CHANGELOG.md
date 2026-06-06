@@ -10,6 +10,11 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Hinzugefügt
 
+- **Run-Skill für Claude Code:** Neuer Skill `.claude/skills/run-valtheron/`
+  mit `smoke.sh`-Harness, der Backend (Express/:3001) und Frontend (Vite/:5173)
+  startet und 7 Endpunkte automatisch prüft. Ermöglicht Agenten, die App ohne
+  manuelle Schritte hochzufahren und zu verifizieren.
+
 - **Evolution Foundation — Interaction Capture Layer (Branch 3, Phase 1):**
   Phase-1-Implementierung des Evolutionären Agenten-Systems gemäß
   `the-290-agent-database/.../evolutionary_agent_system.md` §74-101.
