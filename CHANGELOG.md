@@ -221,8 +221,177 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
   `POST /notifications`, `POST /secrets/generate-key`, neue
   Donations-Sektion mit `POST /donations/create-checkout-session`).
 
+### Geändert
+
+- **Frontend-Paket-Metadaten konsolidiert:** `frontend/package.json` trug noch
+  die Vite-Scaffolding-Defaults `name: "frontend"` und `version: "0.0.0"`. Beide
+  passen jetzt zu Backend und Root: `name: "valtheron-frontend"`,
+  `version: "1.0.0"`. Reine Metadaten-Änderung — kein Code liest die Felder,
+  Build und Tests laufen unverändert.
+- **Dev-Server-Port von 5173 auf 3055 umgestellt:** `frontend/vite.config.ts`
+  pinnt jetzt `server.port: 3055` mit `strictPort: true`, damit Vite bei
+  Konflikten laut fehlschlägt statt stillschweigend auf einen anderen Port
+  auszuweichen. Backend-CORS-Allowlist in `backend/src/app.ts` ergänzt um
+  `http://localhost:3055` (5173/5174/3000 bleiben als Fallback für laufende
+  Lokal-Setups). `STRIPE_FRONTEND_URL`-Default in
+  `backend/src/routes/donations.ts` ebenfalls auf 3055; Produktion überschreibt
+  den Wert weiterhin per Env-Var. README, USER_GUIDE, ONBOARDING,
+  DEVELOPER_GUIDE und DEPLOYMENT_GUIDE überall mit der neuen URL.
+
 ### Behoben
 
+- **Block F Defekt D-19 (Boot-Race + lautlose Chat-Fehler):** Beim ersten
+  Mount-Effect in `frontend/src/App.tsx` lief `healthAPI.check()` genau einmal.
+  Vite ist im Schnitt 0,5–3 s früher fertig als das Backend (Express + sqlite
+  + WS-Hydration), der Initialaufruf bekam `ECONNREFUSED`, der Catch-Pfad
+  setzte `dataSource: 'mock'` — und wurde nie wieder probiert. Folge: das
+  Header-Badge zeigte "Mock" obwohl das Backend kurz später da war, der
+  agents-State blieb auf den Initialwerten aus dem localStorage (alte UUIDs
+  einer früheren DB), und ein Klick im Agenten-Picker erzeugte stille 500er
+  vom Backend (FK-Constraint), weil `handleNewChat` ein
+  `catch { /* ignore */ }` hatte.
+
+  `loadFromAPI` retryed jetzt mit gedeckeltem Exponential-Backoff
+  (500 ms → 1 s → 2 s → 4 s → 8 s → ab dann 15 s) bis das Backend antwortet.
+  Während des Retry bleibt `dataSource: 'loading'` — das Badge schreibt
+  "Verbinde..." statt fälschlich "Mock". Jeder fehlgeschlagene Versuch
+  loggt eine kontrollierte Warnung mit Versuchsnummer in die Konsole;
+  der Cleanup räumt den pending-Timer mit auf.
+
+  `ChatView.handleNewChat` zeigt einen roten Fehler-Banner über dem
+  Agenten-Picker statt zu schlucken — mit Originaltext und Hinweis dass
+  Strg+Shift+R den lokalen Agenten-Cache leert, falls das Backend gerade
+  neu geseedet wurde.
+- **Block F Defekt D-18 (Chat lieferte stets Simulation trotz konfiguriertem
+  API-Key):** Jede Chat-Antwort kam mit dem Marker
+  `*(Simulation — kein API-Key konfiguriert)*` und kategorie-spezifischen
+  fabrizierten Business-Zahlen ("Retention Q4: 78%. Churn-Cluster bei Segment
+  B identifiziert."), selbst wenn der User in `LLM Provider`-Settings Anthropic
+  mit Key verbunden hatte. Ursache: `frontend/src/components/ChatView.tsx`
+  griff per `localStorage.getItem('llmConfig')` (camelCase) auf einen
+  Schlüssel zu, den App.tsx unter `KEYS.LLM_CONFIG = 'llm_config'`
+  (snake_case) schreibt. `getLLMHeaders()` retournierte daher immer
+  `undefined`, der `x-llm-api-key`-Header fehlte am Chat-Request und der
+  Backend-Handler landete unkonditional in `generateFallbackResponse()`.
+  ChatView importiert jetzt `KEYS` aus `services/persistence` und liest den
+  LLM-Config unter demselben Schlüssel, den der Rest der App schreibt.
+- **Block B Critical-Finding D-17 (Auth-Bypass auf Security-Routen):**
+  Der Beta-Run hat dokumentiert, dass `/api/security/*`, `/api/secrets`,
+  `/api/backup` sowie alle übrigen Produktrouten im Dev-Modus
+  (`NODE_ENV !== 'production'` und `VALTHERON_REQUIRE_AUTH !== 'true'`) ohne
+  `Authorization`-Header HTTP 200 lieferten — inklusive Audit-Log,
+  Kill-Switch-Steuerung und Secrets-CRUD. `backend/src/app.ts` setzt jetzt
+  `adminGuard` unkonditional auf `adminOnly` und mountet
+  `/api/security`, `/api/secrets` und `/api/backup` immer hinter
+  `authMiddleware` + `adminGuard`, egal in welchem Modus. Produktrouten
+  (`/api/agents`, `/tasks`, `/workflows`, `/analytics`, `/chat`,
+  `/collaboration`, `/project-tree`, `/notifications`, `/interactions`)
+  behalten den optionalAuth-Fallback in Dev für lokales Klick-Testen, aber
+  beim Boot wird jetzt eine deutliche Warnung geloggt, welche Routen offen
+  sind und wie man (via `VALTHERON_REQUIRE_AUTH=true`) den
+  Produktionspfad spiegelt. Live-Scope-Test nach dem Fix:
+  Security-/Secrets-/Backup-Routen ⇒ 401, übrige Produktrouten ⇒ 200.
+  Tests in `security.test.ts`, `secrets-api.test.ts`, `backup-api.test.ts`,
+  `middleware.test.ts` und `integration.test.ts` registrieren jetzt einen
+  Admin und hängen den Token an die geschützten Calls; ein neuer
+  Negativ-Test stellt sicher, dass anonyme Aufrufe auf `/api/security/events`
+  weiterhin mit 401 abgewiesen werden.
+- **Block A Critical-Findings D-4 und D-7 (Auth-Sicherheit):**
+  `backend/src/routes/auth.ts` hat Passwörter mit `crypto.createHash('sha256')`
+  ohne Salt und ohne Work-Factor gehasht — Rainbow-Table-trivial,
+  GPU-Brute-Force in Sekunden. Ersetzt durch **bcryptjs mit Cost 12** in
+  Produktion (~250 ms pro Hash, exponentiell teurer für Angreifer); Test-Suite
+  läuft mit Cost 4 damit `security-pentest.test.ts` interaktiv bleibt.
+  `verifyPassword()` unterstützt beide Formate parallel: bcrypt-Strings
+  (`$2a$/$2b$/$2y$`-Prefix) werden direkt verifiziert, alte
+  SHA-256-Hex-Strings per `crypto.timingSafeEqual` (kein Timing-Leak) — und
+  bei erfolgreichem Login transparent in bcrypt-Form überschrieben.
+  Migrations-Script entfällt damit. Login führt den bcrypt-Compare auch bei
+  unbekanntem Username gegen einen Referenz-Hash aus, damit Antwortzeiten
+  nicht mehr Existenz oder Nicht-Existenz eines Accounts verraten.
+  **Login-Rate-Limit von 20/Min auf 5/15Min verschärft:** der allgemeine
+  `/api/auth`-Limiter (20 req/min) ließ 10 Fehl-Logins in 16 ms durch — beim
+  Beta-Run nachgewiesen. Neuer dedizierter `loginRateLimiter` (5 Versuche /
+  15 Min / IP, OWASP ASVS 2.2.1) hängt direkt am `/login`-Handler. Der
+  `rateLimiter()` aus `backend/src/middleware/rateLimiter.ts` bekommt einen
+  optionalen `keyScope`-Parameter, damit der strenge Login-Limiter nicht
+  denselben IP-Bucket mit dem breiteren Auth-Limiter teilt.
+  `backend/src/db/seed.ts` Demo-Seed nutzt ebenfalls bcrypt (Cost 10) für
+  Konsistenz; der ungenutzte `crypto`-Import entfällt.
+  Live-Verifikation: 5 Fehlversuche → 401 (~420 ms je bcrypt-Compare),
+  6.–8. Versuch → 429 mit `Retry-After`-Header. Stored Hash: `$2b$12$…`,
+  60 Zeichen. Tests: 219/219 frontend + 448/448 backend pass.
+- **Beta-Test 2026-05-03 — Agent-Seed ohne fabricated Runtime-State + klare
+  Kill-Switch-Labels:** `backend/src/db/seed.ts` hat pro Agent
+  `status/successRate/tasksCompleted/failedTasks/avgTaskDuration` aus einem
+  ID-keyed RNG vorbelegt — exakt deshalb tauchten auf einer frischen
+  Installation "144 aktiv", "72 working", 88.5 % Erfolgsrate und eine
+  Top-Performer-Liste mit 99/99/99/99/99 auf, obwohl noch kein Agent eine
+  Task ausgeführt hatte. Neue Seeds setzen alle Runtime-Felder auf
+  `status='idle'`, `successRate=0`, `tasksCompleted=0`, `failedTasks=0`,
+  `avgTaskDuration=0`; ExecutionEngine/WorkflowEngine flippen sie sobald
+  echte Tasks laufen. `backend/src/routes/analytics.ts` Top-Performers-Query
+  filtert jetzt `WHERE tasksCompleted > 0`, damit die Dashboard-Karte den
+  Empty-State trifft statt Seed-Defaults zu listen.
+- **Kill-Switch-Labels semantisch korrigiert:** Header-Badge und
+  Dashboard-Button rendern `aktiv=true` jetzt als **rotes "GEZÜNDET"** mit
+  Untertitel "Alle Agenten suspendiert", `aktiv=false` als **grünes
+  "STANDBY"** mit "Bereit — wird bei Auto-Trigger-Verletzung aktiviert".
+  Vorher waren Farbe (grün bei `aktiv=true`) und Begriff ("AKTIV") für die
+  Gefahrenstellung invers — ein gezündeter Kill-Switch sah aus wie ein
+  gesundes System. Tooltips erläutern jeweils, was ein Klick auslöst.
+  `KillSwitchView` zieht denselben Begriff. Pro-Regel-Toggle ("AKTIV/AUS")
+  bleibt unverändert, weil semantisch anders (Regel aktiviert vs. deaktiviert).
+
+  Bestehende Lokalinstallationen behalten den alten Seed solange
+  `backend/data/valtheron.db` nicht gelöscht wird — `seedAgentCatalog`
+  short-circuit bei vorhandenen Agenten.
+- **Beta-Test 2026-05-03 — EnterpriseView, ProjektBaumView und Certifications
+  entmockt (Phase 5/6/7):** Aufbauend auf dem Dashboard-Cleanup wurden alle
+  übrigen Sidebar-Tabs auf echte Daten oder explizite Empty-States umgestellt.
+  `ProjektBaumView.tsx` lädt den Baum jetzt aus `/api/project-tree` (mit
+  Empty-State "Noch keine Projekt-Knoten angelegt"), der 2,5-Sekunden-
+  `setInterval`, der zufällige „Live-Updates" wie „Build erfolgreich" oder
+  „Test-Suite gestartet" fabriziert hat, ist ersatzlos gestrichen — Updates
+  abonnieren stattdessen reale Backend-WebSocket-Events (`agent_status`,
+  `task_progress`, `node_update`, `security_event`, `metric_change`). Die
+  Agent-Präsenz wird deterministisch aus dem realen Agent-Status abgeleitet
+  statt per `Math.random` zugewiesen. `EnterpriseView.tsx` hatte fünf
+  Generator-Funktionen (Incidents, Policies, Agent-Versionen, Shared Files,
+  Health-Metriken) die jeden Tab mit Random-Fixtures gefüllt haben — alle
+  ersetzt durch leere Defaults und Empty-State-Cards, die jeweils den
+  Backend-Endpoint nennen, der die Tab-Daten künftig liefern soll
+  (`/api/interactions` für Versionen,
+  `/api/collaboration/sessions/:id/files` für Shared Workspace,
+  `/api/security/audit` für die Audit-Preview). Reports-Tab guardet
+  Division-durch-Null in Erfolgsrate-/Avg-Duration-/Policy-Compliance-
+  Aggregaten (vorher `NaN%`). `CertificationsView.tsx` zeigt einen
+  Empty-State statt einer leeren Tabelle. Backend `seedDefaultTree` legt
+  Projekt-Module mit `status='planned'` und `progress=0` an statt mit
+  fabrizierten 45 %/70 %/60 %/55 %-Werten. `App.tsx` markiert die
+  verbleibende `simulatedOutputs`-/`tickWorkflows`-Workflow-Simulation
+  explizit als SIMULATED-Fallback samt Verweis auf den echten Backend-
+  Workflow-Engine als nächsten Cleanup-Schritt.
+  Frontend-Suite: 219/219 grün, Backend-Suite: 448/448 grün.
+- **Beta-Test 2026-05-03 — Dashboard ohne fabricated Demo-Daten (D-8…D-14):**
+  Das Dashboard rendert nicht mehr `mockData.ts` (Random `tasksTrend`,
+  `Math.random()`-`avgResponseTime`, hardcoded `uptime: 99.97`, String-Literal
+  `"von 80 total"`). `App.tsx` lädt `analytics` jetzt aus dem echten Endpoint
+  `analyticsAPI.dashboard()` und reagiert auf `metric_change`-WebSocket-Events
+  plus 30 s-Poll. `DashboardView.tsx` zeigt `tasksTotal` aus dem Backend,
+  formatiert `uptimeSeconds` als „Xd Yh", und rendert Empty-States solange
+  noch keine Tasks ausgeführt wurden. `AnalyticsView.tsx` zieht `trends` und
+  `slas` aus `/api/analytics/performance` bzw. `/api/analytics/sla` (kein
+  lokales `generateTrends`/`generateSLAs` mit Sin+Random mehr). Backend-Endpoint
+  `/api/analytics/dashboard` liefert zwei neue Felder: `tasksTotal`
+  (`SELECT COUNT(*) FROM tasks`) und `uptimeSeconds` (Prozess-Laufzeit seit
+  Start). Initial-States für `tasks`, `securityEvents`, `auditLog`,
+  `projektBaum`, `certifications` sind leer; der API-Mount-Effect befüllt sie.
+  Neue Datei `frontend/src/services/defaults.ts` hält echte Konfig-Defaults
+  (`defaultSecurityConfig` mit `rbac`/`encryption`, `defaultKillSwitch.aktiv:
+  false` statt mock-`true`, leerer `defaultProjektBaum`, neutrale
+  `defaultAnalytics`). `mockData.ts` wird nur noch von Tests importiert.
+  Frontend-Suite: 219/219 grün, Backend-Suite: 448/448 grün.
 - **Hotfix für D-5 (`install:all`):** Die Kette
   `cd backend && npm install && cd ../frontend && npm install && npm install`
   hinterließ die Shell im `frontend/`-Verzeichnis, sodass der dritte

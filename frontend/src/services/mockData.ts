@@ -1,4 +1,16 @@
-import type { Agent, Task, CollaborationSession, Certification, SecurityEvent, KillSwitch, AuditEntry, ProjektBaumNode, SecurityConfig, AnalyticsData, AgentCategory } from '../types';
+import type {
+  Agent,
+  Task,
+  CollaborationSession,
+  Certification,
+  SecurityEvent,
+  KillSwitch,
+  AuditEntry,
+  ProjektBaumNode,
+  SecurityConfig,
+  AnalyticsData,
+  AgentCategory,
+} from '../types';
 import { loadValtheronAgents } from './valtheronAgents';
 
 function randomFrom<T>(arr: T[]): T {
@@ -44,51 +56,171 @@ type TaskStatus = 'pending' | 'in_progress' | 'completed' | 'failed';
 
 export function generateCollaborations(agents: Agent[]): CollaborationSession[] {
   return [
-    { id: 'collab_001', name: 'Market Risk Analysis', agents: [agents[0].id, agents[1].id, agents[20].id], status: 'active', sharedFiles: ['risk_model.py', 'market_data.csv'], messageCount: 47, startedAt: new Date(Date.now() - 3600000).toISOString(), maxIterations: 10, coordinatorPrompt: 'Koordiniere die Marktanalyse zwischen Trading- und Security-Agenten.', delegationStrategy: 'capability-based', redundancyScore: 12, conflictResolution: 'voting', consensusThreshold: 75, synthesis: 'Market risk is elevated. Recommend hedging positions.' },
-    { id: 'collab_002', name: 'Code Review Pipeline', agents: [agents[40].id, agents[41].id, agents[60].id, agents[61].id], status: 'active', sharedFiles: ['app.ts', 'tests.spec.ts', 'review.md'], messageCount: 124, startedAt: new Date(Date.now() - 7200000).toISOString(), maxIterations: 20, coordinatorPrompt: 'Leite das Code-Review zwischen Dev und QA Teams.', delegationStrategy: 'round-robin', redundancyScore: 8, conflictResolution: 'coordinator-decides', consensusThreshold: 80, synthesis: 'Code quality improved by 23%. 3 critical bugs found.' },
-    { id: 'collab_003', name: 'Security Audit Sprint', agents: [agents[20].id, agents[21].id, agents[22].id], status: 'completed', sharedFiles: ['audit_report.md', 'vulnerabilities.json'], messageCount: 89, startedAt: new Date(Date.now() - 86400000).toISOString(), maxIterations: 15, coordinatorPrompt: 'Führe ein umfassendes Security-Audit durch.', delegationStrategy: 'priority', redundancyScore: 5, conflictResolution: 'merge', consensusThreshold: 90, synthesis: 'All critical vulnerabilities addressed. 2 medium issues remaining.' },
+    {
+      id: 'collab_001',
+      name: 'Market Risk Analysis',
+      agents: [agents[0].id, agents[1].id, agents[20].id],
+      status: 'active',
+      sharedFiles: ['risk_model.py', 'market_data.csv'],
+      messageCount: 47,
+      startedAt: new Date(Date.now() - 3600000).toISOString(),
+      maxIterations: 10,
+      coordinatorPrompt: 'Koordiniere die Marktanalyse zwischen Trading- und Security-Agenten.',
+      delegationStrategy: 'capability-based',
+      redundancyScore: 12,
+      conflictResolution: 'voting',
+      consensusThreshold: 75,
+      synthesis: 'Market risk is elevated. Recommend hedging positions.',
+    },
+    {
+      id: 'collab_002',
+      name: 'Code Review Pipeline',
+      agents: [agents[40].id, agents[41].id, agents[60].id, agents[61].id],
+      status: 'active',
+      sharedFiles: ['app.ts', 'tests.spec.ts', 'review.md'],
+      messageCount: 124,
+      startedAt: new Date(Date.now() - 7200000).toISOString(),
+      maxIterations: 20,
+      coordinatorPrompt: 'Leite das Code-Review zwischen Dev und QA Teams.',
+      delegationStrategy: 'round-robin',
+      redundancyScore: 8,
+      conflictResolution: 'coordinator-decides',
+      consensusThreshold: 80,
+      synthesis: 'Code quality improved by 23%. 3 critical bugs found.',
+    },
+    {
+      id: 'collab_003',
+      name: 'Security Audit Sprint',
+      agents: [agents[20].id, agents[21].id, agents[22].id],
+      status: 'completed',
+      sharedFiles: ['audit_report.md', 'vulnerabilities.json'],
+      messageCount: 89,
+      startedAt: new Date(Date.now() - 86400000).toISOString(),
+      maxIterations: 15,
+      coordinatorPrompt: 'Führe ein umfassendes Security-Audit durch.',
+      delegationStrategy: 'priority',
+      redundancyScore: 5,
+      conflictResolution: 'merge',
+      consensusThreshold: 90,
+      synthesis: 'All critical vulnerabilities addressed. 2 medium issues remaining.',
+    },
   ];
 }
 
 export function generateCertifications(agents: Agent[]): Certification[] {
   const levels: Certification['level'][] = ['bronze', 'silver', 'gold', 'platinum'];
   const certs: Certification[] = [];
-  agents.filter(a => a.certificationId).forEach((a, i) => {
-    const level = levels[Math.min(3, Math.floor(a.successRate / 25))];
-    const status: Certification['status'] = a.status === 'suspended' ? 'suspended' : Math.random() > 0.15 ? 'valid' : 'expiring';
-    certs.push({
-      id: a.certificationId!,
-      agentId: a.id,
-      agentName: a.name,
-      level,
-      status,
-      score: a.successRate,
-      issuedAt: new Date(Date.now() - Math.floor(Math.random() * 60 * 86400000)).toISOString(),
-      expiresAt: new Date(Date.now() + Math.floor(Math.random() * 90 * 86400000)).toISOString(),
-      tests: [
-        { name: 'Domain Knowledge', passed: true, score: 85 + Math.floor(Math.random() * 15) },
-        { name: 'Edge Cases', passed: Math.random() > 0.2, score: 70 + Math.floor(Math.random() * 30) },
-        { name: 'Performance', passed: true, score: 80 + Math.floor(Math.random() * 20) },
-        { name: 'Security Compliance', passed: Math.random() > 0.1, score: 75 + Math.floor(Math.random() * 25) },
-      ],
-      monitoringAlerts: i % 5 === 0 ? [
-        { id: `ma_${i}_1`, type: 'performance', severity: 'medium', message: 'Response time increased by 15%', timestamp: new Date().toISOString(), resolved: false },
-        { id: `ma_${i}_2`, type: 'compliance', severity: 'low', message: 'Minor policy deviation detected', timestamp: new Date().toISOString(), resolved: true },
-      ] : [],
+  agents
+    .filter((a) => a.certificationId)
+    .forEach((a, i) => {
+      const level = levels[Math.min(3, Math.floor(a.successRate / 25))];
+      const status: Certification['status'] =
+        a.status === 'suspended' ? 'suspended' : Math.random() > 0.15 ? 'valid' : 'expiring';
+      certs.push({
+        id: a.certificationId!,
+        agentId: a.id,
+        agentName: a.name,
+        level,
+        status,
+        score: a.successRate,
+        issuedAt: new Date(Date.now() - Math.floor(Math.random() * 60 * 86400000)).toISOString(),
+        expiresAt: new Date(Date.now() + Math.floor(Math.random() * 90 * 86400000)).toISOString(),
+        tests: [
+          { name: 'Domain Knowledge', passed: true, score: 85 + Math.floor(Math.random() * 15) },
+          { name: 'Edge Cases', passed: Math.random() > 0.2, score: 70 + Math.floor(Math.random() * 30) },
+          { name: 'Performance', passed: true, score: 80 + Math.floor(Math.random() * 20) },
+          { name: 'Security Compliance', passed: Math.random() > 0.1, score: 75 + Math.floor(Math.random() * 25) },
+        ],
+        monitoringAlerts:
+          i % 5 === 0
+            ? [
+                {
+                  id: `ma_${i}_1`,
+                  type: 'performance',
+                  severity: 'medium',
+                  message: 'Response time increased by 15%',
+                  timestamp: new Date().toISOString(),
+                  resolved: false,
+                },
+                {
+                  id: `ma_${i}_2`,
+                  type: 'compliance',
+                  severity: 'low',
+                  message: 'Minor policy deviation detected',
+                  timestamp: new Date().toISOString(),
+                  resolved: true,
+                },
+              ]
+            : [],
+      });
     });
-  });
   return certs;
 }
 
 export function generateSecurityEvents(): SecurityEvent[] {
   return [
-    { id: 'sec_001', type: 'injection', severity: 'critical', message: 'Prompt injection attempt detected on Agent 045', agentId: 'agent_045', timestamp: new Date(Date.now() - 600000).toISOString(), resolved: false },
-    { id: 'sec_002', type: 'auth', severity: 'high', message: 'Multiple failed auth attempts from IP 192.168.1.105', timestamp: new Date(Date.now() - 1200000).toISOString(), resolved: false },
-    { id: 'sec_003', type: 'access', severity: 'medium', message: 'Agent 012 accessed restricted resource /admin/config', agentId: 'agent_012', timestamp: new Date(Date.now() - 1800000).toISOString(), resolved: true },
-    { id: 'sec_004', type: 'anomaly', severity: 'high', message: 'Unusual data exfiltration pattern from Agent 078', agentId: 'agent_078', timestamp: new Date(Date.now() - 3600000).toISOString(), resolved: false },
-    { id: 'sec_005', type: 'policy', severity: 'low', message: 'Agent 156 exceeded token limit policy', agentId: 'agent_156', timestamp: new Date(Date.now() - 7200000).toISOString(), resolved: true },
-    { id: 'sec_006', type: 'injection', severity: 'critical', message: 'Jailbreak attempt blocked on Agent 033', agentId: 'agent_033', timestamp: new Date(Date.now() - 300000).toISOString(), resolved: true },
-    { id: 'sec_007', type: 'anomaly', severity: 'medium', message: 'Agent 091 behavior deviation score: 0.78', agentId: 'agent_091', timestamp: new Date(Date.now() - 5400000).toISOString(), resolved: false },
+    {
+      id: 'sec_001',
+      type: 'injection',
+      severity: 'critical',
+      message: 'Prompt injection attempt detected on Agent 045',
+      agentId: 'agent_045',
+      timestamp: new Date(Date.now() - 600000).toISOString(),
+      resolved: false,
+    },
+    {
+      id: 'sec_002',
+      type: 'auth',
+      severity: 'high',
+      message: 'Multiple failed auth attempts from IP 192.168.1.105',
+      timestamp: new Date(Date.now() - 1200000).toISOString(),
+      resolved: false,
+    },
+    {
+      id: 'sec_003',
+      type: 'access',
+      severity: 'medium',
+      message: 'Agent 012 accessed restricted resource /admin/config',
+      agentId: 'agent_012',
+      timestamp: new Date(Date.now() - 1800000).toISOString(),
+      resolved: true,
+    },
+    {
+      id: 'sec_004',
+      type: 'anomaly',
+      severity: 'high',
+      message: 'Unusual data exfiltration pattern from Agent 078',
+      agentId: 'agent_078',
+      timestamp: new Date(Date.now() - 3600000).toISOString(),
+      resolved: false,
+    },
+    {
+      id: 'sec_005',
+      type: 'policy',
+      severity: 'low',
+      message: 'Agent 156 exceeded token limit policy',
+      agentId: 'agent_156',
+      timestamp: new Date(Date.now() - 7200000).toISOString(),
+      resolved: true,
+    },
+    {
+      id: 'sec_006',
+      type: 'injection',
+      severity: 'critical',
+      message: 'Jailbreak attempt blocked on Agent 033',
+      agentId: 'agent_033',
+      timestamp: new Date(Date.now() - 300000).toISOString(),
+      resolved: true,
+    },
+    {
+      id: 'sec_007',
+      type: 'anomaly',
+      severity: 'medium',
+      message: 'Agent 091 behavior deviation score: 0.78',
+      agentId: 'agent_091',
+      timestamp: new Date(Date.now() - 5400000).toISOString(),
+      resolved: false,
+    },
   ];
 }
 
@@ -112,7 +244,14 @@ export function generateAuditLog(): AuditEntry[] {
     entries.push({
       id: `audit_${i}`,
       agentId: `agent_${String(Math.floor(Math.random() * 290) + 1).padStart(3, '0')}`,
-      action: randomFrom(['task_started', 'task_completed', 'file_accessed', 'api_call', 'config_changed', 'error_logged']),
+      action: randomFrom([
+        'task_started',
+        'task_completed',
+        'file_accessed',
+        'api_call',
+        'config_changed',
+        'error_logged',
+      ]),
       details: `Audit entry ${i} - automated operation log`,
       timestamp: new Date(Date.now() - i * 120000).toISOString(),
       riskLevel: randomFrom(['info', 'low', 'medium', 'high', 'critical'] as AuditEntry['riskLevel'][]),
@@ -123,27 +262,156 @@ export function generateAuditLog(): AuditEntry[] {
 
 export function generateProjektBaum(): ProjektBaumNode {
   return {
-    id: 'root', name: 'Valtheron Agentic Workspace', type: 'project', status: 'active', progress: 72, children: [
-      { id: 'mod_trading', name: 'Trading Operations', type: 'module', status: 'active', progress: 85, children: [
-        { id: 'task_market', name: 'Market Analysis', type: 'task', status: 'active', progress: 90, children: [], agentId: 'agent_001' },
-        { id: 'task_risk', name: 'Risk Management', type: 'task', status: 'active', progress: 78, children: [], agentId: 'agent_002' },
-        { id: 'task_portfolio', name: 'Portfolio Optimization', type: 'task', status: 'completed', progress: 100, children: [], agentId: 'agent_003' },
-      ]},
-      { id: 'mod_security', name: 'Security Operations', type: 'module', status: 'active', progress: 65, children: [
-        { id: 'task_threat', name: 'Threat Detection', type: 'task', status: 'active', progress: 70, children: [], agentId: 'agent_021' },
-        { id: 'task_vuln', name: 'Vulnerability Scanning', type: 'task', status: 'active', progress: 55, children: [], agentId: 'agent_022' },
-        { id: 'task_incident', name: 'Incident Response', type: 'task', status: 'blocked', progress: 30, children: [], agentId: 'agent_023' },
-      ]},
-      { id: 'mod_dev', name: 'Development Pipeline', type: 'module', status: 'active', progress: 78, children: [
-        { id: 'task_codegen', name: 'Code Generation', type: 'task', status: 'completed', progress: 100, children: [], agentId: 'agent_041' },
-        { id: 'task_review', name: 'Code Review', type: 'task', status: 'active', progress: 60, children: [], agentId: 'agent_042' },
-        { id: 'task_test', name: 'Automated Testing', type: 'task', status: 'active', progress: 72, children: [], agentId: 'agent_061' },
-      ]},
-      { id: 'mod_ops', name: 'Operations & Monitoring', type: 'module', status: 'active', progress: 60, children: [
-        { id: 'task_deploy', name: 'Deployment Automation', type: 'task', status: 'active', progress: 65, children: [], agentId: 'agent_101' },
-        { id: 'task_monitor', name: 'System Monitoring', type: 'task', status: 'active', progress: 58, children: [], agentId: 'agent_181' },
-        { id: 'task_support', name: 'Support Automation', type: 'task', status: 'active', progress: 45, children: [], agentId: 'agent_141' },
-      ]},
+    id: 'root',
+    name: 'Valtheron Agentic Workspace',
+    type: 'project',
+    status: 'active',
+    progress: 72,
+    children: [
+      {
+        id: 'mod_trading',
+        name: 'Trading Operations',
+        type: 'module',
+        status: 'active',
+        progress: 85,
+        children: [
+          {
+            id: 'task_market',
+            name: 'Market Analysis',
+            type: 'task',
+            status: 'active',
+            progress: 90,
+            children: [],
+            agentId: 'agent_001',
+          },
+          {
+            id: 'task_risk',
+            name: 'Risk Management',
+            type: 'task',
+            status: 'active',
+            progress: 78,
+            children: [],
+            agentId: 'agent_002',
+          },
+          {
+            id: 'task_portfolio',
+            name: 'Portfolio Optimization',
+            type: 'task',
+            status: 'completed',
+            progress: 100,
+            children: [],
+            agentId: 'agent_003',
+          },
+        ],
+      },
+      {
+        id: 'mod_security',
+        name: 'Security Operations',
+        type: 'module',
+        status: 'active',
+        progress: 65,
+        children: [
+          {
+            id: 'task_threat',
+            name: 'Threat Detection',
+            type: 'task',
+            status: 'active',
+            progress: 70,
+            children: [],
+            agentId: 'agent_021',
+          },
+          {
+            id: 'task_vuln',
+            name: 'Vulnerability Scanning',
+            type: 'task',
+            status: 'active',
+            progress: 55,
+            children: [],
+            agentId: 'agent_022',
+          },
+          {
+            id: 'task_incident',
+            name: 'Incident Response',
+            type: 'task',
+            status: 'blocked',
+            progress: 30,
+            children: [],
+            agentId: 'agent_023',
+          },
+        ],
+      },
+      {
+        id: 'mod_dev',
+        name: 'Development Pipeline',
+        type: 'module',
+        status: 'active',
+        progress: 78,
+        children: [
+          {
+            id: 'task_codegen',
+            name: 'Code Generation',
+            type: 'task',
+            status: 'completed',
+            progress: 100,
+            children: [],
+            agentId: 'agent_041',
+          },
+          {
+            id: 'task_review',
+            name: 'Code Review',
+            type: 'task',
+            status: 'active',
+            progress: 60,
+            children: [],
+            agentId: 'agent_042',
+          },
+          {
+            id: 'task_test',
+            name: 'Automated Testing',
+            type: 'task',
+            status: 'active',
+            progress: 72,
+            children: [],
+            agentId: 'agent_061',
+          },
+        ],
+      },
+      {
+        id: 'mod_ops',
+        name: 'Operations & Monitoring',
+        type: 'module',
+        status: 'active',
+        progress: 60,
+        children: [
+          {
+            id: 'task_deploy',
+            name: 'Deployment Automation',
+            type: 'task',
+            status: 'active',
+            progress: 65,
+            children: [],
+            agentId: 'agent_101',
+          },
+          {
+            id: 'task_monitor',
+            name: 'System Monitoring',
+            type: 'task',
+            status: 'active',
+            progress: 58,
+            children: [],
+            agentId: 'agent_181',
+          },
+          {
+            id: 'task_support',
+            name: 'Support Automation',
+            type: 'task',
+            status: 'active',
+            progress: 45,
+            children: [],
+            agentId: 'agent_141',
+          },
+        ],
+      },
     ],
   };
 }
@@ -152,30 +420,73 @@ export const defaultSecurityConfig: SecurityConfig = {
   promptInjectionDefense: true,
   piiDetection: { email: true, phone: true, ssn: true, creditCard: true, address: false, name: false },
   gdpr: { exportEnabled: true, deletionEnabled: true, anonymizationEnabled: false },
-  zeroTrust: { networkSegmentation: true, mfa: true, leastPrivilege: true, continuousVerification: false, microSegmentation: false },
-  threatModel: { injection: true, dataLeak: true, privilegeEscalation: true, dos: false, supplyChain: false, insiderThreat: false },
+  zeroTrust: {
+    networkSegmentation: true,
+    mfa: true,
+    leastPrivilege: true,
+    continuousVerification: false,
+    microSegmentation: false,
+  },
+  threatModel: {
+    injection: true,
+    dataLeak: true,
+    privilegeEscalation: true,
+    dos: false,
+    supplyChain: false,
+    insiderThreat: false,
+  },
   rbac: { roles: ['admin', 'operator', 'viewer', 'auditor'], activeRole: 'admin' },
   encryption: { jwt: true, tls: true, aes256: true, securityHeaders: true },
 };
 
 export function generateAnalytics(agents: Agent[], tasks: Task[]): AnalyticsData {
-  const activeCount = agents.filter(a => a.status === 'active' || a.status === 'working').length;
-  const completedToday = tasks.filter(t => t.status === 'completed').length;
+  const activeCount = agents.filter((a) => a.status === 'active' || a.status === 'working').length;
+  const completedToday = tasks.filter((t) => t.status === 'completed').length;
   const categories: AgentCategory[] = [
-    'trading', 'security', 'development', 'qa', 'documentation', 'deployment',
-    'analyst', 'support', 'integration', 'monitoring',
-    'hybrid', 'meta', 'fintech', 'ai-native', 'human-centric', 'specialized-data',
+    'trading',
+    'security',
+    'development',
+    'qa',
+    'documentation',
+    'deployment',
+    'analyst',
+    'support',
+    'integration',
+    'monitoring',
+    'hybrid',
+    'meta',
+    'fintech',
+    'ai-native',
+    'human-centric',
+    'specialized-data',
   ];
   return {
     totalAgents: agents.length,
     activeAgents: activeCount,
     tasksToday: completedToday,
+    tasksTotal: tasks.length,
     successRate: +(agents.reduce((s, a) => s + a.successRate, 0) / agents.length).toFixed(1),
     avgResponseTime: 45 + Math.floor(Math.random() * 30),
-    tasksTrend: Array.from({ length: 7 }, (_, i) => ({ date: new Date(Date.now() - (6 - i) * 86400000).toISOString().split('T')[0], count: 20 + Math.floor(Math.random() * 40) })),
-    categoryDistribution: categories.map(c => ({ category: c, count: agents.filter(a => a.category === c).length })),
-    topPerformers: agents.sort((a, b) => b.successRate - a.successRate).slice(0, 5).map(a => ({ agentId: a.id, name: a.name, score: a.successRate })),
-    errorRate: +(agents.reduce((s, a) => s + a.failedTasks, 0) / Math.max(1, agents.reduce((s, a) => s + a.tasksCompleted, 0)) * 100).toFixed(1),
-    uptime: 99.97,
+    tasksTrend: Array.from({ length: 7 }, (_, i) => ({
+      date: new Date(Date.now() - (6 - i) * 86400000).toISOString().split('T')[0],
+      count: 20 + Math.floor(Math.random() * 40),
+    })),
+    categoryDistribution: categories.map((c) => ({
+      category: c,
+      count: agents.filter((a) => a.category === c).length,
+    })),
+    topPerformers: agents
+      .sort((a, b) => b.successRate - a.successRate)
+      .slice(0, 5)
+      .map((a) => ({ agentId: a.id, name: a.name, score: a.successRate })),
+    errorRate: +(
+      (agents.reduce((s, a) => s + a.failedTasks, 0) /
+        Math.max(
+          1,
+          agents.reduce((s, a) => s + a.tasksCompleted, 0),
+        )) *
+      100
+    ).toFixed(1),
+    uptimeSeconds: 0,
   };
 }

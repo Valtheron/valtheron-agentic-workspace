@@ -80,7 +80,7 @@ npm run build
 npm run preview    # Oder: Dateien aus dist/ über Webserver ausliefern
 ```
 
-**Zugriff:** `http://localhost:5173` (Frontend) → `http://localhost:3001` (API)
+**Zugriff:** `http://localhost:3055` (Frontend) → `http://localhost:3001` (API)
 
 ---
 

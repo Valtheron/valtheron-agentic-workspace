@@ -1,12 +1,22 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import AnalyticsView from '../components/AnalyticsView';
 import type { AnalyticsData, Agent, Task } from '../types';
+
+vi.mock('../services/api', () => ({
+  analyticsAPI: {
+    performance: vi.fn(),
+    sla: vi.fn(),
+  },
+}));
+
+import { analyticsAPI } from '../services/api';
 
 const mockAnalytics: AnalyticsData = {
   totalAgents: 20,
   activeAgents: 15,
   tasksToday: 35,
+  tasksTotal: 180,
   successRate: 95.0,
   avgResponseTime: 160,
   tasksTrend: Array.from({ length: 7 }, (_, i) => ({ date: `2024-01-0${i + 1}`, count: 10 + i })),
@@ -16,7 +26,7 @@ const mockAnalytics: AnalyticsData = {
   ],
   topPerformers: [{ agentId: 'a1', name: 'Top Agent', score: 99 }],
   errorRate: 5.0,
-  uptime: 99.5,
+  uptimeSeconds: 86400 * 30,
 };
 
 const mockAgents: Agent[] = [
@@ -90,12 +100,51 @@ const mockTasks: Task[] = [
   },
 ];
 
+const mockTrends = Array.from({ length: 7 }, (_, i) => ({
+  date: `2024-01-0${i + 1}`,
+  throughput: 10 + i,
+  errorRate: 2 + i * 0.1,
+  avgResponseTime: 150,
+  successRate: 95,
+  activeAgents: 12,
+}));
+
+const mockSlas = [
+  {
+    id: 'sla-1',
+    name: 'Response Time',
+    metric: 'response_time',
+    threshold: 200,
+    unit: 'ms',
+    current: 150,
+    status: 'met',
+    period: 'hourly',
+    history: [],
+  },
+  {
+    id: 'sla-3',
+    name: 'System Uptime',
+    metric: 'uptime',
+    threshold: 99.5,
+    unit: '%',
+    current: 99.9,
+    status: 'met',
+    period: 'monthly',
+    history: [],
+  },
+];
+
 describe('AnalyticsView', () => {
   const defaultProps = {
     analytics: mockAnalytics,
     agents: mockAgents,
     tasks: mockTasks,
   };
+
+  beforeEach(() => {
+    vi.mocked(analyticsAPI.performance).mockResolvedValue({ trends: mockTrends });
+    vi.mocked(analyticsAPI.sla).mockResolvedValue({ sla: mockSlas });
+  });
 
   it('renders all 6 tabs', () => {
     render(<AnalyticsView {...defaultProps} />);
@@ -107,34 +156,36 @@ describe('AnalyticsView', () => {
     expect(screen.getByText('Erfolgsrate')).toBeInTheDocument();
   });
 
-  it('shows KPI cards in trends tab', () => {
+  it('shows KPI cards in trends tab', async () => {
     render(<AnalyticsView {...defaultProps} />);
-    expect(screen.getByText('Avg Durchsatz (30d)')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Avg Durchsatz (7d)')).toBeInTheDocument());
     expect(screen.getByText('Avg Response Time')).toBeInTheDocument();
     expect(screen.getByText('Avg Erfolgsrate')).toBeInTheDocument();
     expect(screen.getByText('Avg Fehlerrate')).toBeInTheDocument();
   });
 
-  it('shows trend charts', () => {
+  it('shows trend charts', async () => {
     render(<AnalyticsView {...defaultProps} />);
-    expect(screen.getByText('Durchsatz Trend (30 Tage)')).toBeInTheDocument();
-    expect(screen.getByText('Response Time Trend (30 Tage)')).toBeInTheDocument();
-    expect(screen.getByText('Erfolgsrate Trend (30 Tage)')).toBeInTheDocument();
-    expect(screen.getByText('Aktive Agenten (30 Tage)')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Durchsatz Trend (7 Tage)')).toBeInTheDocument());
+    expect(screen.getByText('Response Time Trend (7 Tage)')).toBeInTheDocument();
+    expect(screen.getByText('Erfolgsrate Trend (7 Tage)')).toBeInTheDocument();
+    expect(screen.getByText('Aktive Agenten (7 Tage)')).toBeInTheDocument();
   });
 
-  it('switches to throughput tab', () => {
+  it('switches to throughput tab', async () => {
     render(<AnalyticsView {...defaultProps} />);
+    await waitFor(() => expect(screen.getByText('Avg Durchsatz (7d)')).toBeInTheDocument());
     fireEvent.click(screen.getByText('Durchsatz'));
-    expect(screen.getByText('Agent-Durchsatz ueber Zeit (30 Tage)')).toBeInTheDocument();
+    expect(screen.getByText('Agent-Durchsatz über Zeit (7 Tage)')).toBeInTheDocument();
     expect(screen.getByText('Durchsatz pro Kategorie')).toBeInTheDocument();
     expect(screen.getByText('Top 10 Agenten nach Tasks')).toBeInTheDocument();
   });
 
-  it('switches to errors tab', () => {
+  it('switches to errors tab', async () => {
     render(<AnalyticsView {...defaultProps} />);
+    await waitFor(() => expect(screen.getByText('Avg Durchsatz (7d)')).toBeInTheDocument());
     fireEvent.click(screen.getByText('Fehlerrate'));
-    expect(screen.getByText('Fehlerrate ueber Zeit (30 Tage)')).toBeInTheDocument();
+    expect(screen.getByText('Fehlerrate über Zeit (7 Tage)')).toBeInTheDocument();
     expect(screen.getByText('Fehler pro Kategorie')).toBeInTheDocument();
     expect(screen.getByText('Agenten mit hoechster Fehlerrate')).toBeInTheDocument();
   });
@@ -148,22 +199,25 @@ describe('AnalyticsView', () => {
     expect(screen.getByText('Kapazitaet pro Kategorie')).toBeInTheDocument();
   });
 
-  it('switches to SLA tab', () => {
+  it('switches to SLA tab', async () => {
     render(<AnalyticsView {...defaultProps} />);
+    await waitFor(() => expect(screen.getByText('Avg Durchsatz (7d)')).toBeInTheDocument());
     fireEvent.click(screen.getByText('SLA Monitoring'));
-    expect(screen.getByText('Response Time')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Response Time')).toBeInTheDocument());
     expect(screen.getByText('System Uptime')).toBeInTheDocument();
   });
 
-  it('switches to success tab', () => {
+  it('switches to success tab', async () => {
     render(<AnalyticsView {...defaultProps} />);
+    await waitFor(() => expect(screen.getByText('Avg Durchsatz (7d)')).toBeInTheDocument());
     fireEvent.click(screen.getByText('Erfolgsrate'));
-    expect(screen.getByText('Agent Success Rate Trend (30 Tage)')).toBeInTheDocument();
+    expect(screen.getByText('Agent Success Rate Trend (7 Tage)')).toBeInTheDocument();
     expect(screen.getByText('Erfolgsrate pro Agent (Top 20)')).toBeInTheDocument();
   });
 
-  it('shows agent names in success tab', () => {
+  it('shows agent names in success tab', async () => {
     render(<AnalyticsView {...defaultProps} />);
+    await waitFor(() => expect(screen.getByText('Avg Durchsatz (7d)')).toBeInTheDocument());
     fireEvent.click(screen.getByText('Erfolgsrate'));
     expect(screen.getByText('Dev Alpha')).toBeInTheDocument();
     expect(screen.getByText('QA Beta')).toBeInTheDocument();

@@ -110,20 +110,20 @@ describe('KillSwitchView', () => {
     expect(screen.getByText('Batch Operations')).toBeInTheDocument();
   });
 
-  it('shows INAKTIV button in panel tab when not aktiv', () => {
+  it('shows STANDBY button in panel tab when not aktiv', () => {
     render(<KillSwitchView {...defaultProps} />);
-    expect(screen.getByText('INAKTIV')).toBeInTheDocument();
+    expect(screen.getByText('STANDBY')).toBeInTheDocument();
     expect(screen.getByText('Emergency Kill Switch')).toBeInTheDocument();
   });
 
-  it('shows AKTIV button when aktiv', () => {
+  it('shows GEZÜNDET button when aktiv', () => {
     render(<KillSwitchView {...defaultProps} killSwitch={{ ...mockKillSwitch, aktiv: true }} />);
-    expect(screen.getByText('AKTIV')).toBeInTheDocument();
+    expect(screen.getByText('GEZÜNDET')).toBeInTheDocument();
   });
 
   it('opens confirmation dialog when main button clicked', () => {
     render(<KillSwitchView {...defaultProps} />);
-    fireEvent.click(screen.getByText('INAKTIV'));
+    fireEvent.click(screen.getByText('STANDBY'));
     expect(screen.getByText('Kill-Switch aktivieren?')).toBeInTheDocument();
     expect(screen.getByText('AKTIVIEREN')).toBeInTheDocument();
     expect(screen.getByText('Abbrechen')).toBeInTheDocument();
@@ -131,14 +131,14 @@ describe('KillSwitchView', () => {
 
   it('closes confirmation dialog on cancel', () => {
     render(<KillSwitchView {...defaultProps} />);
-    fireEvent.click(screen.getByText('INAKTIV'));
+    fireEvent.click(screen.getByText('STANDBY'));
     fireEvent.click(screen.getByText('Abbrechen'));
     expect(screen.queryByText('Kill-Switch aktivieren?')).not.toBeInTheDocument();
   });
 
   it('calls onToggleKillSwitch on confirm', () => {
     render(<KillSwitchView {...defaultProps} />);
-    fireEvent.click(screen.getByText('INAKTIV'));
+    fireEvent.click(screen.getByText('STANDBY'));
     fireEvent.click(screen.getByText('AKTIVIEREN'));
     expect(onToggleKillSwitch).toHaveBeenCalledTimes(1);
     expect(onUpdateKillSwitch).toHaveBeenCalledTimes(1);

@@ -346,13 +346,16 @@ export interface AnalyticsData {
   totalAgents: number;
   activeAgents: number;
   tasksToday: number;
+  /** Total tasks tracked in the system (real DB count). */
+  tasksTotal: number;
   successRate: number;
   avgResponseTime: number;
   tasksTrend: { date: string; count: number }[];
   categoryDistribution: { category: AgentCategory; count: number }[];
   topPerformers: { agentId: string; name: string; score: number }[];
   errorRate: number;
-  uptime: number;
+  /** Seconds since the backend process started — replaces fabricated uptime %. */
+  uptimeSeconds: number;
 }
 
 export type ViewType =

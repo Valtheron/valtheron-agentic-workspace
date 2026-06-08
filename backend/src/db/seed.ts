@@ -1,6 +1,6 @@
 import { getDb } from './schema.js';
 import { v4 as uuid } from 'uuid';
-import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import agents1to200 from '../data/valtheron_agents_1_200.json' with { type: 'json' };
 import agents201to290 from '../data/valtheron_agents_201_290.json' with { type: 'json' };
 import { computeForsetiProfile, isForsetiPending } from '../services/forsetiScoring.js';
@@ -51,7 +51,6 @@ const CATEGORY_MAP: Record<string, string> = {
   'Specialized Data Agents': 'specialized-data',
 };
 
-const STATUSES = ['active', 'idle', 'working', 'blocked'] as const;
 const ARCHETYPES = ['analytiker', 'kreativer', 'diplomat', 'commander'] as const;
 const COMM_STYLES = ['formal', 'casual', 'technical', 'diplomatic'] as const;
 
@@ -77,7 +76,9 @@ function deriveRole(rawCategory: string, name: string): string {
 }
 
 function hashPassword(password: string): string {
-  return crypto.createHash('sha256').update(password).digest('hex');
+  // Demo-only seeds — still bcrypt so the seed never produces a hash format
+  // weaker than what auth.ts writes for real users.
+  return bcrypt.hashSync(password, 10);
 }
 
 function loadCanonicalAgents(): RawAgent[] {
@@ -108,11 +109,17 @@ export function seedAgentCatalog() {
 
       const id = uuid();
       const role = deriveRole(raw.category, raw.name);
-      const status = pick(rng, STATUSES);
-      const successRate = 78 + Math.floor(rng() * 22);
-      const tasksCompleted = 40 + Math.floor(rng() * 460);
-      const failedTasks = Math.floor(rng() * 18);
-      const avgTaskDuration = 10 + Math.floor(rng() * 120);
+      // Runtime fields start in their neutral, never-executed state. The
+      // executionEngine/workflowEngine flip them when real tasks run; the
+      // dashboard's "144 aktiv" / "72 working" / 88.5 % success / Top-Performer
+      // values that were previously visible on a fresh install came from
+      // deterministic id-derived seed values, which is exactly the kind of
+      // demo theatre the beta cleanup is meant to remove.
+      const status = 'idle';
+      const successRate = 0;
+      const tasksCompleted = 0;
+      const failedTasks = 0;
+      const avgTaskDuration = 0;
 
       const personality = JSON.stringify({
         creativity: 30 + Math.floor(rng() * 60),
@@ -221,9 +228,11 @@ export function seedAgentCatalog() {
     INSERT OR REPLACE INTO agent_forseti_profiles (agentId, status, profile, pendingReason, computedAt)
     VALUES (?, ?, ?, ?, datetime('now'))
   `);
-  const persistedForForseti = db
-    .prepare('SELECT id, name, category FROM agents')
-    .all() as { id: string; name: string; category: string }[];
+  const persistedForForseti = db.prepare('SELECT id, name, category FROM agents').all() as {
+    id: string;
+    name: string;
+    category: string;
+  }[];
   const byName = new Map<string, RawAgent>();
   for (const r of rawAgents) byName.set(r.name, r);
 

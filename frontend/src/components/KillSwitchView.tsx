@@ -153,7 +153,7 @@ export default function KillSwitchView({
               transition: 'all 0.3s ease',
             }}
           >
-            {killSwitch.aktiv ? 'AKTIV' : 'INAKTIV'}
+            {killSwitch.aktiv ? 'GEZÜNDET' : 'STANDBY'}
           </button>
           <div style={{ textAlign: 'center', maxWidth: 400 }}>
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>
