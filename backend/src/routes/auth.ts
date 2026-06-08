@@ -40,7 +40,7 @@ function verifyPassword(password: string, storedHash: string): { ok: boolean; ne
   }
   // Legacy SHA-256 hex format — compute the old hash and compare in constant time.
   const legacy = crypto.createHash('sha256').update(password).digest('hex');
-  let ok = false;
+  let ok: boolean;
   try {
     ok = legacy.length === storedHash.length && crypto.timingSafeEqual(Buffer.from(legacy), Buffer.from(storedHash));
   } catch {
