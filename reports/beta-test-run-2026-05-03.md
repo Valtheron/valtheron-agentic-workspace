@@ -141,8 +141,8 @@ Wird in E1 gefüllt. Ziel: API p95 < 200 ms.
 | D-12 | E | **Agent Status 72/72/73/73** (active/working/idle/blocked) summiert auf 290 — deterministisch aus Agent-IDs ableitbar (siehe `backend/src/db/seed.ts:11-19` Kommentar). Bei 0 ausgeführten Tasks unmöglich echte Laufzeit-Status. | `backend/src/db/seed.ts:153-180` (status-Derivation), `frontend/src/components/Dashboard*` | Medium | Status erst setzen, wenn Agent tatsächlich eine Task hatte; vorher `idle` oder `unconfigured`. |
 | D-13 | E | **"Anmelden"-Button oben rechts** sichtbar, obwohl User direkt das Dashboard sieht → keine Auth-Wand davor. Bestätigt Onboarding-Report D-2: Dev-Modus überspringt LoginView via `import.meta.env.PROD`-Gate. Für eine Beta in "echter Anwenderumgebung" ist das gefährlich (Tester könnten meinen, das System sei im Produktionsmodus public-zugänglich). | `frontend/src/App.tsx:465` (laut Onboarding-Report), `npm run dev` | High | Dev-Auth-Bypass abschaltbar machen (`VITE_VALTHERON_REQUIRE_AUTH=true`) und im README-Beta-Abschnitt als Pflicht für Beta-Tester. |
 | D-14 | E | **Kill-Switch-Karte** zeigt rote AKTIV-Kugel + Text "System geschützt — Auto-Trigger aktiv" + Badge "0 Auto-Trigger-Regeln". "AKTIV" ist mehrdeutig (Kill-Switch zündet gerade vs. Schutzfunktion läuft). Backend-Default ist tatsächlich `armed=false` — die UI zeigt also den **Schutz-Modus** als "AKTIV", was vom Wort her das Gegenteil suggeriert. | `frontend/src/components/KillSwitch*`, `backend/src/services/killSwitchMonitor.ts` | Medium | Begriff klären: "Schutz: aktiv" vs. "Kill-Switch: GEZÜNDET". Farbcodierung anpassen (Rot = Kill, Grün = Schutz). |
-| D-15 | G | `secrets`-Tabelle existiert nicht im Schema, obwohl `backend/src/routes/secrets.ts` als Route registriert ist. BETA_TESTING.md §2.7 G3 erwartet Secrets-Vault-CRUD. | `backend/src/db/schema.ts` (kein CREATE TABLE secrets), `backend/src/routes/secrets.ts` | High | Tabelle anlegen oder Feature aus der Doc nehmen. (Detail folgt im G-Block.) |
-| D-16 | B | `GET /api/agents?search=...` Response-Feld `total` zählt die Gesamttabelle (291) statt der gefilterten Treffer (1). UI-Pagination, die `total` für `Math.ceil(total/limit)` verwendet, zeigt 291 Seiten an obwohl nur eine Seite existiert. | `backend/src/routes/agents.ts` GET-Handler, Search-Branch | Medium | Bei aktivem `search`/`category`/`status`-Filter `total` aus `COUNT(*) FROM agents WHERE …` mit denselben Filtern berechnen, nicht aus `SELECT COUNT(*) FROM agents`. |
+| D-15 | G | `secrets`-Tabelle existiert nicht im Schema, obwohl `backend/src/routes/secrets.ts` als Route registriert ist. BETA_TESTING.md §2.7 G3 erwartet Secrets-Vault-CRUD. | `backend/src/db/schema.ts` (kein CREATE TABLE secrets), `backend/src/routes/secrets.ts` | High | **✅ behoben:** `secrets`-Tabelle im Schema angelegt; Vault in `services/encryption.ts` ist jetzt DB-gestützt statt rein in-memory — verschlüsselte Werte überleben Neustarts. Werte liegen weiterhin nur als AES-256-GCM-Ciphertext in der DB. |
+| D-16 | B | `GET /api/agents?search=...` Response-Feld `total` zählt die Gesamttabelle (291) statt der gefilterten Treffer (1). UI-Pagination, die `total` für `Math.ceil(total/limit)` verwendet, zeigt 291 Seiten an obwohl nur eine Seite existiert. | `backend/src/routes/agents.ts` GET-Handler, Search-Branch | Medium | **✅ behoben:** `total` wird jetzt mit derselben `WHERE`-Klausel wie die Datenabfrage berechnet (`SELECT COUNT(*) FROM agents <whereClause>`). Regressionstest in `agents.test.ts` ("reports total matching the active filter"). |
 | D-17 | B | **Vollständiger Auth-Bypass im Dev-Modus:** 9/9 sensible Endpoints (Agents, Tasks, Workflows, Security-Events, Audit-Log, Kill-Switch, Chat, Notifications, Analytics) liefern ohne `Authorization`-Header HTTP 200. Steuerbar über `VALTHERON_REQUIRE_AUTH=true`, aber Default beim `npm run dev` ist Bypass aktiv. | `backend/src/app.ts:86-91` (`requireAuth = process.env.NODE_ENV === 'production' \|\| VALTHERON_REQUIRE_AUTH === 'true'`) | **Critical** | `VALTHERON_REQUIRE_AUTH=true` als Default in `backend/.env.example` setzen UND warnung beim Boot loggen, wenn das Flag nicht gesetzt ist. Alternativ: Bypass auf eine kleine Allowlist (`/api/health`) einschränken, alle anderen Routen erfordern immer Auth. |
 
 **Legende Schweregrade:** **Critical** = Datenverlust, Sicherheit, kompletter Flow blockiert · **High** = Kern-Feature unbenutzbar, kein Workaround · **Medium** = Feature funktioniert eingeschränkt, Workaround möglich · **Low** = kosmetisch / Edge-Case.
@@ -151,7 +151,32 @@ Wird in E1 gefüllt. Ziel: API p95 < 200 ms.
 
 ## 6. Empfehlungen / nächste Schritte
 
-_wird beim Abschluss gefüllt_
+Der Run hat 17 Befunde (D-1 … D-17) plus 2 Vorab-Beobachtungen (O-1, O-2) produziert. Die sicherheits- und vertrauenskritischen Punkte wurden auf diesem Branch direkt behoben; die restlichen erfordern Produkt-/Schema-Entscheidungen und sind als Follow-up markiert.
+
+### 6.1 In diesem Branch behoben
+
+| Befund | Schweregrad | Fix |
+|---|---|---|
+| D-4 | Critical | Passwort-Hashing auf bcrypt (cost 12) umgestellt, transparenter Upgrade-Pfad für Alt-Hashes beim nächsten Login. |
+| D-7 | Critical | Strikter Rate-Limiter auf `/api/auth/login`. |
+| D-17 | Critical | Dev-Auth-Bypass geschlossen für `/api/security`, `/api/secrets`, `/api/backup` — diese verlangen immer Admin-Auth; Boot-Log warnt, wenn `VALTHERON_REQUIRE_AUTH` nicht gesetzt ist. |
+| D-8 … D-12 | High/Medium | Fabrizierte Demo-Daten aus Dashboard, Enterprise-, Projektbaum- und Certifications-View sowie Seed entfernt; echte Empty-States. |
+| D-14 | Medium | Kill-Switch-Labels entschärft (Schutz-Modus vs. gezündet). |
+| D-15 | High | `secrets`-Tabelle angelegt, Vault DB-gestützt (überlebt Neustarts). |
+| D-16 | Medium | `total` respektiert jetzt die aktiven Filter (Pagination korrekt). |
+| D-18 | — | Chat-`localStorage`-Key angeglichen, damit konfigurierte API-Keys das Backend erreichen. |
+| D-19 | — | Boot-Retry mit Backoff für die API-Verbindung; Chat-Session-Fehler werden in der UI sichtbar gemacht. |
+
+### 6.2 Offene Follow-ups (eigene Tickets, vor GA)
+
+- **D-1 / D-2 (High):** Registrierung ohne E-Mail-Feld und mit schwacher Passwort-Policy (`length ≥ 6`). Vor GA: E-Mail-Feld + Verifizierung und eine ernsthafte Passwort-Policy (≥ 12 Zeichen, Komplexität). Erfordert Schema-Migration der `users`-Tabelle und UI-Abgleich.
+- **D-5 / D-6 (High):** `audit_log` und `security_events` haben keine `userId`-Spalte; erfolgreiche/fehlgeschlagene Logins erzeugen keine Einträge. Vor GA: `userId` ergänzen und Auth-Ereignisse protokollieren (Brute-Force-Erkennung).
+- **D-3 (Medium):** Auto-Admin für den ersten registrierten User dokumentieren oder durch einen expliziten Setup-Schritt ersetzen.
+- **D-11 / D-13 (Medium):** Score-Quelle in der UI ausweisen ("Capability-Score"); Dev-Auth-Bypass im Beta-Abschnitt des README als Pflicht-Hinweis für Tester.
+
+### 6.3 Noch nicht durchgespielte Szenarien
+
+E1–E5 (Dashboard-Latenz/Export), F1–F3 (Chat-Response-Qualität pro Provider) und G1 (Audit-Log) blieben in diesem Hybrid-Run offen, weil weder der User-Stack noch ein LLM-Provider-Key bereitstand (siehe §1, Status `⬜ ausstehend`). Diese Blöcke sollten in einem Folgerun mit konfiguriertem `ANTHROPIC_API_KEY`/`OPENAI_API_KEY` und laufender UI nachgeholt werden; die Abschnitte §3 und §4 werden dann mit echten Messwerten gefüllt.
 
 ---
 

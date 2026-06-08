@@ -124,30 +124,36 @@ router.get('/', (req: Request, res: Response) => {
   const db = getDb();
   const { category, status, search, limit = '1000', offset = '0' } = req.query;
 
-  let query = 'SELECT * FROM agents WHERE 1=1';
-  const params: unknown[] = [];
+  let whereClause = ' WHERE 1=1';
+  const filterParams: unknown[] = [];
 
   if (category) {
-    query += ' AND category = ?';
-    params.push(category);
+    whereClause += ' AND category = ?';
+    filterParams.push(category);
   }
   if (status) {
-    query += ' AND status = ?';
-    params.push(status);
+    whereClause += ' AND status = ?';
+    filterParams.push(status);
   }
   if (search) {
-    query += ' AND (name LIKE ? OR role LIKE ?)';
-    params.push(`%${search}%`, `%${search}%`);
+    whereClause += ' AND (name LIKE ? OR role LIKE ?)';
+    filterParams.push(`%${search}%`, `%${search}%`);
   }
 
-  query += ' ORDER BY successRate DESC LIMIT ? OFFSET ?';
-  params.push(Number(limit), Number(offset));
-
-  const rawRows = db.prepare(query).all(...params) as Record<string, unknown>[];
+  const query = `SELECT * FROM agents${whereClause} ORDER BY successRate DESC LIMIT ? OFFSET ?`;
+  const rawRows = db.prepare(query).all(...filterParams, Number(limit), Number(offset)) as Record<
+    string,
+    unknown
+  >[];
   const ids = rawRows.map((r) => r.id as string);
   const capMap = loadCapabilitySummaryMap(ids);
   const agents = rawRows.map((a) => parseAgentList(a, capMap.get(a.id as string)));
-  const total = db.prepare('SELECT COUNT(*) as count FROM agents').get() as { count: number };
+
+  // total must reflect the same filters (D-16) — otherwise pagination math
+  // (Math.ceil(total / limit)) computes page counts against the whole table.
+  const total = db
+    .prepare(`SELECT COUNT(*) as count FROM agents${whereClause}`)
+    .get(...filterParams) as { count: number };
 
   res.json({ agents, total: total.count });
 });

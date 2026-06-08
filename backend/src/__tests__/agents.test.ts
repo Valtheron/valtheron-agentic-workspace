@@ -39,6 +39,16 @@ describe('Agents Endpoints', () => {
       expect(res.status).toBe(200);
       expect(res.body.agents.length).toBeLessThanOrEqual(5);
     });
+
+    it('reports total matching the active filter, not the whole table (D-16)', async () => {
+      const all = await request(app).get('/api/agents');
+      const filtered = await request(app).get('/api/agents?category=security');
+
+      expect(filtered.status).toBe(200);
+      // total must shrink to the filtered set, not echo the table-wide count.
+      expect(filtered.body.total).toBe(filtered.body.agents.length);
+      expect(filtered.body.total).toBeLessThan(all.body.total);
+    });
   });
 
   describe('POST /api/agents', () => {

@@ -2,6 +2,7 @@
 // Provides AES-256-GCM encryption for sensitive data fields and a simple secrets vault.
 
 import crypto from 'crypto';
+import { getDb } from '../db/schema.js';
 
 const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 12; // 96-bit IV recommended for GCM
@@ -66,61 +67,63 @@ export function hmacHash(value: string, key?: Buffer): string {
   return crypto.createHmac('sha256', k).update(value).digest('hex');
 }
 
-// ---- Secrets Vault (in-memory + DB backed) ----
+// ---- Secrets Vault (DB-backed) ----
+// Values are encrypted at rest in the `secrets` table (Beta-Run D-15) so they
+// survive process restarts. Plaintext never touches the database.
 
-interface SecretEntry {
+interface SecretMeta {
   name: string;
-  encryptedValue: string;
   createdAt: string;
   rotatedAt: string | null;
 }
 
-const secretsCache = new Map<string, SecretEntry>();
-
-/** Store a secret (encrypts the value before caching). */
-export function setSecret(name: string, value: string): SecretEntry {
-  const entry: SecretEntry = {
-    name,
-    encryptedValue: encrypt(value),
-    createdAt: new Date().toISOString(),
-    rotatedAt: null,
-  };
-  secretsCache.set(name, entry);
-  return entry;
+/** Store a secret (encrypts the value before persisting). Upserts by name. */
+export function setSecret(name: string, value: string): SecretMeta {
+  const createdAt = new Date().toISOString();
+  getDb()
+    .prepare(
+      `INSERT OR REPLACE INTO secrets (name, encryptedValue, createdAt, rotatedAt)
+       VALUES (?, ?, ?, NULL)`
+    )
+    .run(name, encrypt(value), createdAt);
+  return { name, createdAt, rotatedAt: null };
 }
 
 /** Retrieve and decrypt a secret by name. Returns null if not found. */
 export function getSecret(name: string): string | null {
-  const entry = secretsCache.get(name);
-  if (!entry) return null;
-  return decrypt(entry.encryptedValue);
+  const row = getDb()
+    .prepare('SELECT encryptedValue FROM secrets WHERE name = ?')
+    .get(name) as { encryptedValue: string } | undefined;
+  if (!row) return null;
+  return decrypt(row.encryptedValue);
 }
 
 /** Rotate a secret's value — keeps the old creation date, updates rotatedAt. */
-export function rotateSecret(name: string, newValue: string): SecretEntry | null {
-  const existing = secretsCache.get(name);
+export function rotateSecret(name: string, newValue: string): SecretMeta | null {
+  const db = getDb();
+  const existing = db.prepare('SELECT createdAt FROM secrets WHERE name = ?').get(name) as
+    | { createdAt: string }
+    | undefined;
   if (!existing) return null;
-  const entry: SecretEntry = {
-    ...existing,
-    encryptedValue: encrypt(newValue),
-    rotatedAt: new Date().toISOString(),
-  };
-  secretsCache.set(name, entry);
-  return entry;
+  const rotatedAt = new Date().toISOString();
+  db.prepare('UPDATE secrets SET encryptedValue = ?, rotatedAt = ? WHERE name = ?').run(
+    encrypt(newValue),
+    rotatedAt,
+    name
+  );
+  return { name, createdAt: existing.createdAt, rotatedAt };
 }
 
 /** List all secret names (without values). */
-export function listSecrets(): Array<{ name: string; createdAt: string; rotatedAt: string | null }> {
-  return [...secretsCache.values()].map(({ name, createdAt, rotatedAt }) => ({
-    name,
-    createdAt,
-    rotatedAt,
-  }));
+export function listSecrets(): SecretMeta[] {
+  return getDb()
+    .prepare('SELECT name, createdAt, rotatedAt FROM secrets ORDER BY createdAt')
+    .all() as SecretMeta[];
 }
 
 /** Delete a secret. */
 export function deleteSecret(name: string): boolean {
-  return secretsCache.delete(name);
+  return getDb().prepare('DELETE FROM secrets WHERE name = ?').run(name).changes > 0;
 }
 
 /** Generate a random encryption key (for key rotation). */
