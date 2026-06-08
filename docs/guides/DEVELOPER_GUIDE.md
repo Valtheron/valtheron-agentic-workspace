@@ -108,7 +108,7 @@ npm run dev    # Startet auf Port 3001
 # Frontend (neues Terminal)
 cd frontend
 npm install
-npm run dev    # Startet auf Port 5173
+npm run dev    # Startet auf Port 3055
 ```
 
 ### 2.3 Skripte
@@ -323,7 +323,7 @@ app.use('/api/secrets', requireAuth, requireRole('admin'), secretsRouter);
 
 ### 6.3 Vollständige API-Referenz
 
-Siehe `docs/API.md` für alle 89 Endpunkte mit Request/Response-Formaten.
+Siehe `docs/reference/API.md` für alle 89 Endpunkte mit Request/Response-Formaten.
 
 ---
 

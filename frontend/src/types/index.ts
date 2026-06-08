@@ -47,6 +47,88 @@ export interface Agent {
   llmModel?: string;
   riskProfile?: AgentRiskProfile;
   knowledgeScope?: KnowledgeScope;
+  /**
+   * Capability state from the backend. Optional because the bundled
+   * frontend agent loader (frontend/src/services/valtheronAgents.ts)
+   * does not produce one — the capability profile is authoritative
+   * server-side. When undefined, the UI must show the pending state
+   * placeholder, never client-generated values.
+   */
+  capabilities?: CapabilityState | CapabilitySummary;
+}
+
+/**
+ * Mirror of the backend's CapabilityState (with the b ≠ 1 invariant
+ * encoded as the literal `false`). Returned by GET /api/agents/:id.
+ */
+export interface CapabilityState {
+  value: false;
+  status: 'computed' | 'pending';
+  timestamp: string;
+  pendingReason: string | null;
+  profile: CapabilityProfile | null;
+}
+
+/**
+ * Slim summary returned by the list endpoint (GET /api/agents) — no
+ * profile blob. Carries the same value: false invariant.
+ */
+export interface CapabilitySummary {
+  value: false;
+  status: 'computed' | 'pending';
+  timestamp: string;
+  pendingReason: string | null;
+}
+
+export interface CapabilityProfile {
+  layers: CapabilityLayer[];
+  modifiers: CapabilityModifier[];
+  source: {
+    inputs: { rate: number; depth: number; creativity: number };
+    model_version: string;
+  };
+}
+
+export interface CapabilityLayer {
+  key: string;
+  name: string;
+  cssClass: string;
+  color: string;
+  score: number;
+  sub_dimensions: CapabilitySubDimension[];
+}
+
+export interface CapabilitySubDimension {
+  key: string;
+  label: string;
+  desc: string;
+  value: number;
+}
+
+export type CapabilityModifier =
+  | {
+      key: 'personality_influence';
+      name: string;
+      archetype: string;
+      communication_style: string;
+      creativity_impact: number;
+      depth_impact: number;
+    }
+  | {
+      key: 'performance_history';
+      name: string;
+      success_rate: number;
+      tasks_total: number;
+      reliability_index: number;
+    }
+  | {
+      key: 'test_results';
+      name: string;
+      tests: TestResult[];
+    };
+
+export function isCapabilityState(c: CapabilityState | CapabilitySummary | undefined): c is CapabilityState {
+  return !!c && 'profile' in c;
 }
 
 export interface KnowledgeDoc {
@@ -264,13 +346,16 @@ export interface AnalyticsData {
   totalAgents: number;
   activeAgents: number;
   tasksToday: number;
+  /** Total tasks tracked in the system (real DB count). */
+  tasksTotal: number;
   successRate: number;
   avgResponseTime: number;
   tasksTrend: { date: string; count: number }[];
   categoryDistribution: { category: AgentCategory; count: number }[];
   topPerformers: { agentId: string; name: string; score: number }[];
   errorRate: number;
-  uptime: number;
+  /** Seconds since the backend process started — replaces fabricated uptime %. */
+  uptimeSeconds: number;
 }
 
 export type ViewType =

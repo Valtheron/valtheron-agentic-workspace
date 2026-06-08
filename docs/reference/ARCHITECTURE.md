@@ -397,4 +397,122 @@ Scheduler (alle 6h)
 
 ---
 
+## 10. Vision & Geschäftsziele
+
+> Inhalt übernommen aus dem Konzeptdokument `docs/archive/AGENTIC_WORKSPACE_KONZEPT.md` (Januar 2026) und auf den IST-Stand des Genesis Release angepasst.
+
+### 10.1 Vision
+
+Ein System, das nicht nur funktioniert — sondern das, was es tut, mit Würde tut.
+
+Der Valtheron Agentic Workspace ist nicht gebaut worden, um zu beeindrucken. Er ist gebaut worden, um zu dienen: als verlässliches Fundament für autonome Operationen, bei denen jeder Fehler Konsequenzen hat und jede Entscheidung nachvollziehbar sein muss.
+
+### 10.2 Kernfunktionalität
+
+- **Multi-Agent-Orchestrierung** — Verwaltung und Koordination von 200 (Standard) bzw. 290 (Erweitert) spezialisierten Agenten mit unterschiedlichen Rollen und Fähigkeiten.
+- **Dynamisches Agent-Loading** — Spezialisierte Personas mit Custom Instructions als System-Prompts, filterbar nach Kategorie.
+- **Multi-Agent-Zusammenarbeit** — Kollaborative Sessions, in denen mehrere Agenten gemeinsam an gemeinsamen Dateien und Problemen arbeiten.
+- **Gemeinsamer Dateikontext** — Versionsverfolgte Code-Snippets, Logs und Dokumente, auf die mehrere Agenten zugreifen können.
+- **Anforderungsextraktion** — Parsing von Anforderungen aus URLs in strukturierte Aufgabenlisten.
+- **Kill-Switch-Schutz** — Sofortige Deaktivierung von Agenten außerhalb der Risikoparameter mit automatischen Eigentümer-Benachrichtigungen.
+- **Vollständiger Audit-Trail** — Lückenlose Protokollierung aller Agent-Interaktionen für Compliance, Debugging und Leistungsanalyse.
+
+### 10.3 Zielgruppe
+
+Organisationen und Entwickler, die autonome KI-Agenten für komplexe, mehrstufige Operationen einsetzen — z. B. FinTech, Sicherheitsunternehmen, Software-Entwicklungsteams und strategische Operationszentren.
+
+### 10.4 Primäre Geschäftsziele
+
+| Ziel | Beschreibung |
+|------|--------------|
+| **Autonomie & Effizienz** | Vollständig autonome Operationen ohne menschliche Eingriffe; Zielreduktion der Durchlaufzeit um 70 %. |
+| **Transparenz & Kontrolle** | Echtzeit-Audit-Trails über alle Agent-Aktivitäten; Kill-Switch zur Risikokontrolle. |
+| **Skalierbarkeit** | Bis zu 200 (bzw. 290) gleichzeitig arbeitende Agenten; Verwaltung von Millionen Aufgaben pro Tag. |
+| **Zuverlässigkeit** | Systemverfügbarkeit 99,99 % mit automatischem Failover und Disaster Recovery. |
+
+### 10.5 Sekundäre Geschäftsziele
+
+- **Benutzerfreundlichkeit** — Intuitive UI, auch für Nicht-Techniker.
+- **Erweiterbarkeit** — Modulare Architektur für neue Agent-Typen und Funktionen.
+- **Sicherheit** — Enterprise-Grade-Sicherheit mit Verschlüsselung, Authentifizierung und Autorisierung.
+
+---
+
+## 11. Anforderungen (FR / NFR)
+
+> Inhalt übernommen aus `docs/archive/AGENTIC_WORKSPACE_KONZEPT.md`, Abschnitt „Anforderungsanalyse".
+
+### 11.1 Funktionale Anforderungen
+
+| ID | Bereich | Anforderung |
+|----|---------|-------------|
+| **FR1** | Agent-Management | Profil-Verwaltung, Konfiguration (System-Prompts, Parameter), Status-Tracking, Leistungsmetriken (Erfolgsquote, Dauer, Fehlerquote). |
+| **FR2** | Task-Management | Erstellung mit Beschreibung/Priorität/Deadline, automatische und manuelle Zuweisung, Status-Verfolgung, Abhängigkeiten. |
+| **FR3** | Collaboration | Shared Workspace, File-Sharing, Versionskontrolle, Agent-zu-Agent-Kommunikation. |
+| **FR4** | Audit & Compliance | Activity Logging, vollständiger Audit-Trail, RBAC, automatische Compliance-Berichte. |
+| **FR5** | Risk Management | Kill-Switch, Risikoparameter, Alerts, Rollback. |
+| **FR6** | Monitoring & Analytics | Real-time Dashboard, Performance-Metriken, Analytics, Reporting. |
+
+### 11.2 Nicht-funktionale Anforderungen
+
+| ID | Bereich | Anforderung |
+|----|---------|-------------|
+| **NFR1** | Performance | ≥ 10.000 Aufgaben/min Durchsatz, < 200 ms Latenz für Dashboard-Operationen, 200+ gleichzeitige Agenten. |
+| **NFR2** | Verfügbarkeit | 99,99 % Uptime, Failover < 30 s, Disaster Recovery < 1 h, tägliche Backups (30 Tage Aufbewahrung). |
+| **NFR3** | Sicherheit | MFA für alle Benutzer, End-to-End-Verschlüsselung, RBAC mit granularen Berechtigungen, vollständige Audit-Trails. |
+| **NFR4** | Wartbarkeit | ≥ 80 % Test-Coverage, umfassende API-Doku, proaktives Monitoring, Updates ohne Downtime. |
+
+---
+
+## 12. Personas & Agent-Modell
+
+> Konzeptionelle Grundlage übernommen aus `docs/archive/MASTER_ANLEITUNG.md`. Implementierungsdetails siehe `the-290-agent-database/`.
+
+### 12.1 Was sind die Personas?
+
+Personas sind **spezialisierte Rollen-Definitionen mit Custom Instructions**, die als System-Prompts für KI-Agenten fungieren. Sie ermöglichen es, ein einzelnes LLM-Modell in viele spezialisierte Rollen zu transformieren.
+
+- **Standard-Set:** 200 Personas, organisiert in **10 Kategorien × 20 Personas**.
+- **Erweitertes Set:** 290 Personas (siehe `the-290-agent-database/`).
+- Jede Persona hat ein konsistentes Schema mit 7 Kernattributen: Nummer, Name, Kategorie, Hintergrund, Antwortformat, Beschreibung, Favoriten.
+
+### 12.2 Die 10 Kategorien (Standard-Set)
+
+| # | Kategorie | Domäne |
+|---|-----------|--------|
+| 1 | Gesundheitsexperten | Health & Wellness |
+| 2 | Analytiker | Data Analysis & Insights |
+| 3 | Marketer | Marketing & Growth |
+| 4 | Produzenten | Production & Operations |
+| 5 | Unternehmer | Entrepreneurship & Business |
+| 6 | Entertainer | Entertainment & Media |
+| 7 | Lehrer | Education & Training |
+| 8 | Schriftsteller | Content & Writing |
+| 9 | E-Commerce | E-Commerce & Sales |
+| 10 | Entwickler | Development & Infrastructure |
+
+### 12.3 Aufbau der Custom Instructions
+
+Jede Persona definiert in ihren Custom Instructions u. a.:
+
+```
+Beruf/Rolle, Aktuelle Projekte/Herausforderungen,
+Spezifische Interessen, Werte und Prinzipien,
+Lernstil, Persönlicher Hintergrund, Ziele,
+Präferenzen, Sprachkompetenz, Spezialisiertes Wissen,
+Bildungshintergrund, Art zu Kommunizieren
+```
+
+### 12.4 Terminologie
+
+Im aktuellen Sprachgebrauch der Plattform wird statt „Person" der Begriff **„Digital Persona"** verwendet — eine spezialisierte Konfiguration eines KI-Modells mit definierten Rollen, Fähigkeiten, Verhaltensrichtlinien und Sicherheitsparametern. Damit wird Anthropomorphisierung vermieden und die technische Natur klar kommuniziert.
+
+### 12.5 Verbindung zur Implementierung
+
+- DB-Tabelle `agents` (siehe Abschnitt 3) hält die operative Agent-Definition (Name, Kategorie, Rolle, LLM-Provider, Personality, Parameters).
+- Die Persona-Custom-Instructions werden in den Personality- und Parameter-Feldern bzw. als System-Prompt zur LLM-Aufruf-Zeit eingespielt (siehe Abschnitt 5.2 „Datenfluss Chat").
+- Erweitertes 290-Agenten-Set inklusive Capability-Model und Provenance-Tracking ist im Verzeichnis `the-290-agent-database/` dokumentiert.
+
+---
+
 *Valtheron Agentic Workspace v1.0.0 — Architektur-Dokumentation*

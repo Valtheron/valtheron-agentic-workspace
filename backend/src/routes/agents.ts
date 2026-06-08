@@ -1,10 +1,101 @@
 import { Router, Request, Response } from 'express';
 import { getDb } from '../db/schema.js';
 import { v4 as uuid } from 'uuid';
+import {
+  wrapAsCapabilityState,
+  pendingCapabilityState,
+  assertCapabilityState,
+  type CapabilityState,
+} from '../services/capabilityScoring.js';
 
 const router = Router();
 
-function parseAgent(row: Record<string, unknown>) {
+interface CapabilityRow {
+  status: string;
+  profile: string | null;
+  pendingReason: string | null;
+  computedAt: string;
+}
+
+function rowToCapabilityState(row: CapabilityRow | undefined, now: string): CapabilityState {
+  let state: CapabilityState;
+  if (!row) {
+    state = pendingCapabilityState(
+      'No capability row for this agent — run seedAgentCatalog or POST /api/agents recompute',
+      now,
+    );
+  } else if (row.status !== 'computed' || !row.profile) {
+    state = pendingCapabilityState(row.pendingReason ?? 'profile not yet computed', row.computedAt);
+  } else {
+    state = wrapAsCapabilityState(JSON.parse(row.profile), row.computedAt);
+  }
+  // Boundary guard — throws if any invariant (b ≠ 1, status/profile pairing,
+  // pending↔reason) was violated by upstream writes.
+  assertCapabilityState(state);
+  return state;
+}
+
+// Slim summary — list endpoints carry status/timestamp only; the heavy
+// profile blob is reserved for GET /api/agents/:id. This keeps b ≠ 1
+// observable on the wire without parsing 290 × 3-5 KB JSON per request.
+interface CapabilitySummary {
+  value: false;
+  status: 'computed' | 'pending';
+  timestamp: string;
+  pendingReason: string | null;
+}
+
+function rowToCapabilitySummary(row: CapabilityRow | undefined, now: string): CapabilitySummary {
+  if (!row) {
+    return { value: false, status: 'pending', timestamp: now, pendingReason: 'No capability row' };
+  }
+  if (row.status !== 'computed' || !row.profile) {
+    return {
+      value: false,
+      status: 'pending',
+      timestamp: row.computedAt,
+      pendingReason: row.pendingReason ?? 'profile not yet computed',
+    };
+  }
+  return { value: false, status: 'computed', timestamp: row.computedAt, pendingReason: null };
+}
+
+function loadCapabilityStateOne(agentId: string): CapabilityState {
+  const db = getDb();
+  const row = db
+    .prepare('SELECT status, profile, pendingReason, computedAt FROM agent_capabilities WHERE agentId = ?')
+    .get(agentId) as CapabilityRow | undefined;
+  return rowToCapabilityState(row, new Date().toISOString());
+}
+
+function loadCapabilitySummaryMap(agentIds: string[]): Map<string, CapabilitySummary> {
+  if (agentIds.length === 0) return new Map();
+  const db = getDb();
+  const placeholders = agentIds.map(() => '?').join(',');
+  // Skip `profile` column on list path — only summary fields needed.
+  const rows = db
+    .prepare(
+      `SELECT agentId, status, pendingReason, computedAt
+       FROM agent_capabilities WHERE agentId IN (${placeholders})`,
+    )
+    .all(...agentIds) as Array<{
+    agentId: string;
+    status: string;
+    pendingReason: string | null;
+    computedAt: string;
+  }>;
+  const now = new Date().toISOString();
+  const byId = new Map<string, CapabilityRow>();
+  for (const r of rows) byId.set(r.agentId, { ...r, profile: 'present' } as CapabilityRow);
+  const out = new Map<string, CapabilitySummary>();
+  for (const id of agentIds) {
+    out.set(id, rowToCapabilitySummary(byId.get(id), now));
+  }
+  return out;
+}
+
+function parseAgentDetail(row: Record<string, unknown>) {
+  const id = row.id as string;
   return {
     ...row,
     personality: JSON.parse(row.personality as string),
@@ -12,6 +103,19 @@ function parseAgent(row: Record<string, unknown>) {
     hooks: JSON.parse(row.hooks as string),
     testResults: JSON.parse(row.testResults as string),
     riskProfile: row.riskProfile ? JSON.parse(row.riskProfile as string) : undefined,
+    capabilities: loadCapabilityStateOne(id),
+  };
+}
+
+function parseAgentList(row: Record<string, unknown>, summary: CapabilitySummary | undefined) {
+  return {
+    ...row,
+    personality: JSON.parse(row.personality as string),
+    parameters: JSON.parse(row.parameters as string),
+    hooks: JSON.parse(row.hooks as string),
+    testResults: JSON.parse(row.testResults as string),
+    riskProfile: row.riskProfile ? JSON.parse(row.riskProfile as string) : undefined,
+    capabilities: summary ?? rowToCapabilitySummary(undefined, new Date().toISOString()),
   };
 }
 
@@ -39,10 +143,10 @@ router.get('/', (req: Request, res: Response) => {
   query += ' ORDER BY successRate DESC LIMIT ? OFFSET ?';
   params.push(Number(limit), Number(offset));
 
-  const agents = db
-    .prepare(query)
-    .all(...params)
-    .map((a) => parseAgent(a as Record<string, unknown>));
+  const rawRows = db.prepare(query).all(...params) as Record<string, unknown>[];
+  const ids = rawRows.map((r) => r.id as string);
+  const capMap = loadCapabilitySummaryMap(ids);
+  const agents = rawRows.map((a) => parseAgentList(a, capMap.get(a.id as string)));
   const total = db.prepare('SELECT COUNT(*) as count FROM agents').get() as { count: number };
 
   res.json({ agents, total: total.count });
@@ -60,7 +164,7 @@ router.get('/:id', (req: Request, res: Response) => {
     return;
   }
 
-  res.json(parseAgent(agent));
+  res.json(parseAgentDetail(agent));
 });
 
 // POST /api/agents
@@ -102,7 +206,7 @@ router.post('/', (req: Request, res: Response) => {
   );
 
   const agent = db.prepare('SELECT * FROM agents WHERE id = ?').get(id) as Record<string, unknown>;
-  res.status(201).json(parseAgent(agent));
+  res.status(201).json(parseAgentDetail(agent));
 });
 
 // PATCH /api/agents/:id
@@ -148,7 +252,7 @@ router.patch('/:id', (req: Request, res: Response) => {
   db.prepare(`UPDATE agents SET ${updates.join(', ')} WHERE id = ?`).run(...params);
 
   const agent = db.prepare('SELECT * FROM agents WHERE id = ?').get(req.params.id) as Record<string, unknown>;
-  res.json(parseAgent(agent));
+  res.json(parseAgentDetail(agent));
 });
 
 // DELETE /api/agents/:id

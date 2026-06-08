@@ -249,6 +249,78 @@ function initSchema(db: Database.Database) {
       updatedAt TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS agent_forseti_profiles (
+      agentId TEXT PRIMARY KEY,
+      status TEXT NOT NULL DEFAULT 'pending',
+      profile TEXT,
+      pendingReason TEXT,
+      computedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (agentId) REFERENCES agents(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS agent_capabilities (
+      agentId TEXT PRIMARY KEY,
+      status TEXT NOT NULL DEFAULT 'computed',
+      profile TEXT,
+      pendingReason TEXT,
+      computedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (agentId) REFERENCES agents(id) ON DELETE CASCADE
+    );
+
+    -- Phase 1 of the Evolutionary Agent System (evolutionary_agent_system.md
+    -- §74-101). Captures every agent interaction so later phases can mine
+    -- patterns, track performance, and trigger evolution cycles.
+    CREATE TABLE IF NOT EXISTS agent_versions (
+      id TEXT PRIMARY KEY,
+      agentId TEXT NOT NULL,
+      version TEXT NOT NULL,
+      systemPromptHash TEXT NOT NULL,
+      parametersHash TEXT NOT NULL,
+      deployedAt TEXT NOT NULL DEFAULT (datetime('now')),
+      retiredAt TEXT,
+      evolutionTrigger TEXT,
+      notes TEXT,
+      FOREIGN KEY (agentId) REFERENCES agents(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS agent_interactions (
+      id TEXT PRIMARY KEY,
+      agentId TEXT NOT NULL,
+      agentVersionId TEXT,
+      taskId TEXT,
+      userId TEXT,
+      requestPrompt TEXT NOT NULL DEFAULT '',
+      requestParams TEXT NOT NULL DEFAULT '{}',
+      requestContext TEXT,
+      responseContent TEXT,
+      responseReasoning TEXT,
+      startedAt TEXT NOT NULL,
+      finishedAt TEXT,
+      durationMs INTEGER,
+      inputTokens INTEGER,
+      outputTokens INTEGER,
+      totalTokens INTEGER,
+      costUsd REAL,
+      outcome TEXT NOT NULL DEFAULT 'pending',
+      errorClass TEXT,
+      errorMessage TEXT,
+      feedbackScore INTEGER,
+      feedbackText TEXT,
+      feedbackAt TEXT,
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (agentId) REFERENCES agents(id) ON DELETE CASCADE,
+      FOREIGN KEY (agentVersionId) REFERENCES agent_versions(id),
+      FOREIGN KEY (taskId) REFERENCES tasks(id) ON DELETE SET NULL,
+      FOREIGN KEY (userId) REFERENCES users(id) ON DELETE SET NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_interactions_agent ON agent_interactions(agentId);
+    CREATE INDEX IF NOT EXISTS idx_interactions_version ON agent_interactions(agentVersionId);
+    CREATE INDEX IF NOT EXISTS idx_interactions_created ON agent_interactions(createdAt);
+    CREATE INDEX IF NOT EXISTS idx_interactions_outcome ON agent_interactions(outcome);
+    CREATE INDEX IF NOT EXISTS idx_interactions_task ON agent_interactions(taskId);
+    CREATE INDEX IF NOT EXISTS idx_versions_agent ON agent_versions(agentId);
+
     CREATE TABLE IF NOT EXISTS metrics_history (
       id TEXT PRIMARY KEY,
       timestamp TEXT NOT NULL DEFAULT (datetime('now')),
@@ -303,7 +375,6 @@ function initSchema(db: Database.Database) {
 
   // Ensure the single kill_switch row exists (must run after migration)
   db.exec(`INSERT OR IGNORE INTO kill_switch (id, aktiv) VALUES (1, 0)`);
-
 
   // Migration: add MFA columns to existing databases
   try {

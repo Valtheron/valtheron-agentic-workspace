@@ -15,8 +15,8 @@ Die Plattform ist kein KI-System selbst, sondern der **Steuerungsraum** für aut
 [![CI](https://github.com/Valtheron/valtheron-agentic-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/Valtheron/valtheron-agentic-workspace/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)](CHANGELOG.md)
 [![Lizenz](https://img.shields.io/badge/Lizenz-MIT-green?style=flat-square)](LICENSE)
-[![Coverage](https://img.shields.io/badge/Coverage-87.8%25-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
-[![Tests](https://img.shields.io/badge/Tests-614%20bestanden-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
+[![Coverage](https://img.shields.io/badge/Coverage-87.8%25-brightgreen?style=flat-square)](docs/guides/DEVELOPER_GUIDE.md)
+[![Tests](https://img.shields.io/badge/Tests-614%20bestanden-brightgreen?style=flat-square)](docs/guides/DEVELOPER_GUIDE.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org/)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](docker-compose.yml)
@@ -180,7 +180,7 @@ cp frontend/.env.example frontend/.env
 npm run dev
 
 # Backend:  http://localhost:3001
-# Frontend: http://localhost:5173
+# Frontend: http://localhost:3055
 ```
 
 ### Erster Login
@@ -188,7 +188,7 @@ npm run dev
 Nach dem Start ist standardmäßig kein Benutzer angelegt. Der **erste Registrant wird automatisch Admin**; alle weiteren Nutzer erhalten die Rolle `operator` (frei anpassbar im Admin-Panel).
 
 - **Docker / Produktion:** `http://localhost:8080` öffnen → „Registrieren" → Admin-Account anlegen.
-- **Lokale Entwicklung:** `http://localhost:5173` öffnet das Dashboard standardmäßig **ohne Login** (Schnellstart-Komfort). Um den produktiven Auth-Flow lokal zu testen:
+- **Lokale Entwicklung:** `http://localhost:3055` öffnet das Dashboard standardmäßig **ohne Login** (Schnellstart-Komfort). Um den produktiven Auth-Flow lokal zu testen:
 
   ```bash
   # Backend: Auth erzwingen
@@ -198,7 +198,7 @@ Nach dem Start ist standardmäßig kein Benutzer angelegt. Der **erste Registran
   npm run dev
   ```
 
-  Dann erscheint auf `http://localhost:5173` derselbe Login-Screen wie in Produktion.
+  Dann erscheint auf `http://localhost:3055` derselbe Login-Screen wie in Produktion.
 
 ---
 
@@ -222,49 +222,80 @@ Nach dem Start ist standardmäßig kein Benutzer angelegt. Der **erste Registran
 └─────────────────────────────────────────────────────┘
 ```
 
-Vollständige Architekturdokumentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+Vollständige Architekturdokumentation: [docs/reference/ARCHITECTURE.md](docs/reference/ARCHITECTURE.md)
 
 ---
 
 ## Dokumentation
 
+Übersicht aller Dokumente: [docs/README.md](docs/README.md)
+
+### Guides
+
 | Dokument | Beschreibung |
 |---|---|
-| [User Guide](docs/USER_GUIDE.md) | Benutzerhandbuch — alle Features erklärt |
-| [API-Dokumentation](docs/API.md) | 89 Endpunkte mit Beispielen |
-| [Deployment Guide](docs/DEPLOYMENT_GUIDE.md) | Docker, Nginx, PM2, Bare Metal |
-| [Developer Guide](docs/DEVELOPER_GUIDE.md) | Entwickler-Workflow, Code-Standards, Tests |
-| [Admin Guide](docs/ADMIN_GUIDE.md) | Systemadministration, Monitoring |
-| [Architecture](docs/ARCHITECTURE.md) | Systemarchitektur, Datenmodell, ADRs |
-| [Troubleshooting](docs/TROUBLESHOOTING_GUIDE.md) | Häufige Probleme & Lösungen |
+| [Onboarding](docs/guides/ONBOARDING.md) | Einstieg für neue Contributor und KI-Agenten |
+| [User Guide](docs/guides/USER_GUIDE.md) | Benutzerhandbuch — alle Features erklärt |
+| [Admin Guide](docs/guides/ADMIN_GUIDE.md) | Systemadministration, Monitoring |
+| [Developer Guide](docs/guides/DEVELOPER_GUIDE.md) | Entwickler-Workflow, Code-Standards, Tests |
+| [Deployment Guide](docs/guides/DEPLOYMENT_GUIDE.md) | Docker, Nginx, PM2, Bare Metal |
+| [Troubleshooting](docs/guides/TROUBLESHOOTING_GUIDE.md) | Häufige Probleme & Lösungen |
+| [Beta Testing](docs/guides/BETA_TESTING.md) | Beta-Test-Plan und Feedback-Prozess |
+
+### Reference
+
+| Dokument | Beschreibung |
+|---|---|
+| [Architecture](docs/reference/ARCHITECTURE.md) | Systemarchitektur, Datenmodell, ADRs, Vision/Anforderungen, Personas-Modell |
+| [API-Dokumentation](docs/reference/API.md) | 89 Endpunkte mit Beispielen |
+
+### Status & Release
+
+| Dokument | Beschreibung |
+|---|---|
+| [Project Status](docs/PROJECT_STATUS.md) | Aktueller Projektstatus und Release-Roadmap |
 | [Changelog](CHANGELOG.md) | Versionshistorie |
 | [Release Notes v1.0.0](RELEASE_NOTES.md) | Highlights des Genesis Release |
 
-### Projekt- & Konzeptdokumente
+### Archiv (Konzeptdokumente, Januar 2026)
 
-| Dokument | Beschreibung |
-|---|---|
-| [Onboarding](docs/ONBOARDING.md) | Einstieg für neue Contributor und KI-Agenten |
-| [Project Status](docs/PROJECT_STATUS.md) | Aktueller Projektstatus und Release-Roadmap |
-| [Agentic Workspace Konzept](docs/AGENTIC_WORKSPACE_KONZEPT.md) | Gesamtkonzept, Vision und System-Architektur |
-| [Master-Anleitung](docs/MASTER_ANLEITUNG.md) | 200-Personas-System: Struktur und Nutzung |
-| [Agent-Instruktionen](docs/AGENT_INSTRUKTIONEN.md) | Verhaltensrichtlinien je Agent-Kategorie |
-| [Technical Implementation Guide](docs/TECHNICAL_IMPLEMENTATION_GUIDE.md) | Tiefe technische Referenz (EN) |
-| [Implementierungs-Checkliste](docs/IMPLEMENTIERUNGS_CHECKLISTE.md) | Phasenübersicht der Umsetzung |
-| [Personas-Analyse](docs/PERSONAS_ANALYSE_UND_EMPFEHLUNGEN.md) | Analyse und Empfehlungen zum Personas-Framework |
-| [Pilotprojekt-Design](docs/PILOTPROJEKT_DESIGN.md) | 12-Wochen-Pilotdesign für sichere digitale Identitäten |
+Vorgängerdokumente aus der Konzeptphase werden in [docs/archive/](docs/archive/README.md) aufbewahrt. Aktuelle Inhalte zu Vision, Anforderungen und Personas-Modell sind in [docs/reference/ARCHITECTURE.md](docs/reference/ARCHITECTURE.md) übernommen.
 
 ---
 
-## Wissensbasis (Knowledge Base)
+## Kanonische Quellen & Sync
 
-Das Repository enthält eine kuratierte Wissensbasis, die jedem der
-290 Agenten zur Expertise-Anreicherung zugeordnet wird.
+Das Repository folgt einem strikten **Canonical-Source-Prinzip**: Die
+Wahrheit liegt an der Wurzel, die Derivate in den Workspaces sind
+Build-Artefakte.
 
-**Quellverzeichnisse:**
+### 290-Agenten-Katalog
+
+**Kanonische Quellen** (einzige bearbeitbare JSONs):
 
 ```
-knowledge-base/                  Kuratierter Manus-Katalog (Manifest + 47 Summaries)
+the-290-agent-database/.../valtheron_system_prompts.json    IDs   1-200 (10 Basis-Kategorien)
+the-290-agent-database/.../valtheron_extended_agents.json   IDs 201-290 (6 Extensions-Kategorien)
+```
+
+**Derivate** (generiert, nicht direkt editieren):
+
+```
+frontend/src/data/valtheron_agents_1_200.json    byte-identische Kopie
+frontend/src/data/valtheron_agents_201_290.json  byte-identische Kopie
+backend/src/data/valtheron_agents_1_200.json     byte-identische Kopie (im Docker-Image gebündelt)
+backend/src/data/valtheron_agents_201_290.json   byte-identische Kopie
+```
+
+Das Backend liest die Kopien direkt beim Seed — keine zusätzlichen
+Volume-Mounts im Docker-Image nötig.
+
+### Wissensbasis (Knowledge Base)
+
+**Kanonische Quellen:**
+
+```
+knowledge-base/                  240 Dokumente / 14 Kategorien (index.yaml ist autoritativ)
 valtheron-cybersec-database/     216 reale PDFs (Offensive, Defensive, AppSec, …)
 ```
 
@@ -275,17 +306,48 @@ frontend/src/data/kb/manifest.json   Zusammengeführtes Manifest (456 Dokumente)
 frontend/src/data/kb/summaries.json  Alle Markdown-Summaries als JSON-Map
 ```
 
-**Manuelle Re-Synchronisation** nach Änderungen in den Quellverzeichnissen:
+### Forseti Power Framework
 
-```bash
-node scripts/sync-kb-to-frontend.mjs
+**Kanonische Quelle** (Bewertungs-Spezifikation):
+
+```
+the-290-agent-database/forseti/power_framework.json    5 Dim × 6 Sub-Dim = 30 Metrics (Skala 0-9)
+the-290-agent-database/forseti/layer_taxonomy.json     5-Schichten-Taxonomie (orthogonal)
+the-290-agent-database/forseti/category_mapping.json   Valtheron → Forseti Kategorien (autored)
+the-290-agent-database/forseti/provenance.md           Herkunft + ethischer Rahmen
 ```
 
-Das Skript führt zusätzlich einen Integrity-Check durch (PDF-Magic-Bytes,
-Seitenanzahl, HTML-Erkennung) und markiert jedes Dokument mit einem
-`integrityStatus`. Kaputte Dateien werden aus den Agenten-Scopes
-ausgefiltert, Katalog-Platzhalter (Summary ohne Binärdatei) bleiben als
-Kontext verfügbar.
+**Scope:** Autoritativ für die 200 Standard-Agenten. 8 Valtheron-Kategorien
+sind gemappt (160 Agenten → computed Profile); 8 Kategorien (security,
+support + die 6 Extension-Domänen) stehen auf `pending` mit autored
+Begründung — **kein** Fake-Profil. Grundsatz: Macht ohne Quelle ist
+Null-Macht. Details in `the-290-agent-database/forseti/provenance.md`.
+
+### Manuelle Re-Synchronisation
+
+Nach Änderungen in den kanonischen Quellverzeichnissen:
+
+```bash
+npm run sync:agents      # the-290-agent-database/ → frontend + backend
+npm run sync:kb          # knowledge-base/ + valtheron-cybersec-database/ → frontend
+npm run sync:capability  # the-290-agent-database/capability-model/ → frontend + backend
+npm run sync:all         # alle drei in einem Schritt
+npm run sync:agents   # the-290-agent-database/ → frontend + backend
+npm run sync:kb       # knowledge-base/ + valtheron-cybersec-database/ → frontend
+npm run sync:forseti  # the-290-agent-database/forseti/ → frontend + backend
+npm run sync:all      # alle drei in einem Schritt
+```
+
+Das KB-Sync-Skript führt zusätzlich einen Integrity-Check durch
+(PDF-Magic-Bytes, Seitenanzahl, HTML-Erkennung) und markiert jedes
+Dokument mit einem `integrityStatus`. Kaputte Dateien werden aus den
+Agenten-Scopes ausgefiltert, Katalog-Platzhalter (Summary ohne
+Binärdatei) bleiben als Kontext verfügbar. Das Agent-Sync-Skript
+validiert vor dem Schreiben Agent-Count, ID-Bereich und Pflichtfelder
+und verifiziert nachträglich die MD5-Identität aller Derivate.
+Das Forseti-Sync-Skript prüft die Schema-Invarianten (5×6=30
+Sub-Dimensionen, je 10 Labels, Kategorie-Referenzen auflösbar,
+Mapping-Einträge entweder gemappt-mit-Begründung oder null-mit-Grund).
 
 ---
 
@@ -334,7 +396,7 @@ cd backend && npm run test:coverage
 Beiträge sind willkommen! Bitte zuerst die Richtlinien lesen:
 
 1. [CONTRIBUTING.md](CONTRIBUTING.md) — Git-Workflow, Code-Standards, Commit-Konventionen
-2. [docs/ONBOARDING.md](docs/ONBOARDING.md) — Einstieg für neue Contributor
+2. [docs/guides/ONBOARDING.md](docs/guides/ONBOARDING.md) — Einstieg für neue Contributor
 3. Issues und Feature Requests über [GitHub Issues](https://github.com/Valtheron/valtheron-agentic-workspace/issues) einreichen
 
 ```bash

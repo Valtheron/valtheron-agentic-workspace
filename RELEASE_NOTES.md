@@ -1,6 +1,7 @@
 # Release Notes — Valtheron Agentic Workspace v1.0.0
 
-**Release-Datum:** 26. Februar 2026
+**Codebase-Stand:** 26. Februar 2026 (Codename *Genesis*)
+**Veröffentlichungsdatum (Tag `v1.0.0`):** 02.05.2026
 **Codename:** *Genesis*
 
 ---
@@ -15,7 +16,7 @@ Valtheron Agentic Workspace v1.0.0 ist das erste vollständige Release der auton
 
 ### Agenten-Management
 - **290 vordefinierte Agenten** in 10 Kategorien (Trading, Security, Development, QA, Documentation, Deployment, Analyst, Support, Integration, Monitoring)
-- **Persönlichkeitsprofil-System** mit 5 Layern × 4 Subdimensionen pro Kategorie
+- **Persönlichkeitsprofil-System** mit 5 Layern × 6 Subdimensionen (30 Metriken) plus 3 Modifier-Achsen
 - **Echtzeit-Status-Tracking** über WebSocket
 
 ### KI-Chat mit LLM-Integration
@@ -44,10 +45,10 @@ Valtheron Agentic Workspace v1.0.0 ist das erste vollständige Release der auton
 - **CSV/JSON-Export** für Reporting
 
 ### Dokumentation
-- API-Dokumentation (50+ Endpunkte)
-- User Guide, Admin Guide, Developer Guide
-- Deployment Guide, Troubleshooting Guide
-- Architecture Documentation mit ADRs
+- API-Dokumentation (89 Endpunkte) — `docs/reference/API.md`
+- User, Admin, Developer, Deployment, Troubleshooting, Onboarding und Beta-Testing Guides — `docs/guides/`
+- Architecture Documentation inkl. ADRs, Vision/Anforderungen, Personas-Modell — `docs/reference/ARCHITECTURE.md`
+- Doku-Index — `docs/README.md`
 
 ---
 
@@ -73,11 +74,11 @@ Valtheron Agentic Workspace v1.0.0 ist das erste vollständige Release der auton
 | Backend Test Coverage | 87.8% | > 85% |
 | Frontend Test Coverage | ~70% | > 70% |
 | Test-Pass-Rate | 100% | > 99% |
-| Gesamt-Tests | 475+ | — |
+| Gesamt-Tests | 614 | — |
 | Critical Bugs | 0 | 0 |
 | Critical Security Findings | 0 | 0 |
-| API-Endpunkte | 50+ | — |
-| DB-Performance-Indexes | 23 | — |
+| API-Endpunkte | 89 | — |
+| DB-Performance-Indexes | 20 | — |
 
 ---
 
@@ -112,9 +113,9 @@ cd frontend && npm install && npm run build && npm run preview
 ```
 
 Für detaillierte Anleitungen siehe:
-- `docs/DEPLOYMENT_GUIDE.md`
-- `docs/ADMIN_GUIDE.md`
-- `docs/USER_GUIDE.md`
+- `docs/guides/DEPLOYMENT_GUIDE.md`
+- `docs/guides/ADMIN_GUIDE.md`
+- `docs/guides/USER_GUIDE.md`
 
 ---
 

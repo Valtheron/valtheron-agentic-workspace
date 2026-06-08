@@ -48,9 +48,9 @@ describe('Backup API Endpoints', () => {
     expect(res.status).toBe(404);
   });
 
-  // In dev/test mode, adminGuard = optionalAuth, so all users can access
-  it('GET /api/backup — accessible in dev mode', async () => {
+  // /api/backup always requires admin auth (Block-A D-17 fix) — even in dev mode.
+  it('GET /api/backup — rejects requests without auth', async () => {
     const res = await request(app).get('/api/backup');
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(401);
   });
 });

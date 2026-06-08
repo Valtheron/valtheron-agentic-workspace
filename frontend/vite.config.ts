@@ -5,9 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ command }) => ({
   plugins: [react()],
   // Only prefix assets with the GitHub-Pages subpath for production builds.
-  // Dev server uses `/` so `http://localhost:5173/` works without redirects.
+  // Dev server uses `/` so `http://localhost:3055/` works without redirects.
   base: command === 'build' ? '/valtheron-agentic-workspace/' : '/',
   server: {
+    port: 3055,
+    strictPort: true,
     proxy: {
       '/api': {
         target: 'http://localhost:3001',

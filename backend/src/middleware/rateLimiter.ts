@@ -20,10 +20,14 @@ setInterval(() => {
 
 /**
  * Create a rate-limiting middleware.
- * @param windowSec  Time window in seconds
- * @param maxRequests  Maximum requests allowed in the window
+ * @param windowSec   Time window in seconds
+ * @param maxRequests Maximum requests allowed in the window
+ * @param keyScope    Optional bucket name. Two limiters mounted on the same
+ *                    baseUrl (broad `/api/auth` 20/min vs. strict
+ *                    `/api/auth/login` 5/15min) would otherwise share a bucket
+ *                    keyed only by IP+baseUrl. Pass a unique scope to isolate.
  */
-export function rateLimiter(windowSec: number, maxRequests: number) {
+export function rateLimiter(windowSec: number, maxRequests: number, keyScope?: string) {
   const windowMs = windowSec * 1000;
 
   return (req: Request, res: Response, next: NextFunction): void => {
@@ -34,7 +38,8 @@ export function rateLimiter(windowSec: number, maxRequests: number) {
     }
 
     const ip = req.ip || req.socket.remoteAddress || 'unknown';
-    const key = `${ip}:${req.baseUrl}`;
+    const bucket = keyScope ?? req.baseUrl;
+    const key = `${ip}:${bucket}`;
     const now = Date.now();
 
     let entry = store.get(key);

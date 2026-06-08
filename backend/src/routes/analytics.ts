@@ -4,6 +4,8 @@ import { cacheResponse } from '../middleware/cacheMiddleware.js';
 
 const router = Router();
 
+const PROCESS_START_MS = Date.now();
+
 // GET /api/analytics/dashboard (cached 15s)
 router.get('/dashboard', cacheResponse(15_000, 'analytics'), (_req: Request, res: Response) => {
   const db = getDb();
@@ -53,22 +55,33 @@ router.get('/dashboard', cacheResponse(15_000, 'analytics'), (_req: Request, res
     .prepare('SELECT category, COUNT(*) as count FROM agents GROUP BY category ORDER BY count DESC')
     .all() as { category: string; count: number }[];
 
+  // Only surface real Top Performers — i.e. agents that have actually
+  // executed at least one task. On a fresh install every agent reports
+  // tasksCompleted=0, so the dashboard correctly shows the empty-state
+  // instead of a "99/99/99/99/99" list derived from seed defaults.
   const topPerformers = db
-    .prepare('SELECT id as agentId, name, successRate as score FROM agents ORDER BY successRate DESC LIMIT 5')
+    .prepare(
+      'SELECT id as agentId, name, successRate as score FROM agents WHERE tasksCompleted > 0 ORDER BY successRate DESC, tasksCompleted DESC LIMIT 5',
+    )
     .all();
 
   const errorRate = totalTasks > 0 ? +((failedTasks / totalTasks) * 100).toFixed(1) : 0;
+  const uptimeSeconds = Math.floor((Date.now() - PROCESS_START_MS) / 1000);
 
   res.json({
     totalAgents,
     activeAgents,
     tasksToday,
+    tasksTotal: totalTasks,
+    tasksCompleted: completedTasks,
+    tasksFailed: failedTasks,
     successRate: +avgSuccessRate.toFixed(1),
     avgResponseTime: +avgResponseTime.toFixed(0),
     tasksTrend,
     categoryDistribution: categoryDist,
     topPerformers,
     errorRate,
+    uptimeSeconds,
   });
 });
 

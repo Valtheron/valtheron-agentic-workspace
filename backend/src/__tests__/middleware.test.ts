@@ -47,10 +47,10 @@ describe('Middleware Tests', () => {
       expect(res.status).toBe(200);
     });
 
-    it('operator can access admin endpoints in dev/test mode (guard relaxed)', async () => {
-      // In dev/test mode, adminGuard = optionalAuth (no role enforcement)
+    it('operator is rejected on admin-only endpoints, even in dev mode (Block-A D-17 fix)', async () => {
+      // /api/secrets, /api/security, /api/backup always require admin role.
       const res = await request(app).get('/api/secrets').set('Authorization', `Bearer ${operatorToken}`);
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(403);
     });
   });
 
@@ -67,6 +67,12 @@ describe('Middleware Tests', () => {
   // === Audit Logger ===
   describe('Audit Logger', () => {
     it('POST requests generate audit log entries', async () => {
+      // /api/security/audit is admin-only (D-17 fix). Use an admin token.
+      const reg = await request(app)
+        .post('/api/auth/register')
+        .send({ username: `audit_admin_${Date.now()}`, password: 'TestPass123!', role: 'admin' });
+      const auditAuth = `Bearer ${reg.body.token}`;
+
       // Create an agent (POST request → should be logged)
       await request(app).post('/api/agents').send({
         name: 'Audit Test Agent',
@@ -75,7 +81,7 @@ describe('Middleware Tests', () => {
       });
 
       // Check audit log
-      const res = await request(app).get('/api/security/audit?limit=5');
+      const res = await request(app).get('/api/security/audit?limit=5').set('Authorization', auditAuth);
       expect(res.status).toBe(200);
       expect(res.body.entries).toBeInstanceOf(Array);
     });

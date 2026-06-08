@@ -1,6 +1,7 @@
 node_modules/
 dist/
-data/
+# Runtime SQLite database — kept separate from src/data/ build artifacts
+/data/
 *.db
 *.db-wal
 *.db-shm

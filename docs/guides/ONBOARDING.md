@@ -26,10 +26,10 @@ Rückfragen sind ein Zeichen sorgfältiger Arbeit, nicht von Inkompetenz. Folgen
 
 **Keine Rückfrage nötig — Antwort steht in den Docs:**
 - Wie setze ich das Projekt lokal auf? → Abschnitt 3 dieser Datei
-- Welche API-Endpunkte gibt es? → `docs/API.md`
+- Welche API-Endpunkte gibt es? → `docs/reference/API.md`
 - Wie ist der Branch-Naming? → `CONTRIBUTING.md`
 - Welche Tests muss ich schreiben? → `CONTRIBUTING.md`
-- Wie deploye ich? → `docs/DEPLOYMENT_GUIDE.md`
+- Wie deploye ich? → `docs/guides/DEPLOYMENT_GUIDE.md`
 
 **Rückfragen sind ausdrücklich erwünscht bei:**
 - Unklaren Anforderungen an ein neues Feature (Was genau soll es tun?)
@@ -131,14 +131,14 @@ npm run dev
 cd frontend
 npm install
 npm run dev
-# Läuft auf http://localhost:5173
+# Läuft auf http://localhost:3055
 ```
 
 ### Schritt 4 — Ersten Admin-Account anlegen
 
 Das System hat **keine** Default-Credentials. Der erste registrierte User wird automatisch Admin.
 
-1. Öffne http://localhost:5173
+1. Öffne http://localhost:3055
 2. Klicke auf "Registrieren"
 3. Erstelle deinen Admin-Account
 4. Du hast sofort vollen Admin-Zugriff
@@ -289,7 +289,7 @@ POST   /api/security/kill-switch/deaktivieren Kill-Switch deaktivieren
 GET    /api/health              System-Gesundheitsstatus
 ```
 
-Vollständige Dokumentation: `docs/API.md`
+Vollständige Dokumentation: `docs/reference/API.md`
 
 ---
 
@@ -387,7 +387,7 @@ Beide Repos haben `.env.example`-Dateien als Vorlage.
 | Tests schlagen fehl | `npm install` erneut ausführen, dann `npm test` |
 | MFA QR-Code scannen | Google Authenticator oder Authy App verwenden |
 
-Ausführliche Hilfe: `docs/TROUBLESHOOTING_GUIDE.md`
+Ausführliche Hilfe: `docs/guides/TROUBLESHOOTING_GUIDE.md`
 
 ---
 
@@ -395,15 +395,15 @@ Ausführliche Hilfe: `docs/TROUBLESHOOTING_GUIDE.md`
 
 | Frage | Dokument |
 |-------|----------|
-| Projektarchitektur verstehen | `docs/ARCHITECTURE.md` |
-| API-Endpunkte nachschlagen | `docs/API.md` |
-| Deployment einrichten | `docs/DEPLOYMENT_GUIDE.md` |
-| Als Admin das System verwalten | `docs/ADMIN_GUIDE.md` |
+| Projektarchitektur verstehen | `docs/reference/ARCHITECTURE.md` |
+| API-Endpunkte nachschlagen | `docs/reference/API.md` |
+| Deployment einrichten | `docs/guides/DEPLOYMENT_GUIDE.md` |
+| Als Admin das System verwalten | `docs/guides/ADMIN_GUIDE.md` |
 | Code beitragen / PR erstellen | `CONTRIBUTING.md` |
 | Aktueller Projektstatus + Prioritäten | `docs/PROJECT_STATUS.md` |
-| Agent-Kategorien & Personas | `docs/AGENT_INSTRUKTIONEN.md` |
-| Vollständige technische Details | `docs/TECHNICAL_IMPLEMENTATION_GUIDE.md` |
-| Gesamtkonzept & Vision | `docs/AGENTIC_WORKSPACE_KONZEPT.md` |
+| Agent-Kategorien & Personas | `docs/archive/AGENT_INSTRUKTIONEN.md` |
+| Vollständige technische Details | `docs/archive/TECHNICAL_IMPLEMENTATION_GUIDE.md` |
+| Gesamtkonzept & Vision | `docs/archive/AGENTIC_WORKSPACE_KONZEPT.md` |
 
 ---
 

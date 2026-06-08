@@ -32,7 +32,7 @@ Der Valtheron Agentic Workspace ist nicht gebaut worden, um zu beeindrucken. Er 
 
 ### 1.1 Registrierung
 
-1. Öffnen Sie die Anwendung im Browser unter `http://localhost:5173`
+1. Öffnen Sie die Anwendung im Browser unter `http://localhost:3055`
 2. Klicken Sie auf **"Registrieren"**
 3. Geben Sie Benutzername, E-Mail und Passwort ein (mind. 8 Zeichen)
 4. Nach erfolgreicher Registrierung werden Sie automatisch eingeloggt

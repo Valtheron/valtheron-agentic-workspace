@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 const router = Router();
 
 const stripeKey = process.env.STRIPE_SECRET_KEY;
-const frontendUrl = process.env.STRIPE_FRONTEND_URL || 'http://localhost:5173';
+const frontendUrl = process.env.STRIPE_FRONTEND_URL || 'http://localhost:3055';
 
 const VALID_CURRENCIES = ['eur', 'usd'] as const;
 type Currency = (typeof VALID_CURRENCIES)[number];
