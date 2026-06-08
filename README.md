@@ -180,7 +180,7 @@ cp frontend/.env.example frontend/.env
 npm run dev
 
 # Backend:  http://localhost:3001
-# Frontend: http://localhost:5173
+# Frontend: http://localhost:3055
 ```
 
 ### Erster Login
@@ -188,7 +188,7 @@ npm run dev
 Nach dem Start ist standardmäßig kein Benutzer angelegt. Der **erste Registrant wird automatisch Admin**; alle weiteren Nutzer erhalten die Rolle `operator` (frei anpassbar im Admin-Panel).
 
 - **Docker / Produktion:** `http://localhost:8080` öffnen → „Registrieren" → Admin-Account anlegen.
-- **Lokale Entwicklung:** `http://localhost:5173` öffnet das Dashboard standardmäßig **ohne Login** (Schnellstart-Komfort). Um den produktiven Auth-Flow lokal zu testen:
+- **Lokale Entwicklung:** `http://localhost:3055` öffnet das Dashboard standardmäßig **ohne Login** (Schnellstart-Komfort). Um den produktiven Auth-Flow lokal zu testen:
 
   ```bash
   # Backend: Auth erzwingen
@@ -198,7 +198,7 @@ Nach dem Start ist standardmäßig kein Benutzer angelegt. Der **erste Registran
   npm run dev
   ```
 
-  Dann erscheint auf `http://localhost:5173` derselbe Login-Screen wie in Produktion.
+  Dann erscheint auf `http://localhost:3055` derselbe Login-Screen wie in Produktion.
 
 ---
 

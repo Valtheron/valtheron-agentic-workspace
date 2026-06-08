@@ -108,7 +108,7 @@ npm run dev    # Startet auf Port 3001
 # Frontend (neues Terminal)
 cd frontend
 npm install
-npm run dev    # Startet auf Port 5173
+npm run dev    # Startet auf Port 3055
 ```
 
 ### 2.3 Skripte
