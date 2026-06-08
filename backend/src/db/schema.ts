@@ -321,6 +321,16 @@ function initSchema(db: Database.Database) {
     CREATE INDEX IF NOT EXISTS idx_interactions_task ON agent_interactions(taskId);
     CREATE INDEX IF NOT EXISTS idx_versions_agent ON agent_versions(agentId);
 
+    -- Secrets vault (Beta-Run D-15): encrypted values persist here so they
+    -- survive process restarts. Names are unique; values are AES-256-GCM
+    -- ciphertext produced by services/encryption.ts — never plaintext.
+    CREATE TABLE IF NOT EXISTS secrets (
+      name TEXT PRIMARY KEY,
+      encryptedValue TEXT NOT NULL,
+      createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+      rotatedAt TEXT
+    );
+
     CREATE TABLE IF NOT EXISTS metrics_history (
       id TEXT PRIMARY KEY,
       timestamp TEXT NOT NULL DEFAULT (datetime('now')),

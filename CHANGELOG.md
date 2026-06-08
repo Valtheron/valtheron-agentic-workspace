@@ -235,6 +235,23 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Behoben
 
+- **Block G Defekt D-15 (Secrets-Vault ohne Persistenz):** Der Secrets-Vault
+  in `backend/src/services/encryption.ts` lag trotz Kommentar "in-memory + DB
+  backed" rein in einer `Map` — alle gespeicherten Secrets gingen beim
+  Neustart verloren, und im Schema fehlte die in `BETA_TESTING.md` §2.7 G3
+  erwartete `secrets`-Tabelle. Jetzt legt `schema.ts` eine `secrets`-Tabelle
+  an (name PK, encryptedValue, createdAt, rotatedAt), und der Vault
+  (`setSecret`/`getSecret`/`rotateSecret`/`listSecrets`/`deleteSecret`) ist
+  DB-gestützt. Werte werden weiterhin ausschließlich als AES-256-GCM-Ciphertext
+  abgelegt — kein Klartext in der DB — und überleben nun Prozess-Neustarts.
+
+- **Block B Defekt D-16 (Pagination-`total` ignoriert Filter):**
+  `GET /api/agents` lieferte im `total`-Feld stets `COUNT(*)` der gesamten
+  Tabelle, auch bei aktivem `search`/`category`/`status`-Filter. UI-Pagination
+  (`Math.ceil(total / limit)`) errechnete dadurch z. B. 291 Seiten für eine
+  Ein-Treffer-Suche. `total` wird jetzt mit derselben `WHERE`-Klausel wie die
+  Datenabfrage berechnet. Regressionstest in `agents.test.ts`.
+
 - **Block F Defekt D-19 (Boot-Race + lautlose Chat-Fehler):** Beim ersten
   Mount-Effect in `frontend/src/App.tsx` lief `healthAPI.check()` genau einmal.
   Vite ist im Schnitt 0,5–3 s früher fertig als das Backend (Express + sqlite
