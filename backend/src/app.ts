@@ -3,7 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { optionalAuth, authMiddleware } from './middleware/auth.js';
 import { getDb } from './db/schema.js';
-import { seedDatabase } from './db/seed.js';
+import { seedDatabase, seedAgentCatalog } from './db/seed.js';
 import { getClientCount } from './services/websocket.js';
 
 // Routes
@@ -21,6 +21,8 @@ import notificationRoutes from './routes/notifications.js';
 import mfaRoutes from './routes/mfa.js';
 import secretsRoutes from './routes/secrets.js';
 import backupRoutes from './routes/backup.js';
+import donationsRoutes from './routes/donations.js';
+import interactionRoutes from './routes/interactions.js';
 import { auditLogger } from './middleware/auditLogger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { adminOnly } from './middleware/rbac.js';
@@ -41,7 +43,7 @@ export function createApp() {
   // Middleware
   app.use(
     cors({
-      origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
+      origin: ['http://localhost:3055', 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
       credentials: true,
     }),
   );
@@ -79,26 +81,49 @@ export function createApp() {
   // Public routes
   app.use('/api/auth', authRoutes);
   app.use('/api/auth/mfa', mfaRoutes);
+  app.use('/api/donations', rateLimiter(60, 5), donationsRoutes);
 
-  // Protected routes (require auth in production, optional in dev)
-  const protect = process.env.NODE_ENV === 'production' ? authMiddleware : optionalAuth;
-  // Admin-only guard — enforced in production; passthrough in dev
-  const adminGuard = process.env.NODE_ENV === 'production' ? adminOnly : optionalAuth;
+  // Protected routes.
+  //
+  // `protect` enforces a valid JWT in production and whenever
+  // VALTHERON_REQUIRE_AUTH=true. In dev mode the product routes
+  // (agents/tasks/workflows/analytics/chat/…) keep the historical
+  // optionalAuth fallback so locally clicking around remains friction-free.
+  //
+  // `adminGuard` is the new, stricter gate: it **always** requires an
+  // authenticated admin, regardless of NODE_ENV. Mounted on the security,
+  // secrets and backup routes so audit-log, kill-switch and credentials
+  // can't be hit anonymously even on a developer's dev server. Block-A
+  // finding D-17 (dev auth bypass) is fixed here for the high-risk
+  // surfaces; the dev convenience for product routes is preserved.
+  const requireAuth = process.env.NODE_ENV === 'production' || process.env.VALTHERON_REQUIRE_AUTH === 'true';
+  const protect = requireAuth ? authMiddleware : optionalAuth;
+  const adminGuard = adminOnly;
+
+  if (!requireAuth) {
+    console.warn(
+      '[auth] Dev mode: /api/agents, /api/tasks, /api/workflows, /api/analytics, /api/chat, ' +
+        '/api/collaboration, /api/project-tree, /api/notifications and /api/interactions accept ' +
+        'requests without a JWT. Set VALTHERON_REQUIRE_AUTH=true to mirror production. ' +
+        '/api/security, /api/secrets and /api/backup always require admin auth.',
+    );
+  }
 
   app.use('/api/agents', protect, agentRoutes);
   app.use('/api/tasks', protect, taskRoutes);
   app.use('/api/workflows', protect, workflowRoutes);
-  // Security routes require admin role in production (RBAC)
-  app.use('/api/security', protect, adminGuard, securityRoutes);
+  // Security routes always require admin — never accessible anonymously.
+  app.use('/api/security', authMiddleware, adminGuard, securityRoutes);
   app.use('/api/analytics', protect, analyticsRoutes);
   app.use('/api/chat', protect, chatRoutes);
   app.use('/api/collaboration', protect, collaborationRoutes);
   app.use('/api/collaboration', protect, fileRoutes);
   app.use('/api/project-tree', protect, projectTreeRoutes);
   app.use('/api/notifications', protect, notificationRoutes);
-  // Admin-only: secrets management and backup/restore
-  app.use('/api/secrets', protect, adminGuard, secretsRoutes);
-  app.use('/api/backup', protect, adminGuard, backupRoutes);
+  app.use('/api/interactions', protect, interactionRoutes);
+  // Always admin-only: secrets management and backup/restore.
+  app.use('/api/secrets', authMiddleware, adminGuard, secretsRoutes);
+  app.use('/api/backup', authMiddleware, adminGuard, backupRoutes);
 
   // 404 handler
   app.use((_req, res) => {
@@ -113,8 +138,13 @@ export function createApp() {
 
 export function initDatabase() {
   getDb();
-  // Only seed demo data when explicitly requested (e.g. SEED_DEMO=true npm start)
+  // Full demo data (agents + users + tasks + workflows) only when explicitly requested
   if (process.env.SEED_DEMO === 'true') {
     seedDatabase();
+    return;
+  }
+  // Always ensure the 290-agent catalog is available on fresh installs (skip under test)
+  if (process.env.NODE_ENV !== 'test') {
+    seedAgentCatalog();
   }
 }

@@ -1,7 +1,24 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'valtheron-dev-secret-change-in-production';
+const DEFAULT_JWT_SECRET = 'valtheron-dev-secret-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || DEFAULT_JWT_SECRET;
+
+if (JWT_SECRET === DEFAULT_JWT_SECRET) {
+  if (process.env.NODE_ENV === 'production') {
+    // Refuse to boot: using the shipped default in production would make every
+    // session token forgeable. Operators must generate their own secret.
+    throw new Error(
+      'JWT_SECRET is set to the default value in production. ' +
+        'Generate a strong secret (e.g. `openssl rand -hex 32`) and set JWT_SECRET before starting.',
+    );
+  } else if (process.env.NODE_ENV !== 'test') {
+    console.warn(
+      '[auth] JWT_SECRET is using the default development value. ' +
+        'Set a unique JWT_SECRET before deploying to production.',
+    );
+  }
+}
 
 export interface AuthPayload {
   userId: string;

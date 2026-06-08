@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Agent, Task, AnalyticsData, SLAMetric, PerformanceTrend } from '../types';
+import { analyticsAPI } from '../services/api';
 
 interface AnalyticsProps {
   analytics: AnalyticsData;
@@ -8,83 +9,6 @@ interface AnalyticsProps {
 }
 
 type Tab = 'trends' | 'throughput' | 'errors' | 'capacity' | 'sla' | 'success';
-
-function generateTrends(agents: Agent[], _tasks: Task[]): PerformanceTrend[] {
-  const now = Date.now();
-  return Array.from({ length: 30 }, (_, i) => {
-    const d = new Date(now - (29 - i) * 86400000);
-    const seed = d.getDate() + d.getMonth() * 31;
-    const base = agents.length;
-    return {
-      date: d.toISOString().slice(0, 10),
-      throughput: Math.floor(base * 0.3 + Math.sin(seed * 0.7) * base * 0.15 + Math.random() * base * 0.1),
-      errorRate: +(2 + Math.sin(seed * 1.3) * 1.5 + Math.random()).toFixed(1),
-      avgResponseTime: Math.floor(150 + Math.sin(seed * 0.5) * 50 + Math.random() * 30),
-      successRate: +(94 + Math.sin(seed * 0.3) * 3 + Math.random()).toFixed(1),
-      activeAgents: Math.floor(base * 0.5 + Math.sin(seed * 0.9) * base * 0.2),
-    };
-  });
-}
-
-function generateSLAs(): SLAMetric[] {
-  return [
-    {
-      id: 's1',
-      name: 'Response Time',
-      metric: 'response_time',
-      threshold: 200,
-      unit: 'ms',
-      current: 168,
-      status: 'met',
-      period: 'daily',
-      history: Array.from({ length: 24 }, (_, i) => ({ timestamp: `${i}:00`, value: 140 + Math.random() * 80 })),
-    },
-    {
-      id: 's2',
-      name: 'Success Rate',
-      metric: 'success_rate',
-      threshold: 95,
-      unit: '%',
-      current: 96.2,
-      status: 'met',
-      period: 'daily',
-      history: Array.from({ length: 24 }, (_, i) => ({ timestamp: `${i}:00`, value: 93 + Math.random() * 5 })),
-    },
-    {
-      id: 's3',
-      name: 'System Uptime',
-      metric: 'uptime',
-      threshold: 99.5,
-      unit: '%',
-      current: 99.8,
-      status: 'met',
-      period: 'monthly',
-      history: Array.from({ length: 30 }, (_, i) => ({ timestamp: `Tag ${i + 1}`, value: 99 + Math.random() })),
-    },
-    {
-      id: 's4',
-      name: 'Throughput',
-      metric: 'throughput',
-      threshold: 50,
-      unit: 'tasks/h',
-      current: 47,
-      status: 'warning',
-      period: 'hourly',
-      history: Array.from({ length: 24 }, (_, i) => ({ timestamp: `${i}:00`, value: 35 + Math.random() * 25 })),
-    },
-    {
-      id: 's5',
-      name: 'Error Rate',
-      metric: 'error_rate',
-      threshold: 5,
-      unit: '%',
-      current: 6.1,
-      status: 'breached',
-      period: 'daily',
-      history: Array.from({ length: 24 }, (_, i) => ({ timestamp: `${i}:00`, value: 3 + Math.random() * 5 })),
-    },
-  ];
-}
 
 // SVG Mini Chart
 function LineChart({
@@ -163,10 +87,36 @@ function BarChart({
   );
 }
 
-export default function AnalyticsView({ analytics: _analytics, agents, tasks }: AnalyticsProps) {
+export default function AnalyticsView({ analytics: _analytics, agents, tasks: _tasks }: AnalyticsProps) {
   const [tab, setTab] = useState<Tab>('trends');
-  const trends = useMemo(() => generateTrends(agents, tasks), [agents, tasks]);
-  const slas = useMemo(generateSLAs, []);
+  const [trends, setTrends] = useState<PerformanceTrend[]>([]);
+  const [slas, setSlas] = useState<SLAMetric[]>([]);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([analyticsAPI.performance(), analyticsAPI.sla()])
+      .then(([perf, slaRes]) => {
+        if (cancelled) return;
+        const perfData = perf as { trends: PerformanceTrend[] };
+        const slaData = slaRes as { sla?: SLAMetric[] } | { slas?: SLAMetric[] } | SLAMetric[];
+        setTrends(Array.isArray(perfData.trends) ? perfData.trends : []);
+        // Backend may return { sla: [...] }, { slas: [...] }, or a bare array.
+        let slasResolved: SLAMetric[] = [];
+        if (Array.isArray(slaData)) slasResolved = slaData;
+        else if ('slas' in slaData && Array.isArray(slaData.slas)) slasResolved = slaData.slas;
+        else if ('sla' in slaData && Array.isArray(slaData.sla)) slasResolved = slaData.sla;
+        setSlas(slasResolved);
+      })
+      .catch((err: Error) => {
+        if (!cancelled) setLoadError(err.message || 'Analytics konnten nicht geladen werden');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const hasTrends = trends.length > 0;
 
   const catCounts = useMemo(() => {
     const map: Record<string, { total: number; active: number; idle: number; working: number }> = {};
@@ -210,72 +160,106 @@ export default function AnalyticsView({ analytics: _analytics, agents, tasks }: 
         ))}
       </div>
 
+      {loadError && (
+        <div
+          className="card"
+          style={{ borderLeft: '3px solid var(--accent-red)', marginBottom: 16, padding: 12, fontSize: 12 }}
+        >
+          Analytics konnten nicht geladen werden: {loadError}
+        </div>
+      )}
+
       {tab === 'trends' && (
         <div>
-          <div className="kpi-grid">
-            <div className="kpi-card">
-              <div className="kpi-label">Avg Durchsatz (30d)</div>
-              <div className="kpi-value cyan">
-                {Math.round(trends.reduce((s, t) => s + t.throughput, 0) / trends.length)}
+          {hasTrends ? (
+            <>
+              <div className="kpi-grid">
+                <div className="kpi-card">
+                  <div className="kpi-label">Avg Durchsatz (7d)</div>
+                  <div className="kpi-value cyan">
+                    {Math.round(trends.reduce((s, t) => s + t.throughput, 0) / trends.length)}
+                  </div>
+                  <div className="kpi-sub">Tasks/Tag</div>
+                </div>
+                <div className="kpi-card">
+                  <div className="kpi-label">Avg Response Time</div>
+                  <div className="kpi-value">
+                    {Math.round(trends.reduce((s, t) => s + t.avgResponseTime, 0) / trends.length)}ms
+                  </div>
+                </div>
+                <div className="kpi-card">
+                  <div className="kpi-label">Avg Erfolgsrate</div>
+                  <div className="kpi-value green">
+                    {(trends.reduce((s, t) => s + t.successRate, 0) / trends.length).toFixed(1)}%
+                  </div>
+                </div>
+                <div className="kpi-card">
+                  <div className="kpi-label">Avg Fehlerrate</div>
+                  <div className="kpi-value red">
+                    {(trends.reduce((s, t) => s + t.errorRate, 0) / trends.length).toFixed(1)}%
+                  </div>
+                </div>
               </div>
-              <div className="kpi-sub">Tasks/Tag</div>
-            </div>
-            <div className="kpi-card">
-              <div className="kpi-label">Avg Response Time</div>
-              <div className="kpi-value">
-                {Math.round(trends.reduce((s, t) => s + t.avgResponseTime, 0) / trends.length)}ms
+              <div className="grid-2">
+                <div className="card">
+                  <div className="card-title mb-8">Durchsatz Trend (7 Tage)</div>
+                  <LineChart data={trends.map((t) => t.throughput)} width={500} height={150} />
+                </div>
+                <div className="card">
+                  <div className="card-title mb-8">Response Time Trend (7 Tage)</div>
+                  <LineChart
+                    data={trends.map((t) => t.avgResponseTime)}
+                    width={500}
+                    height={150}
+                    color="var(--accent-orange)"
+                  />
+                </div>
+                <div className="card">
+                  <div className="card-title mb-8">Erfolgsrate Trend (7 Tage)</div>
+                  <LineChart
+                    data={trends.map((t) => t.successRate)}
+                    width={500}
+                    height={150}
+                    color="var(--accent-green)"
+                  />
+                </div>
+                <div className="card">
+                  <div className="card-title mb-8">Aktive Agenten (7 Tage)</div>
+                  <LineChart
+                    data={trends.map((t) => t.activeAgents)}
+                    width={500}
+                    height={150}
+                    color="var(--accent-blue)"
+                  />
+                </div>
               </div>
+            </>
+          ) : (
+            <div className="card" style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)' }}>
+              Noch keine Trend-Daten verfügbar. Sobald der Metriken-Recorder mehrere Snapshots aufgezeichnet hat (1× pro
+              Minute), erscheinen hier reale Werte.
             </div>
-            <div className="kpi-card">
-              <div className="kpi-label">Avg Erfolgsrate</div>
-              <div className="kpi-value green">
-                {(trends.reduce((s, t) => s + t.successRate, 0) / trends.length).toFixed(1)}%
-              </div>
-            </div>
-            <div className="kpi-card">
-              <div className="kpi-label">Avg Fehlerrate</div>
-              <div className="kpi-value red">
-                {(trends.reduce((s, t) => s + t.errorRate, 0) / trends.length).toFixed(1)}%
-              </div>
-            </div>
-          </div>
-          <div className="grid-2">
-            <div className="card">
-              <div className="card-title mb-8">Durchsatz Trend (30 Tage)</div>
-              <LineChart data={trends.map((t) => t.throughput)} width={500} height={150} />
-            </div>
-            <div className="card">
-              <div className="card-title mb-8">Response Time Trend (30 Tage)</div>
-              <LineChart
-                data={trends.map((t) => t.avgResponseTime)}
-                width={500}
-                height={150}
-                color="var(--accent-orange)"
-              />
-            </div>
-            <div className="card">
-              <div className="card-title mb-8">Erfolgsrate Trend (30 Tage)</div>
-              <LineChart data={trends.map((t) => t.successRate)} width={500} height={150} color="var(--accent-green)" />
-            </div>
-            <div className="card">
-              <div className="card-title mb-8">Aktive Agenten (30 Tage)</div>
-              <LineChart data={trends.map((t) => t.activeAgents)} width={500} height={150} color="var(--accent-blue)" />
-            </div>
-          </div>
+          )}
         </div>
       )}
 
       {tab === 'throughput' && (
         <div>
-          <div className="card mb-16">
-            <div className="card-title mb-8">Agent-Durchsatz ueber Zeit (30 Tage)</div>
-            <BarChart
-              data={trends.map((t) => t.throughput)}
-              labels={trends.map((t) => t.date)}
-              width={800}
-              height={200}
-            />
-          </div>
+          {hasTrends ? (
+            <div className="card mb-16">
+              <div className="card-title mb-8">Agent-Durchsatz über Zeit (7 Tage)</div>
+              <BarChart
+                data={trends.map((t) => t.throughput)}
+                labels={trends.map((t) => t.date)}
+                width={800}
+                height={200}
+              />
+            </div>
+          ) : (
+            <div className="card mb-16" style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)' }}>
+              Noch keine Durchsatz-Daten verfügbar.
+            </div>
+          )}
           <div className="grid-2">
             <div className="card">
               <div className="card-title mb-8">Durchsatz pro Kategorie</div>
@@ -319,29 +303,35 @@ export default function AnalyticsView({ analytics: _analytics, agents, tasks }: 
 
       {tab === 'errors' && (
         <div>
-          <div className="card mb-16">
-            <div className="card-title mb-8">Fehlerrate ueber Zeit (30 Tage)</div>
-            <LineChart
-              data={trends.map((t) => t.errorRate)}
-              width={800}
-              height={200}
-              color="var(--accent-red)"
-              showDots
-            />
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                fontSize: 10,
-                color: 'var(--text-muted)',
-                marginTop: 4,
-              }}
-            >
-              <span>{trends[0]?.date}</span>
-              <span>Threshold: 5%</span>
-              <span>{trends[trends.length - 1]?.date}</span>
+          {hasTrends ? (
+            <div className="card mb-16">
+              <div className="card-title mb-8">Fehlerrate über Zeit (7 Tage)</div>
+              <LineChart
+                data={trends.map((t) => t.errorRate)}
+                width={800}
+                height={200}
+                color="var(--accent-red)"
+                showDots
+              />
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontSize: 10,
+                  color: 'var(--text-muted)',
+                  marginTop: 4,
+                }}
+              >
+                <span>{trends[0]?.date}</span>
+                <span>Threshold: 5%</span>
+                <span>{trends[trends.length - 1]?.date}</span>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="card mb-16" style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)' }}>
+              Noch keine Fehler-Daten verfügbar.
+            </div>
+          )}
           <div className="grid-2">
             <div className="card">
               <div className="card-title mb-8">Fehler pro Kategorie</div>
@@ -470,56 +460,74 @@ export default function AnalyticsView({ analytics: _analytics, agents, tasks }: 
 
       {tab === 'sla' && (
         <div>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-              gap: 12,
-              marginBottom: 16,
-            }}
-          >
-            {slas.map((sla) => (
-              <div key={sla.id} className="card" style={{ borderLeft: `3px solid ${slaColors[sla.status]}` }}>
-                <div className="flex-between mb-8">
-                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{sla.name}</span>
-                  <span
-                    className={`badge ${sla.status === 'met' ? 'valid' : sla.status === 'warning' ? 'high' : 'critical'}`}
-                  >
-                    {sla.status.toUpperCase()}
-                  </span>
+          {slas.length > 0 ? (
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: 12,
+                marginBottom: 16,
+              }}
+            >
+              {slas.map((sla) => (
+                <div key={sla.id} className="card" style={{ borderLeft: `3px solid ${slaColors[sla.status]}` }}>
+                  <div className="flex-between mb-8">
+                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{sla.name}</span>
+                    <span
+                      className={`badge ${sla.status === 'met' ? 'valid' : sla.status === 'warning' ? 'high' : 'critical'}`}
+                    >
+                      {sla.status.toUpperCase()}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: 24, fontWeight: 700, color: slaColors[sla.status] }}>
+                    {sla.current}
+                    {sla.unit}
+                  </div>
+                  <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 8 }}>
+                    Threshold: {sla.threshold}
+                    {sla.unit} | {sla.period}
+                  </div>
+                  {sla.history.length > 1 ? (
+                    <LineChart
+                      data={sla.history.map((h) => h.value)}
+                      width={220}
+                      height={60}
+                      color={slaColors[sla.status]}
+                    />
+                  ) : (
+                    <div style={{ fontSize: 10, color: 'var(--text-muted)', padding: '12px 0', textAlign: 'center' }}>
+                      Verlauf wird mit zunehmender Laufzeit aufgebaut
+                    </div>
+                  )}
                 </div>
-                <div style={{ fontSize: 24, fontWeight: 700, color: slaColors[sla.status] }}>
-                  {sla.current}
-                  {sla.unit}
-                </div>
-                <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 8 }}>
-                  Threshold: {sla.threshold}
-                  {sla.unit} | {sla.period}
-                </div>
-                <LineChart
-                  data={sla.history.map((h) => h.value)}
-                  width={220}
-                  height={60}
-                  color={slaColors[sla.status]}
-                />
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="card" style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)' }}>
+              SLA-Metriken konnten noch nicht berechnet werden.
+            </div>
+          )}
         </div>
       )}
 
       {tab === 'success' && (
         <div>
-          <div className="card mb-16">
-            <div className="card-title mb-8">Agent Success Rate Trend (30 Tage)</div>
-            <LineChart
-              data={trends.map((t) => t.successRate)}
-              width={800}
-              height={200}
-              color="var(--accent-green)"
-              showDots
-            />
-          </div>
+          {hasTrends ? (
+            <div className="card mb-16">
+              <div className="card-title mb-8">Agent Success Rate Trend (7 Tage)</div>
+              <LineChart
+                data={trends.map((t) => t.successRate)}
+                width={800}
+                height={200}
+                color="var(--accent-green)"
+                showDots
+              />
+            </div>
+          ) : (
+            <div className="card mb-16" style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)' }}>
+              Noch keine Erfolgsrate-Trend-Daten.
+            </div>
+          )}
           <div className="card">
             <div className="card-title mb-8">Erfolgsrate pro Agent (Top 20)</div>
             {successByAgent.map((a, i) => (

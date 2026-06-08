@@ -7,6 +7,7 @@ const mockAnalytics: AnalyticsData = {
   totalAgents: 25,
   activeAgents: 18,
   tasksToday: 42,
+  tasksTotal: 200,
   successRate: 96.5,
   avgResponseTime: 145,
   tasksTrend: [
@@ -24,7 +25,7 @@ const mockAnalytics: AnalyticsData = {
     { agentId: 'a2', name: 'Beta Agent', score: 95 },
   ],
   errorRate: 3.5,
-  uptime: 99.9,
+  uptimeSeconds: 86400 * 7,
 };
 
 const mockKillSwitch: KillSwitch = {
@@ -132,8 +133,9 @@ describe('DashboardView', () => {
     expect(screen.getByText('96.5%')).toBeInTheDocument();
     expect(screen.getByText('Fehlerrate')).toBeInTheDocument();
     expect(screen.getByText('3.5%')).toBeInTheDocument();
-    expect(screen.getByText('Uptime')).toBeInTheDocument();
-    expect(screen.getByText('99.9%')).toBeInTheDocument();
+    expect(screen.getByText('Backend-Laufzeit')).toBeInTheDocument();
+    // 86400 * 7 = 7 days of uptime → "7d 0h"
+    expect(screen.getByText('7d 0h')).toBeInTheDocument();
   });
 
   it('renders task trend bars', () => {
@@ -157,20 +159,21 @@ describe('DashboardView', () => {
     expect(screen.getByText('1 offen')).toBeInTheDocument();
   });
 
-  it('shows kill switch in INAKTIV state', () => {
+  it('shows kill switch in STANDBY state', () => {
     render(<DashboardView {...defaultProps} />);
-    expect(screen.getByText('INAKTIV')).toBeInTheDocument();
-    expect(screen.getByText('Kill-Switch deaktiviert')).toBeInTheDocument();
+    expect(screen.getByText('STANDBY')).toBeInTheDocument();
+    expect(screen.getByText('Bereit — wird bei Auto-Trigger-Verletzung aktiviert')).toBeInTheDocument();
   });
 
-  it('shows kill switch in AKTIV state', () => {
+  it('shows kill switch in GEZÜNDET state', () => {
     render(<DashboardView {...defaultProps} killSwitch={{ ...mockKillSwitch, aktiv: true }} />);
-    expect(screen.getByText('AKTIV')).toBeInTheDocument();
+    expect(screen.getByText('GEZÜNDET')).toBeInTheDocument();
+    expect(screen.getByText('Alle Agenten suspendiert')).toBeInTheDocument();
   });
 
   it('calls onToggleKillSwitch when button is clicked', () => {
     render(<DashboardView {...defaultProps} />);
-    fireEvent.click(screen.getByText('INAKTIV'));
+    fireEvent.click(screen.getByText('STANDBY'));
     expect(onToggleKillSwitch).toHaveBeenCalledTimes(1);
   });
 

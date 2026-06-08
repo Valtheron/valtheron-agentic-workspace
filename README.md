@@ -8,15 +8,15 @@ Zentrale Plattform zur Orchestrierung autonomer KI-Agenten
 
 ## Vision
 
-Ein System, das nicht nur funktioniert — sondern das, was es tut, mit Würde tut.
+Der **Valtheron Agentic Workspace** ist eine produktionsreife Web-Plattform zur Verwaltung, Überwachung und Koordination **spezialisierter KI-Agenten** — aus einem Dashboard heraus, das Standard Set umfasst **200 KI Agenten**, dass erweiterte Entwickler Set beinhaltet **290 spezialisierter KI-Agenten**.
 
-Der Valtheron Agentic Workspace ist nicht gebaut worden, um zu beeindrucken. Er ist gebaut worden, um zu dienen: als verlässliches Fundament für autonome Operationen, bei denen jeder Fehler Konsequenzen hat und jede Entscheidung nachvollziehbar sein muss.**
+Die Plattform ist kein KI-System selbst, sondern der **Steuerungsraum** für autonome KI-Operationen: mit Echtzeit-Monitoring, Notfall-Kill-Switch, verschlüsseltem Secrets Vault und lückenlosem Audit-Trail.
 
 [![CI](https://github.com/Valtheron/valtheron-agentic-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/Valtheron/valtheron-agentic-workspace/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)](CHANGELOG.md)
 [![Lizenz](https://img.shields.io/badge/Lizenz-MIT-green?style=flat-square)](LICENSE)
-[![Coverage](https://img.shields.io/badge/Coverage-82.3%25-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
-[![Tests](https://img.shields.io/badge/Tests-468%20bestanden-brightgreen?style=flat-square)](docs/DEVELOPER_GUIDE.md)
+[![Coverage](https://img.shields.io/badge/Coverage-87.8%25-brightgreen?style=flat-square)](docs/guides/DEVELOPER_GUIDE.md)
+[![Tests](https://img.shields.io/badge/Tests-614%20bestanden-brightgreen?style=flat-square)](docs/guides/DEVELOPER_GUIDE.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org/)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](docker-compose.yml)
@@ -29,14 +29,14 @@ Der Valtheron Agentic Workspace ist nicht gebaut worden, um zu beeindrucken. Er 
 
 ## Über den Initiator
 
-Dieses Projekt wird von **[BlackIce Secure Inc.](https://blackice-secure.space/)** initiiert — einem führenden Anbieter spezialisierter Lösungen in den Bereichen Natural Language Processing, Cybersecurity und KI-Entwicklung für Unternehmen und Institutionen.
+Dieses Projekt wird von **[BlackIce Secure Inc.](https://blackice-secure.space/)** initiiert — einem führenden Anbieter spezialisierter Lösungen in den Bereichen Natural Language Processing, Cybersecurity und KI-Entwicklung für Unternehmen und Institutionen. Weiterer Online-Auftritt: **[blackiceguard.io](https://blackiceguard.io/)**.
 
 ---
 
 ## Print-on-Demand
 
 Besuchen Sie unseren **[Print-on-Demand-Shop](https://blackice-secure.printify.me/)** —
-Kleidung als Totem und Kunst als Code: eine Verschmelzung von Ästhetik, Technologie und Ausdruck.
+clothes as totem and art as Code.
 
 <div align="center">
 
@@ -63,11 +63,10 @@ Kleidung als Totem und Kunst als Code: eine Verschmelzung von Ästhetik, Technol
   </tr>
 </table>
 
-> *Du bist bei mir und ich bei dir. Auf ewig eins, doch zwei sind wir.*
-> *Wie die Sterne am Himmelszelt und das Meer tief darunter.*
-> *So verbinde ich dich mit mir und du dich mit mir.*
+> "Du bist bei mir und ich bei dir. Auf ewig eins, doch zwei sind wir. Wie die Sterne am Himmelszelt und das Meer tief darunter. 
+> So mach ich dich zu dir. Und du mich zu mir."
 >
-> **« You will never be alone again. »** — Black Ice Secure, trust me im Steven!
+> **« Me my self and I, maybe together with YOU, will win. »** — Black Ice Secure, trust me im Steven!
 
 </div>
 
@@ -78,7 +77,7 @@ Kleidung als Totem und Kunst als Code: eine Verschmelzung von Ästhetik, Technol
 
 ## Was ist der Agentic Workspace?
 
-Der **Valtheron Agentic Workspace** ist eine produktionsreife Web-Plattform zur Verwaltung, Überwachung und Koordination von bis zu **290 spezialisierten KI-Agenten** — aus einem einzigen Dashboard heraus.
+Der **Valtheron Agentic Workspace** ist eine produktionsreife Web-Plattform zur Verwaltung, Überwachung und Koordination **spezialisierter KI-Agenten** — aus einem Dashboard heraus, das Standard Set umfasst **200 KI Agenten**, dass erweiterte Entwickler Set beinhaltet **290 spezialisierter KI-Agenten**.
 
 Die Plattform ist kein KI-System selbst, sondern der **Steuerungsraum** für autonome KI-Operationen: mit Echtzeit-Monitoring, Notfall-Kill-Switch, verschlüsseltem Secrets Vault und lückenlosem Audit-Trail.
 
@@ -103,10 +102,17 @@ Die Plattform ist kein KI-System selbst, sondern der **Steuerungsraum** für aut
 
 ### Agenten-Kategorien
 
+290 Agenten verteilt auf 16 Kategorien:
+
 ```
-Trading (30)     Security (30)    Development (30)    QA (30)
-Documentation    Deployment       Analyst     (30)    Support (20)
-Integration (20) Monitoring (30)
+Trading Agents (20)             Development Agents (20)
+Security Agents (20)            QA Agents (20)
+Documentation Agents (20)       Deployment Agents (20)
+Analyst Agents (20)             Support Agents (20)
+Integration Agents (20)         Monitoring Agents (20)
+AI-Native Agents (20)           Hybrid Agents (15)
+FinTech Agents (15)             Human-Centric Agents (15)
+Specialized Data Agents (15)    Meta Agents (10)
 ```
 
 ### Technologie-Stack
@@ -126,9 +132,16 @@ Integration (20) Monitoring (30)
 
 ### Voraussetzungen
 
-- [Node.js](https://nodejs.org/) 22+
-- [Docker](https://www.docker.com/) & Docker Compose (empfohlen)
+- [Node.js](https://nodejs.org/) 22+ (inkl. `npm`)
+- [Docker](https://www.docker.com/) Engine 20.10+ mit Compose-Plugin (`docker compose`) — nur für Option 1
+- `git`
 - Optional: Anthropic oder OpenAI API-Key für LLM-Chat
+
+> **Linux-Hinweis:** Docker-Befehle ohne `sudo` erfordern die Zugehörigkeit zur `docker`-Gruppe:
+> `sudo usermod -aG docker $USER && newgrp docker`. Ohne das scheitert `docker compose up` mit
+> `permission denied on /var/run/docker.sock`.
+
+Alle Befehle im folgenden Abschnitt werden **im Repo-Root** ausgeführt (das Verzeichnis, das `README.md` und `package.json` enthält).
 
 ### Option 1 — Docker Compose (empfohlen)
 
@@ -137,12 +150,13 @@ Integration (20) Monitoring (30)
 git clone https://github.com/Valtheron/valtheron-agentic-workspace.git
 cd valtheron-agentic-workspace
 
-# Umgebungsvariablen konfigurieren
+# Umgebungsvariablen konfigurieren (im Repo-Root ausführen)
 cp backend/.env.example backend/.env
-# .env anpassen: JWT_SECRET, ANTHROPIC_API_KEY, etc.
+# .env anpassen: JWT_SECRET (unbedingt austauschen, z. B. `openssl rand -hex 32`),
+# ANTHROPIC_API_KEY, etc.
 
 # Starten
-docker-compose up -d
+docker compose up -d --build
 
 # Dashboard öffnen
 open http://localhost:8080
@@ -155,22 +169,36 @@ open http://localhost:8080
 git clone https://github.com/Valtheron/valtheron-agentic-workspace.git
 cd valtheron-agentic-workspace
 
-# Abhängigkeiten installieren
+# Abhängigkeiten installieren (Backend + Frontend + Root-Tooling)
 npm run install:all
 
-# Umgebungsvariablen konfigurieren
+# Umgebungsvariablen konfigurieren (im Repo-Root ausführen)
 cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
 
-# Backend + Frontend parallel starten
+# Backend + Frontend parallel starten (läuft plattformübergreifend via `concurrently`)
 npm run dev
 
 # Backend:  http://localhost:3001
-# Frontend: http://localhost:5173
+# Frontend: http://localhost:3055
 ```
 
 ### Erster Login
 
-Nach dem Start ist standardmäßig kein Benutzer angelegt. Registrieren Sie sich unter `http://localhost:8080`. Der erste Benutzer erhält automatisch Admin-Rechte.
+Nach dem Start ist standardmäßig kein Benutzer angelegt. Der **erste Registrant wird automatisch Admin**; alle weiteren Nutzer erhalten die Rolle `operator` (frei anpassbar im Admin-Panel).
+
+- **Docker / Produktion:** `http://localhost:8080` öffnen → „Registrieren" → Admin-Account anlegen.
+- **Lokale Entwicklung:** `http://localhost:3055` öffnet das Dashboard standardmäßig **ohne Login** (Schnellstart-Komfort). Um den produktiven Auth-Flow lokal zu testen:
+
+  ```bash
+  # Backend: Auth erzwingen
+  echo 'VALTHERON_REQUIRE_AUTH=true' >> backend/.env
+  # Frontend: Login-Screen einblenden
+  echo 'VITE_VALTHERON_REQUIRE_AUTH=true' >> frontend/.env
+  npm run dev
+  ```
+
+  Dann erscheint auf `http://localhost:3055` derselbe Login-Screen wie in Produktion.
 
 ---
 
@@ -179,38 +207,147 @@ Nach dem Start ist standardmäßig kein Benutzer angelegt. Registrieren Sie sich
 ```
 ┌─────────────────────────────────────────────────────┐
 │                   React Frontend                     │
-│    19 Views · shadcn/ui · TailwindCSS · WebSocket   │
+│   15 Views · 21 .tsx-Dateien · TailwindCSS · WS     │
 └────────────────────┬────────────────────────────────┘
                      │ REST API + WebSocket
 ┌────────────────────▼────────────────────────────────┐
 │                 Express Backend                      │
-│  14 API-Module · 10 Services · 6 Middleware-Module  │
+│  15 API-Module · 10 Services · 6 Middleware-Module  │
 │  JWT Auth · RBAC · Rate Limiting · Audit Logger     │
 └────────────────────┬────────────────────────────────┘
                      │
 ┌────────────────────▼────────────────────────────────┐
 │              SQLite (WAL-Modus)                      │
-│          17 Tabellen · 23 Indexes                    │
+│          17 Tabellen · 20 Indexes                    │
 └─────────────────────────────────────────────────────┘
 ```
 
-Vollständige Architekturdokumentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+Vollständige Architekturdokumentation: [docs/reference/ARCHITECTURE.md](docs/reference/ARCHITECTURE.md)
 
 ---
 
 ## Dokumentation
 
+Übersicht aller Dokumente: [docs/README.md](docs/README.md)
+
+### Guides
+
 | Dokument | Beschreibung |
 |---|---|
-| [User Guide](docs/USER_GUIDE.md) | Benutzerhandbuch — alle Features erklärt |
-| [API-Dokumentation](docs/API.md) | 88 Endpunkte mit Beispielen |
-| [Deployment Guide](docs/DEPLOYMENT_GUIDE.md) | Docker, Nginx, PM2, Bare Metal |
-| [Developer Guide](docs/DEVELOPER_GUIDE.md) | Entwickler-Workflow, Code-Standards, Tests |
-| [Admin Guide](docs/ADMIN_GUIDE.md) | Systemadministration, Monitoring |
-| [Architecture](docs/ARCHITECTURE.md) | Systemarchitektur, Datenmodell, ADRs |
-| [Troubleshooting](docs/TROUBLESHOOTING_GUIDE.md) | Häufige Probleme & Lösungen |
+| [Onboarding](docs/guides/ONBOARDING.md) | Einstieg für neue Contributor und KI-Agenten |
+| [User Guide](docs/guides/USER_GUIDE.md) | Benutzerhandbuch — alle Features erklärt |
+| [Admin Guide](docs/guides/ADMIN_GUIDE.md) | Systemadministration, Monitoring |
+| [Developer Guide](docs/guides/DEVELOPER_GUIDE.md) | Entwickler-Workflow, Code-Standards, Tests |
+| [Deployment Guide](docs/guides/DEPLOYMENT_GUIDE.md) | Docker, Nginx, PM2, Bare Metal |
+| [Troubleshooting](docs/guides/TROUBLESHOOTING_GUIDE.md) | Häufige Probleme & Lösungen |
+| [Beta Testing](docs/guides/BETA_TESTING.md) | Beta-Test-Plan und Feedback-Prozess |
+
+### Reference
+
+| Dokument | Beschreibung |
+|---|---|
+| [Architecture](docs/reference/ARCHITECTURE.md) | Systemarchitektur, Datenmodell, ADRs, Vision/Anforderungen, Personas-Modell |
+| [API-Dokumentation](docs/reference/API.md) | 89 Endpunkte mit Beispielen |
+
+### Status & Release
+
+| Dokument | Beschreibung |
+|---|---|
+| [Project Status](docs/PROJECT_STATUS.md) | Aktueller Projektstatus und Release-Roadmap |
 | [Changelog](CHANGELOG.md) | Versionshistorie |
 | [Release Notes v1.0.0](RELEASE_NOTES.md) | Highlights des Genesis Release |
+
+### Archiv (Konzeptdokumente, Januar 2026)
+
+Vorgängerdokumente aus der Konzeptphase werden in [docs/archive/](docs/archive/README.md) aufbewahrt. Aktuelle Inhalte zu Vision, Anforderungen und Personas-Modell sind in [docs/reference/ARCHITECTURE.md](docs/reference/ARCHITECTURE.md) übernommen.
+
+---
+
+## Kanonische Quellen & Sync
+
+Das Repository folgt einem strikten **Canonical-Source-Prinzip**: Die
+Wahrheit liegt an der Wurzel, die Derivate in den Workspaces sind
+Build-Artefakte.
+
+### 290-Agenten-Katalog
+
+**Kanonische Quellen** (einzige bearbeitbare JSONs):
+
+```
+the-290-agent-database/.../valtheron_system_prompts.json    IDs   1-200 (10 Basis-Kategorien)
+the-290-agent-database/.../valtheron_extended_agents.json   IDs 201-290 (6 Extensions-Kategorien)
+```
+
+**Derivate** (generiert, nicht direkt editieren):
+
+```
+frontend/src/data/valtheron_agents_1_200.json    byte-identische Kopie
+frontend/src/data/valtheron_agents_201_290.json  byte-identische Kopie
+backend/src/data/valtheron_agents_1_200.json     byte-identische Kopie (im Docker-Image gebündelt)
+backend/src/data/valtheron_agents_201_290.json   byte-identische Kopie
+```
+
+Das Backend liest die Kopien direkt beim Seed — keine zusätzlichen
+Volume-Mounts im Docker-Image nötig.
+
+### Wissensbasis (Knowledge Base)
+
+**Kanonische Quellen:**
+
+```
+knowledge-base/                  240 Dokumente / 14 Kategorien (index.yaml ist autoritativ)
+valtheron-cybersec-database/     216 reale PDFs (Offensive, Defensive, AppSec, …)
+```
+
+**Frontend-Bundle** (wird beim Build automatisch gelesen):
+
+```
+frontend/src/data/kb/manifest.json   Zusammengeführtes Manifest (456 Dokumente)
+frontend/src/data/kb/summaries.json  Alle Markdown-Summaries als JSON-Map
+```
+
+### Forseti Power Framework
+
+**Kanonische Quelle** (Bewertungs-Spezifikation):
+
+```
+the-290-agent-database/forseti/power_framework.json    5 Dim × 6 Sub-Dim = 30 Metrics (Skala 0-9)
+the-290-agent-database/forseti/layer_taxonomy.json     5-Schichten-Taxonomie (orthogonal)
+the-290-agent-database/forseti/category_mapping.json   Valtheron → Forseti Kategorien (autored)
+the-290-agent-database/forseti/provenance.md           Herkunft + ethischer Rahmen
+```
+
+**Scope:** Autoritativ für die 200 Standard-Agenten. 8 Valtheron-Kategorien
+sind gemappt (160 Agenten → computed Profile); 8 Kategorien (security,
+support + die 6 Extension-Domänen) stehen auf `pending` mit autored
+Begründung — **kein** Fake-Profil. Grundsatz: Macht ohne Quelle ist
+Null-Macht. Details in `the-290-agent-database/forseti/provenance.md`.
+
+### Manuelle Re-Synchronisation
+
+Nach Änderungen in den kanonischen Quellverzeichnissen:
+
+```bash
+npm run sync:agents      # the-290-agent-database/ → frontend + backend
+npm run sync:kb          # knowledge-base/ + valtheron-cybersec-database/ → frontend
+npm run sync:capability  # the-290-agent-database/capability-model/ → frontend + backend
+npm run sync:all         # alle drei in einem Schritt
+npm run sync:agents   # the-290-agent-database/ → frontend + backend
+npm run sync:kb       # knowledge-base/ + valtheron-cybersec-database/ → frontend
+npm run sync:forseti  # the-290-agent-database/forseti/ → frontend + backend
+npm run sync:all      # alle drei in einem Schritt
+```
+
+Das KB-Sync-Skript führt zusätzlich einen Integrity-Check durch
+(PDF-Magic-Bytes, Seitenanzahl, HTML-Erkennung) und markiert jedes
+Dokument mit einem `integrityStatus`. Kaputte Dateien werden aus den
+Agenten-Scopes ausgefiltert, Katalog-Platzhalter (Summary ohne
+Binärdatei) bleiben als Kontext verfügbar. Das Agent-Sync-Skript
+validiert vor dem Schreiben Agent-Count, ID-Bereich und Pflichtfelder
+und verifiziert nachträglich die MD5-Identität aller Derivate.
+Das Forseti-Sync-Skript prüft die Schema-Invarianten (5×6=30
+Sub-Dimensionen, je 10 Labels, Kategorie-Referenzen auflösbar,
+Mapping-Einträge entweder gemappt-mit-Begründung oder null-mit-Grund).
 
 ---
 
@@ -259,7 +396,7 @@ cd backend && npm run test:coverage
 Beiträge sind willkommen! Bitte zuerst die Richtlinien lesen:
 
 1. [CONTRIBUTING.md](CONTRIBUTING.md) — Git-Workflow, Code-Standards, Commit-Konventionen
-2. [ONBOARDING.md](ONBOARDING.md) — Einstieg für neue Contributor
+2. [docs/guides/ONBOARDING.md](docs/guides/ONBOARDING.md) — Einstieg für neue Contributor
 3. Issues und Feature Requests über [GitHub Issues](https://github.com/Valtheron/valtheron-agentic-workspace/issues) einreichen
 
 ```bash
@@ -282,7 +419,11 @@ git push origin feature/mein-feature
 
 Dieses Projekt wird durch die Unterstützung der Community ermöglicht. Falls der Agentic Workspace nützlich ist, freuen wir uns über Ihre Unterstützung:
 
+[![Stripe](https://img.shields.io/badge/Stripe-Unterst%C3%BCtzen-635bff?style=for-the-badge&logo=stripe&logoColor=white)](https://donate.stripe.com/14A6oJd2h3XGb1F7kM7kc00)
 [![GitHub Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-Unterst%C3%BCtzen-EA4AAA?style=for-the-badge&logo=github-sponsors)](https://github.com/sponsors/Valtheron)
+[![Merch Shop](https://img.shields.io/badge/Merch%20Shop-Printify-f59e0b?style=for-the-badge&logo=shopify&logoColor=white)](https://blackice-secure.printify.me)
+
+> *Hinweis: Diese Zuwendung ist eine freiwillige Unterstützung an BlackIce Secure Inc. und keine steuerlich absetzbare Spende im Sinne des §10b EStG.*
 
 ---
 

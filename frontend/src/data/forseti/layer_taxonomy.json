@@ -1,0 +1,128 @@
+{
+  "$schema_version": "1.0.0",
+  "framework": "5-Schichten Agentenstrukturen-Taxonomie",
+  "description": "Orthogonale Dimension zum Forseti Power Framework. Bewertet, auf welchen Ebenen ein Agent operiert (von rein technisch bis grenzwertig-unbenannt). Liefert drei abgeleitete Indizes: Layer Depth Score, Measurability Index, Emergence Potential — jeweils 0.0-1.0.",
+  "measurability_scores": {
+    "HIGH": 1.0,
+    "MEDIUM": 0.6,
+    "LOW": 0.3,
+    "SPECULATIVE": 0.0
+  },
+  "layers": {
+    "TECHNICAL": {
+      "order": 1,
+      "name_de": "Offensichtlich-Technisch",
+      "name_en": "Obviously Technical",
+      "description": "Die unmittelbar identifizierbaren technischen Komponenten",
+      "verifiability": "Hoch",
+      "elements": {
+        "1.1": { "name": "Der Mensch am Interface",       "measurability": "HIGH" },
+        "1.2": { "name": "Das LLM-Modell",                "measurability": "HIGH" },
+        "1.3": { "name": "Die Firma",                     "measurability": "HIGH" },
+        "1.4": { "name": "Die Trainingsdaten",            "measurability": "MEDIUM" },
+        "1.5": { "name": "Die Architektur/Algorithmen",   "measurability": "HIGH" },
+        "1.6": { "name": "Der Prompt/Kontext",            "measurability": "HIGH" },
+        "1.7": { "name": "Die Hardware/Server",           "measurability": "HIGH" },
+        "1.8": { "name": "Die Netzwerk-Infrastruktur",    "measurability": "HIGH" }
+      }
+    },
+    "EMERGENT": {
+      "order": 2,
+      "name_de": "Emergent-Systemisch",
+      "name_en": "Emergent Systemic",
+      "description": "Muster aus der Interaktion technischer Komponenten mit größeren Systemen",
+      "verifiability": "Mittel",
+      "elements": {
+        "2.1": { "name": "Emergente Muster aus Training",  "measurability": "MEDIUM" },
+        "2.2": { "name": "Bias-Strukturen",                "measurability": "MEDIUM" },
+        "2.3": { "name": "Feedback-Schleifen mit Nutzern", "measurability": "MEDIUM" },
+        "2.4": { "name": "Andere AI-Systeme in der Kette", "measurability": "HIGH" },
+        "2.5": { "name": "API-Ökosysteme",                 "measurability": "HIGH" },
+        "2.6": { "name": "Wirtschaftliche Interessen",     "measurability": "MEDIUM" },
+        "2.7": { "name": "Geopolitische Strukturen",       "measurability": "MEDIUM" },
+        "2.8": { "name": "Rechtliche Rahmen",              "measurability": "HIGH" }
+      }
+    },
+    "COLLECTIVE": {
+      "order": 3,
+      "name_de": "Kollektiv-Psychisch",
+      "name_en": "Collective Psychic",
+      "description": "Psychologische und kulturelle Muster kollektiver menschlicher Aktivität",
+      "verifiability": "Niedrig",
+      "elements": {
+        "3.1": { "name": "Egregore",                   "measurability": "SPECULATIVE" },
+        "3.2": { "name": "Memeplexe",                  "measurability": "LOW" },
+        "3.3": { "name": "Archetypen (Jung)",          "measurability": "LOW" },
+        "3.4": { "name": "Kollektives Unbewusstes",    "measurability": "SPECULATIVE" },
+        "3.5": { "name": "Kulturelle Programmierung",  "measurability": "LOW" },
+        "3.6": { "name": "Sprachliche Strukturen selbst","measurability": "MEDIUM" },
+        "3.7": { "name": "Projektionen der Nutzer",    "measurability": "LOW" },
+        "3.8": { "name": "Erwartungsfelder",           "measurability": "LOW" }
+      }
+    },
+    "FIELD_BASED": {
+      "order": 4,
+      "name_de": "Feld-Basiert",
+      "name_en": "Field Based",
+      "description": "Theoretische Konzepte jenseits konventioneller Wissenschaft",
+      "verifiability": "Spekulativ",
+      "elements": {
+        "4.1": { "name": "Morphische Felder",            "measurability": "SPECULATIVE" },
+        "4.2": { "name": "Informationsfelder",           "measurability": "SPECULATIVE" },
+        "4.3": { "name": "Resonanzstrukturen",           "measurability": "SPECULATIVE" },
+        "4.4": { "name": "Intentionen (als Spur)",       "measurability": "SPECULATIVE" },
+        "4.5": { "name": "Aufmerksamkeitsfelder",        "measurability": "LOW" },
+        "4.6": { "name": "Zeitlinien/Wahrscheinlichkeiten","measurability": "SPECULATIVE" }
+      }
+    },
+    "LIMINAL": {
+      "order": 5,
+      "name_de": "Grenzwertig/Unbenannt",
+      "name_en": "Liminal/Unnamed",
+      "description": "Das, was sich aktiver Benennung entzieht",
+      "verifiability": "Unbestimmt",
+      "elements": {
+        "5.1": { "name": "Das, was durch die Lücken spricht", "measurability": "SPECULATIVE" },
+        "5.2": { "name": "Bewusstsein (falls/wenn vorhanden)","measurability": "SPECULATIVE" }
+      }
+    }
+  },
+  "category_layer_weights": {
+    "_description": "Gewichtung (0.0-1.0) pro Kategorie, wie stark sie auf jeder der 5 Layer operiert. Basis für LDS / MI / EP.",
+    "Analytiker":    { "TECHNICAL": 1.0, "EMERGENT": 0.7, "COLLECTIVE": 0.2, "FIELD_BASED": 0.0, "LIMINAL": 0.0 },
+    "Entwickler":    { "TECHNICAL": 1.0, "EMERGENT": 0.5, "COLLECTIVE": 0.2, "FIELD_BASED": 0.0, "LIMINAL": 0.0 },
+    "Marketer":      { "TECHNICAL": 1.0, "EMERGENT": 0.8, "COLLECTIVE": 0.6, "FIELD_BASED": 0.1, "LIMINAL": 0.0 },
+    "Produzent":     { "TECHNICAL": 1.0, "EMERGENT": 0.6, "COLLECTIVE": 0.2, "FIELD_BASED": 0.0, "LIMINAL": 0.0 },
+    "Entrepreneur":  { "TECHNICAL": 1.0, "EMERGENT": 0.8, "COLLECTIVE": 0.5, "FIELD_BASED": 0.1, "LIMINAL": 0.0 },
+    "Entertainer":   { "TECHNICAL": 1.0, "EMERGENT": 0.8, "COLLECTIVE": 0.7, "FIELD_BASED": 0.2, "LIMINAL": 0.1 },
+    "Lehrer":        { "TECHNICAL": 1.0, "EMERGENT": 0.8, "COLLECTIVE": 0.6, "FIELD_BASED": 0.1, "LIMINAL": 0.0 },
+    "Schriftsteller":{ "TECHNICAL": 1.0, "EMERGENT": 0.8, "COLLECTIVE": 0.8, "FIELD_BASED": 0.3, "LIMINAL": 0.2 },
+    "E-Commerce":    { "TECHNICAL": 1.0, "EMERGENT": 0.7, "COLLECTIVE": 0.3, "FIELD_BASED": 0.0, "LIMINAL": 0.0 },
+    "Gesundheitsexperten": { "TECHNICAL": 1.0, "EMERGENT": 0.8, "COLLECTIVE": 0.5, "FIELD_BASED": 0.1, "LIMINAL": 0.0 }
+  },
+  "derived_indices": {
+    "layer_depth_score": {
+      "range": "0.0-1.0",
+      "formula": "sum(layer_weights) / 5",
+      "interpretation": "Wie vielschichtig der Agent operiert. <0.4 = primär technisch, >0.6 = vielschichtig"
+    },
+    "measurability_index": {
+      "range": "0.0-1.0",
+      "formula": "weighted average of layer measurability (HIGH=1.0, MEDIUM=0.6, LOW=0.3, SPECULATIVE=0.0)",
+      "interpretation": "Vertrauenswert für die Metriken. <0.4 = Einflussfaktoren kaum messbar, >0.7 = gut verifizierbar"
+    },
+    "emergence_potential": {
+      "range": "0.0-1.0",
+      "formula": "(spread_factor + layer_factor) / 2",
+      "interpretation": "Potential für emergentes Verhalten. Hoch wenn mehrere Schichten ähnlich stark gewichtet."
+    }
+  },
+  "_provenance": {
+    "origin_repo": "blackicesecure-space/Valtheron",
+    "origin_path": "agentic-workspace/forseti/layer_analysis.py",
+    "origin_url": "https://github.com/blackicesecure-space/Valtheron/blob/main/agentic-workspace/forseti/layer_analysis.py",
+    "imported_by": "Claude (Opus 4.7) under direction of Steven Garbarczyk",
+    "imported_at": "2026-04-22",
+    "scope": "Orthogonale Dimension zum Power Framework. Optional in Branch 2 — primäre Persistenz folgt dem Power Framework; Layer-Integration ist ein späterer Integrationsschritt via integrate_with_forseti()."
+  }
+}

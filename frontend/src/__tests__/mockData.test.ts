@@ -21,8 +21,8 @@ describe('generateAgents', () => {
     expect(generateAgents(200)).toHaveLength(200);
   });
 
-  it('generates 200 agents by default', () => {
-    expect(generateAgents()).toHaveLength(200);
+  it('generates 290 agents by default (full Valtheron catalog)', () => {
+    expect(generateAgents()).toHaveLength(290);
   });
 
   it('each agent has required fields', () => {
@@ -346,7 +346,8 @@ describe('generateAnalytics', () => {
     expect(Array.isArray(analytics.categoryDistribution)).toBe(true);
     expect(Array.isArray(analytics.topPerformers)).toBe(true);
     expect(typeof analytics.errorRate).toBe('number');
-    expect(typeof analytics.uptime).toBe('number');
+    expect(typeof analytics.uptimeSeconds).toBe('number');
+    expect(typeof analytics.tasksTotal).toBe('number');
   });
 
   it('totalAgents matches agent count', () => {
@@ -359,14 +360,19 @@ describe('generateAnalytics', () => {
     expect(analytics.tasksTrend).toHaveLength(7);
   });
 
-  it('categoryDistribution covers all categories', () => {
+  it('categoryDistribution covers all 16 categories', () => {
     const analytics = generateAnalytics(agents, tasks);
-    expect(analytics.categoryDistribution).toHaveLength(10);
+    expect(analytics.categoryDistribution).toHaveLength(16);
   });
 
-  it('uptime is 99.97', () => {
+  it('uptimeSeconds defaults to 0 in the mock generator', () => {
     const analytics = generateAnalytics(agents, tasks);
-    expect(analytics.uptime).toBe(99.97);
+    expect(analytics.uptimeSeconds).toBe(0);
+  });
+
+  it('tasksTotal mirrors the number of tasks passed in', () => {
+    const analytics = generateAnalytics(agents, tasks);
+    expect(analytics.tasksTotal).toBe(tasks.length);
   });
 });
 

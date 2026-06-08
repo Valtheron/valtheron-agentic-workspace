@@ -24,9 +24,9 @@ interface TreeNode extends TreeRow {
 
 function buildTree(rows: TreeRow[], parentId: string | null = null): TreeNode[] {
   return rows
-    .filter(r => r.parentId === parentId)
+    .filter((r) => r.parentId === parentId)
     .sort((a, b) => a.sortOrder - b.sortOrder)
-    .map(r => ({ ...r, children: buildTree(rows, r.id) }));
+    .map((r) => ({ ...r, children: buildTree(rows, r.id) }));
 }
 
 // GET /api/project-tree — get full tree
@@ -60,8 +60,20 @@ router.post('/', (req: Request, res: Response) => {
   const id = uuid();
   const now = new Date().toISOString();
   db.prepare(
-    'INSERT INTO project_tree (id, parentId, name, type, status, progress, agentId, description, sortOrder, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-  ).run(id, parentId || null, name, type || 'module', status || 'active', progress || 0, agentId || null, description || '', sortOrder || 0, now, now);
+    'INSERT INTO project_tree (id, parentId, name, type, status, progress, agentId, description, sortOrder, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+  ).run(
+    id,
+    parentId || null,
+    name,
+    type || 'module',
+    status || 'active',
+    progress || 0,
+    agentId || null,
+    description || '',
+    sortOrder || 0,
+    now,
+    now,
+  );
 
   const node = db.prepare('SELECT * FROM project_tree WHERE id = ?').get(id);
   res.status(201).json(node);
@@ -74,14 +86,38 @@ router.patch('/:id', (req: Request, res: Response) => {
   const updates: string[] = [];
   const values: unknown[] = [];
 
-  if (name !== undefined) { updates.push('name = ?'); values.push(name); }
-  if (type !== undefined) { updates.push('type = ?'); values.push(type); }
-  if (status !== undefined) { updates.push('status = ?'); values.push(status); }
-  if (progress !== undefined) { updates.push('progress = ?'); values.push(progress); }
-  if (agentId !== undefined) { updates.push('agentId = ?'); values.push(agentId); }
-  if (description !== undefined) { updates.push('description = ?'); values.push(description); }
-  if (sortOrder !== undefined) { updates.push('sortOrder = ?'); values.push(sortOrder); }
-  if (parentId !== undefined) { updates.push('parentId = ?'); values.push(parentId); }
+  if (name !== undefined) {
+    updates.push('name = ?');
+    values.push(name);
+  }
+  if (type !== undefined) {
+    updates.push('type = ?');
+    values.push(type);
+  }
+  if (status !== undefined) {
+    updates.push('status = ?');
+    values.push(status);
+  }
+  if (progress !== undefined) {
+    updates.push('progress = ?');
+    values.push(progress);
+  }
+  if (agentId !== undefined) {
+    updates.push('agentId = ?');
+    values.push(agentId);
+  }
+  if (description !== undefined) {
+    updates.push('description = ?');
+    values.push(description);
+  }
+  if (sortOrder !== undefined) {
+    updates.push('sortOrder = ?');
+    values.push(sortOrder);
+  }
+  if (parentId !== undefined) {
+    updates.push('parentId = ?');
+    values.push(parentId);
+  }
 
   if (updates.length === 0) return res.status(400).json({ error: 'No fields to update' });
 
@@ -122,18 +158,69 @@ function seedDefaultTree(db: ReturnType<typeof getDb>) {
   const now = new Date().toISOString();
   const rootId = uuid();
 
+  // Seed the canonical module structure with neutral 0% progress. Real
+  // progress is computed by callers once tasks/workflows execute against
+  // these nodes — never fabricate values to make the dashboard look busy.
   const nodes = [
-    { id: rootId, parentId: null, name: 'Valtheron Workspace', type: 'project', status: 'active', progress: 45, sortOrder: 0 },
-    { id: uuid(), parentId: rootId, name: 'Backend API', type: 'module', status: 'active', progress: 70, sortOrder: 1 },
-    { id: uuid(), parentId: rootId, name: 'Frontend Dashboard', type: 'module', status: 'active', progress: 60, sortOrder: 2 },
-    { id: uuid(), parentId: rootId, name: 'Agent System', type: 'module', status: 'active', progress: 55, sortOrder: 3 },
-    { id: uuid(), parentId: rootId, name: 'Security & Auth', type: 'module', status: 'in_progress', progress: 35, sortOrder: 4 },
-    { id: uuid(), parentId: rootId, name: 'Testing & QA', type: 'module', status: 'in_progress', progress: 20, sortOrder: 5 },
-    { id: uuid(), parentId: rootId, name: 'Documentation', type: 'module', status: 'planned', progress: 10, sortOrder: 6 },
+    {
+      id: rootId,
+      parentId: null,
+      name: 'Valtheron Workspace',
+      type: 'project',
+      status: 'planned',
+      progress: 0,
+      sortOrder: 0,
+    },
+    { id: uuid(), parentId: rootId, name: 'Backend API', type: 'module', status: 'planned', progress: 0, sortOrder: 1 },
+    {
+      id: uuid(),
+      parentId: rootId,
+      name: 'Frontend Dashboard',
+      type: 'module',
+      status: 'planned',
+      progress: 0,
+      sortOrder: 2,
+    },
+    {
+      id: uuid(),
+      parentId: rootId,
+      name: 'Agent System',
+      type: 'module',
+      status: 'planned',
+      progress: 0,
+      sortOrder: 3,
+    },
+    {
+      id: uuid(),
+      parentId: rootId,
+      name: 'Security & Auth',
+      type: 'module',
+      status: 'planned',
+      progress: 0,
+      sortOrder: 4,
+    },
+    {
+      id: uuid(),
+      parentId: rootId,
+      name: 'Testing & QA',
+      type: 'module',
+      status: 'planned',
+      progress: 0,
+      sortOrder: 5,
+    },
+    {
+      id: uuid(),
+      parentId: rootId,
+      name: 'Documentation',
+      type: 'module',
+      status: 'planned',
+      progress: 0,
+      sortOrder: 6,
+    },
   ];
 
   const stmt = db.prepare(
-    'INSERT INTO project_tree (id, parentId, name, type, status, progress, sortOrder, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    'INSERT INTO project_tree (id, parentId, name, type, status, progress, sortOrder, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
   );
 
   for (const n of nodes) {

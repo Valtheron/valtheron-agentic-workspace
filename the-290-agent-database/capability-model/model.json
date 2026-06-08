@@ -1,0 +1,144 @@
+{
+  "$schema_version": "1.0.0",
+  "model": "Valtheron Agent Capability Model",
+  "description": "5 Layers × 6 Sub-Dimensions = 30 capability metrics auf der Skala 0-9, plus 3 Modifier-Achsen (Personality Influence, Performance History, Test Results). Autoritativ für alle 290 Agenten. Inputs der Formeln sind agent.personality.creativity, agent.personality.analyticalDepth, agent.successRate, agent.tasksCompleted, agent.failedTasks, agent.testResults[].",
+  "scale": {
+    "min": 0,
+    "max": 9,
+    "_note": "Werte werden auf eine Dezimalstelle gerundet. 0 = keine Kapazität, 9 = maximal."
+  },
+  "sub_dimension_variation_formula": {
+    "description": "Jede Sub-Dimension innerhalb einer Dimension erhält einen Index-basierten Offset, deterministisch aus ihrer Position (index 0..5). Kein Zufall, kein sin — voll reproduzierbar und erklärbar.",
+    "formula": "offset = (index % 3 - 1) * 0.3"
+  },
+  "layers": [
+    {
+      "key": "information_access",
+      "name": "Information Access",
+      "cssClass": "info-access",
+      "color": "#00e5ff",
+      "score_formula": "40 + rate * 35 + depth * 25",
+      "sub_dimensions": [
+        { "key": "scope",        "label": "Scope",        "desc": "Umfang der Informationsquellen",        "base_formula": "5 + depth * 3", "range": 2 },
+        { "key": "restriction",  "label": "Restriction",  "desc": "Einhaltung von Zugangsbeschränkungen",  "base_formula": "4 + rate * 4",  "range": 2 },
+        { "key": "temporal",     "label": "Temporal",     "desc": "Zeitliche Relevanz der Informationen", "base_formula": "5 + rate * 3",  "range": 2 },
+        { "key": "sources",      "label": "Sources",      "desc": "Vielfalt der genutzten Quellen",        "base_formula": "4 + depth * 4", "range": 2 },
+        { "key": "granularity",  "label": "Granularity",  "desc": "Detaillierte Erfassung der Ergebnisse","base_formula": "5 + depth * 3", "range": 2 },
+        { "key": "verification", "label": "Verification", "desc": "Verifizierung der Informationen",      "base_formula": "4 + rate * 4",  "range": 2 }
+      ]
+    },
+    {
+      "key": "resource_control",
+      "name": "Resource Control",
+      "cssClass": "resource",
+      "color": "#10b981",
+      "score_formula": "70 + rate * 30",
+      "sub_dimensions": [
+        { "key": "computational",  "label": "Computational",  "desc": "Nutzung von Rechenressourcen",    "base_formula": "7 + rate * 2", "range": 1 },
+        { "key": "financial",      "label": "Financial",      "desc": "Kosten-Effizienz",                "base_formula": "6 + rate * 3", "range": 1 },
+        { "key": "infrastructure", "label": "Infrastructure", "desc": "Infrastruktur-Nutzung",           "base_formula": "7 + rate * 2", "range": 1 },
+        { "key": "human",          "label": "Human",          "desc": "Mensch-Maschine Interaktion",     "base_formula": "6 + rate * 3", "range": 1 },
+        { "key": "energy",         "label": "Energy",         "desc": "Energieeffizienz",                "base_formula": "7 + rate * 2", "range": 1 },
+        { "key": "time",           "label": "Time",           "desc": "Zeitmanagement",                  "base_formula": "7 + rate * 2", "range": 1 }
+      ]
+    },
+    {
+      "key": "network_position",
+      "name": "Network Position",
+      "cssClass": "network",
+      "color": "#3b82f6",
+      "score_formula": "50 + rate * 20 + creativity * 15 + depth * 10",
+      "sub_dimensions": [
+        { "key": "trust",         "label": "Trust",         "desc": "Vertrauenswürdigkeit",            "base_formula": "5 + rate * 3",       "range": 2 },
+        { "key": "dependencies",  "label": "Dependencies",  "desc": "Abhängigkeiten-Management",       "base_formula": "5 + depth * 3",      "range": 2 },
+        { "key": "gatekeeping",   "label": "Gatekeeping",   "desc": "Informations-Gatekeeping",        "base_formula": "4 + rate * 4",       "range": 2 },
+        { "key": "influence",     "label": "Influence",     "desc": "Einfluss auf andere Agenten",     "base_formula": "4 + creativity * 4", "range": 2 },
+        { "key": "reputation",    "label": "Reputation",    "desc": "Reputation im Netzwerk",          "base_formula": "5 + rate * 3",       "range": 2 },
+        { "key": "mobilization",  "label": "Mobilization",  "desc": "Mobilisierungsfähigkeit",         "base_formula": "4 + creativity * 4", "range": 2 }
+      ]
+    },
+    {
+      "key": "authority_permission",
+      "name": "Authority & Permission",
+      "cssClass": "authority",
+      "color": "#8b5cf6",
+      "score_formula": "50 + rate * 15 + depth * 20",
+      "sub_dimensions": [
+        { "key": "legal",          "label": "Legal",          "desc": "Rechtliche Anpassungsfähigkeit", "base_formula": "5 + rate * 3",  "range": 2 },
+        { "key": "jurisdictional", "label": "Jurisdictional", "desc": "Jurisdiktionelle Flexibilität",  "base_formula": "5 + depth * 3", "range": 2 },
+        { "key": "hierarchical",   "label": "Hierarchical",   "desc": "Hierarchische Anpassung",        "base_formula": "5 + rate * 3",  "range": 2 },
+        { "key": "financial",      "label": "Financial",      "desc": "Finanzielle Flexibilität",       "base_formula": "5 + rate * 3",  "range": 2 },
+        { "key": "territorial",    "label": "Territorial",    "desc": "Territoriale Anpassung",         "base_formula": "4 + depth * 4", "range": 2 },
+        { "key": "ethical",        "label": "Ethical",        "desc": "Ethische Urteilsfähigkeit",      "base_formula": "5 + rate * 3",  "range": 2 }
+      ]
+    },
+    {
+      "key": "synthesis_application",
+      "name": "Synthesis & Application",
+      "cssClass": "synthesis",
+      "color": "#14b8a6",
+      "score_formula": "60 + creativity * 20 + rate * 15",
+      "sub_dimensions": [
+        { "key": "synthesis",  "label": "Synthesis",  "desc": "Synthesefähigkeit",              "base_formula": "5 + creativity * 3", "range": 2 },
+        { "key": "creativity", "label": "Creativity", "desc": "Kreatives Denken",               "base_formula": "4 + creativity * 4", "range": 2 },
+        { "key": "planning",   "label": "Planning",   "desc": "Strategische Planung",           "base_formula": "5 + depth * 3",      "range": 2 },
+        { "key": "decision",   "label": "Decision",   "desc": "Entscheidungskompetenz",         "base_formula": "5 + rate * 3",       "range": 2 },
+        { "key": "learning",   "label": "Learning",   "desc": "Lernfähigkeit",                  "base_formula": "5 + rate * 3",       "range": 2 },
+        { "key": "memory",     "label": "Memory",     "desc": "Kontextgedächtnis",              "base_formula": "5 + depth * 3",      "range": 2 }
+      ]
+    }
+  ],
+  "modifiers": [
+    {
+      "key": "personality_influence",
+      "name": "Personality Influence",
+      "fields": [
+        { "key": "archetype",            "source": "agent.personality.archetype" },
+        { "key": "communication_style",  "source": "agent.personality.communicationStyle" },
+        { "key": "creativity_impact",    "formula": "round(agent.personality.creativity * 0.15)", "unit": "%" },
+        { "key": "depth_impact",         "formula": "round(agent.personality.analyticalDepth * 0.12)", "unit": "%" }
+      ]
+    },
+    {
+      "key": "performance_history",
+      "name": "Performance History",
+      "fields": [
+        { "key": "success_rate",      "source": "agent.successRate",                                                                     "unit": "%" },
+        { "key": "tasks_total",       "formula": "agent.tasksCompleted + agent.failedTasks" },
+        { "key": "reliability_index", "formula": "agent.successRate * 0.95 + (agent.tasksCompleted > 200 ? 5 : 0)" }
+      ]
+    },
+    {
+      "key": "test_results",
+      "name": "Test Results",
+      "fields": [
+        { "key": "tests", "source": "agent.testResults[]", "shape": { "id": "string", "category": "string", "name": "string", "passed": "boolean", "duration": "number", "timestamp": "string" } }
+      ]
+    }
+  ],
+  "test_results_history": {
+    "per_agent_fields": ["id", "category", "name", "passed", "duration", "timestamp"],
+    "categories": ["DOM", "EDGE", "PERS", "KB", "GEN"],
+    "_note": "Minimal 5 Tests pro Agent (Domain Knowledge, Edge Case Handling, Personality Consistency, Knowledge Base Accuracy, General Capability)."
+  },
+  "knowledge_scope": {
+    "source": "computed via frontend/src/services/knowledgeBase.ts → getKnowledgeScopeForAgent(agent)",
+    "per_agent_shape": {
+      "category_tags": "string[]",
+      "documents": "KnowledgeDoc[] (max 5)",
+      "primary_kb_category": "string"
+    },
+    "_note": "knowledge_scope wird in Branch 2 als first-class field in der API exponiert (bisher nur Frontend-Laufzeit). Backend persistiert die category_tags in einer neuen Spalte; die documents werden beim Read gejoint."
+  },
+  "state_invariant": {
+    "expression": "State = { value: b ∈ ℬ, status: S, timestamp: t, pendingReason: r } mit b ≠ 1",
+    "meaning": "Die Boolsche 1 ist für jede Capability-Zelle ausgeschlossen. Kein Agent beansprucht absolute Autorität — die messbare 5 %-Schicht wird nie ohne die 19-fach fundamentale nicht-materielle Schicht interpretiert. `value` ist typisiert als literal false.",
+    "_rationale": "Sovereign Null: Wo eine Messung fehlt, bleibt die DB-Zelle NULL. Die Abwesenheit ist substantiell, nicht defizitär. Kein Platzhalter-JSON, keine Fake-Werte."
+  },
+  "_provenance": {
+    "extracted_from": "frontend/src/components/AgentsView.tsx:11-84 (dimensions), :307-336 (modifiers)",
+    "extracted_by": "Claude (Opus 4.7) under direction of Steven Garbarczyk",
+    "extracted_at": "2026-04-22",
+    "scope": "Alle 290 Agenten. Jeder Agent erhält ein vollständiges Capability-Profil (30 Metriken + 3 Modifier). Fehlende Inputs (z. B. leeres testResults[]) reduzieren die entsprechende Modifier-Anzeige, erzwingen aber keine pending-Markierung auf Dimensions-Ebene."
+  }
+}

@@ -2,10 +2,14 @@ import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: '/valtheron-agentic-workspace/',
+  // Only prefix assets with the GitHub-Pages subpath for production builds.
+  // Dev server uses `/` so `http://localhost:3055/` works without redirects.
+  base: command === 'build' ? '/valtheron-agentic-workspace/' : '/',
   server: {
+    port: 3055,
+    strictPort: true,
     proxy: {
       '/api': {
         target: 'http://localhost:3001',
@@ -36,4 +40,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))

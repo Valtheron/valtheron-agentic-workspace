@@ -1,17 +1,56 @@
 import { Router, Request, Response } from 'express';
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import { v4 as uuid } from 'uuid';
 import { getDb } from '../db/schema.js';
 import { generateToken } from '../middleware/auth.js';
+import { rateLimiter } from '../middleware/rateLimiter.js';
 
 const router = Router();
 
+// Strict per-endpoint limiter for /login: 5 attempts per 15 min per IP. Layered
+// on top of the broader /api/auth limiter (20 req/min) in app.ts. This is the
+// gate that blocks online brute-force against weak passwords; OWASP ASVS 2.2.1.
+const loginRateLimiter = rateLimiter(15 * 60, 5, 'auth:login');
+
+// bcrypt cost factor — 12 rounds is the 2024+ baseline (~250 ms on modern
+// hardware, exponentially harder for attackers). Test runs use a lower cost
+// so the suite stays interactive; security-pentest.test.ts in particular
+// fires 30 parallel hash operations.
+const BCRYPT_ROUNDS = process.env.NODE_ENV === 'test' ? 4 : 12;
+
+/** Hash a fresh password with bcrypt. */
 function hashPassword(password: string): string {
-  return crypto.createHash('sha256').update(password).digest('hex');
+  return bcrypt.hashSync(password, BCRYPT_ROUNDS);
+}
+
+/**
+ * Verify a candidate password against a stored hash. Supports two formats so
+ * users seeded under the old SHA-256-without-salt scheme keep working until
+ * their next login, at which point we transparently upgrade them.
+ *
+ * Returns { ok, needsRehash }:
+ *   - ok: whether the password is correct
+ *   - needsRehash: true when the stored hash uses the legacy SHA-256 scheme
+ *     and should be replaced with a bcrypt hash on success.
+ */
+function verifyPassword(password: string, storedHash: string): { ok: boolean; needsRehash: boolean } {
+  if (storedHash.startsWith('$2a$') || storedHash.startsWith('$2b$') || storedHash.startsWith('$2y$')) {
+    return { ok: bcrypt.compareSync(password, storedHash), needsRehash: false };
+  }
+  // Legacy SHA-256 hex format — compute the old hash and compare in constant time.
+  const legacy = crypto.createHash('sha256').update(password).digest('hex');
+  let ok = false;
+  try {
+    ok = legacy.length === storedHash.length && crypto.timingSafeEqual(Buffer.from(legacy), Buffer.from(storedHash));
+  } catch {
+    ok = false;
+  }
+  return { ok, needsRehash: ok };
 }
 
 // POST /api/auth/login
-router.post('/login', (req: Request, res: Response) => {
+router.post('/login', loginRateLimiter, (req: Request, res: Response) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -24,9 +63,20 @@ router.post('/login', (req: Request, res: Response) => {
     | { id: string; username: string; passwordHash: string; role: string }
     | undefined;
 
-  if (!user || user.passwordHash !== hashPassword(password)) {
+  // Avoid user-enumeration via timing: always run the bcrypt cost path even
+  // when the user is missing.
+  const reference = user?.passwordHash ?? '$2b$12$KIXxqg1g1xRT5DnFRgkAVeqK3Y9MJfRyq6OJB2.cqDgaXM7lYf6ZK';
+  const { ok, needsRehash } = verifyPassword(password, reference);
+
+  if (!user || !ok) {
     res.status(401).json({ error: 'Invalid credentials' });
     return;
+  }
+
+  // Transparent upgrade: rewrite legacy SHA-256 hashes with a fresh bcrypt
+  // hash on successful login. Single statement, no migration script needed.
+  if (needsRehash) {
+    db.prepare('UPDATE users SET passwordHash = ? WHERE id = ?').run(hashPassword(password), user.id);
   }
 
   // Check if MFA is enabled — require second factor

@@ -85,4 +85,4 @@ Das Projekt implementiert folgende Sicherheitsmaßnahmen:
 
 ---
 
-*Valtheron / BlackIceSecure — Stand: März 2026*
+*Valtheron / BlackIceSecure & blackiceguard.io — Stand: März 2026*
