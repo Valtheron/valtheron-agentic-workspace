@@ -63,6 +63,8 @@ export interface Agent {
    * placeholder — never fabricated power levels.
    */
   forseti?: ForsetiState;
+  /** 12-parameter personality framework (GET /api/agents/:id). */
+  personalityFramework?: PersonalityProfile;
 }
 
 /**
@@ -105,6 +107,40 @@ export interface ForsetiSubDimension {
 export function isForsetiState(f: ForsetiState | undefined): f is ForsetiState {
   return !!f && 'profile' in f;
 }
+
+/**
+ * 12-parameter personality framework (Handbuch Kap. 6), derived
+ * deterministically server-side and returned by GET /api/agents/:id.
+ */
+export interface PersonalityProfile {
+  parameters: Record<string, number>; // 12 params, each 0–1
+  layerMetrics: { lds: number; mi: number; ep: number };
+  archetype: { key: string; name: string; description: string };
+  validation: { valid: boolean; issues: string[] };
+  source: {
+    creativity: number;
+    analyticalDepth: number;
+    riskTolerance: number;
+    communicationStyle: string;
+    storedArchetype: string;
+  };
+}
+
+// Bilingual low↔high poles for each parameter (mirror of backend PARAMETER_POLES).
+export const PERSONALITY_POLES: Record<string, [string, string]> = {
+  formality: ['Locker', 'Formell'],
+  verbosity: ['Knapp', 'Ausführlich'],
+  warmth: ['Sachlich', 'Warmherzig'],
+  creativity: ['Konventionell', 'Kreativ'],
+  structure: ['Fließend', 'Strukturiert'],
+  risk_tolerance: ['Vorsichtig', 'Mutig'],
+  proactivity: ['Reaktiv', 'Proaktiv'],
+  curiosity: ['Fokussiert', 'Neugierig'],
+  collaboration: ['Autonom', 'Kollaborativ'],
+  depth: ['Breit', 'Tief'],
+  confidence: ['Abwägend', 'Bestimmt'],
+  adaptability: ['Konsistent', 'Flexibel'],
+};
 
 /**
  * Mirror of the backend's CapabilityState (with the b ≠ 1 invariant
