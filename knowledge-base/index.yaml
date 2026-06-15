@@ -1,253 +1,434 @@
-version: "1.0.0"
-generated: "2026-03-15"
-total_documents: 218
+version: 1.0.0
+generated: '2026-03-15'
+total_documents: 240
 languages:
-  - en
-  - pt-br
+- en
+- pt-br
 difficulty_levels:
-  - beginner
-  - intermediate
-  - advanced
+- beginner
+- intermediate
+- advanced
 formats:
-  - pdf
-  - pptx
-
+- pdf
+- pptx
 categories:
   offensive:
-    label: "Offensive Security"
+    label: Offensive Security
     document_count: 73
     subcategories:
       penetration-testing:
-        label: "Penetration Testing"
+        label: Penetration Testing
         document_count: 30
-        path: "offensive/penetration-testing/"
-        summary: "summaries/offensive/penetration-testing.md"
-        tags: [pentesting, web, network, cloud, mobile, iot, oscp, bug-bounty]
+        path: offensive/penetration-testing/
+        summary: summaries/offensive/penetration-testing.md
+        tags:
+        - pentesting
+        - web
+        - network
+        - cloud
+        - mobile
+        - iot
+        - oscp
+        - bug-bounty
       red-team:
-        label: "Red Team Operations"
+        label: Red Team Operations
         document_count: 18
-        path: "offensive/red-team/"
-        summary: "summaries/offensive/red-team-operations.md"
-        tags: [red-team, c2, cobalt-strike, av-bypass, edr-bypass, social-engineering]
+        path: offensive/red-team/
+        summary: summaries/offensive/red-team-operations.md
+        tags:
+        - red-team
+        - c2
+        - cobalt-strike
+        - av-bypass
+        - edr-bypass
+        - social-engineering
       exploit-development:
-        label: "Exploit Development"
+        label: Exploit Development
         document_count: 15
-        path: "offensive/exploit-development/"
-        summary: "summaries/offensive/exploit-development.md"
-        tags: [exploit-dev, buffer-overflow, shellcode, rop, ghidra, ida-pro]
+        path: offensive/exploit-development/
+        summary: summaries/offensive/exploit-development.md
+        tags:
+        - exploit-dev
+        - buffer-overflow
+        - shellcode
+        - rop
+        - ghidra
+        - ida-pro
       post-exploitation:
-        label: "Post-Exploitation"
+        label: Post-Exploitation
         document_count: 10
-        path: "offensive/post-exploitation/"
-        summary: "summaries/offensive/post-exploitation.md"
-        tags: [post-exploitation, privilege-escalation, lateral-movement, active-directory]
-
+        path: offensive/post-exploitation/
+        summary: summaries/offensive/post-exploitation.md
+        tags:
+        - post-exploitation
+        - privilege-escalation
+        - lateral-movement
+        - active-directory
   defensive:
-    label: "Defensive Security"
+    label: Defensive Security
     document_count: 32
     subcategories:
       soc:
-        label: "SOC Operations"
+        label: SOC Operations
         document_count: 10
-        path: "defensive/soc/"
-        summary: "summaries/defensive/soc-operations.md"
-        tags: [soc, siem, splunk, sentinel, soar, monitoring]
+        path: defensive/soc/
+        summary: summaries/defensive/soc-operations.md
+        tags:
+        - soc
+        - siem
+        - splunk
+        - sentinel
+        - soar
+        - monitoring
       incident-response:
-        label: "Incident Response"
+        label: Incident Response
         document_count: 8
-        path: "defensive/incident-response/"
-        summary: "summaries/defensive/incident-response.md"
-        tags: [incident-response, forensics, dfir, ransomware, volatility]
+        path: defensive/incident-response/
+        summary: summaries/defensive/incident-response.md
+        tags:
+        - incident-response
+        - forensics
+        - dfir
+        - ransomware
+        - volatility
       malware-analysis:
-        label: "Malware Analysis"
+        label: Malware Analysis
         document_count: 8
-        path: "defensive/malware-analysis/"
-        summary: "summaries/defensive/malware-analysis.md"
-        tags: [malware-analysis, reverse-engineering, ghidra, ida-pro, sandbox]
+        path: defensive/malware-analysis/
+        summary: summaries/defensive/malware-analysis.md
+        tags:
+        - malware-analysis
+        - reverse-engineering
+        - ghidra
+        - ida-pro
+        - sandbox
       threat-hunting:
-        label: "Threat Hunting"
+        label: Threat Hunting
         document_count: 6
-        path: "defensive/threat-hunting/"
-        summary: "summaries/defensive/threat-hunting.md"
-        tags: [threat-hunting, mitre-attack, yara, edr, threat-intelligence]
-
+        path: defensive/threat-hunting/
+        summary: summaries/defensive/threat-hunting.md
+        tags:
+        - threat-hunting
+        - mitre-attack
+        - yara
+        - edr
+        - threat-intelligence
   cloud:
-    label: "Cloud & Container Security"
+    label: Cloud & Container Security
     document_count: 18
     subcategories:
       aws:
-        label: "AWS Security"
+        label: AWS Security
         document_count: 6
-        path: "cloud/aws/"
-        summary: "summaries/cloud/aws-security.md"
-        tags: [aws, iam, s3, ec2, cloudgoat, cloud]
+        path: cloud/aws/
+        summary: summaries/cloud/aws-security.md
+        tags:
+        - aws
+        - iam
+        - s3
+        - ec2
+        - cloudgoat
+        - cloud
       azure:
-        label: "Azure Security"
+        label: Azure Security
         document_count: 4
-        path: "cloud/azure/"
-        summary: "summaries/cloud/azure-security.md"
-        tags: [azure, azure-ad, aks, sentinel, cloud]
+        path: cloud/azure/
+        summary: summaries/cloud/azure-security.md
+        tags:
+        - azure
+        - azure-ad
+        - aks
+        - sentinel
+        - cloud
       gcp:
-        label: "GCP Security"
+        label: GCP Security
         document_count: 3
-        path: "cloud/gcp/"
-        summary: "summaries/cloud/gcp-security.md"
-        tags: [gcp, gke, kubernetes, cloud]
+        path: cloud/gcp/
+        summary: summaries/cloud/gcp-security.md
+        tags:
+        - gcp
+        - gke
+        - kubernetes
+        - cloud
       containers:
-        label: "Container Security"
+        label: Container Security
         document_count: 5
-        path: "cloud/containers/"
-        summary: "summaries/cloud/container-security.md"
-        tags: [docker, kubernetes, containers, container-escape]
-
+        path: cloud/containers/
+        summary: summaries/cloud/container-security.md
+        tags:
+        - docker
+        - kubernetes
+        - containers
+        - container-escape
   appsec:
-    label: "Application Security"
+    label: Application Security
     document_count: 22
     subcategories:
       web:
-        label: "Web Application Security"
+        label: Web Application Security
         document_count: 16
-        path: "appsec/web/"
-        summary: "summaries/appsec/web-application-security.md"
-        tags: [web, owasp, xss, sql-injection, api-security, smart-contracts, bug-bounty]
+        path: appsec/web/
+        summary: summaries/appsec/web-application-security.md
+        tags:
+        - web
+        - owasp
+        - xss
+        - sql-injection
+        - api-security
+        - smart-contracts
+        - bug-bounty
       mobile:
-        label: "Mobile Security"
+        label: Mobile Security
         document_count: 6
-        path: "appsec/mobile/"
-        summary: "summaries/appsec/mobile-security.md"
-        tags: [mobile, android, ios, frida, owasp-mobile]
-
+        path: appsec/mobile/
+        summary: summaries/appsec/mobile-security.md
+        tags:
+        - mobile
+        - android
+        - ios
+        - frida
+        - owasp-mobile
   osint:
-    label: "OSINT"
+    label: OSINT
     document_count: 15
     subcategories:
       techniques:
-        label: "OSINT Techniques"
+        label: OSINT Techniques
         document_count: 15
-        path: "osint/techniques/"
-        summary: "summaries/osint/osint-techniques.md"
-        tags: [osint, google-dorking, shodan, maltego, dark-web, social-media]
-
+        path: osint/techniques/
+        summary: summaries/osint/osint-techniques.md
+        tags:
+        - osint
+        - google-dorking
+        - shodan
+        - maltego
+        - dark-web
+        - social-media
   iot-ot:
-    label: "IoT / OT Security"
+    label: IoT / OT Security
     document_count: 10
     subcategories:
       industrial:
-        label: "Industrial / OT Security"
+        label: Industrial / OT Security
         document_count: 10
-        path: "iot-ot/industrial/"
-        summary: "summaries/iot-ot/iot-ot-security.md"
-        tags: [iot, ot, ics, scada, hardware-hacking, firmware, uart, jtag]
-
+        path: iot-ot/industrial/
+        summary: summaries/iot-ot/iot-ot-security.md
+        tags:
+        - iot
+        - ot
+        - ics
+        - scada
+        - hardware-hacking
+        - firmware
+        - uart
+        - jtag
   certifications:
-    label: "Certifications & Career"
+    label: Certifications & Career
     document_count: 32
     subcategories:
       oscp:
-        label: "OSCP & Advanced Offensive"
+        label: OSCP & Advanced Offensive
         document_count: 12
-        path: "certifications/oscp/"
-        summary: "summaries/certifications/oscp-preparation.md"
-        tags: [oscp, crto, ejpt, ecppt, certification, exam-prep]
+        path: certifications/oscp/
+        summary: summaries/certifications/oscp-preparation.md
+        tags:
+        - oscp
+        - crto
+        - ejpt
+        - ecppt
+        - certification
+        - exam-prep
       ceh:
-        label: "CEH - Certified Ethical Hacker"
+        label: CEH - Certified Ethical Hacker
         document_count: 8
-        path: "certifications/ceh/"
-        summary: "summaries/certifications/ceh-fundamentals.md"
-        tags: [ceh, ec-council, certification, exam-prep]
+        path: certifications/ceh/
+        summary: summaries/certifications/ceh-fundamentals.md
+        tags:
+        - ceh
+        - ec-council
+        - certification
+        - exam-prep
       comptia:
-        label: "CompTIA & Career"
+        label: CompTIA & Career
         document_count: 12
-        path: "certifications/comptia/"
-        summary: "summaries/certifications/comptia-security-plus.md"
-        tags: [security-plus, cysa-plus, casp-plus, pentest-plus, career, interview]
-
+        path: certifications/comptia/
+        summary: summaries/certifications/comptia-security-plus.md
+        tags:
+        - security-plus
+        - cysa-plus
+        - casp-plus
+        - pentest-plus
+        - career
+        - interview
   education:
-    label: "Education & Awareness"
+    label: Education & Awareness
     document_count: 12
     subcategories:
       awareness:
-        label: "Cybersecurity Awareness"
+        label: Cybersecurity Awareness
         document_count: 12
-        path: "education/awareness/"
-        summary: "summaries/education/cybersecurity-awareness.md"
-        tags: [awareness, kids, teenagers, parents, cyberbullying, phishing]
-
+        path: education/awareness/
+        summary: summaries/education/cybersecurity-awareness.md
+        tags:
+        - awareness
+        - kids
+        - teenagers
+        - parents
+        - cyberbullying
+        - phishing
   misc:
-    label: "Miscellaneous"
+    label: Miscellaneous
     document_count: 4
     subcategories: {}
-
-# Representative document listing (see manifest.json for complete list)
+  meta:
+    label: Meta & Metaverse Security
+    document_count: 6
+    subcategories:
+      general:
+        label: General Resources
+        document_count: 6
+        path: meta/
+        summary: summaries/meta/overview.md
+        tags:
+        - meta
+        - security
+  ai-native:
+    label: AI-Native Security
+    document_count: 6
+    subcategories:
+      general:
+        label: General Resources
+        document_count: 6
+        path: ai-native/
+        summary: summaries/ai-native/overview.md
+        tags:
+        - ai-native
+        - security
+  fintech:
+    label: Fintech Security
+    document_count: 8
+    subcategories:
+      general:
+        label: General Resources
+        document_count: 8
+        path: fintech/
+        summary: summaries/fintech/overview.md
+        tags:
+        - fintech
+        - security
+  specialized-data:
+    label: Specialized Data Security
+    document_count: 0
+    subcategories:
+      general:
+        label: General Resources
+        document_count: 0
+        path: specialized-data/
+        summary: summaries/specialized-data/overview.md
+        tags:
+        - specialized-data
+        - security
+  trading:
+    label: Trading & Market Security
+    document_count: 2
+    subcategories:
+      general:
+        label: General Resources
+        document_count: 2
+        path: trading/
+        summary: summaries/trading/overview.md
+        tags:
+        - trading
+        - security
 documents_sample:
-  - id: doc-001
-    filename: "Penetration Testing Web Application - Complete Guide.pdf"
-    category: offensive
-    subcategory: penetration-testing
-    difficulty: intermediate
-    language: en
-    tags: [pentesting, web, methodology]
-
-  - id: doc-031
-    filename: "Red Team Operations - Complete Handbook.pdf"
-    category: offensive
-    subcategory: red-team
-    difficulty: advanced
-    language: en
-    tags: [red-team, methodology, apt]
-
-  - id: doc-049
-    filename: "Buffer Overflow Exploitation - x86.pdf"
-    category: offensive
-    subcategory: exploit-development
-    difficulty: advanced
-    language: en
-    tags: [exploit-dev, buffer-overflow, x86]
-
-  - id: doc-074
-    filename: "SOC Analyst Career Guide - Junior.pdf"
-    category: defensive
-    subcategory: soc
-    difficulty: beginner
-    language: en
-    tags: [soc, career, beginner]
-
-  - id: doc-088
-    filename: "Memory Forensics with Volatility.pdf"
-    category: defensive
-    subcategory: incident-response
-    difficulty: advanced
-    language: en
-    tags: [incident-response, forensics, volatility]
-
-  - id: doc-107
-    filename: "AWS Penetration Testing Guide.pdf"
-    category: cloud
-    subcategory: aws
-    difficulty: advanced
-    language: en
-    tags: [aws, cloud, pentesting]
-
-  - id: doc-131
-    filename: "Smart Contract Security Audit Guide.pdf"
-    category: appsec
-    subcategory: web
-    difficulty: advanced
-    language: en
-    tags: [web, smart-contracts, blockchain]
-
-  - id: doc-171
-    filename: "OSCP Preparation Guide - Complete.pdf"
-    category: certifications
-    subcategory: oscp
-    difficulty: advanced
-    language: en
-    tags: [oscp, certification, exam-prep]
-
-  - id: doc-211
-    filename: "Segurança Digital para Crianças.pdf"
-    category: education
-    subcategory: awareness
-    difficulty: beginner
-    language: pt-br
-    tags: [awareness, kids, internet-safety, pt-br]
+- id: doc-001
+  filename: Penetration Testing Web Application - Complete Guide.pdf
+  category: offensive
+  subcategory: penetration-testing
+  difficulty: intermediate
+  language: en
+  tags:
+  - pentesting
+  - web
+  - methodology
+- id: doc-031
+  filename: Red Team Operations - Complete Handbook.pdf
+  category: offensive
+  subcategory: red-team
+  difficulty: advanced
+  language: en
+  tags:
+  - red-team
+  - methodology
+  - apt
+- id: doc-049
+  filename: Buffer Overflow Exploitation - x86.pdf
+  category: offensive
+  subcategory: exploit-development
+  difficulty: advanced
+  language: en
+  tags:
+  - exploit-dev
+  - buffer-overflow
+  - x86
+- id: doc-074
+  filename: SOC Analyst Career Guide - Junior.pdf
+  category: defensive
+  subcategory: soc
+  difficulty: beginner
+  language: en
+  tags:
+  - soc
+  - career
+  - beginner
+- id: doc-088
+  filename: Memory Forensics with Volatility.pdf
+  category: defensive
+  subcategory: incident-response
+  difficulty: advanced
+  language: en
+  tags:
+  - incident-response
+  - forensics
+  - volatility
+- id: doc-107
+  filename: AWS Penetration Testing Guide.pdf
+  category: cloud
+  subcategory: aws
+  difficulty: advanced
+  language: en
+  tags:
+  - aws
+  - cloud
+  - pentesting
+- id: doc-131
+  filename: Smart Contract Security Audit Guide.pdf
+  category: appsec
+  subcategory: web
+  difficulty: advanced
+  language: en
+  tags:
+  - web
+  - smart-contracts
+  - blockchain
+- id: doc-171
+  filename: OSCP Preparation Guide - Complete.pdf
+  category: certifications
+  subcategory: oscp
+  difficulty: advanced
+  language: en
+  tags:
+  - oscp
+  - certification
+  - exam-prep
+- id: doc-211
+  filename: "Seguran\xE7a Digital para Crian\xE7as.pdf"
+  category: education
+  subcategory: awareness
+  difficulty: beginner
+  language: pt-br
+  tags:
+  - awareness
+  - kids
+  - internet-safety
+  - pt-br

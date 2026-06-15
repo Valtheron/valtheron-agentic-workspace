@@ -12,9 +12,20 @@ export interface LLMCallOptions {
   params?: Record<string, unknown>;
 }
 
+// Providers that speak the OpenAI Chat Completions API — reachable with the
+// OpenAI SDK by pointing it at their base URL. Keeps the UI's advertised
+// Groq/Mistral/OpenRouter providers actually callable instead of throwing
+// "Unbekannter Provider".
+const OPENAI_COMPATIBLE_BASE_URLS: Record<string, string> = {
+  groq: 'https://api.groq.com/openai/v1',
+  mistral: 'https://api.mistral.ai/v1',
+  openrouter: 'https://openrouter.ai/api/v1',
+};
+
 /**
- * Unified LLM call — supports anthropic, openai, ollama, custom.
- * Extracted from chat.ts so both chat and execution engine can use it.
+ * Unified LLM call — supports anthropic, openai, the OpenAI-compatible
+ * providers (groq, mistral, openrouter), google (Gemini), ollama and custom.
+ * Extracted from chat.ts so chat, execution engine and collaboration can use it.
  */
 export async function callLLM(opts: LLMCallOptions): Promise<string> {
   const { provider, model, apiKey, systemPrompt, messages, maxTokens = 1024, temperature = 0.7, params = {} } = opts;
@@ -32,8 +43,10 @@ export async function callLLM(opts: LLMCallOptions): Promise<string> {
     return block.type === 'text' ? block.text : '[Keine Antwort]';
   }
 
-  if (provider === 'openai') {
-    const client = new OpenAI({ apiKey });
+  if (provider === 'openai' || provider in OPENAI_COMPATIBLE_BASE_URLS) {
+    // openai → SDK default base URL; groq/mistral/openrouter → their base URL.
+    const baseURL = OPENAI_COMPATIBLE_BASE_URLS[provider];
+    const client = new OpenAI(baseURL ? { apiKey, baseURL } : { apiKey });
     const response = await client.chat.completions.create({
       model,
       max_tokens: Math.min(maxTokens, 4096),
@@ -41,6 +54,32 @@ export async function callLLM(opts: LLMCallOptions): Promise<string> {
       messages: [{ role: 'system', content: systemPrompt }, ...messages],
     });
     return response.choices[0]?.message?.content || '[Keine Antwort]';
+  }
+
+  if (provider === 'google' || provider === 'gemini') {
+    // Google Gemini uses its own REST shape (not OpenAI-compatible).
+    const base = (params.googleBaseUrl as string) || 'https://generativelanguage.googleapis.com/v1beta';
+    const contents = messages.map((m) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }));
+    const response = await fetch(`${base}/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents,
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: { temperature, maxOutputTokens: Math.min(maxTokens, 4096) },
+      }),
+    });
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`Google ${response.status}: ${errText}`);
+    }
+    const data = (await response.json()) as {
+      candidates?: { content?: { parts?: { text?: string }[] } }[];
+    };
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || '[Keine Antwort]';
   }
 
   if (provider === 'ollama') {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 import type {
   ViewType,
@@ -16,20 +16,21 @@ import type {
   Workflow,
   Project,
 } from './types';
-import {
-  generateAgents,
-  generateTasks,
-  generateCertifications,
-  generateSecurityEvents,
-  generateKillSwitch,
-  generateAuditLog,
-  generateProjektBaum,
-  defaultSecurityConfig,
-  generateAnalytics,
-} from './services/mockData';
+import { defaultSecurityConfig } from './services/defaults';
 import { defaultLLMConfig } from './services/llmProviders';
 import { save, load, KEYS } from './services/persistence';
-import { agentsAPI, tasksAPI, workflowsAPI, securityAPI, healthAPI, wsClient, authAPI, getToken } from './services/api';
+import {
+  agentsAPI,
+  tasksAPI,
+  workflowsAPI,
+  securityAPI,
+  analyticsAPI,
+  certificationsAPI,
+  healthAPI,
+  wsClient,
+  authAPI,
+  getToken,
+} from './services/api';
 import Sidebar from './components/Sidebar';
 import LoginView from './components/LoginView';
 import WelcomeView from './components/WelcomeView';
@@ -69,7 +70,13 @@ const viewTitles: Record<ViewType, string> = {
   audit: 'Audit-Trail',
 };
 
-// Simulated output messages for running agents
+import { defaultKillSwitch, defaultProjektBaum, defaultAnalytics } from './services/defaults';
+
+// SIMULATED — frontend fallback for workflow step output when the user runs
+// workflows locally via the Workflows tab. Production execution flows through
+// backend/src/services/workflowEngine.ts (`workflowsAPI.start()` + WS
+// updates). This array stays only until the local "Run" button is wired to
+// the backend; remove it together with the tickWorkflows interval below.
 const simulatedOutputs = [
   'Analysiere Eingabedaten...',
   'Verarbeite Anfrage mit LLM...',
@@ -131,37 +138,44 @@ function App() {
   const [backendConnected, setBackendConnected] = useState(false);
   const [dataSource, setDataSource] = useState<'loading' | 'api' | 'mock'>('loading');
 
-  const [agents, setAgents] = useState<Agent[]>(() => load('agents', generateAgents()));
-  const [tasks, setTasks] = useState<Task[]>(() => load(KEYS.TASKS, generateTasks(agents)));
-  // collaboration sessions are now loaded from the backend by CollaborationView
-  const [certifications] = useState<Certification[]>(() => generateCertifications(agents));
-  const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>(generateSecurityEvents);
-  const [killSwitch, setKillSwitch] = useState<KillSwitch>(() => load(KEYS.KILL_SWITCH, generateKillSwitch()));
-  const [auditLog] = useState<AuditEntry[]>(generateAuditLog);
-  const [projektBaum] = useState<ProjektBaumNode>(generateProjektBaum);
+  const [agents, setAgents] = useState<Agent[]>(() => load<Agent[]>('agents', []));
+  const [tasks, setTasks] = useState<Task[]>(() => load<Task[]>(KEYS.TASKS, []));
+  const [certifications, setCertifications] = useState<Certification[]>([]);
+  const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>([]);
+  const [killSwitch, setKillSwitch] = useState<KillSwitch>(() => load(KEYS.KILL_SWITCH, defaultKillSwitch));
+  const [auditLog] = useState<AuditEntry[]>([]);
+  const [projektBaum] = useState<ProjektBaumNode>(defaultProjektBaum);
   const [securityConfig, setSecurityConfig] = useState<SecurityConfig>(() =>
     load(KEYS.SECURITY_CONFIG, defaultSecurityConfig),
   );
   const [llmConfig, setLLMConfig] = useState<LLMConfig>(() => load(KEYS.LLM_CONFIG, defaultLLMConfig));
   const [workflows, setWorkflows] = useState<Workflow[]>(() => load('workflows', []));
   const [projects, setProjects] = useState<Project[]>(() => load('projects_data', []));
-  const analytics = useMemo<AnalyticsData>(() => generateAnalytics(agents, tasks), [agents, tasks]);
+  const [analytics, setAnalytics] = useState<AnalyticsData>(defaultAnalytics);
 
-  // Try to connect to backend API on mount
+  // Try to connect to backend API on mount. The first attempt can race the
+  // backend boot (Vite is usually ready ~0.5 s before tsx finishes hydrating
+  // express + sqlite + WS), so we retry on failure with capped exponential
+  // backoff until the backend answers. Until then, dataSource stays
+  // 'loading' so the badge doesn't lie about a "mock" state.
   useEffect(() => {
     let cancelled = false;
-    async function loadFromAPI() {
+    let retryTimer: ReturnType<typeof setTimeout> | null = null;
+    let attempt = 0;
+
+    async function loadFromAPI(): Promise<void> {
       try {
         const health = await healthAPI.check();
         if (cancelled || health.status !== 'healthy') throw new Error('Backend unhealthy');
 
-        // Load all data from API in parallel
-        const [agentsRes, tasksRes, workflowsRes, secEventsRes, ksRes] = await Promise.all([
+        // Core data is readable without admin auth (dev mode) or with any
+        // valid session (prod). Load it first — its success defines whether we
+        // are "connected to the API".
+        const [agentsRes, tasksRes, workflowsRes, analyticsRes] = await Promise.all([
           agentsAPI.list({ limit: 300 }),
           tasksAPI.list(),
           workflowsAPI.list(),
-          securityAPI.events(),
-          securityAPI.killSwitch(),
+          analyticsAPI.dashboard(),
         ]);
 
         if (cancelled) return;
@@ -169,10 +183,33 @@ function App() {
         setAgents(agentsRes.agents as Agent[]);
         setTasks(tasksRes.tasks as Task[]);
         setWorkflows(workflowsRes.workflows as Workflow[]);
-        setSecurityEvents(secEventsRes.events as SecurityEvent[]);
-        setKillSwitch(ksRes as KillSwitch);
+        setAnalytics(analyticsRes as AnalyticsData);
         setBackendConnected(true);
         setDataSource('api');
+
+        // The /api/security/* endpoints ALWAYS require an admin session, so an
+        // anonymous or non-admin user gets 401 there. Load them best-effort:
+        // a 401 must NOT tear down the whole connection (which previously left
+        // the badge stuck on "Verbinde..." while the backend was actually up).
+        // Admin sessions populate these panels; everyone else keeps the
+        // existing defaults.
+        void Promise.allSettled([securityAPI.events(), securityAPI.killSwitch()]).then(([events, ks]) => {
+          if (cancelled) return;
+          if (events.status === 'fulfilled') setSecurityEvents(events.value.events as SecurityEvent[]);
+          if (ks.status === 'fulfilled') setKillSwitch(ks.value as KillSwitch);
+        });
+
+        // Certifications are computed server-side from real agent signals and
+        // are readable without admin auth — load best-effort so a hiccup here
+        // never drops the API connection.
+        void certificationsAPI
+          .list()
+          .then((res) => {
+            if (!cancelled) setCertifications(res.certifications as Certification[]);
+          })
+          .catch(() => {
+            /* keep empty list — view shows the honest "no backend" placeholder */
+          });
 
         // Connect WebSocket for real-time updates
         wsClient.connect();
@@ -184,21 +221,56 @@ function App() {
           const { taskId, status } = data as { taskId: string; status: string };
           setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status: status as Task['status'] } : t)));
         });
+        wsClient.on('metric_change', () => {
+          // Re-fetch dashboard analytics whenever the backend records a new
+          // metrics snapshot — never re-derive from local mock helpers.
+          analyticsAPI
+            .dashboard()
+            .then((data) => {
+              if (!cancelled) setAnalytics(data as AnalyticsData);
+            })
+            .catch(() => {
+              /* transient — keep last known analytics */
+            });
+        });
 
         console.log(
           `Backend connected: ${health.database.agents} agents, ${health.database.tasks} tasks loaded from API`,
         );
-      } catch {
-        if (!cancelled) {
-          setBackendConnected(false);
-          setDataSource('mock');
-          console.log('Backend not available, using mock data');
-        }
+      } catch (err) {
+        if (cancelled) return;
+        attempt += 1;
+        const delay = Math.min(15_000, 500 * 2 ** Math.min(attempt - 1, 5));
+        setBackendConnected(false);
+        setDataSource('loading');
+        console.warn(
+          `[boot] Backend connect attempt ${attempt} failed (${err instanceof Error ? err.message : err}). ` +
+            `Retrying in ${delay} ms.`,
+        );
+        retryTimer = setTimeout(() => {
+          if (!cancelled) loadFromAPI();
+        }, delay);
       }
     }
     loadFromAPI();
+
+    // Refresh analytics every 30s while the dashboard is open. The 15s server
+    // cache means at most every other call hits the DB.
+    const analyticsTimer = setInterval(() => {
+      if (cancelled) return;
+      analyticsAPI
+        .dashboard()
+        .then((data) => {
+          if (!cancelled) setAnalytics(data as AnalyticsData);
+        })
+        .catch(() => {
+          /* keep last known analytics */
+        });
+    }, 30_000);
     return () => {
       cancelled = true;
+      if (retryTimer) clearTimeout(retryTimer);
+      clearInterval(analyticsTimer);
       wsClient.disconnect();
     };
   }, []);
@@ -433,8 +505,11 @@ function App() {
 
   const runningWorkflows = workflows.filter((w) => w.status === 'running').length;
 
-  // In production, require authentication before showing the app
-  if (authChecked && !authUser && import.meta.env.PROD) {
+  // Require authentication before showing the app when:
+  //  * running a production build, or
+  //  * VITE_VALTHERON_REQUIRE_AUTH=true (for testing prod-style login in dev)
+  const requireAuth = import.meta.env.PROD || import.meta.env.VITE_VALTHERON_REQUIRE_AUTH === 'true';
+  if (authChecked && !authUser && requireAuth) {
     return (
       <LoginView
         onLogin={(user, isNewUser) => {
@@ -486,8 +561,15 @@ function App() {
               {agents.filter((a) => a.status === 'active' || a.status === 'working').length} aktiv
             </span>
             {runningWorkflows > 0 && <span className="badge working">{runningWorkflows} WF läuft</span>}
-            <span className={`badge ${killSwitch.aktiv ? 'valid' : 'critical'}`}>
-              KS: {killSwitch.aktiv ? 'AKTIV' : 'INAKTIV'}
+            <span
+              className={`badge ${killSwitch.aktiv ? 'critical' : 'valid'}`}
+              title={
+                killSwitch.aktiv
+                  ? 'Kill-Switch GEZÜNDET — Agenten suspendiert'
+                  : 'Kill-Switch im Standby — Auto-Trigger aktiv'
+              }
+            >
+              KS: {killSwitch.aktiv ? 'GEZÜNDET' : 'STANDBY'}
             </span>
             {authUser ? (
               <>
@@ -578,11 +660,17 @@ function App() {
         <footer className="app-footer">
           <span>© 2025 BlackIceSecure</span>
           <span className="app-footer-sep">·</span>
-          <a href="https://blackice-secure.space" target="_blank" rel="noopener noreferrer">blackice-secure.space</a>
+          <a href="https://blackice-secure.space" target="_blank" rel="noopener noreferrer">
+            blackice-secure.space
+          </a>
           <span className="app-footer-sep">·</span>
-          <a href="https://blackice-secure.space/index.html#impressum" target="_blank" rel="noopener noreferrer">Impressum</a>
+          <a href="https://blackice-secure.space/index.html#impressum" target="_blank" rel="noopener noreferrer">
+            Impressum
+          </a>
           <span className="app-footer-sep">·</span>
-          <a href="https://blackice-secure.space/index.html#datenschutz" target="_blank" rel="noopener noreferrer">Datenschutz</a>
+          <a href="https://blackice-secure.space/index.html#datenschutz" target="_blank" rel="noopener noreferrer">
+            Datenschutz
+          </a>
           <span className="app-footer-sep">·</span>
           <a href="mailto:info@blackice-secure.space">info@blackice-secure.space</a>
         </footer>
@@ -595,7 +683,15 @@ function App() {
           onClose={() => setCmdPaletteOpen(false)}
         />
       )}
-      {sponsorOpen && <SponsorModal onClose={() => { setSponsorOpen(false); setDonationMessage(null); }} donationMessage={donationMessage} />}
+      {sponsorOpen && (
+        <SponsorModal
+          onClose={() => {
+            setSponsorOpen(false);
+            setDonationMessage(null);
+          }}
+          donationMessage={donationMessage}
+        />
+      )}
     </div>
   );
 }

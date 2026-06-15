@@ -1,0 +1,17 @@
+{
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Bash",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "if": "Bash(git push*)",
+                        "command": "cat <<'JSON'\n{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"Post-Push Checklist (Valtheron-Vorgaben):\\n1. CHANGELOG.md [Unreleased] aktualisieren, falls die Änderung feat/fix/breaking ist.\\n2. README.md aktualisieren, falls öffentlich sichtbare Änderung (Setup, Features, Befehle).\\n3. Zugehörigen PR via GitHub MCP (mcp__github__pull_request_read + mcp__github__update_pull_request) identifizieren und die Checklisten-Haken im Body synchronisieren. Nicht zutreffende Punkte mit kurzer Begründung markieren (z. B. 'nicht anwendbar: keine Backend-Endpunkte').\\n4. Vor dem Setzen der Test/Lint-Haken muessen npm run test + npm run lint gruen sein.\\nFalls bereits erledigt oder nicht zutreffend: kurz bestaetigen und weitermachen.\"}}\nJSON"
+                    }
+                ]
+            }
+        ]
+    }
+}

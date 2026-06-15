@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import type { Agent, ChatSession, ChatMessage } from '../types';
-import { chatAPI } from '../services/api';
+import { chatAPI, getLLMHeaders, getActiveLLMSelection } from '../services/api';
 
 interface ChatViewProps {
   agents: Agent[];
@@ -37,7 +37,10 @@ export default function ChatView({ agents }: ChatViewProps) {
 
   // Load messages when session changes
   useEffect(() => {
-    if (!selectedSessionId) { setMessages([]); return; }
+    if (!selectedSessionId) {
+      setMessages([]);
+      return;
+    }
     loadMessages(selectedSessionId);
 
     // Poll for new messages every 2 seconds
@@ -65,27 +68,6 @@ export default function ChatView({ agents }: ChatViewProps) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Build LLM headers from localStorage config if API key is configured
-  const getLLMHeaders = (): Record<string, string> | undefined => {
-    try {
-      const raw = localStorage.getItem('llmConfig');
-      if (!raw) return undefined;
-      const cfg = JSON.parse(raw);
-      const provider: string = cfg.defaultProvider || 'anthropic';
-      const model: string = cfg.defaultModel || 'claude-sonnet-4-5-20250929';
-      const activeProvider = (cfg.providers as { id: string; enabled: boolean; apiKey?: string }[] | undefined)
-        ?.find(p => p.id === provider && p.enabled);
-      if (!activeProvider?.apiKey) return undefined;
-      return {
-        'x-llm-api-key': activeProvider.apiKey,
-        'x-llm-provider': provider,
-        'x-llm-model': model,
-      };
-    } catch {
-      return undefined;
-    }
-  };
-
   const handleSend = useCallback(async () => {
     if (!inputText.trim() || !selectedSessionId || sending) return;
     const text = inputText.trim();
@@ -101,7 +83,7 @@ export default function ChatView({ agents }: ChatViewProps) {
       content: text,
       timestamp: new Date().toISOString(),
     };
-    setMessages(prev => [...prev, tempMsg]);
+    setMessages((prev) => [...prev, tempMsg]);
 
     try {
       await chatAPI.sendMessage(selectedSessionId, text, getLLMHeaders());
@@ -110,30 +92,39 @@ export default function ChatView({ agents }: ChatViewProps) {
       loadSessions(); // refresh session list for updated timestamps
     } catch {
       // remove temp message on error
-      setMessages(prev => prev.filter(m => m.id !== tempMsg.id));
+      setMessages((prev) => prev.filter((m) => m.id !== tempMsg.id));
     }
     setSending(false);
     inputRef.current?.focus();
   }, [inputText, selectedSessionId, sending]);
 
+  const [newChatError, setNewChatError] = useState<string | null>(null);
+
   const handleNewChat = async (agentId: string) => {
-    const agent = agents.find(a => a.id === agentId);
+    const agent = agents.find((a) => a.id === agentId);
+    setNewChatError(null);
     try {
       const session = await chatAPI.createSession(agentId, `Chat mit ${agent?.name || 'Agent'}`);
       const newSession = session as ChatSession;
-      setSessions(prev => [newSession, ...prev]);
+      setSessions((prev) => [newSession, ...prev]);
       setSelectedSessionId(newSession.id);
       setShowNewChat(false);
       setAgentSearch('');
-    } catch {
-      // ignore
+    } catch (err) {
+      // Surface the failure instead of swallowing it. The most common cause
+      // on a freshly seeded DB is a stale agent UUID in localStorage that
+      // doesn't match any agent in the new DB (FK constraint → 500 here).
+      const message =
+        err instanceof Error ? err.message : typeof err === 'string' ? err : 'Unbekannter Fehler beim Chat-Start';
+      console.error('chat.createSession failed:', err);
+      setNewChatError(message);
     }
   };
 
   const handleDeleteSession = async (id: string) => {
     try {
       await chatAPI.deleteSession(id);
-      setSessions(prev => prev.filter(s => s.id !== id));
+      setSessions((prev) => prev.filter((s) => s.id !== id));
       if (selectedSessionId === id) {
         setSelectedSessionId(null);
         setMessages([]);
@@ -143,19 +134,22 @@ export default function ChatView({ agents }: ChatViewProps) {
     }
   };
 
-  const getAgentName = (id: string) => agents.find(a => a.id === id)?.name ?? id;
-  const getAgentCategory = (id: string) => agents.find(a => a.id === id)?.category ?? '';
-  const getAgentStatus = (id: string) => agents.find(a => a.id === id)?.status ?? 'idle';
+  const getAgentName = (id: string) => agents.find((a) => a.id === id)?.name ?? id;
+  const getAgentCategory = (id: string) => agents.find((a) => a.id === id)?.category ?? '';
+  const getAgentStatus = (id: string) => agents.find((a) => a.id === id)?.status ?? 'idle';
 
-  const selectedSession = sessions.find(s => s.id === selectedSessionId);
+  const selectedSession = sessions.find((s) => s.id === selectedSessionId);
 
-  const filteredAgents = agents.filter(a => {
-    const matchSearch = !agentSearch || a.name.toLowerCase().includes(agentSearch.toLowerCase()) || a.category.includes(agentSearch.toLowerCase());
+  const filteredAgents = agents.filter((a) => {
+    const matchSearch =
+      !agentSearch ||
+      a.name.toLowerCase().includes(agentSearch.toLowerCase()) ||
+      a.category.includes(agentSearch.toLowerCase());
     const matchCat = categoryFilter === 'all' || a.category === categoryFilter;
     return matchSearch && matchCat;
   });
 
-  const categories = [...new Set(agents.map(a => a.category))].sort();
+  const categories = [...new Set(agents.map((a) => a.category))].sort();
 
   const formatTime = (ts: string) => {
     const d = new Date(ts);
@@ -173,7 +167,9 @@ export default function ChatView({ agents }: ChatViewProps) {
       <div className="chat-sidebar">
         <div className="chat-sidebar-header">
           <span style={{ fontWeight: 600, fontSize: 13 }}>Konversationen</span>
-          <button className="btn btn-primary btn-sm" onClick={() => setShowNewChat(true)}>+ Neuer Chat</button>
+          <button className="btn btn-primary btn-sm" onClick={() => setShowNewChat(true)}>
+            + Neuer Chat
+          </button>
         </div>
 
         {showNewChat && (
@@ -181,34 +177,66 @@ export default function ChatView({ agents }: ChatViewProps) {
             <div className="chat-new-panel">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
                 <span style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)' }}>Agent auswählen</span>
-                <button className="btn btn-ghost btn-sm" onClick={() => { setShowNewChat(false); setAgentSearch(''); }}>×</button>
+                <button
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => {
+                    setShowNewChat(false);
+                    setAgentSearch('');
+                    setNewChatError(null);
+                  }}
+                >
+                  ×
+                </button>
               </div>
+              {newChatError && (
+                <div
+                  style={{
+                    background: 'rgba(239,68,68,0.12)',
+                    border: '1px solid var(--accent-red)',
+                    color: 'var(--accent-red)',
+                    padding: '8px 10px',
+                    borderRadius: 6,
+                    fontSize: 11,
+                    marginBottom: 10,
+                  }}
+                >
+                  Chat konnte nicht gestartet werden: {newChatError}
+                  {' — '}falls Du gerade die Backend-DB neu aufgesetzt hast, einmal Strg+Shift+R drücken (lokale
+                  Agenten-Liste hat veraltete UUIDs).
+                </div>
+              )}
               <input
                 className="chat-search-input"
                 placeholder="Agent suchen..."
                 value={agentSearch}
-                onChange={e => setAgentSearch(e.target.value)}
+                onChange={(e) => setAgentSearch(e.target.value)}
                 autoFocus
               />
               <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', margin: '8px 0' }}>
                 <button
                   className={`btn btn-sm ${categoryFilter === 'all' ? 'btn-primary' : 'btn-ghost'}`}
                   onClick={() => setCategoryFilter('all')}
-                >Alle</button>
-                {categories.map(c => (
+                >
+                  Alle
+                </button>
+                {categories.map((c) => (
                   <button
                     key={c}
                     className={`btn btn-sm ${categoryFilter === c ? 'btn-primary' : 'btn-ghost'}`}
                     onClick={() => setCategoryFilter(c)}
-                  >{c}</button>
+                  >
+                    {c}
+                  </button>
                 ))}
               </div>
               <div className="chat-agent-list">
-                {filteredAgents.slice(0, 50).map(a => (
+                {filteredAgents.slice(0, 50).map((a) => (
                   <button key={a.id} className="chat-agent-item" onClick={() => handleNewChat(a.id)}>
                     <div>
                       <div style={{ fontWeight: 500, color: 'var(--text-primary)', fontSize: 12 }}>{a.name}</div>
-                      <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>{a.category} · {a.role}</div>
+                      <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>
+                        {a.category} · {a.role}
+                      </div>
                     </div>
                     <span className={`badge ${a.status}`}>{a.status}</span>
                   </button>
@@ -219,13 +247,17 @@ export default function ChatView({ agents }: ChatViewProps) {
         )}
 
         <div className="chat-session-list">
-          {loading && <div style={{ padding: 16, textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>Laden...</div>}
+          {loading && (
+            <div style={{ padding: 16, textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>Laden...</div>
+          )}
           {!loading && sessions.length === 0 && (
             <div style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>
-              Keine Konversationen.<br />Starte einen neuen Chat!
+              Keine Konversationen.
+              <br />
+              Starte einen neuen Chat!
             </div>
           )}
-          {sessions.map(session => (
+          {sessions.map((session) => (
             <div
               key={session.id}
               className={`chat-session-item${selectedSessionId === session.id ? ' active' : ''}`}
@@ -233,20 +265,44 @@ export default function ChatView({ agents }: ChatViewProps) {
             >
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontWeight: 500, fontSize: 12, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <span
+                    style={{
+                      fontWeight: 500,
+                      fontSize: 12,
+                      color: 'var(--text-primary)',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
                     {getAgentName(session.agentId)}
                   </span>
-                  <span style={{ fontSize: 10, color: 'var(--text-muted)', flexShrink: 0 }}>{formatTime(session.updatedAt)}</span>
+                  <span style={{ fontSize: 10, color: 'var(--text-muted)', flexShrink: 0 }}>
+                    {formatTime(session.updatedAt)}
+                  </span>
                 </div>
-                <div style={{ fontSize: 11, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <div
+                  style={{
+                    fontSize: 11,
+                    color: 'var(--text-muted)',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {session.title}
                 </div>
               </div>
               <button
                 className="chat-delete-btn"
-                onClick={e => { e.stopPropagation(); handleDeleteSession(session.id); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteSession(session.id);
+                }}
                 title="Löschen"
-              >×</button>
+              >
+                ×
+              </button>
             </div>
           ))}
         </div>
@@ -258,7 +314,9 @@ export default function ChatView({ agents }: ChatViewProps) {
           <div className="chat-empty">
             <div style={{ fontSize: 48, marginBottom: 16, opacity: 0.3 }}>&#x1F4AC;</div>
             <div style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 8 }}>Kein Chat ausgewählt</div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Wähle eine Konversation oder starte einen neuen Chat</div>
+            <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+              Wähle eine Konversation oder starte einen neuen Chat
+            </div>
           </div>
         ) : (
           <>
@@ -267,12 +325,45 @@ export default function ChatView({ agents }: ChatViewProps) {
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div className="chat-avatar">{getAgentName(selectedSession.agentId).charAt(0)}</div>
                 <div>
-                  <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)' }}>{getAgentName(selectedSession.agentId)}</div>
+                  <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)' }}>
+                    {getAgentName(selectedSession.agentId)}
+                  </div>
                   <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-                    {getAgentCategory(selectedSession.agentId)} · <span className={`badge ${getAgentStatus(selectedSession.agentId)}`} style={{ padding: '0 6px' }}>{getAgentStatus(selectedSession.agentId)}</span>
+                    {getAgentCategory(selectedSession.agentId)} ·{' '}
+                    <span className={`badge ${getAgentStatus(selectedSession.agentId)}`} style={{ padding: '0 6px' }}>
+                      {getAgentStatus(selectedSession.agentId)}
+                    </span>
                   </div>
                 </div>
               </div>
+              {/* Transparency: which provider + model Valtheron actually uses
+                  (or simulation when no key is configured). */}
+              {(() => {
+                const sel = getActiveLLMSelection();
+                if (!sel) {
+                  return (
+                    <span
+                      className="badge warning"
+                      title="Kein aktivierter Provider mit API-Key — Antworten werden simuliert."
+                    >
+                      ⚠ Simulation · kein Key
+                    </span>
+                  );
+                }
+                return (
+                  <span
+                    className="badge valid"
+                    title={
+                      sel.fellBack
+                        ? `Standard-Provider ohne Key — Valtheron nutzt ersatzweise ${sel.providerName}.`
+                        : 'Aktiver LLM-Provider und Modell.'
+                    }
+                  >
+                    {sel.fellBack ? '↪ ' : ''}
+                    {sel.providerName} · {sel.model || '—'}
+                  </span>
+                );
+              })()}
             </div>
 
             {/* Messages */}
@@ -282,13 +373,19 @@ export default function ChatView({ agents }: ChatViewProps) {
                   Beginne die Konversation mit {getAgentName(selectedSession.agentId)}...
                 </div>
               )}
-              {messages.map(msg => (
+              {messages.map((msg) => (
                 <div key={msg.id} className={`chat-message ${msg.senderType}`}>
                   <div className="chat-bubble">
                     <div className="chat-bubble-content">{msg.content}</div>
                     <div className="chat-bubble-time">
-                      {msg.senderType === 'agent' && <span style={{ marginRight: 6, fontWeight: 500 }}>{getAgentName(msg.sender)}</span>}
-                      {new Date(msg.timestamp).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                      {msg.senderType === 'agent' && (
+                        <span style={{ marginRight: 6, fontWeight: 500 }}>{getAgentName(msg.sender)}</span>
+                      )}
+                      {new Date(msg.timestamp).toLocaleTimeString('de-DE', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                      })}
                     </div>
                   </div>
                 </div>
@@ -297,7 +394,9 @@ export default function ChatView({ agents }: ChatViewProps) {
                 <div className="chat-message agent">
                   <div className="chat-bubble">
                     <div className="chat-typing">
-                      <span /><span /><span />
+                      <span />
+                      <span />
+                      <span />
                     </div>
                   </div>
                 </div>
@@ -312,9 +411,12 @@ export default function ChatView({ agents }: ChatViewProps) {
                 className="chat-input"
                 placeholder={`Nachricht an ${getAgentName(selectedSession.agentId)}...`}
                 value={inputText}
-                onChange={e => setInputText(e.target.value)}
-                onKeyDown={e => {
-                  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
+                onChange={(e) => setInputText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSend();
+                  }
                 }}
                 rows={1}
               />

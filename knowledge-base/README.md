@@ -1,11 +1,13 @@
 # Valtheron Cybersec Knowledge Base
 
-![Documents](https://img.shields.io/badge/Documents-218-blue)
-![Categories](https://img.shields.io/badge/Categories-9-green)
+![Documents](https://img.shields.io/badge/Documents-240-blue)
+![Categories](https://img.shields.io/badge/Categories-14-green)
 ![Languages](https://img.shields.io/badge/Languages-EN%20%7C%20PT--BR-orange)
 ![Format](https://img.shields.io/badge/Format-PDF%20%7C%20PPTX%20%7C%20MD-lightgrey)
 
-Kuratierte Sammlung von 218 Cybersecurity-Dokumenten, strukturiert nach Domain, Schwierigkeitsgrad und Sprache. Optimiert für manuelle Navigation und maschinelle Indizierung (RAG/Vektorsuche).
+Kuratierte Sammlung von 240 Cybersecurity-Dokumenten, strukturiert nach Domain, Schwierigkeitsgrad und Sprache. Optimiert für manuelle Navigation und maschinelle Indizierung (RAG/Vektorsuche).
+
+Die autoritative, maschinenlesbare Quelle ist [`index.yaml`](index.yaml). Diese README wird aus ihr abgeleitet — bei Diskrepanzen gilt `index.yaml`.
 
 ---
 
@@ -21,6 +23,11 @@ Kuratierte Sammlung von 218 Cybersecurity-Dokumenten, strukturiert nach Domain, 
 | [IoT / OT Security](#iot--ot-security) | 10 | Intermediate → Advanced |
 | [Certifications & Career](#certifications--career) | 32 | Beginner → Advanced |
 | [Education & Awareness](#education--awareness) | 12 | Beginner |
+| [Meta & Metaverse Security](#meta--metaverse-security) | 6 | Intermediate → Advanced |
+| [AI-Native Security](#ai-native-security) | 6 | Intermediate → Advanced |
+| [Fintech Security](#fintech-security) | 8 | Intermediate → Advanced |
+| [Trading & Market Security](#trading--market-security) | 2 | Intermediate |
+| [Specialized Data Security](#specialized-data-security) | 0 | — (Platzhalter) |
 | [Miscellaneous](#miscellaneous) | 4 | Mixed |
 
 ---
@@ -151,13 +158,77 @@ Cybersecurity-Sensibilisierungsmaterial für verschiedene Zielgruppen.
 
 ---
 
+### Meta & Metaverse Security
+
+Sicherheit in Metaverse-Umgebungen und meta-orchestrierende Security-Frameworks.
+
+**6 Dokumente** · [Verzeichnis anzeigen](meta/)
+
+| Subcategory | Docs | Beschreibung |
+|-------------|------|-------------|
+| [General](meta/) | 6 | Metaverse Threats, Cross-Domain Security |
+
+**Markdown Summaries:** [summaries/meta/](summaries/meta/)
+
+---
+
+### AI-Native Security
+
+Sicherheit für LLM-basierte und AI-native Anwendungen — Prompt-Injection, Model-Theft, RAG-Hardening.
+
+**6 Dokumente** · [Verzeichnis anzeigen](ai-native/)
+
+| Subcategory | Docs | Beschreibung |
+|-------------|------|-------------|
+| [General](ai-native/) | 6 | ChatGPT/LLM Security, Generative AI Risks |
+
+**Markdown Summaries:** [summaries/ai-native/](summaries/ai-native/)
+
+---
+
+### Fintech Security
+
+Sicherheit in Banking-, Payment- und Finanzdienstleistungssystemen.
+
+**8 Dokumente** · [Verzeichnis anzeigen](fintech/)
+
+| Subcategory | Docs | Beschreibung |
+|-------------|------|-------------|
+| [General](fintech/) | 8 | Banking, Payments, KYC/AML, Fraud |
+
+**Markdown Summaries:** [summaries/fintech/](summaries/fintech/)
+
+---
+
+### Trading & Market Security
+
+Sicherheit und Integrität von Trading-Infrastrukturen und Marktsystemen.
+
+**2 Dokumente** · [Verzeichnis anzeigen](trading/)
+
+| Subcategory | Docs | Beschreibung |
+|-------------|------|-------------|
+| [General](trading/) | 2 | Algorithmic Trading, Market Manipulation |
+
+**Markdown Summaries:** [summaries/trading/](summaries/trading/)
+
+---
+
+### Specialized Data Security
+
+Platzhalter für spezialisierte Datenschutz- und Data-Pipeline-Security-Dokumente (aktuell 0 Dokumente — Struktur reserviert für zukünftige Uploads).
+
+**0 Dokumente** · [Verzeichnis anzeigen](specialized-data/)
+
+---
+
 ### Miscellaneous
 
 Themendokumente, die mehrere Kategorien überqueren.
 
 **4 Dokumente**
 
-Enthält: ChatGPT in Cybersecurity, Metaverse Security, Zero Trust Architecture.
+Enthält: ChatGPT in Cybersecurity, Zero Trust Architecture und weitere Querschnittsthemen.
 
 ---
 
@@ -165,8 +236,8 @@ Enthält: ChatGPT in Cybersecurity, Metaverse Security, Zero Trust Architecture.
 
 ### Maschinelles Format
 
-- **[manifest.json](manifest.json)** — JSON-Index aller 218 Dokumente mit vollständigen Metadaten (Kategorie, Schwierigkeit, Sprache, Tags)
-- **[index.yaml](index.yaml)** — YAML-Variante für konfigurationsbasierte Workflows
+- **[manifest.json](manifest.json)** — JSON-Index aller 240 Dokumente mit vollständigen Metadaten (Kategorie, Schwierigkeit, Sprache, Tags)
+- **[index.yaml](index.yaml)** — autoritative YAML-Variante, Basis für alle abgeleiteten Zählungen
 - **[summaries/](summaries/)** — Markdown-Zusammenfassungen pro Kategorie, optimiert für RAG/Vektorsuche
 
 ### Schwierigkeitsgrade
@@ -192,4 +263,4 @@ Neue Dokumente hinzufügen → [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
-*Letzte Aktualisierung: 2026-03-15 · 218 Dokumente · 9 Kategorien*
+*Letzte Aktualisierung: 2026-03-15 · 240 Dokumente · 14 Kategorien (Quelle: `index.yaml`)*

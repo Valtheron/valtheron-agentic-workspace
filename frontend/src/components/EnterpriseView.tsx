@@ -21,206 +21,30 @@ function genId(prefix: string) {
   return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
 }
 
-// Generate mock data
-function generateIncidents(_agents: Agent[]): Incident[] {
-  return [
-    {
-      id: 'inc_001',
-      title: 'Hohe Fehlerrate bei Trading-Agenten',
-      description: 'Fehlerrate ueber 15% bei Trading-Agenten seit 14:00',
-      severity: 'high',
-      status: 'investigating',
-      assignedTo: ['admin'],
-      affectedAgents: ['agent_001', 'agent_002'],
-      timeline: [
-        {
-          id: 'tl_1',
-          type: 'created',
-          message: 'Incident erstellt aufgrund SLA-Verletzung',
-          author: 'system',
-          timestamp: new Date(Date.now() - 7200000).toISOString(),
-        },
-        {
-          id: 'tl_2',
-          type: 'assigned',
-          message: 'Zugewiesen an Admin-Team',
-          author: 'system',
-          timestamp: new Date(Date.now() - 6000000).toISOString(),
-        },
-        {
-          id: 'tl_3',
-          type: 'comment',
-          message: 'Erste Analyse: Moeglicher API-Timeout bei externem Provider',
-          author: 'admin',
-          timestamp: new Date(Date.now() - 3600000).toISOString(),
-        },
-      ],
-      slaResponseTime: 30,
-      slaResolutionTime: 240,
-      createdAt: new Date(Date.now() - 7200000).toISOString(),
-    },
-    {
-      id: 'inc_002',
-      title: 'Security-Scan fehlgeschlagen',
-      description: 'Automatischer Security-Scan konnte nicht abgeschlossen werden',
-      severity: 'medium',
-      status: 'resolved',
-      assignedTo: ['admin'],
-      affectedAgents: ['agent_021'],
-      timeline: [
-        {
-          id: 'tl_4',
-          type: 'created',
-          message: 'Scan-Failure erkannt',
-          author: 'system',
-          timestamp: new Date(Date.now() - 86400000).toISOString(),
-        },
-        {
-          id: 'tl_5',
-          type: 'resolved',
-          message: 'Scan-Konfiguration korrigiert',
-          author: 'admin',
-          timestamp: new Date(Date.now() - 43200000).toISOString(),
-        },
-      ],
-      rca: 'Fehlkonfiguration im Scan-Profil nach letztem Update. Fix: Rollback der Scan-Regeln.',
-      createdAt: new Date(Date.now() - 86400000).toISOString(),
-      resolvedAt: new Date(Date.now() - 43200000).toISOString(),
-    },
-  ];
+// The Enterprise view previously generated incidents, policies, agent
+// versions, shared files and health metrics from random fixtures on the
+// client. Those endpoints don't exist yet on the backend, so every tab
+// surfaces an explicit empty-state instead. When the routes land they can
+// replace these stubs in App.tsx via fetch + setState; the JSX already
+// renders correctly for non-empty inputs.
+function emptyIncidents(_agents: Agent[]): Incident[] {
+  return [];
 }
 
-function generatePolicies(): Policy[] {
-  return [
-    {
-      id: 'pol_001',
-      name: 'Max Token Budget',
-      description: 'Limitiert Token-Verbrauch pro Agent',
-      rules: [
-        { id: 'r1', condition: 'token_usage', operator: 'greater_than', value: '100000', action: 'alert' },
-        { id: 'r2', condition: 'token_usage', operator: 'greater_than', value: '500000', action: 'deny' },
-      ],
-      enabled: true,
-      priority: 1,
-      scope: 'global',
-      createdAt: new Date(Date.now() - 604800000).toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 'pol_002',
-      name: 'API Rate Limiting',
-      description: 'Beschraenkt API-Aufrufe pro Minute',
-      rules: [
-        { id: 'r3', condition: 'api_calls_per_min', operator: 'greater_than', value: '60', action: 'log' },
-        { id: 'r4', condition: 'api_calls_per_min', operator: 'greater_than', value: '120', action: 'deny' },
-      ],
-      enabled: true,
-      priority: 2,
-      scope: 'global',
-      createdAt: new Date(Date.now() - 604800000).toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 'pol_003',
-      name: 'Trading Risk Guard',
-      description: 'Spezielle Limits fuer Trading-Agenten',
-      rules: [
-        { id: 'r5', condition: 'trade_volume', operator: 'greater_than', value: '10000', action: 'require_approval' },
-      ],
-      enabled: true,
-      priority: 1,
-      scope: 'category',
-      scopeTarget: 'trading',
-      createdAt: new Date(Date.now() - 259200000).toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-  ];
+function emptyPolicies(): Policy[] {
+  return [];
 }
 
-function generateVersions(agents: Agent[]): AgentVersion[] {
-  return agents.slice(0, 10).flatMap((a, _i) => [
-    {
-      id: genId('v'),
-      agentId: a.id,
-      version: 2,
-      changes: 'System-Prompt optimiert, Temperature angepasst',
-      snapshot: { systemPrompt: a.systemPrompt, parameters: a.parameters, personality: a.personality },
-      createdAt: new Date(Date.now() - 86400000).toISOString(),
-      createdBy: 'admin',
-    },
-    {
-      id: genId('v'),
-      agentId: a.id,
-      version: 1,
-      changes: 'Initiale Konfiguration',
-      snapshot: {
-        systemPrompt: `Initiale Version von ${a.name}`,
-        parameters: { ...a.parameters, temperature: 0.5 },
-        personality: { ...a.personality, creativity: 50 },
-      },
-      createdAt: new Date(Date.now() - 604800000).toISOString(),
-      createdBy: 'system',
-    },
-  ]);
+function emptyVersions(_agents: Agent[]): AgentVersion[] {
+  return [];
 }
 
-function generateSharedFiles(): SharedFile[] {
-  return [
-    {
-      id: 'sf_1',
-      name: 'risk_model.py',
-      path: '/shared/models/',
-      owner: 'agent_001',
-      sharedWith: ['agent_002', 'agent_003'],
-      size: 15400,
-      lastModified: new Date(Date.now() - 3600000).toISOString(),
-      type: 'code',
-    },
-    {
-      id: 'sf_2',
-      name: 'market_data.csv',
-      path: '/shared/data/',
-      owner: 'agent_005',
-      sharedWith: ['agent_001', 'agent_002', 'agent_004'],
-      size: 2048000,
-      lastModified: new Date(Date.now() - 7200000).toISOString(),
-      type: 'data',
-    },
-    {
-      id: 'sf_3',
-      name: 'security_config.json',
-      path: '/shared/config/',
-      owner: 'agent_021',
-      sharedWith: ['agent_022', 'agent_023'],
-      size: 3200,
-      lastModified: new Date(Date.now() - 14400000).toISOString(),
-      type: 'config',
-    },
-    {
-      id: 'sf_4',
-      name: 'deployment_guide.md',
-      path: '/shared/docs/',
-      owner: 'agent_081',
-      sharedWith: ['agent_101', 'agent_102'],
-      size: 8900,
-      lastModified: new Date(Date.now() - 86400000).toISOString(),
-      type: 'document',
-    },
-  ];
+function emptySharedFiles(): SharedFile[] {
+  return [];
 }
 
-function generateHealth(agents: Agent[]): HealthMetric[] {
-  return agents.slice(0, 30).map((a) => ({
-    agentId: a.id,
-    agentName: a.name,
-    cpu: Math.floor(20 + Math.random() * 70),
-    memory: Math.floor(30 + Math.random() * 60),
-    responseTime: Math.floor(50 + Math.random() * 200),
-    errorRate: +(Math.random() * 10).toFixed(1),
-    uptime: +(95 + Math.random() * 5).toFixed(2),
-    lastCheck: new Date(Date.now() - Math.floor(Math.random() * 300000)).toISOString(),
-    status: Math.random() > 0.85 ? (Math.random() > 0.5 ? 'degraded' : 'unhealthy') : 'healthy',
-  }));
+function emptyHealth(_agents: Agent[]): HealthMetric[] {
+  return [];
 }
 
 const healthColors: Record<string, string> = {
@@ -247,13 +71,13 @@ const actionColors: Record<string, string> = {
 
 export default function EnterpriseView({ agents, auditLog }: EnterpriseProps) {
   const [tab, setTab] = useState<Tab>('health');
-  const [incidents, setIncidents] = useState<Incident[]>(() => generateIncidents(agents));
-  const [policies, setPolicies] = useState<Policy[]>(generatePolicies);
+  const [incidents, setIncidents] = useState<Incident[]>(() => emptyIncidents(agents));
+  const [policies, setPolicies] = useState<Policy[]>(emptyPolicies);
   const [exportFormat, setExportFormat] = useState<'csv' | 'json' | 'pdf'>('csv');
   const [reportType, setReportType] = useState<'performance' | 'security' | 'compliance'>('performance');
-  const versions = useMemo(() => generateVersions(agents), [agents]);
-  const sharedFiles = useMemo(generateSharedFiles, []);
-  const health = useMemo(() => generateHealth(agents), [agents]);
+  const versions = useMemo(() => emptyVersions(agents), [agents]);
+  const sharedFiles = useMemo(emptySharedFiles, []);
+  const health = useMemo(() => emptyHealth(agents), [agents]);
   const [selectedVersion, setSelectedVersion] = useState<string | null>(null);
   const [newComment, setNewComment] = useState('');
 
@@ -342,94 +166,119 @@ export default function EnterpriseView({ agents, auditLog }: EnterpriseProps) {
 
       {tab === 'health' && (
         <div>
-          <div className="kpi-grid">
-            <div className="kpi-card">
-              <div className="kpi-label">Healthy</div>
-              <div className="kpi-value green">{health.filter((h) => h.status === 'healthy').length}</div>
+          {health.length === 0 ? (
+            <div className="card" style={{ padding: 32, textAlign: 'center', color: 'var(--text-muted)' }}>
+              <div style={{ fontSize: 16, marginBottom: 8 }}>Health-Monitor: noch keine Daten</div>
+              <div style={{ fontSize: 12 }}>
+                CPU/Memory/Response-Time je Agent werden hier erscheinen, sobald ein Health-Check-Endpoint im Backend
+                implementiert ist.
+              </div>
             </div>
-            <div className="kpi-card">
-              <div className="kpi-label">Degraded</div>
-              <div className="kpi-value orange">{health.filter((h) => h.status === 'degraded').length}</div>
-            </div>
-            <div className="kpi-card">
-              <div className="kpi-label">Unhealthy</div>
-              <div className="kpi-value red">{health.filter((h) => h.status === 'unhealthy').length}</div>
-            </div>
-            <div className="kpi-card">
-              <div className="kpi-label">Avg CPU</div>
-              <div className="kpi-value cyan">{Math.round(health.reduce((s, h) => s + h.cpu, 0) / health.length)}%</div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Agent</th>
-                    <th>Status</th>
-                    <th>CPU</th>
-                    <th>Memory</th>
-                    <th>Response</th>
-                    <th>Errors</th>
-                    <th>Uptime</th>
-                    <th>Check</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {health.map((h) => (
-                    <tr key={h.agentId}>
-                      <td style={{ fontWeight: 500 }}>{h.agentName}</td>
-                      <td>
-                        <span style={{ color: healthColors[h.status], fontWeight: 600, fontSize: 11 }}>{h.status}</span>
-                      </td>
-                      <td>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                          <div
-                            style={{
-                              width: 50,
-                              height: 6,
-                              background: 'var(--bg-hover)',
-                              borderRadius: 3,
-                              overflow: 'hidden',
-                            }}
-                          >
-                            <div
-                              style={{
-                                height: '100%',
-                                width: `${h.cpu}%`,
-                                background:
-                                  h.cpu > 80
-                                    ? 'var(--accent-red)'
-                                    : h.cpu > 60
-                                      ? 'var(--accent-orange)'
-                                      : 'var(--accent-green)',
-                                borderRadius: 3,
-                              }}
-                            />
-                          </div>
-                          <span style={{ fontSize: 11 }}>{h.cpu}%</span>
-                        </div>
-                      </td>
-                      <td>{h.memory}%</td>
-                      <td>{h.responseTime}ms</td>
-                      <td style={{ color: h.errorRate > 5 ? 'var(--accent-red)' : 'var(--text-secondary)' }}>
-                        {h.errorRate}%
-                      </td>
-                      <td>{h.uptime}%</td>
-                      <td style={{ fontSize: 10, color: 'var(--text-muted)' }}>
-                        {new Date(h.lastCheck).toLocaleTimeString('de-DE')}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          ) : (
+            <>
+              <div className="kpi-grid">
+                <div className="kpi-card">
+                  <div className="kpi-label">Healthy</div>
+                  <div className="kpi-value green">{health.filter((h) => h.status === 'healthy').length}</div>
+                </div>
+                <div className="kpi-card">
+                  <div className="kpi-label">Degraded</div>
+                  <div className="kpi-value orange">{health.filter((h) => h.status === 'degraded').length}</div>
+                </div>
+                <div className="kpi-card">
+                  <div className="kpi-label">Unhealthy</div>
+                  <div className="kpi-value red">{health.filter((h) => h.status === 'unhealthy').length}</div>
+                </div>
+                <div className="kpi-card">
+                  <div className="kpi-label">Avg CPU</div>
+                  <div className="kpi-value cyan">
+                    {health.length > 0 ? Math.round(health.reduce((s, h) => s + h.cpu, 0) / health.length) : 0}%
+                  </div>
+                </div>
+              </div>
+              <div className="card">
+                <div className="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Agent</th>
+                        <th>Status</th>
+                        <th>CPU</th>
+                        <th>Memory</th>
+                        <th>Response</th>
+                        <th>Errors</th>
+                        <th>Uptime</th>
+                        <th>Check</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {health.map((h) => (
+                        <tr key={h.agentId}>
+                          <td style={{ fontWeight: 500 }}>{h.agentName}</td>
+                          <td>
+                            <span style={{ color: healthColors[h.status], fontWeight: 600, fontSize: 11 }}>
+                              {h.status}
+                            </span>
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                              <div
+                                style={{
+                                  width: 50,
+                                  height: 6,
+                                  background: 'var(--bg-hover)',
+                                  borderRadius: 3,
+                                  overflow: 'hidden',
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    height: '100%',
+                                    width: `${h.cpu}%`,
+                                    background:
+                                      h.cpu > 80
+                                        ? 'var(--accent-red)'
+                                        : h.cpu > 60
+                                          ? 'var(--accent-orange)'
+                                          : 'var(--accent-green)',
+                                    borderRadius: 3,
+                                  }}
+                                />
+                              </div>
+                              <span style={{ fontSize: 11 }}>{h.cpu}%</span>
+                            </div>
+                          </td>
+                          <td>{h.memory}%</td>
+                          <td>{h.responseTime}ms</td>
+                          <td style={{ color: h.errorRate > 5 ? 'var(--accent-red)' : 'var(--text-secondary)' }}>
+                            {h.errorRate}%
+                          </td>
+                          <td>{h.uptime}%</td>
+                          <td style={{ fontSize: 10, color: 'var(--text-muted)' }}>
+                            {new Date(h.lastCheck).toLocaleTimeString('de-DE')}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
 
       {tab === 'incidents' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {incidents.length === 0 && (
+            <div className="card" style={{ padding: 32, textAlign: 'center', color: 'var(--text-muted)' }}>
+              <div style={{ fontSize: 16, marginBottom: 8 }}>Keine Incidents</div>
+              <div style={{ fontSize: 12 }}>
+                Incident-Management ist noch nicht ans Backend angebunden — sobald die Routen stehen, erscheinen hier
+                offene und geschlossene Vorfälle.
+              </div>
+            </div>
+          )}
           {incidents.map((inc) => (
             <div
               key={inc.id}
@@ -524,6 +373,14 @@ export default function EnterpriseView({ agents, auditLog }: EnterpriseProps) {
 
       {tab === 'policies' && (
         <div>
+          {policies.length === 0 && (
+            <div className="card" style={{ padding: 32, textAlign: 'center', color: 'var(--text-muted)' }}>
+              <div style={{ fontSize: 16, marginBottom: 8 }}>Keine Policies definiert</div>
+              <div style={{ fontSize: 12 }}>
+                Policy-Editor erscheint hier, sobald ein Policy-Endpoint im Backend implementiert ist.
+              </div>
+            </div>
+          )}
           {policies.map((pol) => (
             <div key={pol.id} className="card mb-16">
               <div className="flex-between mb-8">
@@ -578,6 +435,12 @@ export default function EnterpriseView({ agents, auditLog }: EnterpriseProps) {
         <div className="grid-2">
           <div className="card" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
             <div className="card-title mb-8">Agent-Versionen</div>
+            {versions.length === 0 && (
+              <div style={{ padding: 16, textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>
+                Versionierung wird über <code>/api/interactions</code> mit echten Agent-Bumps gespeist — noch keine
+                Snapshots vorhanden.
+              </div>
+            )}
             {agents.slice(0, 10).map((a) => {
               const agentVersions = versions.filter((v) => v.agentId === a.id).sort((x, y) => y.version - x.version);
               return (
@@ -694,34 +557,41 @@ export default function EnterpriseView({ agents, auditLog }: EnterpriseProps) {
           <div className="card-header">
             <span className="card-title">Shared Workspace ({sharedFiles.length} Dateien)</span>
           </div>
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Typ</th>
-                  <th>Name</th>
-                  <th>Pfad</th>
-                  <th>Owner</th>
-                  <th>Geteilt mit</th>
-                  <th>Groesse</th>
-                  <th>Zuletzt geaendert</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sharedFiles.map((f) => (
-                  <tr key={f.id}>
-                    <td style={{ fontSize: 16 }}>{fileTypeIcons[f.type]}</td>
-                    <td style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{f.name}</td>
-                    <td style={{ fontSize: 11, color: 'var(--text-muted)' }}>{f.path}</td>
-                    <td>{f.owner}</td>
-                    <td>{f.sharedWith.length} Agenten</td>
-                    <td>{(f.size / 1024).toFixed(1)} KB</td>
-                    <td style={{ fontSize: 11 }}>{new Date(f.lastModified).toLocaleString('de-DE')}</td>
+          {sharedFiles.length === 0 ? (
+            <div style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>
+              Shared-Workspace ist mit der Backend-Route <code>/api/collaboration/sessions/:id/files</code>
+              zu verbinden — derzeit noch keine geteilten Dateien.
+            </div>
+          ) : (
+            <div className="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Typ</th>
+                    <th>Name</th>
+                    <th>Pfad</th>
+                    <th>Owner</th>
+                    <th>Geteilt mit</th>
+                    <th>Groesse</th>
+                    <th>Zuletzt geaendert</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {sharedFiles.map((f) => (
+                    <tr key={f.id}>
+                      <td style={{ fontSize: 16 }}>{fileTypeIcons[f.type]}</td>
+                      <td style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{f.name}</td>
+                      <td style={{ fontSize: 11, color: 'var(--text-muted)' }}>{f.path}</td>
+                      <td>{f.owner}</td>
+                      <td>{f.sharedWith.length} Agenten</td>
+                      <td>{(f.size / 1024).toFixed(1)} KB</td>
+                      <td style={{ fontSize: 11 }}>{new Date(f.lastModified).toLocaleString('de-DE')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
 
@@ -753,34 +623,41 @@ export default function EnterpriseView({ agents, auditLog }: EnterpriseProps) {
             <div className="card-header">
               <span className="card-title">Vorschau (letzte 20)</span>
             </div>
-            <div className="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Zeit</th>
-                    <th>Agent</th>
-                    <th>Aktion</th>
-                    <th>Details</th>
-                    <th>Risiko</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {auditLog.slice(0, 20).map((e) => (
-                    <tr key={e.id}>
-                      <td style={{ fontSize: 11 }}>{new Date(e.timestamp).toLocaleTimeString('de-DE')}</td>
-                      <td>{e.agentId}</td>
-                      <td>
-                        <code style={{ fontSize: 11 }}>{e.action}</code>
-                      </td>
-                      <td>{e.details}</td>
-                      <td>
-                        <span className={`badge ${e.riskLevel}`}>{e.riskLevel}</span>
-                      </td>
+            {auditLog.length === 0 ? (
+              <div style={{ padding: 16, textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>
+                Audit-Log ist leer. Der vollständige Live-Log wird im Sidebar-Eintrag <strong>Audit-Trail</strong>
+                aus <code>/api/security/audit</code> gefüttert.
+              </div>
+            ) : (
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Zeit</th>
+                      <th>Agent</th>
+                      <th>Aktion</th>
+                      <th>Details</th>
+                      <th>Risiko</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {auditLog.slice(0, 20).map((e) => (
+                      <tr key={e.id}>
+                        <td style={{ fontSize: 11 }}>{new Date(e.timestamp).toLocaleTimeString('de-DE')}</td>
+                        <td>{e.agentId}</td>
+                        <td>
+                          <code style={{ fontSize: 11 }}>{e.action}</code>
+                        </td>
+                        <td>{e.details}</td>
+                        <td>
+                          <span className={`badge ${e.riskLevel}`}>{e.riskLevel}</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -812,7 +689,9 @@ export default function EnterpriseView({ agents, auditLog }: EnterpriseProps) {
                 <div className="config-row">
                   <span className="config-label">Durchschn. Erfolgsrate</span>
                   <span style={{ fontWeight: 600, color: 'var(--accent-green)' }}>
-                    {(agents.reduce((s, a) => s + a.successRate, 0) / agents.length).toFixed(1)}%
+                    {agents.length > 0
+                      ? `${(agents.reduce((s, a) => s + a.successRate, 0) / agents.length).toFixed(1)}%`
+                      : '—'}
                   </span>
                 </div>
                 <div className="config-row">
@@ -828,7 +707,9 @@ export default function EnterpriseView({ agents, auditLog }: EnterpriseProps) {
                 <div className="config-row">
                   <span className="config-label">Avg Duration</span>
                   <span style={{ fontWeight: 600 }}>
-                    {(agents.reduce((s, a) => s + a.avgTaskDuration, 0) / agents.length).toFixed(0)}s
+                    {agents.length > 0
+                      ? `${(agents.reduce((s, a) => s + a.avgTaskDuration, 0) / agents.length).toFixed(0)}s`
+                      : '—'}
                   </span>
                 </div>
               </div>
@@ -891,7 +772,9 @@ export default function EnterpriseView({ agents, auditLog }: EnterpriseProps) {
               <div className="config-row">
                 <span className="config-label">Policy-Compliance</span>
                 <span style={{ fontWeight: 600, color: 'var(--accent-green)' }}>
-                  {((policies.filter((p) => p.enabled).length / policies.length) * 100).toFixed(0)}%
+                  {policies.length > 0
+                    ? `${((policies.filter((p) => p.enabled).length / policies.length) * 100).toFixed(0)}%`
+                    : '—'}
                 </span>
               </div>
             </div>

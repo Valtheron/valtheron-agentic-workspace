@@ -1,0 +1,94 @@
+{
+  "$schema_version": "1.0.0",
+  "description": "Autoritatives Mapping von Valtheron-Agent-Kategorien auf Forseti-Kategorien. Quelle: Steven Garbarczyk, 2026-04-22. Kein heuristisches Auto-Mapping — wo unklar, steht explizit null mit Begründung. Agenten ohne Mapping bekommen kein Forseti-Profil (profile = null, status = 'pending').",
+  "ethical_principle": "Macht ohne Quelle ist Null-Macht. Wer keine kanonische Zuordnung hat, bekommt kein Profil zugewiesen. Fake-Autorität ist unzulässig.",
+  "mappings": {
+    "trading": {
+      "forseti_category": "Analytiker",
+      "rationale": "Quantitative Analyse von Marktdaten, Risikobewertung, Mustererkennung — deckungsgleich mit Analytiker-Profil (hohe Information Access, moderate Resource Control).",
+      "agent_id_range": "1-20"
+    },
+    "development": {
+      "forseti_category": "Entwickler",
+      "rationale": "Direkte 1:1-Entsprechung. Code-Generierung, Architektur, API-Design.",
+      "agent_id_range": "21-40"
+    },
+    "security": {
+      "forseti_category": null,
+      "pending_reason": "Sicherheits-Domäne überspannt zwei Forseti-Profile: Analytiker (Threat-Intel, Forensik) und Entwickler (Secure Coding, DevSecOps). Explizites autored Mapping erforderlich, sonst wird eine Domäne über- oder unterrepräsentiert.",
+      "agent_id_range": "41-60"
+    },
+    "qa": {
+      "forseti_category": "Entwickler",
+      "rationale": "Test-Automation, Fuzzing, Validation sind Entwickler-Subdomäne. Synthesis & Application leicht niedriger als reine Entwicklung — akzeptabel ohne Sonderfaktor.",
+      "agent_id_range": "61-80"
+    },
+    "documentation": {
+      "forseti_category": "Schriftsteller",
+      "rationale": "Technical Writing, API-Docs, Changelogs — Kernprofil Schriftsteller. Information Access hoch, Synthesis & Application 7.",
+      "agent_id_range": "81-100"
+    },
+    "deployment": {
+      "forseti_category": "Entwickler",
+      "rationale": "Infrastructure-as-Code, CI/CD, Container-Orchestrierung bleiben Entwickler-Domäne. Kein 'Infrastructure-Administrator'-Profil in Forseti.",
+      "agent_id_range": "101-120"
+    },
+    "analyst": {
+      "forseti_category": "Analytiker",
+      "rationale": "Direkte 1:1-Entsprechung.",
+      "agent_id_range": "121-140"
+    },
+    "support": {
+      "forseti_category": null,
+      "pending_reason": "Support-Domäne (Ticket-Management, Customer-Care, Eskalation) hat kein direktes Forseti-Profil. Entertainer ist näher als Analytiker (Network Position hoch), aber nicht treffsicher — Support fokussiert auf Problemlösung, nicht auf Content-Erstellung. Autored Override nötig.",
+      "agent_id_range": "141-160"
+    },
+    "integration": {
+      "forseti_category": "Entwickler",
+      "rationale": "ETL, API-Gateways, Webhooks, Message-Queues sind Entwickler-Subdomäne (System-Integration).",
+      "agent_id_range": "161-180"
+    },
+    "monitoring": {
+      "forseti_category": "Analytiker",
+      "rationale": "Observability, Log-Analyse, Anomalie-Detection — Analytiker-Profil mit Infrastruktur-Bezug.",
+      "agent_id_range": "181-200"
+    },
+    "hybrid": {
+      "forseti_category": null,
+      "pending_reason": "Extension-Kategorie (Agenten 201-215). Forseti ist autoritativ für die 200 Standard-Agenten. Extension-Profile benötigen ein eigenes, domänenspezifisches Framework oder autored Overrides.",
+      "agent_id_range": "201-215"
+    },
+    "meta": {
+      "forseti_category": null,
+      "pending_reason": "Extension-Kategorie (Orchestration Layer). Meta-Agenten operieren auf anderen Agenten — klassisches Power-Framework greift hier nicht, benötigt eigenes Modell.",
+      "agent_id_range": "216-225"
+    },
+    "fintech": {
+      "forseti_category": null,
+      "pending_reason": "Extension-Kategorie. Könnte plausibel auf Entrepreneur oder E-Commerce gemappt werden, aber außerhalb des Forseti-Autoritäts-Scopes (200 Standard-Agenten). Autored Override nach Entscheidung.",
+      "agent_id_range": "226-240"
+    },
+    "ai-native": {
+      "forseti_category": null,
+      "pending_reason": "Extension-Kategorie. AI-Native operiert rekursiv (LLMs auf LLMs) — weder Entwickler noch Analytiker trifft zu. Eigenes Framework nötig.",
+      "agent_id_range": "241-260"
+    },
+    "human-centric": {
+      "forseti_category": null,
+      "pending_reason": "Extension-Kategorie. Nähe zu Entertainer/Lehrer, aber Scope ausgeschlossen. Pending.",
+      "agent_id_range": "261-275"
+    },
+    "specialized-data": {
+      "forseti_category": null,
+      "pending_reason": "Extension-Kategorie. Nähe zu Analytiker, aber Scope ausgeschlossen. Pending.",
+      "agent_id_range": "276-290"
+    }
+  },
+  "summary": {
+    "total_valtheron_categories": 16,
+    "mapped_to_forseti": 8,
+    "pending_standard_agents": ["security", "support"],
+    "pending_extension_agents": ["hybrid", "meta", "fintech", "ai-native", "human-centric", "specialized-data"],
+    "_note": "Von 290 Agenten erhalten 160 (8 Kategorien × 20) ein Forseti-Profil. 40 Standard-Agenten (security + support) und 90 Extensions bleiben 'pending'."
+  }
+}

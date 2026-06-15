@@ -1,10 +1,159 @@
 import { Router, Request, Response } from 'express';
 import { getDb } from '../db/schema.js';
 import { v4 as uuid } from 'uuid';
+import {
+  wrapAsCapabilityState,
+  pendingCapabilityState,
+  assertCapabilityState,
+  type CapabilityState,
+} from '../services/capabilityScoring.js';
+import { wrapAsForsetiState, assertForsetiState, type ForsetiState } from '../services/forsetiScoring.js';
+import { computePersonalityProfile } from '../services/personalityFramework.js';
 
 const router = Router();
 
-function parseAgent(row: Record<string, unknown>) {
+interface ForsetiRow {
+  status: string;
+  profile: string | null;
+  pendingReason: string | null;
+  computedAt: string;
+}
+
+function pendingForsetiState(reason: string, timestamp: string): ForsetiState {
+  return { value: false, status: 'pending', timestamp, pendingReason: reason, profile: null };
+}
+
+function rowToForsetiState(row: ForsetiRow | undefined, now: string): ForsetiState {
+  let state: ForsetiState;
+  if (!row) {
+    state = pendingForsetiState('No Forseti row for this agent — run seedAgentCatalog', now);
+  } else if (row.status !== 'computed' || !row.profile) {
+    state = pendingForsetiState(row.pendingReason ?? 'profile not yet computed', row.computedAt);
+  } else {
+    state = wrapAsForsetiState(JSON.parse(row.profile), row.computedAt);
+  }
+  // Boundary guard — enforces the b ≠ 1 invariant before the profile leaves the API.
+  assertForsetiState(state);
+  return state;
+}
+
+function loadForsetiStateOne(agentId: string): ForsetiState {
+  const db = getDb();
+  const row = db
+    .prepare('SELECT status, profile, pendingReason, computedAt FROM agent_forseti_profiles WHERE agentId = ?')
+    .get(agentId) as ForsetiRow | undefined;
+  return rowToForsetiState(row, new Date().toISOString());
+}
+
+interface CapabilityRow {
+  status: string;
+  profile: string | null;
+  pendingReason: string | null;
+  computedAt: string;
+}
+
+function rowToCapabilityState(row: CapabilityRow | undefined, now: string): CapabilityState {
+  let state: CapabilityState;
+  if (!row) {
+    state = pendingCapabilityState(
+      'No capability row for this agent — run seedAgentCatalog or POST /api/agents recompute',
+      now,
+    );
+  } else if (row.status !== 'computed' || !row.profile) {
+    state = pendingCapabilityState(row.pendingReason ?? 'profile not yet computed', row.computedAt);
+  } else {
+    state = wrapAsCapabilityState(JSON.parse(row.profile), row.computedAt);
+  }
+  // Boundary guard — throws if any invariant (b ≠ 1, status/profile pairing,
+  // pending↔reason) was violated by upstream writes.
+  assertCapabilityState(state);
+  return state;
+}
+
+// Slim summary — list endpoints carry status/timestamp only; the heavy
+// profile blob is reserved for GET /api/agents/:id. This keeps b ≠ 1
+// observable on the wire without parsing 290 × 3-5 KB JSON per request.
+interface CapabilitySummary {
+  value: false;
+  status: 'computed' | 'pending';
+  timestamp: string;
+  pendingReason: string | null;
+}
+
+function rowToCapabilitySummary(row: CapabilityRow | undefined, now: string): CapabilitySummary {
+  if (!row) {
+    return { value: false, status: 'pending', timestamp: now, pendingReason: 'No capability row' };
+  }
+  if (row.status !== 'computed' || !row.profile) {
+    return {
+      value: false,
+      status: 'pending',
+      timestamp: row.computedAt,
+      pendingReason: row.pendingReason ?? 'profile not yet computed',
+    };
+  }
+  return { value: false, status: 'computed', timestamp: row.computedAt, pendingReason: null };
+}
+
+function loadCapabilityStateOne(agentId: string): CapabilityState {
+  const db = getDb();
+  const row = db
+    .prepare('SELECT status, profile, pendingReason, computedAt FROM agent_capabilities WHERE agentId = ?')
+    .get(agentId) as CapabilityRow | undefined;
+  return rowToCapabilityState(row, new Date().toISOString());
+}
+
+function loadCapabilitySummaryMap(agentIds: string[]): Map<string, CapabilitySummary> {
+  if (agentIds.length === 0) return new Map();
+  const db = getDb();
+  const placeholders = agentIds.map(() => '?').join(',');
+  // Skip `profile` column on list path — only summary fields needed.
+  const rows = db
+    .prepare(
+      `SELECT agentId, status, pendingReason, computedAt
+       FROM agent_capabilities WHERE agentId IN (${placeholders})`,
+    )
+    .all(...agentIds) as Array<{
+    agentId: string;
+    status: string;
+    pendingReason: string | null;
+    computedAt: string;
+  }>;
+  const now = new Date().toISOString();
+  const byId = new Map<string, CapabilityRow>();
+  for (const r of rows) byId.set(r.agentId, { ...r, profile: 'present' } as CapabilityRow);
+  const out = new Map<string, CapabilitySummary>();
+  for (const id of agentIds) {
+    out.set(id, rowToCapabilitySummary(byId.get(id), now));
+  }
+  return out;
+}
+
+function parseAgentDetail(row: Record<string, unknown>) {
+  const id = row.id as string;
+  const personality = JSON.parse(row.personality as string);
+  return {
+    ...row,
+    personality,
+    parameters: JSON.parse(row.parameters as string),
+    hooks: JSON.parse(row.hooks as string),
+    testResults: JSON.parse(row.testResults as string),
+    riskProfile: row.riskProfile ? JSON.parse(row.riskProfile as string) : undefined,
+    capabilities: loadCapabilityStateOne(id),
+    forseti: loadForsetiStateOne(id),
+    // Full 12-parameter personality framework (Kap. 6), derived
+    // deterministically from the stored compact personality.
+    personalityFramework: computePersonalityProfile({
+      creativity: Number(personality.creativity) || 0,
+      analyticalDepth: Number(personality.analyticalDepth) || 0,
+      riskTolerance: Number(personality.riskTolerance) || 0,
+      communicationStyle: String(personality.communicationStyle ?? ''),
+      archetype: String(personality.archetype ?? ''),
+    }),
+  };
+}
+
+function parseAgentList(row: Record<string, unknown>, summary: CapabilitySummary | undefined) {
   return {
     ...row,
     personality: JSON.parse(row.personality as string),
@@ -12,6 +161,7 @@ function parseAgent(row: Record<string, unknown>) {
     hooks: JSON.parse(row.hooks as string),
     testResults: JSON.parse(row.testResults as string),
     riskProfile: row.riskProfile ? JSON.parse(row.riskProfile as string) : undefined,
+    capabilities: summary ?? rowToCapabilitySummary(undefined, new Date().toISOString()),
   };
 }
 
@@ -20,30 +170,33 @@ router.get('/', (req: Request, res: Response) => {
   const db = getDb();
   const { category, status, search, limit = '1000', offset = '0' } = req.query;
 
-  let query = 'SELECT * FROM agents WHERE 1=1';
-  const params: unknown[] = [];
+  let whereClause = ' WHERE 1=1';
+  const filterParams: unknown[] = [];
 
   if (category) {
-    query += ' AND category = ?';
-    params.push(category);
+    whereClause += ' AND category = ?';
+    filterParams.push(category);
   }
   if (status) {
-    query += ' AND status = ?';
-    params.push(status);
+    whereClause += ' AND status = ?';
+    filterParams.push(status);
   }
   if (search) {
-    query += ' AND (name LIKE ? OR role LIKE ?)';
-    params.push(`%${search}%`, `%${search}%`);
+    whereClause += ' AND (name LIKE ? OR role LIKE ?)';
+    filterParams.push(`%${search}%`, `%${search}%`);
   }
 
-  query += ' ORDER BY successRate DESC LIMIT ? OFFSET ?';
-  params.push(Number(limit), Number(offset));
+  const query = `SELECT * FROM agents${whereClause} ORDER BY successRate DESC LIMIT ? OFFSET ?`;
+  const rawRows = db.prepare(query).all(...filterParams, Number(limit), Number(offset)) as Record<string, unknown>[];
+  const ids = rawRows.map((r) => r.id as string);
+  const capMap = loadCapabilitySummaryMap(ids);
+  const agents = rawRows.map((a) => parseAgentList(a, capMap.get(a.id as string)));
 
-  const agents = db
-    .prepare(query)
-    .all(...params)
-    .map((a) => parseAgent(a as Record<string, unknown>));
-  const total = db.prepare('SELECT COUNT(*) as count FROM agents').get() as { count: number };
+  // total must reflect the same filters (D-16) — otherwise pagination math
+  // (Math.ceil(total / limit)) computes page counts against the whole table.
+  const total = db.prepare(`SELECT COUNT(*) as count FROM agents${whereClause}`).get(...filterParams) as {
+    count: number;
+  };
 
   res.json({ agents, total: total.count });
 });
@@ -60,7 +213,7 @@ router.get('/:id', (req: Request, res: Response) => {
     return;
   }
 
-  res.json(parseAgent(agent));
+  res.json(parseAgentDetail(agent));
 });
 
 // POST /api/agents
@@ -102,7 +255,7 @@ router.post('/', (req: Request, res: Response) => {
   );
 
   const agent = db.prepare('SELECT * FROM agents WHERE id = ?').get(id) as Record<string, unknown>;
-  res.status(201).json(parseAgent(agent));
+  res.status(201).json(parseAgentDetail(agent));
 });
 
 // PATCH /api/agents/:id
@@ -148,7 +301,7 @@ router.patch('/:id', (req: Request, res: Response) => {
   db.prepare(`UPDATE agents SET ${updates.join(', ')} WHERE id = ?`).run(...params);
 
   const agent = db.prepare('SELECT * FROM agents WHERE id = ?').get(req.params.id) as Record<string, unknown>;
-  res.json(parseAgent(agent));
+  res.json(parseAgentDetail(agent));
 });
 
 // DELETE /api/agents/:id

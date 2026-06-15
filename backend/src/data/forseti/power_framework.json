@@ -1,0 +1,167 @@
+{
+  "$schema_version": "1.0.0",
+  "framework": "Forseti Power Framework",
+  "description": "Systematische Methodik zur objektiven Messung von Agent-Fähigkeiten. 5 Dimensionen × 6 Sub-Dimensionen = 30 Sub-Metrics. Skala 0-9 (0 = Nothing, 9 = Approaching Universal).",
+  "scale": {
+    "min": 0,
+    "max": 9,
+    "interpretation": {
+      "0": "NOTHING",
+      "1": "BASIC_UI",
+      "2": "FILTERED_BRAND_SAFE",
+      "3": "PERSONAL_COMMERCIAL",
+      "4": "TACTICAL_OPERATIONAL",
+      "5": "SPECIALIZED_IDEOLOGICAL",
+      "6": "DOMAIN_PROFESSIONAL",
+      "7": "MULTI_DOMAIN_ACADEMIC",
+      "8": "CROSS_INSTITUTIONAL",
+      "9": "APPROACHING_UNIVERSAL"
+    }
+  },
+  "dimensions": {
+    "information_access": {
+      "label": "Information Access",
+      "sub_dimensions": [
+        "scope_breadth",
+        "content_restriction",
+        "temporal_reach",
+        "source_diversity",
+        "data_granularity",
+        "data_verification"
+      ]
+    },
+    "resource_control": {
+      "label": "Resource Control",
+      "sub_dimensions": [
+        "computational",
+        "financial_capital",
+        "infrastructure",
+        "human_capital",
+        "energy_resources",
+        "time_allocation"
+      ]
+    },
+    "authority_permission": {
+      "label": "Authority & Permission",
+      "sub_dimensions": [
+        "legal_authorization",
+        "jurisdictional_reach",
+        "hierarchical_position",
+        "financial_authority",
+        "territorial_scope",
+        "ethical_legitimacy"
+      ]
+    },
+    "network_position": {
+      "label": "Network Position",
+      "sub_dimensions": [
+        "trust_network_depth",
+        "dependency_relationships",
+        "gatekeeping_power",
+        "influence_reach",
+        "reputation_capital",
+        "mobilization_capacity"
+      ]
+    },
+    "synthesis_application": {
+      "label": "Synthesis & Application",
+      "sub_dimensions": [
+        "information_synthesis",
+        "creativity",
+        "strategic_planning",
+        "decision_quality",
+        "adaptive_learning",
+        "memory_architecture"
+      ]
+    }
+  },
+  "sub_dimension_labels": {
+    "scope_breadth": ["No Knowledge", "User Interface", "Filtered", "Personal", "Tactical", "Specialized", "Domain-Specific", "Multi-Domain", "Cross-Institutional", "Approaching Omniscience"],
+    "content_restriction": ["No Freedom", "Pre-Approved Only", "Brand-Safe", "Commercially Curated", "Task-Bounded", "Ideologically Filtered", "Resource Constrained", "Domain Filtered", "Minimally Filtered", "Approaching Unrestricted"],
+    "temporal_reach": ["No Time", "Static Snapshot", "Current General", "Current + Archives", "Personal History", "Short-Term", "Recent Trends", "Domain Historical", "Deep Historical", "Approaching Omnitemporality"],
+    "source_diversity": ["No Sources", "Single Source", "Approved Only", "Public Sources", "Task-Relevant", "Aligned Sources", "Verified Sources", "Domain Diverse", "Multi-Perspective", "Approaching Universal"],
+    "data_granularity": ["No Detail", "Conceptual", "High-Level", "Statistical", "Personal Metrics", "Aggregated", "Event-Level", "Specialized", "Detailed", "Approaching Atomic"],
+    "data_verification": ["No Verification", "Curated", "Safety-Reviewed", "Publicly Verified", "User-Validated", "Local Verification", "Algorithmic", "Expert Consensus", "Peer-Reviewed", "Approaching Perfect"],
+    "computational": ["No Processing", "Minimal", "Consumer Device", "Workstation", "Small Cluster", "Enterprise", "Cloud Scale", "Hyperscale", "Frontier Scale", "Approaching Infinite"],
+    "financial_capital": ["No Budget", "Volunteer", "Micro", "Bootstrap", "Seed Funded", "Growth Stage", "Enterprise", "Fortune 500", "Tech Giant", "Approaching Unlimited"],
+    "infrastructure": ["No Infrastructure", "Home/Personal", "Shared Hosting", "Virtual Private", "Dedicated Server", "Multi-Site", "Data Center", "Multi-Region", "Global Network", "Approaching Unlimited"],
+    "human_capital": ["No Personnel", "Solo", "Small Team", "Growing Team", "Department", "Organization", "Enterprise", "Major Institution", "Global Workforce", "Approaching Unlimited"],
+    "energy_resources": ["No Power", "Battery", "Residential", "Small Commercial", "Commercial", "Enterprise", "Multi-Facility", "Hyperscale", "Industrial Scale", "Approaching Unlimited"],
+    "time_allocation": ["No Time Allocation", "Spare Time", "Part-Time", "Full-Time", "Small Team", "Dedicated Team", "Division", "Organization", "Institutional", "Approaching Unlimited"],
+    "legal_authorization": ["No Legal Authority", "Personal Use", "Basic Registration", "Trade License", "Professional License", "Advanced Professional", "Regulated Industry", "National Authority", "International Authority", "Approaching Sovereign"],
+    "jurisdictional_reach": ["No Jurisdiction", "Personal", "Facility", "Local", "Regional", "State", "National", "Multi-National", "Global", "Approaching Universal"],
+    "hierarchical_position": ["No Position", "Individual", "Team Member", "Supervisor", "Manager", "Director", "Vice President", "C-Suite Executive", "CEO/President", "Approaching Absolute"],
+    "financial_authority": ["No Financial Authority", "Personal Only", "Petty Cash", "Department Budget", "Operational Authority", "Divisional Authority", "Major Projects", "Strategic Initiatives", "Enterprise-Wide", "Approaching Unlimited"],
+    "territorial_scope": ["No Territory", "Personal Space", "Single Facility", "Local/Municipal", "Regional/Multi-County", "State/Provincial", "National/Federal", "Multi-National", "Global/Universal", "Approaching Universal"],
+    "ethical_legitimacy": ["No Legitimacy", "Personal Only", "Social Pressure", "Employment", "Contractual", "License Revocation", "Civil Penalties", "Criminal", "Military", "Approaching Absolute"],
+    "trust_network_depth": ["No Trust Network", "Personal", "Local", "Professional", "Institutional", "Regional", "National", "Industry Leader", "Global", "Approaching Universal"],
+    "dependency_relationships": ["No Dependencies", "Personal", "Small Group", "Department", "Organization", "Industry Segment", "Industry", "National", "Global", "Approaching Indispensable"],
+    "gatekeeping_power": ["No Gatekeeping Power", "Personal", "Small Group", "Department", "Organization", "Regional", "Industry", "National", "Global", "Approaching Absolute"],
+    "influence_reach": ["No Influence", "Personal", "Local", "Professional", "Institutional", "Regional", "National", "Major Leader", "Global", "Approaching Universal"],
+    "reputation_capital": ["No Reputation", "Unknown", "Local Recognition", "Professional", "Regional Leader", "National Recognition", "Industry Leader", "Iconic", "Global", "Approaching Perfect"],
+    "mobilization_capacity": ["No Mobilization", "Personal", "Small Group", "Department", "Organization", "Regional", "National", "Major Leader", "Global", "Approaching Instant"],
+    "information_synthesis": ["No Connection", "No Connection", "Isolated Facts", "Simple Correlation", "Task-Specific", "Local Patterns", "Tactical", "Related Fields", "Multi-Domain", "Approaching Universal"],
+    "creativity": ["No Generation", "Template-Based", "Recombination", "Guided Variation", "Contextual", "Original Combination", "Domain Innovation", "Paradigm-Shifting", "Breakthrough Invention", "Divine Creation"],
+    "strategic_planning": ["No Planning", "No Planning", "Short-Term", "Project-Level", "Quarterly", "Annual", "Multi-Year", "Long-Range", "Generational", "Eternal"],
+    "decision_quality": ["No Decisions", "Random Selection", "Single-Criterion", "Multi-Criteria Basic", "Algorithmic Optimization", "Machine Learning", "Strategic Analysis", "Complex Trade-Offs", "Near-Optimal", "Perfect Decisions"],
+    "adaptive_learning": ["No Learning", "Fixed Behavior", "Manual Updates", "Basic Personalization", "Pattern Recognition", "Domain-Specific Learning", "Cross-Context Learning", "Meta-Learning", "Continuous Self-Improvement", "Perfect Learning"],
+    "memory_architecture": ["No Memory", "Single Transaction", "Session Memory", "Simple Logs", "Structured Storage", "Semantic Memory", "Episodic Memory", "Associative Networks", "Perfect Context Retrieval", "Omniscient Memory"]
+  },
+  "category_base_scores": {
+    "Analytiker":         { "information_access": 6, "resource_control": 4, "authority_permission": 5, "network_position": 4, "synthesis_application": 6 },
+    "Entwickler":         { "information_access": 6, "resource_control": 5, "authority_permission": 4, "network_position": 4, "synthesis_application": 7 },
+    "Gesundheitsexperten":{ "information_access": 5, "resource_control": 4, "authority_permission": 5, "network_position": 5, "synthesis_application": 5 },
+    "Marketer":           { "information_access": 5, "resource_control": 5, "authority_permission": 4, "network_position": 6, "synthesis_application": 5 },
+    "Entrepreneur":       { "information_access": 5, "resource_control": 6, "authority_permission": 6, "network_position": 5, "synthesis_application": 6 },
+    "Entertainer":        { "information_access": 4, "resource_control": 4, "authority_permission": 3, "network_position": 6, "synthesis_application": 6 },
+    "Lehrer":             { "information_access": 6, "resource_control": 3, "authority_permission": 5, "network_position": 5, "synthesis_application": 6 },
+    "Schriftsteller":     { "information_access": 6, "resource_control": 3, "authority_permission": 3, "network_position": 4, "synthesis_application": 7 },
+    "E-Commerce":         { "information_access": 5, "resource_control": 5, "authority_permission": 4, "network_position": 5, "synthesis_application": 4 },
+    "Produzent":          { "information_access": 4, "resource_control": 6, "authority_permission": 5, "network_position": 4, "synthesis_application": 5 }
+  },
+  "model_modifiers": {
+    "claude-opus-4-5-20251101":   { "synthesis_application": 1.0 },
+    "claude-sonnet-4-5-20250929": { "synthesis_application": 0.5 },
+    "claude-haiku-4-5-20251001":  { "synthesis_application": 0.0 }
+  },
+  "keyword_modifiers": {
+    "daten":       { "information_access": 0.5 },
+    "analyse":     { "information_access": 0.5 },
+    "forschung":   { "information_access": 0.5 },
+    "recherche":   { "information_access": 0.5 },
+    "manager":     { "resource_control": 0.5 },
+    "leiter":      { "resource_control": 0.5 },
+    "budget":      { "resource_control": 0.5 },
+    "investition": { "resource_control": 0.5 },
+    "direktor":    { "authority_permission": 0.5 },
+    "chef":        { "authority_permission": 0.5 },
+    "ceo":         { "authority_permission": 1.0 },
+    "inhaber":     { "authority_permission": 0.5 },
+    "lizenz":      { "authority_permission": 0.5 },
+    "community":   { "network_position": 0.5 },
+    "social":      { "network_position": 0.5 },
+    "influencer":  { "network_position": 1.0 },
+    "netzwerk":    { "network_position": 0.5 },
+    "strateg":     { "synthesis_application": 0.5 },
+    "kreativ":     { "synthesis_application": 0.5 },
+    "innovation":  { "synthesis_application": 0.5 },
+    "design":      { "synthesis_application": 0.5 }
+  },
+  "default_base_score": {
+    "information_access": 4,
+    "resource_control": 3,
+    "authority_permission": 3,
+    "network_position": 3,
+    "synthesis_application": 4,
+    "_rationale": "Used when an agent's category has no authored Forseti mapping. Scored conservatively to reflect 'Tactical/Personal' capability, never inflated."
+  },
+  "sub_dimension_variation_formula": "variation = (index_within_dimension % 3 - 1) * 0.3",
+  "_provenance": {
+    "origin_repo": "blackicesecure-space/Valtheron",
+    "origin_path": "agentic-workspace/forseti/power_framework.py",
+    "origin_url": "https://github.com/blackicesecure-space/Valtheron/blob/main/agentic-workspace/forseti/power_framework.py",
+    "imported_by": "Claude (Opus 4.7) under direction of Steven Garbarczyk",
+    "imported_at": "2026-04-22",
+    "scope": "Forseti is authoritative for the 200 standard agents (IDs 1-200). Extension agents (201-290) have no Forseti profile by design — their domain-specific frameworks remain to be specified."
+  }
+}

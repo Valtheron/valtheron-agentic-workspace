@@ -10,7 +10,13 @@ export type AgentCategory =
   | 'analyst'
   | 'support'
   | 'integration'
-  | 'monitoring';
+  | 'monitoring'
+  | 'hybrid'
+  | 'meta'
+  | 'fintech'
+  | 'ai-native'
+  | 'human-centric'
+  | 'specialized-data';
 export type AgentStatus = 'active' | 'idle' | 'working' | 'blocked' | 'error' | 'suspended';
 export type TaskStatus = 'pending' | 'in_progress' | 'completed' | 'failed';
 export type CertStatus = 'valid' | 'expiring' | 'expired' | 'suspended' | 'revoked' | 'archived';
@@ -40,6 +46,206 @@ export interface Agent {
   llmProvider?: LLMProviderType;
   llmModel?: string;
   riskProfile?: AgentRiskProfile;
+  knowledgeScope?: KnowledgeScope;
+  /**
+   * Capability state from the backend. Optional because the bundled
+   * frontend agent loader (frontend/src/services/valtheronAgents.ts)
+   * does not produce one — the capability profile is authoritative
+   * server-side. When undefined, the UI must show the pending state
+   * placeholder, never client-generated values.
+   */
+  capabilities?: CapabilityState | CapabilitySummary;
+  /**
+   * Forseti Power Framework state from the backend (GET /api/agents/:id).
+   * Deterministically computed server-side (backend/src/services/
+   * forsetiScoring.ts). Optional: the list endpoint and the bundled loader
+   * omit it. When pending/undefined the UI shows a sovereign-null
+   * placeholder — never fabricated power levels.
+   */
+  forseti?: ForsetiState;
+  /** 12-parameter personality framework (GET /api/agents/:id). */
+  personalityFramework?: PersonalityProfile;
+}
+
+/**
+ * Mirror of the backend's ForsetiState (b ≠ 1 invariant as literal `false`).
+ */
+export interface ForsetiState {
+  value: false;
+  status: 'computed' | 'pending';
+  timestamp: string;
+  pendingReason: string | null;
+  profile: ForsetiProfile | null;
+}
+
+export interface ForsetiProfile {
+  unified_level: number;
+  power_level: string;
+  power_level_value: number;
+  dimensions: Record<string, ForsetiDimension>;
+  source: {
+    valtheron_category: string;
+    forseti_category: string;
+    base_scores: Record<string, number>;
+    model_modifier_applied: string | null;
+    keyword_modifiers_applied: Array<{ keyword: string; dimension: string; delta: number }>;
+  };
+}
+
+export interface ForsetiDimension {
+  name: string;
+  score: number;
+  sub_dimensions: Record<string, ForsetiSubDimension>;
+}
+
+export interface ForsetiSubDimension {
+  name: string;
+  score: number;
+  label: string;
+}
+
+export function isForsetiState(f: ForsetiState | undefined): f is ForsetiState {
+  return !!f && 'profile' in f;
+}
+
+/**
+ * 12-parameter personality framework (Handbuch Kap. 6), derived
+ * deterministically server-side and returned by GET /api/agents/:id.
+ */
+export interface PersonalityProfile {
+  parameters: Record<string, number>; // 12 params, each 0–1
+  layerMetrics: { lds: number; mi: number; ep: number };
+  archetype: { key: string; name: string; description: string };
+  validation: { valid: boolean; issues: string[] };
+  source: {
+    creativity: number;
+    analyticalDepth: number;
+    riskTolerance: number;
+    communicationStyle: string;
+    storedArchetype: string;
+  };
+}
+
+// Bilingual low↔high poles for each parameter (mirror of backend PARAMETER_POLES).
+export const PERSONALITY_POLES: Record<string, [string, string]> = {
+  formality: ['Locker', 'Formell'],
+  verbosity: ['Knapp', 'Ausführlich'],
+  warmth: ['Sachlich', 'Warmherzig'],
+  creativity: ['Konventionell', 'Kreativ'],
+  structure: ['Fließend', 'Strukturiert'],
+  risk_tolerance: ['Vorsichtig', 'Mutig'],
+  proactivity: ['Reaktiv', 'Proaktiv'],
+  curiosity: ['Fokussiert', 'Neugierig'],
+  collaboration: ['Autonom', 'Kollaborativ'],
+  depth: ['Breit', 'Tief'],
+  confidence: ['Abwägend', 'Bestimmt'],
+  adaptability: ['Konsistent', 'Flexibel'],
+};
+
+/**
+ * Mirror of the backend's CapabilityState (with the b ≠ 1 invariant
+ * encoded as the literal `false`). Returned by GET /api/agents/:id.
+ */
+export interface CapabilityState {
+  value: false;
+  status: 'computed' | 'pending';
+  timestamp: string;
+  pendingReason: string | null;
+  profile: CapabilityProfile | null;
+}
+
+/**
+ * Slim summary returned by the list endpoint (GET /api/agents) — no
+ * profile blob. Carries the same value: false invariant.
+ */
+export interface CapabilitySummary {
+  value: false;
+  status: 'computed' | 'pending';
+  timestamp: string;
+  pendingReason: string | null;
+}
+
+export interface CapabilityProfile {
+  layers: CapabilityLayer[];
+  modifiers: CapabilityModifier[];
+  source: {
+    inputs: { rate: number; depth: number; creativity: number };
+    model_version: string;
+  };
+}
+
+export interface CapabilityLayer {
+  key: string;
+  name: string;
+  cssClass: string;
+  color: string;
+  score: number;
+  sub_dimensions: CapabilitySubDimension[];
+}
+
+export interface CapabilitySubDimension {
+  key: string;
+  label: string;
+  desc: string;
+  value: number;
+}
+
+export type CapabilityModifier =
+  | {
+      key: 'personality_influence';
+      name: string;
+      archetype: string;
+      communication_style: string;
+      creativity_impact: number;
+      depth_impact: number;
+    }
+  | {
+      key: 'performance_history';
+      name: string;
+      success_rate: number;
+      tasks_total: number;
+      reliability_index: number;
+    }
+  | {
+      key: 'test_results';
+      name: string;
+      tests: TestResult[];
+    };
+
+export function isCapabilityState(c: CapabilityState | CapabilitySummary | undefined): c is CapabilityState {
+  return !!c && 'profile' in c;
+}
+
+export interface KnowledgeDoc {
+  id: string;
+  title: string;
+  category: string;
+  subcategory: string;
+  difficulty: string;
+  language: string;
+  format: string;
+  tags: string[];
+  summaryPath: string;
+  integrityStatus?: KnowledgeDocIntegrityStatus;
+  detectedFormat?: string;
+  pageCount?: number;
+  fileSize?: number;
+  source?: KnowledgeDocSource;
+}
+
+export type KnowledgeDocSource = 'knowledge-base' | 'cybersec-database';
+
+export type KnowledgeDocIntegrityStatus =
+  | 'valid'
+  | 'missing'
+  | 'empty'
+  | 'zero-pages'
+  | 'wrong-format-html'
+  | 'wrong-format-other';
+
+export interface KnowledgeScope {
+  primaryCategories: string[];
+  docs: KnowledgeDoc[];
 }
 
 export interface PersonalityConfig {
@@ -225,13 +431,16 @@ export interface AnalyticsData {
   totalAgents: number;
   activeAgents: number;
   tasksToday: number;
+  /** Total tasks tracked in the system (real DB count). */
+  tasksTotal: number;
   successRate: number;
   avgResponseTime: number;
   tasksTrend: { date: string; count: number }[];
   categoryDistribution: { category: AgentCategory; count: number }[];
   topPerformers: { agentId: string; name: string; score: number }[];
   errorRate: number;
-  uptime: number;
+  /** Seconds since the backend process started — replaces fabricated uptime %. */
+  uptimeSeconds: number;
 }
 
 export type ViewType =

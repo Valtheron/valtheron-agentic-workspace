@@ -178,12 +178,20 @@ describe('Integration: Workflow Execution', () => {
 });
 
 describe('Integration: Security Events & Kill Switch', () => {
-  beforeAll(() => {
+  let secAuth = '';
+
+  beforeAll(async () => {
     initDatabase();
+    // /api/security is admin-only even in dev/test (Block-A D-17 fix), so this
+    // integration block needs its own admin token.
+    const reg = await request(app)
+      .post('/api/auth/register')
+      .send({ username: `integ_sec_${Date.now()}`, password: 'TestPass123!', role: 'admin' });
+    secAuth = `Bearer ${reg.body.token}`;
   });
 
   it('creates a security event', async () => {
-    const res = await request(app).post('/api/security/events').send({
+    const res = await request(app).post('/api/security/events').set('Authorization', secAuth).send({
       type: 'anomaly',
       severity: 'high',
       message: 'Integration test anomaly detected',
@@ -193,26 +201,29 @@ describe('Integration: Security Events & Kill Switch', () => {
   });
 
   it('lists security events including the new one', async () => {
-    const res = await request(app).get('/api/security/events');
+    const res = await request(app).get('/api/security/events').set('Authorization', secAuth);
     expect(res.status).toBe(200);
     const found = res.body.events.find((e: { message: string }) => e.message === 'Integration test anomaly detected');
     expect(found).toBeTruthy();
   });
 
   it('aktiviert den kill switch', async () => {
-    const res = await request(app).post('/api/security/kill-switch/aktivieren').send({ reason: 'Integration test' });
+    const res = await request(app)
+      .post('/api/security/kill-switch/aktivieren')
+      .set('Authorization', secAuth)
+      .send({ reason: 'Integration test' });
     expect(res.status).toBe(200);
     expect(res.body.aktiv).toBe(true);
   });
 
   it('verifies kill switch is aktiv', async () => {
-    const res = await request(app).get('/api/security/kill-switch');
+    const res = await request(app).get('/api/security/kill-switch').set('Authorization', secAuth);
     expect(res.status).toBe(200);
     expect(res.body.aktiv).toBe(true);
   });
 
   it('deaktiviert den kill switch', async () => {
-    const res = await request(app).post('/api/security/kill-switch/deaktivieren').send();
+    const res = await request(app).post('/api/security/kill-switch/deaktivieren').set('Authorization', secAuth).send();
     expect(res.status).toBe(200);
     expect(res.body.aktiv).toBe(false);
   });
