@@ -196,7 +196,7 @@ td { padding: 8px 12px; border-bottom: 1px solid var(--border-color); font-size:
 tr:hover td { background: var(--bg-hover); }
 
 /* Agent Ranking View */
-.agents-layout { display: grid; grid-template-columns: 1fr 380px; gap: 16px; height: calc(100vh - 120px); }
+.agents-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(460px, 600px); gap: 16px; height: calc(100vh - 120px); }
 .agents-list { overflow-y: auto; }
 .agent-row { display: grid; grid-template-columns: 32px 1fr 60px 40px 40px 120px; align-items: center; padding: 6px 12px; border-bottom: 1px solid var(--border-color); cursor: pointer; font-size: 12px; }
 .agent-row:hover { background: var(--bg-hover); }
@@ -217,7 +217,7 @@ tr:hover td { background: var(--bg-hover); }
 
 /* Agent Detail Panel */
 .agent-detail { overflow-y: auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; }
-.detail-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.detail-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .detail-tab { padding: 6px 12px; border-radius: 6px; font-size: 11px; color: var(--text-muted); background: var(--bg-surface); cursor: pointer; border: none; white-space: nowrap; }
 .detail-tab.active { background: var(--accent-cyan); color: var(--bg-primary); font-weight: 600; }
 .dimension-section { margin-bottom: 16px; }
@@ -229,7 +229,7 @@ tr:hover td { background: var(--bg-hover); }
 .dimension-name.authority { color: var(--accent-purple); }
 .dimension-name.synthesis { color: var(--accent-teal); }
 .dimension-score { font-size: 13px; font-weight: 700; color: var(--text-primary); }
-.subdim-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.subdim-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
 .subdim-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; }
 .subdim-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .subdim-label { font-size: 11px; font-weight: 600; color: var(--text-primary); }

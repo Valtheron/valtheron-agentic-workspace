@@ -8,6 +8,18 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ## [Unreleased]
 
+### Behoben
+
+- **Agenten-Detailspalte wurde aus dem sichtbaren Bereich gedrückt.** Das
+  `.agents-layout`-Grid nutzte `1fr 380px`; die breite Agenten-Tabelle (mit
+  Min-Content-Breite) drängte die schmale Detailspalte nach rechts über den
+  Viewport-Rand, sodass nur abgeschnittene Tab-Knöpfe und kein Inhalt sichtbar
+  waren. Jetzt `minmax(0, 1fr) minmax(460px, 600px)` (Liste schrumpfbar, Detail
+  garantiert 460–600px breit), die Tab-Leiste bricht um (`flex-wrap`) statt
+  abzuschneiden, und das Sub-Dimensionen-Grid ist responsiv
+  (`auto-fit, minmax(160px, …)`) — deutlich weniger Scrollen, voller Überblick
+  über Forseti, 12 Parameter, 5 Layers & Modifiers.
+
 ### Hinzugefügt
 
 - **12-Parameter-Persönlichkeits-Framework (Handbuch Kap. 6).** Bisher nutzte
