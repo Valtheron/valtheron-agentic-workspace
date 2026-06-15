@@ -10,6 +10,23 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Hinzugefügt
 
+- **Kollaboration: echte Multi-Agent-Orchestrierung statt manuellem Tippen.**
+  Bisher war eine Collaboration-Session nur ein Nachrichtenspeicher — der Mensch
+  tippte die Beiträge selbst im Namen der Agenten; die Agenten „dachten" nie.
+  Neu: ein Orchestrator (`backend/src/services/collaborationOrchestrator.ts`)
+  lässt die gewählten Agenten per **echtem LLM** auf den Koordinator-Prompt
+  antworten und erzeugt eine Synthese. Patterns aus der Delegierungsstrategie:
+  `round-robin` → sequentiell, `capability-based`/`load-balanced` → parallele
+  Konsultation, `priority` → hierarchisch (Koordinator plant, Worker führen
+  aus). Konfliktlösung steuert die Synthese (`coordinator-decides`/`voting`/
+  `merge`/`priority-based`). Neuer Endpunkt
+  `POST /api/collaboration/sessions/:id/run`; LLM-Credentials kommen wie beim
+  Chat per `x-llm-*`-Header aus den LLM-Einstellungen (server-seitig nie
+  gespeichert). **Kein Simulations-Fallback** — ohne Key wird der Run mit klarer
+  Meldung abgelehnt. Frontend: „▶ Ausführen"-Button mit Lauf-/Fehlerzustand.
+  Fan-out auf `MAX_PARTICIPANTS` begrenzt; Orchestrierungslogik durch Unit-Tests
+  mit gestubbtem LLM abgedeckt.
+
 - **Zertifizierung mit echtem Backend statt Mock:** Die Zertifizierungs-Ansicht
   wurde bisher aus einem `Math.random`-Mock (`generateCertifications` in
   `frontend/src/services/mockData.ts`) gespeist und in `App.tsx` zudem nie
