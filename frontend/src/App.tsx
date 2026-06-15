@@ -167,13 +167,13 @@ function App() {
         const health = await healthAPI.check();
         if (cancelled || health.status !== 'healthy') throw new Error('Backend unhealthy');
 
-        // Load all data from API in parallel
-        const [agentsRes, tasksRes, workflowsRes, secEventsRes, ksRes, analyticsRes] = await Promise.all([
+        // Core data is readable without admin auth (dev mode) or with any
+        // valid session (prod). Load it first — its success defines whether we
+        // are "connected to the API".
+        const [agentsRes, tasksRes, workflowsRes, analyticsRes] = await Promise.all([
           agentsAPI.list({ limit: 300 }),
           tasksAPI.list(),
           workflowsAPI.list(),
-          securityAPI.events(),
-          securityAPI.killSwitch(),
           analyticsAPI.dashboard(),
         ]);
 
@@ -182,11 +182,21 @@ function App() {
         setAgents(agentsRes.agents as Agent[]);
         setTasks(tasksRes.tasks as Task[]);
         setWorkflows(workflowsRes.workflows as Workflow[]);
-        setSecurityEvents(secEventsRes.events as SecurityEvent[]);
-        setKillSwitch(ksRes as KillSwitch);
         setAnalytics(analyticsRes as AnalyticsData);
         setBackendConnected(true);
         setDataSource('api');
+
+        // The /api/security/* endpoints ALWAYS require an admin session, so an
+        // anonymous or non-admin user gets 401 there. Load them best-effort:
+        // a 401 must NOT tear down the whole connection (which previously left
+        // the badge stuck on "Verbinde..." while the backend was actually up).
+        // Admin sessions populate these panels; everyone else keeps the
+        // existing defaults.
+        void Promise.allSettled([securityAPI.events(), securityAPI.killSwitch()]).then(([events, ks]) => {
+          if (cancelled) return;
+          if (events.status === 'fulfilled') setSecurityEvents(events.value.events as SecurityEvent[]);
+          if (ks.status === 'fulfilled') setKillSwitch(ks.value as KillSwitch);
+        });
 
         // Connect WebSocket for real-time updates
         wsClient.connect();

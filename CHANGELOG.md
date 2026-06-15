@@ -240,6 +240,17 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Behoben
 
+- **Dashboard blieb auf „Verbinde…" trotz laufendem Backend:** Der Boot-Ablauf
+  in `frontend/src/App.tsx` lud beim Start alle Daten in einem einzigen
+  `Promise.all` — inklusive der `/api/security/*`-Endpunkte, die **immer**
+  eine Admin-Session verlangen. Ohne Admin-Login warf der dortige 401 die
+  gesamte Verbindung ab (`backendConnected=false`, `dataSource='loading'`),
+  sodass der Status-Badge dauerhaft „Verbinde…" zeigte und in Endlosschleife
+  401er feuerte, obwohl Backend und Kerndaten (Agenten/Tasks/Workflows/
+  Analytics) erreichbar waren. Kerndaten bestimmen nun den Verbindungsstatus;
+  die Security-Panels werden best-effort via `Promise.allSettled` geladen, ein
+  401 lässt die vorhandenen Defaults stehen statt die API-Verbindung zu kappen.
+
 - **Block G Defekt D-15 (Secrets-Vault ohne Persistenz):** Der Secrets-Vault
   in `backend/src/services/encryption.ts` lag trotz Kommentar "in-memory + DB
   backed" rein in einer `Map` — alle gespeicherten Secrets gingen beim
