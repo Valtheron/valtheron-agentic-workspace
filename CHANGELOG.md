@@ -8,7 +8,21 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ## [Unreleased]
 
+### Hinzugefügt
+
+- **Wissensbasis-Verknüpfung pro Agent aktiv.** Die „Wissen"-Tab der
+  Agenten-Detailansicht zeigte immer „keine Dokumente zugeordnet", weil sie
+  das nie befüllte Feld `agent.knowledgeScope` las. Die passende Logik
+  (`getKnowledgeScopeForAgent`, Kategorie→KB-Mapping + Tag-Ranking über das
+  gebündelte Manifest) existierte bereits, war aber nicht verdrahtet. Jetzt
+  berechnet die Tab den Scope und zeigt die Top-Dokumente mit Kategorie-Badges,
+  Tags und Summary-Anzeige.
+
 ### Behoben
+
+- **„ü" wurde als `ü` angezeigt.** Im leeren Wissens-Scope-Hinweis stand
+  ein literales `ür` (JSX-Text verarbeitet keine `\u`-Escapes) → jetzt
+  korrekt „Für".
 
 - **Agenten-Detailspalte wurde aus dem sichtbaren Bereich gedrückt.** Das
   `.agents-layout`-Grid nutzte `1fr 380px`; die breite Agenten-Tabelle (mit
