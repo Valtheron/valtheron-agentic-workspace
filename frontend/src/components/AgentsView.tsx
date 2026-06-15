@@ -1,7 +1,8 @@
-import { useState, useMemo } from 'react';
-import type { Agent } from '../types';
-import { isCapabilityState } from '../types';
+import { useState, useMemo, useEffect } from 'react';
+import type { Agent, ForsetiProfile } from '../types';
+import { isCapabilityState, isForsetiState } from '../types';
 import { getSummaryContent, loadKBManifest } from '../services/knowledgeBase';
+import { agentsAPI } from '../services/api';
 
 interface AgentsProps {
   agents: Agent[];
@@ -57,6 +58,34 @@ function capabilityPendingReason(agent: Agent): string | null {
   return cap.pendingReason ?? 'Profil noch nicht berechnet.';
 }
 
+/**
+ * Extract the computed Forseti profile, or null when pending/undefined.
+ * Like capabilities, this never fabricates values — a missing mapping
+ * (e.g. categories without an authored Forseti mapping) yields null and
+ * the UI shows a sovereign-null placeholder.
+ */
+function forsetiProfileOf(agent: Agent): ForsetiProfile | null {
+  const f = agent.forseti;
+  if (!f || !isForsetiState(f) || f.status !== 'computed' || !f.profile) return null;
+  return f.profile;
+}
+
+function forsetiPendingReason(agent: Agent): string | null {
+  const f = agent.forseti;
+  if (!f) return 'Backend nicht erreichbar oder Detail noch nicht geladen.';
+  if (f.status === 'computed') return null;
+  return f.pendingReason ?? 'Forseti-Profil noch nicht berechnet.';
+}
+
+// Colour ramp for PowerLevel 0–9 (low → high authority).
+function powerLevelColor(value: number): string {
+  if (value >= 8) return '#ef4444';
+  if (value >= 6) return '#f59e0b';
+  if (value >= 4) return '#14b8a6';
+  if (value >= 2) return '#3b82f6';
+  return 'var(--text-muted)';
+}
+
 const dimColors: Record<string, string> = {
   'info-access': '#00e5ff',
   resource: '#10b981',
@@ -80,10 +109,17 @@ function Sparkline({ agent }: { agent: Agent }) {
 }
 
 export default function AgentsView({ agents, selectedAgentId, onSelectAgent }: AgentsProps) {
-  const [detailTab, setDetailTab] = useState<'subdim' | 'overview' | 'layers' | 'modifiers' | 'knowledge'>('subdim');
+  const [detailTab, setDetailTab] = useState<'subdim' | 'overview' | 'layers' | 'modifiers' | 'forseti' | 'knowledge'>(
+    'subdim',
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [expandedSummary, setExpandedSummary] = useState<string | null>(null);
+  // Full agent detail (capability + Forseti profiles) is only returned by
+  // GET /api/agents/:id — the list endpoint carries slim summaries. Fetch it
+  // on selection so the profile tabs show the real backend-computed values
+  // instead of a perpetual "pending" placeholder.
+  const [detail, setDetail] = useState<Agent | null>(null);
 
   const sorted = useMemo(() => {
     let filtered = agents;
@@ -98,8 +134,37 @@ export default function AgentsView({ agents, selectedAgentId, onSelectAgent }: A
   }, [agents, searchQuery, categoryFilter]);
 
   const selectedAgent = agents.find((a) => a.id === selectedAgentId) ?? sorted[0];
-  const dimensions = selectedAgent ? dimensionsFromCapabilities(selectedAgent) : [];
-  const pendingReason = selectedAgent ? capabilityPendingReason(selectedAgent) : null;
+
+  // Fetch full detail (with capability + Forseti profiles) whenever the
+  // selected agent changes. Falls back silently to the list summary if the
+  // backend is unreachable.
+  const currentAgentId = selectedAgent?.id;
+  useEffect(() => {
+    if (!currentAgentId) return;
+    let cancelled = false;
+    // No synchronous reset here — the `detailAgent` id-match guard below
+    // already falls back to the list summary while a stale detail lingers,
+    // so we avoid a cascading render.
+    agentsAPI
+      .get(currentAgentId)
+      .then((d) => {
+        if (!cancelled) setDetail(d as Agent);
+      })
+      .catch(() => {
+        /* keep list summary — profile tabs show pending placeholder */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [currentAgentId]);
+
+  // Use the freshly fetched detail (with profiles) when it matches the
+  // current selection; otherwise the list summary.
+  const detailAgent = detail && selectedAgent && detail.id === selectedAgent.id ? detail : selectedAgent;
+  const dimensions = detailAgent ? dimensionsFromCapabilities(detailAgent) : [];
+  const pendingReason = detailAgent ? capabilityPendingReason(detailAgent) : null;
+  const forsetiProfile = detailAgent ? forsetiProfileOf(detailAgent) : null;
+  const forsetiPending = detailAgent ? forsetiPendingReason(detailAgent) : null;
 
   const getTrend = (agent: Agent): 'up' | 'down' | 'flat' => {
     const s = agent.id.split('').reduce((sum, c) => sum + c.charCodeAt(0), 0);
@@ -194,6 +259,7 @@ export default function AgentsView({ agents, selectedAgentId, onSelectAgent }: A
                 { key: 'subdim', label: '30 Sub-Dim.', icon: '\u25A3' },
                 { key: 'layers', label: '5 Layers', icon: '\u2261' },
                 { key: 'modifiers', label: '3 Modifiers', icon: '\u2699' },
+                { key: 'forseti', label: 'Forseti', icon: '\u2696' },
                 { key: 'knowledge', label: 'Wissen', icon: '\u{1F4DA}' },
               ] as const
             ).map((t) => (
@@ -414,6 +480,104 @@ export default function AgentsView({ agents, selectedAgentId, onSelectAgent }: A
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {detailTab === 'forseti' && !forsetiProfile && (
+            <div className="card" data-testid="forseti-pending">
+              <div className="card-title mb-8">Forseti-Profil ausstehend</div>
+              <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{forsetiPending}</div>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 8 }}>
+                Kategorien ohne autorisiertes Forseti-Mapping liefern bewusst kein Profil — sichtbare Leere statt
+                erfundener Autorität. Es werden nur vom Backend berechnete Werte angezeigt.
+              </div>
+            </div>
+          )}
+          {detailTab === 'forseti' && forsetiProfile && (
+            <div data-testid="forseti-profile">
+              <div className="card mb-16">
+                <div className="flex-between mb-8">
+                  <span className="card-title">Unified Power Level</span>
+                  <span
+                    className="badge"
+                    style={{
+                      background: powerLevelColor(forsetiProfile.power_level_value),
+                      color: '#0a0a0a',
+                      fontWeight: 700,
+                    }}
+                  >
+                    Level {forsetiProfile.power_level_value} · {forsetiProfile.power_level}
+                  </span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                  <span style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)' }}>
+                    {forsetiProfile.unified_level.toFixed(2)}
+                  </span>
+                  <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>/ 9.0 (Mittel über 5 Dimensionen)</span>
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 6 }}>
+                  Forseti-Kategorie: {forsetiProfile.source.forseti_category}
+                  {forsetiProfile.source.model_modifier_applied
+                    ? ` · Modell-Modifier: ${forsetiProfile.source.model_modifier_applied}`
+                    : ''}
+                </div>
+              </div>
+
+              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 8 }}>
+                5 Dimensionen × 6 Sub-Dimensionen = 30 Metriken (Skala 0–9)
+              </div>
+
+              {Object.entries(forsetiProfile.dimensions).map(([key, dim]) => {
+                const color = powerLevelColor(dim.score);
+                return (
+                  <div key={key} className="card mb-8">
+                    <div className="flex-between mb-8">
+                      <span style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)' }}>{dim.name}</span>
+                      <span className="dimension-score" style={{ color }}>
+                        {dim.score.toFixed(2)}/9
+                      </span>
+                    </div>
+                    <div className="subdim-grid">
+                      {Object.values(dim.sub_dimensions).map((sub) => (
+                        <div key={sub.name} className="subdim-card">
+                          <div className="subdim-top">
+                            <span className="subdim-label">{sub.name.replace(/_/g, ' ')}</span>
+                            <span className="subdim-value" style={{ color }}>
+                              {sub.score}/9
+                            </span>
+                          </div>
+                          <div className="subdim-desc">{sub.label}</div>
+                          <div className="subdim-bar">
+                            <div
+                              className="subdim-bar-fill"
+                              style={{ width: `${(sub.score / 9) * 100}%`, background: color }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {forsetiProfile.source.keyword_modifiers_applied.length > 0 && (
+                <div className="card mb-16">
+                  <div className="card-title mb-8">Angewandte Keyword-Modifier</div>
+                  {forsetiProfile.source.keyword_modifiers_applied.map((m, i) => (
+                    <div key={`${m.keyword}-${m.dimension}-${i}`} className="config-row">
+                      <span className="config-label">
+                        “{m.keyword}” → {m.dimension.replace(/_/g, ' ')}
+                      </span>
+                      <span
+                        style={{ fontWeight: 600, color: m.delta >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' }}
+                      >
+                        {m.delta >= 0 ? '+' : ''}
+                        {m.delta}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

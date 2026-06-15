@@ -23,6 +23,7 @@ import secretsRoutes from './routes/secrets.js';
 import backupRoutes from './routes/backup.js';
 import donationsRoutes from './routes/donations.js';
 import interactionRoutes from './routes/interactions.js';
+import certificationRoutes from './routes/certifications.js';
 import { auditLogger } from './middleware/auditLogger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { adminOnly } from './middleware/rbac.js';
@@ -103,7 +104,8 @@ export function createApp() {
   if (!requireAuth) {
     console.warn(
       '[auth] Dev mode: /api/agents, /api/tasks, /api/workflows, /api/analytics, /api/chat, ' +
-        '/api/collaboration, /api/project-tree, /api/notifications and /api/interactions accept ' +
+        '/api/collaboration, /api/project-tree, /api/notifications, /api/interactions and ' +
+        '/api/certifications accept ' +
         'requests without a JWT. Set VALTHERON_REQUIRE_AUTH=true to mirror production. ' +
         '/api/security, /api/secrets and /api/backup always require admin auth.',
     );
@@ -121,6 +123,7 @@ export function createApp() {
   app.use('/api/project-tree', protect, projectTreeRoutes);
   app.use('/api/notifications', protect, notificationRoutes);
   app.use('/api/interactions', protect, interactionRoutes);
+  app.use('/api/certifications', protect, certificationRoutes);
   // Always admin-only: secrets management and backup/restore.
   app.use('/api/secrets', authMiddleware, adminGuard, secretsRoutes);
   app.use('/api/backup', authMiddleware, adminGuard, backupRoutes);

@@ -10,6 +10,34 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Hinzugefügt
 
+- **Zertifizierung mit echtem Backend statt Mock:** Die Zertifizierungs-Ansicht
+  wurde bisher aus einem `Math.random`-Mock (`generateCertifications` in
+  `frontend/src/services/mockData.ts`) gespeist und in `App.tsx` zudem nie
+  befüllt (leeres Array). Neu: ein deterministischer Service
+  (`backend/src/services/certificationScoring.ts`) leitet pro Agent eine
+  Zertifizierung **ausschließlich aus echten Signalen** ab — System-Prompt
+  (Config-Integrität), computed Capability-Profil, computed Forseti-Profil,
+  reale Testergebnisse und Erfolgsrate. Levels folgen Validierungs-Gates
+  (bronze→gold), **platinum** erfordert echte Produktions-Performance
+  (successRate ≥ 90, analog FIELD_TESTED im Handbuch Kap. 9). Neue Endpunkte
+  `GET /api/certifications` und `GET /api/certifications/:agentId`; das
+  Frontend lädt sie best-effort beim Start. Kein `Math.random` mehr.
+
+- **Forseti Power Framework im Dashboard sichtbar:** Das Backend berechnet die
+  Forseti-Profile (5 Dimensionen × 6 Sub-Dimensionen, Unified Level, PowerLevel
+  0–9) bereits deterministisch (`backend/src/services/forsetiScoring.ts`) und
+  persistiert sie in `agent_forseti_profiles` — sie waren bisher aber über
+  **kein** API-Feld und **keine** UI erreichbar. Jetzt liefert
+  `GET /api/agents/:id` das Forseti-Profil (mit der `b ≠ 1`-Invariante), und die
+  Agenten-Detailansicht hat einen neuen **Forseti-Tab** (Unified Level,
+  PowerLevel-Badge, alle 5 Dimensionen mit 30 Sub-Metriken und angewandten
+  Keyword-Modifiern). Kategorien ohne autorisiertes Mapping zeigen bewusst eine
+  „ausstehend"-Karte statt erfundener Werte.
+  Nebenbei behoben: Die Detailansicht lud bisher nur die Listen-Summary (ohne
+  Profil), weshalb auch das **Capability-Profil** faktisch immer „ausstehend"
+  zeigte — die Ansicht holt nun das vollständige Agent-Detail per
+  `GET /api/agents/:id`.
+
 - **Run-Skill für Claude Code:** Neuer Skill `.claude/skills/run-valtheron/`
   mit `smoke.sh`-Harness, der Backend (Express/:3001) und Frontend (Vite/:5173)
   startet und 7 Endpunkte automatisch prüft. Ermöglicht Agenten, die App ohne

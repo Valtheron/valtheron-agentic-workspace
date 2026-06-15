@@ -25,6 +25,7 @@ import {
   workflowsAPI,
   securityAPI,
   analyticsAPI,
+  certificationsAPI,
   healthAPI,
   wsClient,
   authAPI,
@@ -139,7 +140,7 @@ function App() {
 
   const [agents, setAgents] = useState<Agent[]>(() => load<Agent[]>('agents', []));
   const [tasks, setTasks] = useState<Task[]>(() => load<Task[]>(KEYS.TASKS, []));
-  const [certifications] = useState<Certification[]>([]);
+  const [certifications, setCertifications] = useState<Certification[]>([]);
   const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>([]);
   const [killSwitch, setKillSwitch] = useState<KillSwitch>(() => load(KEYS.KILL_SWITCH, defaultKillSwitch));
   const [auditLog] = useState<AuditEntry[]>([]);
@@ -197,6 +198,18 @@ function App() {
           if (events.status === 'fulfilled') setSecurityEvents(events.value.events as SecurityEvent[]);
           if (ks.status === 'fulfilled') setKillSwitch(ks.value as KillSwitch);
         });
+
+        // Certifications are computed server-side from real agent signals and
+        // are readable without admin auth — load best-effort so a hiccup here
+        // never drops the API connection.
+        void certificationsAPI
+          .list()
+          .then((res) => {
+            if (!cancelled) setCertifications(res.certifications as Certification[]);
+          })
+          .catch(() => {
+            /* keep empty list — view shows the honest "no backend" placeholder */
+          });
 
         // Connect WebSocket for real-time updates
         wsClient.connect();

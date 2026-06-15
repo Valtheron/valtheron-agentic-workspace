@@ -7,8 +7,42 @@ import {
   assertCapabilityState,
   type CapabilityState,
 } from '../services/capabilityScoring.js';
+import { wrapAsForsetiState, assertForsetiState, type ForsetiState } from '../services/forsetiScoring.js';
 
 const router = Router();
+
+interface ForsetiRow {
+  status: string;
+  profile: string | null;
+  pendingReason: string | null;
+  computedAt: string;
+}
+
+function pendingForsetiState(reason: string, timestamp: string): ForsetiState {
+  return { value: false, status: 'pending', timestamp, pendingReason: reason, profile: null };
+}
+
+function rowToForsetiState(row: ForsetiRow | undefined, now: string): ForsetiState {
+  let state: ForsetiState;
+  if (!row) {
+    state = pendingForsetiState('No Forseti row for this agent — run seedAgentCatalog', now);
+  } else if (row.status !== 'computed' || !row.profile) {
+    state = pendingForsetiState(row.pendingReason ?? 'profile not yet computed', row.computedAt);
+  } else {
+    state = wrapAsForsetiState(JSON.parse(row.profile), row.computedAt);
+  }
+  // Boundary guard — enforces the b ≠ 1 invariant before the profile leaves the API.
+  assertForsetiState(state);
+  return state;
+}
+
+function loadForsetiStateOne(agentId: string): ForsetiState {
+  const db = getDb();
+  const row = db
+    .prepare('SELECT status, profile, pendingReason, computedAt FROM agent_forseti_profiles WHERE agentId = ?')
+    .get(agentId) as ForsetiRow | undefined;
+  return rowToForsetiState(row, new Date().toISOString());
+}
 
 interface CapabilityRow {
   status: string;
@@ -104,6 +138,7 @@ function parseAgentDetail(row: Record<string, unknown>) {
     testResults: JSON.parse(row.testResults as string),
     riskProfile: row.riskProfile ? JSON.parse(row.riskProfile as string) : undefined,
     capabilities: loadCapabilityStateOne(id),
+    forseti: loadForsetiStateOne(id),
   };
 }
 
@@ -141,19 +176,16 @@ router.get('/', (req: Request, res: Response) => {
   }
 
   const query = `SELECT * FROM agents${whereClause} ORDER BY successRate DESC LIMIT ? OFFSET ?`;
-  const rawRows = db.prepare(query).all(...filterParams, Number(limit), Number(offset)) as Record<
-    string,
-    unknown
-  >[];
+  const rawRows = db.prepare(query).all(...filterParams, Number(limit), Number(offset)) as Record<string, unknown>[];
   const ids = rawRows.map((r) => r.id as string);
   const capMap = loadCapabilitySummaryMap(ids);
   const agents = rawRows.map((a) => parseAgentList(a, capMap.get(a.id as string)));
 
   // total must reflect the same filters (D-16) — otherwise pagination math
   // (Math.ceil(total / limit)) computes page counts against the whole table.
-  const total = db
-    .prepare(`SELECT COUNT(*) as count FROM agents${whereClause}`)
-    .get(...filterParams) as { count: number };
+  const total = db.prepare(`SELECT COUNT(*) as count FROM agents${whereClause}`).get(...filterParams) as {
+    count: number;
+  };
 
   res.json({ agents, total: total.count });
 });
