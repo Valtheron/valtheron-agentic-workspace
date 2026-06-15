@@ -55,6 +55,55 @@ export interface Agent {
    * placeholder, never client-generated values.
    */
   capabilities?: CapabilityState | CapabilitySummary;
+  /**
+   * Forseti Power Framework state from the backend (GET /api/agents/:id).
+   * Deterministically computed server-side (backend/src/services/
+   * forsetiScoring.ts). Optional: the list endpoint and the bundled loader
+   * omit it. When pending/undefined the UI shows a sovereign-null
+   * placeholder — never fabricated power levels.
+   */
+  forseti?: ForsetiState;
+}
+
+/**
+ * Mirror of the backend's ForsetiState (b ≠ 1 invariant as literal `false`).
+ */
+export interface ForsetiState {
+  value: false;
+  status: 'computed' | 'pending';
+  timestamp: string;
+  pendingReason: string | null;
+  profile: ForsetiProfile | null;
+}
+
+export interface ForsetiProfile {
+  unified_level: number;
+  power_level: string;
+  power_level_value: number;
+  dimensions: Record<string, ForsetiDimension>;
+  source: {
+    valtheron_category: string;
+    forseti_category: string;
+    base_scores: Record<string, number>;
+    model_modifier_applied: string | null;
+    keyword_modifiers_applied: Array<{ keyword: string; dimension: string; delta: number }>;
+  };
+}
+
+export interface ForsetiDimension {
+  name: string;
+  score: number;
+  sub_dimensions: Record<string, ForsetiSubDimension>;
+}
+
+export interface ForsetiSubDimension {
+  name: string;
+  score: number;
+  label: string;
+}
+
+export function isForsetiState(f: ForsetiState | undefined): f is ForsetiState {
+  return !!f && 'profile' in f;
 }
 
 /**
