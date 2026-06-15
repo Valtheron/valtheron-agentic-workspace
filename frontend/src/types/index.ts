@@ -583,6 +583,7 @@ export type LLMProviderType =
   | 'google'
   | 'mistral'
   | 'groq'
+  | 'xai'
   | 'ollama'
   | 'openrouter'
   | 'custom';

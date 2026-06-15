@@ -17,7 +17,7 @@ import type {
   Project,
 } from './types';
 import { defaultSecurityConfig } from './services/defaults';
-import { defaultLLMConfig } from './services/llmProviders';
+import { defaultLLMConfig, withProviderDefaults } from './services/llmProviders';
 import { save, load, KEYS } from './services/persistence';
 import {
   agentsAPI,
@@ -148,7 +148,9 @@ function App() {
   const [securityConfig, setSecurityConfig] = useState<SecurityConfig>(() =>
     load(KEYS.SECURITY_CONFIG, defaultSecurityConfig),
   );
-  const [llmConfig, setLLMConfig] = useState<LLMConfig>(() => load(KEYS.LLM_CONFIG, defaultLLMConfig));
+  const [llmConfig, setLLMConfig] = useState<LLMConfig>(() =>
+    withProviderDefaults(load(KEYS.LLM_CONFIG, defaultLLMConfig)),
+  );
   const [workflows, setWorkflows] = useState<Workflow[]>(() => load('workflows', []));
   const [projects, setProjects] = useState<Project[]>(() => load('projects_data', []));
   const [analytics, setAnalytics] = useState<AnalyticsData>(defaultAnalytics);
