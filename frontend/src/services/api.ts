@@ -143,6 +143,13 @@ export const secretsAPI = {
 };
 
 // ===== Agents API =====
+export const certificationsAPI = {
+  // Deterministic certifications computed server-side from real agent signals
+  // (system prompt, capability + Forseti profiles, test results, success rate).
+  list: () => apiFetch<{ certifications: unknown[]; total: number }>('/certifications'),
+  get: (agentId: string) => apiFetch<unknown>(`/certifications/${agentId}`),
+};
+
 export const agentsAPI = {
   list: (params?: { category?: string; status?: string; search?: string; limit?: number; offset?: number }) => {
     const query = new URLSearchParams();
