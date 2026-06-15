@@ -8,6 +8,7 @@ import {
   type CapabilityState,
 } from '../services/capabilityScoring.js';
 import { wrapAsForsetiState, assertForsetiState, type ForsetiState } from '../services/forsetiScoring.js';
+import { computePersonalityProfile } from '../services/personalityFramework.js';
 
 const router = Router();
 
@@ -130,15 +131,25 @@ function loadCapabilitySummaryMap(agentIds: string[]): Map<string, CapabilitySum
 
 function parseAgentDetail(row: Record<string, unknown>) {
   const id = row.id as string;
+  const personality = JSON.parse(row.personality as string);
   return {
     ...row,
-    personality: JSON.parse(row.personality as string),
+    personality,
     parameters: JSON.parse(row.parameters as string),
     hooks: JSON.parse(row.hooks as string),
     testResults: JSON.parse(row.testResults as string),
     riskProfile: row.riskProfile ? JSON.parse(row.riskProfile as string) : undefined,
     capabilities: loadCapabilityStateOne(id),
     forseti: loadForsetiStateOne(id),
+    // Full 12-parameter personality framework (Kap. 6), derived
+    // deterministically from the stored compact personality.
+    personalityFramework: computePersonalityProfile({
+      creativity: Number(personality.creativity) || 0,
+      analyticalDepth: Number(personality.analyticalDepth) || 0,
+      riskTolerance: Number(personality.riskTolerance) || 0,
+      communicationStyle: String(personality.communicationStyle ?? ''),
+      archetype: String(personality.archetype ?? ''),
+    }),
   };
 }
 

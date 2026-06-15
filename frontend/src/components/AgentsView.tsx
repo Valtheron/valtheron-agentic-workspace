@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
-import type { Agent, ForsetiProfile } from '../types';
-import { isCapabilityState, isForsetiState } from '../types';
+import type { Agent, ForsetiProfile, PersonalityProfile } from '../types';
+import { isCapabilityState, isForsetiState, PERSONALITY_POLES } from '../types';
 import { getSummaryContent, loadKBManifest } from '../services/knowledgeBase';
 import { agentsAPI } from '../services/api';
 
@@ -109,9 +109,9 @@ function Sparkline({ agent }: { agent: Agent }) {
 }
 
 export default function AgentsView({ agents, selectedAgentId, onSelectAgent }: AgentsProps) {
-  const [detailTab, setDetailTab] = useState<'subdim' | 'overview' | 'layers' | 'modifiers' | 'forseti' | 'knowledge'>(
-    'subdim',
-  );
+  const [detailTab, setDetailTab] = useState<
+    'subdim' | 'overview' | 'layers' | 'modifiers' | 'forseti' | 'personality' | 'knowledge'
+  >('subdim');
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [expandedSummary, setExpandedSummary] = useState<string | null>(null);
@@ -165,6 +165,7 @@ export default function AgentsView({ agents, selectedAgentId, onSelectAgent }: A
   const pendingReason = detailAgent ? capabilityPendingReason(detailAgent) : null;
   const forsetiProfile = detailAgent ? forsetiProfileOf(detailAgent) : null;
   const forsetiPending = detailAgent ? forsetiPendingReason(detailAgent) : null;
+  const personality: PersonalityProfile | null = detailAgent?.personalityFramework ?? null;
 
   const getTrend = (agent: Agent): 'up' | 'down' | 'flat' => {
     const s = agent.id.split('').reduce((sum, c) => sum + c.charCodeAt(0), 0);
@@ -260,6 +261,7 @@ export default function AgentsView({ agents, selectedAgentId, onSelectAgent }: A
                 { key: 'layers', label: '5 Layers', icon: '\u2261' },
                 { key: 'modifiers', label: '3 Modifiers', icon: '\u2699' },
                 { key: 'forseti', label: 'Forseti', icon: '\u2696' },
+                { key: 'personality', label: '12 Param.', icon: '\u263a' },
                 { key: 'knowledge', label: 'Wissen', icon: '\u{1F4DA}' },
               ] as const
             ).map((t) => (
@@ -578,6 +580,94 @@ export default function AgentsView({ agents, selectedAgentId, onSelectAgent }: A
                   ))}
                 </div>
               )}
+            </div>
+          )}
+
+          {detailTab === 'personality' && !personality && (
+            <div className="card" data-testid="personality-pending">
+              <div className="card-title mb-8">Persönlichkeitsprofil wird geladen…</div>
+              <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
+                Das 12-Parameter-Profil wird vom Backend pro Agent berechnet (GET /api/agents/:id).
+              </div>
+            </div>
+          )}
+          {detailTab === 'personality' && personality && (
+            <div data-testid="personality-profile">
+              <div className="card mb-16">
+                <div className="flex-between mb-8">
+                  <div>
+                    <span className="card-title">{personality.archetype.name}</span>
+                    <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{personality.archetype.description}</div>
+                  </div>
+                  <span
+                    className={`badge ${personality.validation.valid ? 'valid' : 'warning'}`}
+                    title={personality.validation.issues.join(' · ') || 'Alle Parameter im gültigen Bereich'}
+                  >
+                    {personality.validation.valid ? 'validiert' : `${personality.validation.issues.length} Hinweis(e)`}
+                  </span>
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                  12 Parameter (0.0–1.0), deterministisch aus den Agent-Attributen abgeleitet.
+                </div>
+              </div>
+
+              <div className="card mb-16">
+                {Object.entries(personality.parameters).map(([key, value]) => {
+                  const poles = PERSONALITY_POLES[key] ?? [key, key];
+                  return (
+                    <div key={key} style={{ marginBottom: 10 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 3 }}>
+                        <span style={{ color: 'var(--text-muted)' }}>{poles[0]}</span>
+                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                          {key} · {value.toFixed(2)}
+                        </span>
+                        <span style={{ color: 'var(--text-muted)' }}>{poles[1]}</span>
+                      </div>
+                      <div style={{ height: 5, background: 'var(--bg-hover)', borderRadius: 3, position: 'relative' }}>
+                        <div
+                          style={{
+                            height: '100%',
+                            width: `${value * 100}%`,
+                            background: 'var(--accent-cyan)',
+                            borderRadius: 3,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="card">
+                <div className="card-title mb-8">Layer-Metriken</div>
+                {(
+                  [
+                    ['lds', 'Layer Depth Score (LDS)', 'Breite ↔ Tiefe des Wissens'],
+                    ['mi', 'Measurability Index (MI)', 'Objektivität der Arbeit'],
+                    ['ep', 'Emergence Potential (EP)', 'Potenzial für unerwartete Ergebnisse'],
+                  ] as const
+                ).map(([k, label, desc]) => (
+                  <div key={k} style={{ marginBottom: 10 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 2 }}>
+                      <span style={{ color: 'var(--text-secondary)' }}>{label}</span>
+                      <span style={{ fontWeight: 600, color: 'var(--accent-teal, var(--accent-cyan))' }}>
+                        {personality.layerMetrics[k].toFixed(2)}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 3 }}>{desc}</div>
+                    <div style={{ height: 5, background: 'var(--bg-hover)', borderRadius: 3 }}>
+                      <div
+                        style={{
+                          height: '100%',
+                          width: `${personality.layerMetrics[k] * 100}%`,
+                          background: 'var(--accent-green)',
+                          borderRadius: 3,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 

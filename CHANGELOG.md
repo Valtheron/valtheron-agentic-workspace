@@ -10,6 +10,17 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Hinzugefügt
 
+- **12-Parameter-Persönlichkeits-Framework (Handbuch Kap. 6).** Bisher nutzte
+  das Dashboard nur 3 Persönlichkeitsfelder. Neu: ein deterministischer Service
+  (`backend/src/services/personalityFramework.ts`) leitet aus den real
+  gespeicherten Agent-Attributen das volle 12-Parameter-Profil (Formality …
+  Adaptability), die 3 Layer-Metriken (LDS, MI, EP) und — per
+  Nearest-Prototype über die 8 Basis-Archetypen — den klassifizierten
+  Archetyp ab; inklusive Range-/Konsistenz-Validierung. Kein `Math.random`.
+  `GET /api/agents/:id` liefert das Profil; die Agenten-Detailansicht hat einen
+  neuen Tab „12 Param." (Parameter-Balken mit bilingualen Polen, Layer-Metriken,
+  Archetyp, Validierungs-Status). Abgedeckt durch 10 Unit-Tests.
+
 - **Kollaboration: echte Multi-Agent-Orchestrierung statt manuellem Tippen.**
   Bisher war eine Collaboration-Session nur ein Nachrichtenspeicher — der Mensch
   tippte die Beiträge selbst im Namen der Agenten; die Agenten „dachten" nie.
