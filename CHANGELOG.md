@@ -8,6 +8,57 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ## [Unreleased]
 
+### Behoben
+
+- **Chat/Workflows liefen trotz hinterlegtem API-Key in die Simulation.** Der
+  Header-Builder (`getLLMHeaders`) berücksichtigte **nur** den als Standard
+  markierten Provider. Lag der Key bei einem anderen Provider (z. B. OpenAI),
+  der Standard aber auf einem keylosen (z. B. Anthropic), wurde **kein**
+  `x-llm-*`-Header gesendet → Backend fiel auf „kein API-Key konfiguriert"
+  zurück. Neu: `getActiveLLMSelection()` wählt den Standard-Provider, **oder
+  ersatzweise irgendeinen aktivierten Provider mit Key**, und matcht das Modell
+  zum gewählten Provider (der gespeicherte `defaultModel` konnte einem anderen
+  gehören). ChatView nutzt jetzt diese geteilte Logik (die fehlerhafte lokale
+  Kopie wurde entfernt). Unit-getestet.
+
+### Hinzugefügt
+
+- **Sichtbare LLM-Auswahl im Chat.** Die Chat-Kopfzeile zeigt jetzt als Badge,
+  welcher Provider + welches Modell Valtheron tatsächlich verwendet (`↪`
+  markiert einen automatischen Fallback) — oder „⚠ Simulation · kein Key",
+  wenn kein Provider mit Key aktiv ist. Volle Transparenz, welche Engine
+  antwortet.
+
+- **Backend kann alle in der UI angebotenen Provider wirklich aufrufen.**
+  `callLLM` unterstützte nur Anthropic/OpenAI/Ollama/Custom; die UI bot aber
+  zusätzlich **Groq, Mistral, OpenRouter** (OpenAI-kompatibel → jetzt via
+  OpenAI-SDK mit deren Base-URL) und **Google/Gemini** (eigene REST-Form) an.
+  Diese sind jetzt real aufrufbar statt „Unbekannter Provider".
+
+- **Wissensbasis-Verknüpfung pro Agent aktiv.** Die „Wissen"-Tab der
+  Agenten-Detailansicht zeigte immer „keine Dokumente zugeordnet", weil sie
+  das nie befüllte Feld `agent.knowledgeScope` las. Die passende Logik
+  (`getKnowledgeScopeForAgent`, Kategorie→KB-Mapping + Tag-Ranking über das
+  gebündelte Manifest) existierte bereits, war aber nicht verdrahtet. Jetzt
+  berechnet die Tab den Scope und zeigt die Top-Dokumente mit Kategorie-Badges,
+  Tags und Summary-Anzeige.
+
+### Behoben
+
+- **„ü" wurde als `ü` angezeigt.** Im leeren Wissens-Scope-Hinweis stand
+  ein literales `ür` (JSX-Text verarbeitet keine `\u`-Escapes) → jetzt
+  korrekt „Für".
+
+- **Agenten-Detailspalte wurde aus dem sichtbaren Bereich gedrückt.** Das
+  `.agents-layout`-Grid nutzte `1fr 380px`; die breite Agenten-Tabelle (mit
+  Min-Content-Breite) drängte die schmale Detailspalte nach rechts über den
+  Viewport-Rand, sodass nur abgeschnittene Tab-Knöpfe und kein Inhalt sichtbar
+  waren. Jetzt `minmax(0, 1fr) minmax(460px, 600px)` (Liste schrumpfbar, Detail
+  garantiert 460–600px breit), die Tab-Leiste bricht um (`flex-wrap`) statt
+  abzuschneiden, und das Sub-Dimensionen-Grid ist responsiv
+  (`auto-fit, minmax(160px, …)`) — deutlich weniger Scrollen, voller Überblick
+  über Forseti, 12 Parameter, 5 Layers & Modifiers.
+
 ### Hinzugefügt
 
 - **12-Parameter-Persönlichkeits-Framework (Handbuch Kap. 6).** Bisher nutzte

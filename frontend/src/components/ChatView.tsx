@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import type { Agent, ChatSession, ChatMessage } from '../types';
-import { chatAPI } from '../services/api';
-import { KEYS } from '../services/persistence';
+import { chatAPI, getLLMHeaders, getActiveLLMSelection } from '../services/api';
 
 interface ChatViewProps {
   agents: Agent[];
@@ -68,32 +67,6 @@ export default function ChatView({ agents }: ChatViewProps) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  // Build LLM headers from localStorage config if API key is configured.
-  // Must read under the same key App.tsx writes (`KEYS.LLM_CONFIG = 'llm_config'`).
-  // Previously hardcoded as 'llmConfig' (camelCase typo) — the lookup always
-  // returned null and every chat fell back to the simulated reply, even when
-  // the user had a provider connected in the settings UI.
-  const getLLMHeaders = (): Record<string, string> | undefined => {
-    try {
-      const raw = localStorage.getItem(KEYS.LLM_CONFIG);
-      if (!raw) return undefined;
-      const cfg = JSON.parse(raw);
-      const provider: string = cfg.defaultProvider || 'anthropic';
-      const model: string = cfg.defaultModel || 'claude-sonnet-4-5-20250929';
-      const activeProvider = (cfg.providers as { id: string; enabled: boolean; apiKey?: string }[] | undefined)?.find(
-        (p) => p.id === provider && p.enabled,
-      );
-      if (!activeProvider?.apiKey) return undefined;
-      return {
-        'x-llm-api-key': activeProvider.apiKey,
-        'x-llm-provider': provider,
-        'x-llm-model': model,
-      };
-    } catch {
-      return undefined;
-    }
-  };
 
   const handleSend = useCallback(async () => {
     if (!inputText.trim() || !selectedSessionId || sending) return;
@@ -363,6 +336,34 @@ export default function ChatView({ agents }: ChatViewProps) {
                   </div>
                 </div>
               </div>
+              {/* Transparency: which provider + model Valtheron actually uses
+                  (or simulation when no key is configured). */}
+              {(() => {
+                const sel = getActiveLLMSelection();
+                if (!sel) {
+                  return (
+                    <span
+                      className="badge warning"
+                      title="Kein aktivierter Provider mit API-Key — Antworten werden simuliert."
+                    >
+                      ⚠ Simulation · kein Key
+                    </span>
+                  );
+                }
+                return (
+                  <span
+                    className="badge valid"
+                    title={
+                      sel.fellBack
+                        ? `Standard-Provider ohne Key — Valtheron nutzt ersatzweise ${sel.providerName}.`
+                        : 'Aktiver LLM-Provider und Modell.'
+                    }
+                  >
+                    {sel.fellBack ? '↪ ' : ''}
+                    {sel.providerName} · {sel.model || '—'}
+                  </span>
+                );
+              })()}
             </div>
 
             {/* Messages */}

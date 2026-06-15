@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import type { Agent, ForsetiProfile, PersonalityProfile } from '../types';
 import { isCapabilityState, isForsetiState, PERSONALITY_POLES } from '../types';
-import { getSummaryContent, loadKBManifest } from '../services/knowledgeBase';
+import { getSummaryContent, loadKBManifest, getKnowledgeScopeForAgent } from '../services/knowledgeBase';
 import { agentsAPI } from '../services/api';
 
 interface AgentsProps {
@@ -691,7 +691,13 @@ interface KnowledgeTabProps {
 }
 
 function KnowledgeTab({ agent, expandedSummary, onToggleSummary }: KnowledgeTabProps) {
-  const scope = agent.knowledgeScope;
+  // Derive the knowledge-base scope from the bundled manifest + the agent's
+  // category/name (getKnowledgeScopeForAgent). The API doesn't ship a
+  // per-agent knowledgeScope, so without this the tab always showed "no
+  // documents". Prefer an explicit scope on the agent if one is ever provided.
+  const scope =
+    agent.knowledgeScope ??
+    getKnowledgeScopeForAgent({ category: agent.category, name: agent.name, description: agent.role });
   const manifest = loadKBManifest();
 
   if (!scope || scope.docs.length === 0) {
@@ -699,7 +705,7 @@ function KnowledgeTab({ agent, expandedSummary, onToggleSummary }: KnowledgeTabP
       <div className="card">
         <div className="card-title mb-8">Wissensbasis-Scope</div>
         <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-          F\u00FCr diesen Agenten wurden (noch) keine Dokumente aus der Knowledge-Base zugeordnet.
+          Für diesen Agenten wurden (noch) keine Dokumente aus der Knowledge-Base zugeordnet.
         </div>
       </div>
     );
