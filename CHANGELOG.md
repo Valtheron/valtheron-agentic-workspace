@@ -8,7 +8,32 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ## [Unreleased]
 
+### Behoben
+
+- **Chat/Workflows liefen trotz hinterlegtem API-Key in die Simulation.** Der
+  Header-Builder (`getLLMHeaders`) berücksichtigte **nur** den als Standard
+  markierten Provider. Lag der Key bei einem anderen Provider (z. B. OpenAI),
+  der Standard aber auf einem keylosen (z. B. Anthropic), wurde **kein**
+  `x-llm-*`-Header gesendet → Backend fiel auf „kein API-Key konfiguriert"
+  zurück. Neu: `getActiveLLMSelection()` wählt den Standard-Provider, **oder
+  ersatzweise irgendeinen aktivierten Provider mit Key**, und matcht das Modell
+  zum gewählten Provider (der gespeicherte `defaultModel` konnte einem anderen
+  gehören). ChatView nutzt jetzt diese geteilte Logik (die fehlerhafte lokale
+  Kopie wurde entfernt). Unit-getestet.
+
 ### Hinzugefügt
+
+- **Sichtbare LLM-Auswahl im Chat.** Die Chat-Kopfzeile zeigt jetzt als Badge,
+  welcher Provider + welches Modell Valtheron tatsächlich verwendet (`↪`
+  markiert einen automatischen Fallback) — oder „⚠ Simulation · kein Key",
+  wenn kein Provider mit Key aktiv ist. Volle Transparenz, welche Engine
+  antwortet.
+
+- **Backend kann alle in der UI angebotenen Provider wirklich aufrufen.**
+  `callLLM` unterstützte nur Anthropic/OpenAI/Ollama/Custom; die UI bot aber
+  zusätzlich **Groq, Mistral, OpenRouter** (OpenAI-kompatibel → jetzt via
+  OpenAI-SDK mit deren Base-URL) und **Google/Gemini** (eigene REST-Form) an.
+  Diese sind jetzt real aufrufbar statt „Unbekannter Provider".
 
 - **Wissensbasis-Verknüpfung pro Agent aktiv.** Die „Wissen"-Tab der
   Agenten-Detailansicht zeigte immer „keine Dokumente zugeordnet", weil sie

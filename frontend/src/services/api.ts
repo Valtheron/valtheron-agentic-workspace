@@ -24,25 +24,67 @@ export function getToken(): string | null {
 
 /**
  * Build x-llm-* request headers from the user's LLM settings (localStorage
- * key 'llm_config'). Returns undefined when no enabled provider has an API
- * key — callers then know real LLM calls aren't possible. The key is sent
- * per-request and never persisted server-side.
+ * key 'llm_config'). Returns undefined only when NO enabled provider has an
+ * API key. The key is sent per-request and never persisted server-side.
+ *
+ * Robust provider/model selection: prefer the configured default provider,
+ * but if it has no key, fall back to ANY enabled provider that does — so a
+ * mismatch between `defaultProvider` and the provider the user actually keyed
+ * no longer silently drops to the simulation. The model is matched to the
+ * chosen provider (the stored defaultModel may belong to a different one).
  */
-export function getLLMHeaders(): Record<string, string> | undefined {
+export interface ActiveLLMSelection {
+  provider: string;
+  providerName: string;
+  model: string;
+  apiKey: string;
+  /** true when the configured default provider had no key and Valtheron fell
+   *  back to another enabled provider. */
+  fellBack: boolean;
+}
+
+/**
+ * Resolve which provider + model Valtheron will actually use, from the LLM
+ * settings. Prefers the configured default provider; if it has no key, falls
+ * back to ANY enabled provider that does, and matches the model to it.
+ * Returns null when no provider is usable (→ caller runs in simulation).
+ */
+export function getActiveLLMSelection(): ActiveLLMSelection | null {
   try {
     const raw = localStorage.getItem('llm_config');
-    if (!raw) return undefined;
+    if (!raw) return null;
     const cfg = JSON.parse(raw);
-    const provider: string = cfg.defaultProvider || 'anthropic';
-    const model: string = cfg.defaultModel || 'claude-sonnet-4-5-20250929';
-    const active = (cfg.providers as { id: string; enabled: boolean; apiKey?: string }[] | undefined)?.find(
-      (p) => p.id === provider && p.enabled,
-    );
-    if (!active?.apiKey) return undefined;
-    return { 'x-llm-api-key': active.apiKey, 'x-llm-provider': provider, 'x-llm-model': model };
+    type P = { id: string; name?: string; enabled?: boolean; apiKey?: string; models?: { id: string }[] };
+    const providers = (cfg.providers as P[] | undefined) ?? [];
+    const usable = (p: P | undefined): p is P => !!p && !!p.enabled && !!p.apiKey;
+
+    const preferred = providers.find((p) => p.id === cfg.defaultProvider && usable(p));
+    const active = preferred ?? providers.find(usable);
+    if (!usable(active)) return null;
+
+    // Model must belong to the chosen provider (the stored defaultModel may
+    // belong to a different one).
+    const ownsDefault = active.models?.some((m) => m.id === cfg.defaultModel);
+    const model = (ownsDefault ? cfg.defaultModel : active.models?.[0]?.id) || cfg.defaultModel || '';
+
+    return {
+      provider: active.id,
+      providerName: active.name ?? active.id,
+      model,
+      apiKey: active.apiKey!,
+      fellBack: !preferred,
+    };
   } catch {
-    return undefined;
+    return null;
   }
+}
+
+export function getLLMHeaders(): Record<string, string> | undefined {
+  const sel = getActiveLLMSelection();
+  if (!sel) return undefined;
+  const headers: Record<string, string> = { 'x-llm-api-key': sel.apiKey, 'x-llm-provider': sel.provider };
+  if (sel.model) headers['x-llm-model'] = sel.model;
+  return headers;
 }
 
 // Tracks whether a token refresh is in flight to avoid cascading retries
