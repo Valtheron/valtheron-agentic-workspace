@@ -8,6 +8,17 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ## [Unreleased]
 
+### Hinzugefügt
+
+- **xAI (Grok) als eigener LLM-Provider.** Bisher gab es nur „Groq"
+  (api.groq.com) — nicht das davon verschiedene **xAI Grok** (api.x.ai).
+  Neu: eigene Provider-Karte „xAI (Grok)" (Modelle grok-4.3 / grok-4 /
+  grok-3-mini) und Backend-Anbindung (`callLLM`, OpenAI-kompatibel via
+  `https://api.x.ai/v1`). Der Aufrufpfad wurde real gegen api.x.ai verifiziert
+  (Auth + Format korrekt). `withProviderDefaults()` ergänzt neu hinzugekommene
+  Provider in bereits gespeicherten `llm_config`s, sodass die Karte auch für
+  bestehende Nutzer erscheint, ohne deren Keys/Einstellungen anzutasten.
+
 ### Behoben
 
 - **Chat/Workflows liefen trotz hinterlegtem API-Key in die Simulation.** Der
