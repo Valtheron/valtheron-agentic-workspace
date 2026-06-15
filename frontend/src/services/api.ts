@@ -22,6 +22,29 @@ export function getToken(): string | null {
   return authToken;
 }
 
+/**
+ * Build x-llm-* request headers from the user's LLM settings (localStorage
+ * key 'llm_config'). Returns undefined when no enabled provider has an API
+ * key — callers then know real LLM calls aren't possible. The key is sent
+ * per-request and never persisted server-side.
+ */
+export function getLLMHeaders(): Record<string, string> | undefined {
+  try {
+    const raw = localStorage.getItem('llm_config');
+    if (!raw) return undefined;
+    const cfg = JSON.parse(raw);
+    const provider: string = cfg.defaultProvider || 'anthropic';
+    const model: string = cfg.defaultModel || 'claude-sonnet-4-5-20250929';
+    const active = (cfg.providers as { id: string; enabled: boolean; apiKey?: string }[] | undefined)?.find(
+      (p) => p.id === provider && p.enabled,
+    );
+    if (!active?.apiKey) return undefined;
+    return { 'x-llm-api-key': active.apiKey, 'x-llm-provider': provider, 'x-llm-model': model };
+  } catch {
+    return undefined;
+  }
+}
+
 // Tracks whether a token refresh is in flight to avoid cascading retries
 let refreshPromise: Promise<string> | null = null;
 
@@ -356,6 +379,15 @@ export const collaborationAPI = {
     apiFetch<unknown>(`/collaboration/sessions/${sessionId}/messages`, {
       method: 'POST',
       body: JSON.stringify({ senderId, content, messageType }),
+    }),
+
+  // Orchestrate the session with real LLM calls. llmHeaders carry the
+  // x-llm-* credentials read from the user's LLM settings (never stored
+  // server-side).
+  run: (sessionId: string, llmHeaders?: Record<string, string>) =>
+    apiFetch<{ messages: unknown[]; synthesis: string; status: string }>(`/collaboration/sessions/${sessionId}/run`, {
+      method: 'POST',
+      headers: llmHeaders,
     }),
 };
 
