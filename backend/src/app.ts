@@ -24,6 +24,7 @@ import backupRoutes from './routes/backup.js';
 import donationsRoutes from './routes/donations.js';
 import interactionRoutes from './routes/interactions.js';
 import certificationRoutes from './routes/certifications.js';
+import browseRoutes from './routes/browse.js';
 import { auditLogger } from './middleware/auditLogger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { adminOnly } from './middleware/rbac.js';
@@ -124,6 +125,7 @@ export function createApp() {
   app.use('/api/notifications', protect, notificationRoutes);
   app.use('/api/interactions', protect, interactionRoutes);
   app.use('/api/certifications', protect, certificationRoutes);
+  app.use('/api/browse', protect, browseRoutes);
   // Always admin-only: secrets management and backup/restore.
   app.use('/api/secrets', authMiddleware, adminGuard, secretsRoutes);
   app.use('/api/backup', authMiddleware, adminGuard, backupRoutes);

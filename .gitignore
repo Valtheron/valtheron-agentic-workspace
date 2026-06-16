@@ -5,3 +5,7 @@ coverage/
 *.sqlite
 .env
 .env.local
+
+# Playwright MCP runtime snapshots
+.playwright-mcp/
+backend/.playwright-mcp/
