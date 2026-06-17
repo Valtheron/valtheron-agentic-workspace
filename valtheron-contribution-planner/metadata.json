@@ -1,0 +1,6 @@
+{
+  "name": "Valtheron Contribution Planner",
+  "description": "Interactive companion to brainstorm, draft, and structure high-impact open-source contributions to the Valtheron Agentic Workspace.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
