@@ -48,10 +48,33 @@ export interface AgentTask {
   log: string;
 }
 
+export interface MonitoringAlert {
+  id: string;
+  severity: 'critical' | 'warning' | 'info';
+  source: string;
+  message: string;
+  timestamp: string;
+  resolved: boolean;
+}
+
+export interface ValtheronPlugin {
+  id: string;
+  name: string;
+  version: string;
+  description: string;
+  enabled: boolean;
+  author: string;
+  apiEndpoint?: string;
+  pluginType: 'telemetry' | 'security' | 'intelligence' | 'utility';
+}
+
 interface DatabaseSchema {
   topics: ContributionTopic[];
   drafts: ContributionDraft[];
   auditLogs: AuditLog[];
+  agentTasks: AgentTask[];
+  alerts: MonitoringAlert[];
+  plugins: ValtheronPlugin[];
 }
 
 const DB_PATH = path.join(process.cwd(), 'database.json');
@@ -159,11 +182,46 @@ const INITIAL_TOPICS: ContributionTopic[] = [
   }
 ];
 
+export const DEFAULT_PLUGINS: ValtheronPlugin[] = [
+  {
+    id: "plg-weather",
+    name: "Open-Meteo Weather Syncer",
+    version: "1.4.2",
+    description: "Fetches live meteorological updates from the open-meteo telemetry API to help coordinate local environment factors for field agents.",
+    enabled: true,
+    author: "Valtheron Core Team",
+    apiEndpoint: "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true",
+    pluginType: "telemetry"
+  },
+  {
+    id: "plg-coingecko",
+    name: "CoinGecko Rate Auditor",
+    version: "2.1.0",
+    description: "Integrates public CoinGecko prices dynamically to run risk analysis sweeps and evaluate ledger block values.",
+    enabled: true,
+    author: "FinSec Agent Integration",
+    apiEndpoint: "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd",
+    pluginType: "intelligence"
+  },
+  {
+    id: "plg-aes-rotor",
+    name: "AES Cryptographic Rotor",
+    version: "1.0.8",
+    description: "Automates continuous salt re-keying and schedules high-consequences security handshakes across the cluster.",
+    enabled: false,
+    author: "Valtheron SecOps",
+    pluginType: "security"
+  }
+];
+
 class ValtheronDatabase {
   private data: DatabaseSchema = {
     topics: [...INITIAL_TOPICS],
     drafts: [],
-    auditLogs: []
+    auditLogs: [],
+    agentTasks: [],
+    alerts: [],
+    plugins: [...DEFAULT_PLUGINS]
   };
 
   constructor() {
@@ -199,9 +257,80 @@ class ValtheronDatabase {
         this.data = {
           topics: parsed.topics || [...INITIAL_TOPICS],
           drafts: parsed.drafts || [],
-          auditLogs: cleanedLogs
+          auditLogs: cleanedLogs,
+          agentTasks: parsed.agentTasks || [],
+          alerts: parsed.alerts || [],
+          plugins: parsed.plugins || [...DEFAULT_PLUGINS]
         };
         
+        // Seed default agentTasks if they are empty
+        if (this.data.agentTasks.length === 0) {
+          this.data.agentTasks = [
+            {
+              id: 'task_1',
+              agentName: 'TranslatorAgent-101',
+              taskName: 'Parallel Context Handoff and State Translation',
+              status: 'completed',
+              timestamp: new Date(Date.now() - 3600000 * 2).toISOString(),
+              log: 'INITIALIZE: Bootstrap TranslatorAgent context.\nREAD: Pulling raw state from Redis memory segment.\nTRANSITION: Packing metadata state structure.\nHANDOFF: Commited packed context to queue securely.'
+            },
+            {
+              id: 'task_2',
+              agentName: 'SecDecrypter-04',
+              taskName: 'AES-256-GCM Session Key Rotation Sweep',
+              status: 'completed',
+              timestamp: new Date(Date.now() - 3600000).toISOString(),
+              log: 'SWEEP: Checking cryptographic key integrity coefficients.\nROTATE: Generation of high-entropy raw keys via crypto.randomBytes(32).\nENCRYPT: Re-encrypting active draft indices.\nCOMPLETED: Ledger audit trace block finalized.'
+            },
+            {
+              id: 'task_3',
+              agentName: 'MFAVerifier-99',
+              taskName: 'TOTP Authentication Privilege Gate Check',
+              status: 'failed',
+              timestamp: new Date(Date.now() - 1800000).toISOString(),
+              log: 'VERIFY: Fetching MFA verification coordinate token.\nVALIDATE: Checking TOTP checksum validity code with drift = 1.\nTIMEOUT: Validation period exceeded 300 seconds window.\nABORT: Rejected privilege promotion. Secure shutdown initiated.'
+            },
+            {
+              id: 'task_4',
+              agentName: 'Router-Orchestrator',
+              taskName: 'Global Agent Coordination Topology Rebuild',
+              status: 'processing',
+              timestamp: new Date(Date.now() - 300000).toISOString(),
+              log: 'REBUILD: Initializing topology matrix calculation.\nSCAN: Pinging 290 agent network locations.\nUPDATE: Refreshing route addresses in SQLite buffer state.'
+            }
+          ];
+        }
+
+        // Seed default Alerts if empty
+        if (this.data.alerts.length === 0) {
+          this.data.alerts = [
+            {
+              id: 'alert_1',
+              severity: 'critical',
+              source: 'MFA Gateway Verifier',
+              message: 'Validation timeout on agent MFA verification coordinate token',
+              timestamp: new Date(Date.now() - 1800000).toISOString(),
+              resolved: false
+            },
+            {
+              id: 'alert_2',
+              severity: 'warning',
+              source: 'SQLite Router Layer',
+              message: 'SQLite database concurrent write transaction locks delay exceed 250ms',
+              timestamp: new Date(Date.now() - 900000).toISOString(),
+              resolved: false
+            },
+            {
+              id: 'alert_3',
+              severity: 'info',
+              source: 'Compliance Daemon',
+              message: 'Finished automatic structural cryptography auditing. 290 agents compliant.',
+              timestamp: new Date(Date.now() - 3600000).toISOString(),
+              resolved: true
+            }
+          ];
+        }
+
         this.save();
       } else {
         // Create initial database with Genesis Block
@@ -224,6 +353,17 @@ class ValtheronDatabase {
         };
 
         this.data.auditLogs = [genesisLog];
+        this.data.agentTasks = [
+          {
+            id: 'task_init',
+            agentName: 'SystemBootAgent',
+            taskName: 'Kernel Initialization and Daemon Bootstrap',
+            status: 'completed',
+            timestamp: genesisTimestamp,
+            log: 'BOOT: Launching Valtheron secure kernel daemon.\nSUCCESS: Port ingress listening properly.'
+          }
+        ];
+        this.data.alerts = [];
         this.save();
       }
     } catch (e) {
@@ -454,6 +594,93 @@ class ValtheronDatabase {
       message,
       details
     };
+  }
+
+  public getAgentTasks(): AgentTask[] {
+    return this.data.agentTasks || [];
+  }
+
+  public addAgentTask(task: Omit<AgentTask, 'id' | 'timestamp'>): AgentTask {
+    const newTask: AgentTask = {
+      ...task,
+      id: 'task_' + Date.now() + '_' + Math.random().toString(36).substring(2, 5),
+      timestamp: new Date().toISOString()
+    };
+    if (!this.data.agentTasks) {
+      this.data.agentTasks = [];
+    }
+    this.data.agentTasks.unshift(newTask); // Newest first
+    this.addAuditLog('AGENT_TASK_CREATE', `Agent ${task.agentName} assigned task: "${task.taskName}"`);
+    this.save();
+    return newTask;
+  }
+
+  public getAlerts(): MonitoringAlert[] {
+    return this.data.alerts || [];
+  }
+
+  public addAlert(alert: Omit<MonitoringAlert, 'id' | 'timestamp' | 'resolved'>): MonitoringAlert {
+    const newAlert: MonitoringAlert = {
+      ...alert,
+      id: 'alert_' + Date.now() + '_' + Math.random().toString(36).substring(2, 5),
+      timestamp: new Date().toISOString(),
+      resolved: false
+    };
+    if (!this.data.alerts) {
+      this.data.alerts = [];
+    }
+    this.data.alerts.unshift(newAlert);
+    this.addAuditLog('ALERT_TRIGGER', `[${alert.severity.toUpperCase()}] Alert from ${alert.source}: ${alert.message}`);
+    this.save();
+    return newAlert;
+  }
+
+  public resolveAlert(id: string): boolean {
+    if (!this.data.alerts) return false;
+    const alert = this.data.alerts.find(a => a.id === id);
+    if (alert) {
+      alert.resolved = true;
+      this.addAuditLog('ALERT_RESOLVE', `Resolved alert: ${alert.message}`);
+      this.save();
+      return true;
+    }
+    return false;
+  }
+
+  public clearAllAlerts(): boolean {
+    this.data.alerts = [];
+    this.addAuditLog('ALERT_CLEAR_ALL', `All alerts cleared from active memory`);
+    this.save();
+    return true;
+  }
+
+  public getPlugins(): ValtheronPlugin[] {
+    return this.data.plugins || [];
+  }
+
+  public togglePlugin(id: string): boolean {
+    if (!this.data.plugins) this.data.plugins = [];
+    const plugin = this.data.plugins.find(p => p.id === id);
+    if (plugin) {
+      plugin.enabled = !plugin.enabled;
+      this.addAuditLog('PLUGIN_TOGGLE', `Plugin "${plugin.name}" ${plugin.enabled ? 'ENABLED' : 'DISABLED'}`);
+      this.save();
+      return true;
+    }
+    return false;
+  }
+
+  public addPlugin(plugin: Omit<ValtheronPlugin, 'id' | 'enabled'>): ValtheronPlugin {
+    if (!this.data.plugins) this.data.plugins = [];
+    const newPlugin: ValtheronPlugin = {
+      ...plugin,
+      id: 'plg-' + Math.random().toString(36).substring(2, 8),
+      enabled: true
+    };
+    this.data.plugins.push(newPlugin);
+    this.addAuditLog('PLUGIN_CREATE', `Installed custom extension plugin: "${newPlugin.name}" v${newPlugin.version}`);
+    this.save();
+    return newPlugin;
   }
 }
 

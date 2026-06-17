@@ -474,7 +474,178 @@ app.post("/api/audit-logs/verify", (req, res) => {
 // 7. GET /api/agent-tasks - Get active logs for background worker agents
 app.get("/api/agent-tasks", (req, res) => {
   try {
-    res.json([]);
+    res.json(db.getAgentTasks());
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 7.1 POST /api/agent-tasks - Trigger/push a new simulated agent workflow task
+app.post("/api/agent-tasks", (req, res) => {
+  try {
+    const { agentName, taskName, status, log } = req.body;
+    if (!agentName || !taskName) {
+      return res.status(400).json({ error: "agentName and taskName are required." });
+    }
+    const newTask = db.addAgentTask({
+      agentName,
+      taskName,
+      status: status || 'processing',
+      log: log || 'TASK STARTED: Initializing virtual container environment.'
+    });
+    res.json(newTask);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 8. GET /api/monitoring/alerts - Get active monitoring and intrusion alerts
+app.get("/api/monitoring/alerts", (req, res) => {
+  try {
+    res.json(db.getAlerts());
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 8.1 POST /api/monitoring/alerts - Submit a new threat/incident alert
+app.post("/api/monitoring/alerts", (req, res) => {
+  try {
+    const { severity, source, message } = req.body;
+    if (!severity || !source || !message) {
+      return res.status(400).json({ error: "severity, source, and message are required." });
+    }
+    const newAlert = db.addAlert({
+      severity,
+      source,
+      message
+    });
+    res.json(newAlert);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 8.2 POST /api/monitoring/alerts/:id/resolve - Resolve active incident
+app.post("/api/monitoring/alerts/:id/resolve", (req, res) => {
+  try {
+    const { id } = req.params;
+    const success = db.resolveAlert(id);
+    if (success) {
+      res.json({ success: true });
+    } else {
+      res.status(404).json({ error: "Alert incident not found or already purged." });
+    }
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 8.3 POST /api/monitoring/alerts/clear-all - Purge all alerts
+app.post("/api/monitoring/alerts/clear-all", (req, res) => {
+  try {
+    const success = db.clearAllAlerts();
+    res.json({ success });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 9. GET /api/monitoring/metrics - Fetch live telemetry and performance datasets
+app.get("/api/monitoring/metrics", (req, res) => {
+  try {
+    const totalAgents = 290;
+    const activeTasks = db.getAgentTasks();
+    
+    // Calculate active/idle based on actual tasks in database
+    const activeRunningCount = activeTasks.filter(t => t.status === 'processing').length;
+    const failedIncidentCount = activeTasks.filter(t => t.status === 'failed').length;
+    const idleCount = totalAgents - activeRunningCount - failedIncidentCount;
+
+    // Simulate small random fluctuations in performance indexes
+    const randomNoise = Math.sin(Date.now() / 10000) * 5;
+    const cpuBase = 22 + (activeRunningCount * 8) + randomNoise;
+    const cpuFinal = Math.min(Math.max(Math.round(cpuBase), 3), 98);
+    
+    const memBase = 3280 + (activeRunningCount * 120) + (Math.sin(Date.now() / 15000) * 40);
+    const memFinalMb = Math.round(memBase);
+    
+    const latencyFinalMs = Math.round(11 + (activeRunningCount * 1.5) + (Math.random() * 2));
+
+    const totalTaskVolume = activeTasks.length;
+    const errCount = activeTasks.filter(t => t.status === 'failed').length;
+    const errorRatePercent = totalTaskVolume > 0 
+      ? parseFloat(((errCount / totalTaskVolume) * 100).toFixed(1))
+      : 0.0;
+
+    res.json({
+      system: {
+        cpuUsagePercent: cpuFinal,
+        memoryUsageMb: memFinalMb,
+        memoryUsageLimitMb: 8192,
+        diskUsagePercent: 41,
+        networkLatencyMs: latencyFinalMs,
+        aesIntegrityStatus: 'secure',
+        mfaGatewayStatus: 'connected',
+        wormLedgerIntegrity: true
+      },
+      agents: {
+        total: totalAgents,
+        active: Math.max(activeRunningCount, 3), // guarantee a baseline for display
+        idle: Math.max(idleCount - 3, 0),
+        failed: failedIncidentCount
+      },
+      workloads: {
+        totalTaskCount: totalTaskVolume,
+        errorRatePercent: errorRatePercent,
+        throughputOpsSec: parseFloat((12.4 + (activeRunningCount * 2.1) + (Math.random() * 0.8)).toFixed(1))
+      }
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 10. GET /api/plugins - Get installed extension plugins
+app.get("/api/plugins", (req, res) => {
+  try {
+    res.json(db.getPlugins());
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 10.1 POST /api/plugins/:id/toggle - Toggle plugin status
+app.post("/api/plugins/:id/toggle", (req, res) => {
+  try {
+    const { id } = req.params;
+    const success = db.togglePlugin(id);
+    if (success) {
+      res.json({ success: true, plugins: db.getPlugins() });
+    } else {
+      res.status(404).json({ error: "Plugin not found." });
+    }
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 10.2 POST /api/plugins - Install custom extension plugin
+app.post("/api/plugins", (req, res) => {
+  try {
+    const { name, version, description, author, apiEndpoint, pluginType } = req.body;
+    if (!name || !version || !description || !author || !pluginType) {
+      return res.status(400).json({ error: "name, version, description, author, and pluginType are required." });
+    }
+    const newPlugin = db.addPlugin({
+      name,
+      version,
+      description,
+      author,
+      apiEndpoint,
+      pluginType
+    });
+    res.json(newPlugin);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
