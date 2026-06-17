@@ -373,6 +373,29 @@ export const analyticsAPI = {
     apiFetch<unknown>(`/analytics/export?type=${type}&format=${format}`),
 };
 
+// ===== Browse / Web-Research API =====
+export interface BrowseAgentStep {
+  thought?: string;
+  tool: string;
+  arg?: string;
+  observation: string;
+}
+export interface BrowseAgentResult {
+  answer: string;
+  steps: BrowseAgentStep[];
+  stoppedReason: 'done' | 'max_steps' | 'kill_switch';
+}
+export const browseAPI = {
+  // Autonomous web-research agent. llmHeaders carry the x-llm-* credentials
+  // (never stored server-side). Throws on non-2xx (e.g. missing key → 400).
+  agent: (task: string, startUrl: string | undefined, llmHeaders?: Record<string, string>) =>
+    apiFetch<BrowseAgentResult>('/browse/agent', {
+      method: 'POST',
+      body: JSON.stringify({ task, startUrl }),
+      headers: llmHeaders,
+    }),
+};
+
 // ===== Chat API =====
 export const chatAPI = {
   listSessions: (agentId?: string) => {

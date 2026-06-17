@@ -458,6 +458,7 @@ export type ViewType =
   | 'analytics'
   | 'enterprise'
   | 'chat'
+  | 'web-research'
   | 'audit';
 
 // Chat Types

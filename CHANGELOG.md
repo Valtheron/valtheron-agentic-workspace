@@ -20,8 +20,10 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
   Tool-Calling); LLM-Credentials via `x-llm-*`-Header. **Kein Simulations-
   Fallback** — ohne Key/Guthaben wird der Lauf mit klarer Meldung abgelehnt.
   Loop-Logik durch 9 Unit-Tests mit gestubbtem LLM abgedeckt (navigate/finish,
-  SSRF-Rückmeldung, Kill-Switch-Stopp, Max-Steps, ungültiges JSON). _(UI zum
-  Auslösen folgt.)_
+  SSRF-Rückmeldung, Kill-Switch-Stopp, Max-Steps, ungültiges JSON).
+  Neue Sidebar-Ansicht **„Web-Recherche"** zum Auslösen: Aufgabe + optionale
+  Start-URL, zeigt aktiven LLM-Provider (oder „⚠ kein LLM-Key"), die einzelnen
+  Schritte (mit Beobachtungen) und die finale Antwort.
 
 - **Web-Browsing für Agenten via Playwright-MCP (Teil 1 — sichere Basis).**
   Neuer Endpunkt `POST /api/browse {url}` öffnet eine Seite in einem echten

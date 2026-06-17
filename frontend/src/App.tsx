@@ -49,6 +49,7 @@ import KillSwitchView from './components/KillSwitchView';
 import AnalyticsView from './components/AnalyticsView';
 import EnterpriseView from './components/EnterpriseView';
 import ChatView from './components/ChatView';
+import WebResearchView from './components/WebResearchView';
 import AuditView from './components/AuditView';
 import SponsorModal from './components/SponsorModal';
 
@@ -67,6 +68,7 @@ const viewTitles: Record<ViewType, string> = {
   analytics: 'Analytics & Monitoring',
   enterprise: 'Enterprise',
   chat: 'Agent Chat',
+  'web-research': 'Web-Recherche',
   audit: 'Audit-Trail',
 };
 
@@ -612,6 +614,7 @@ function App() {
           )}
           {currentView === 'collaboration' && <CollaborationView agents={agents} />}
           {currentView === 'chat' && <ChatView agents={agents} />}
+          {currentView === 'web-research' && <WebResearchView />}
           {currentView === 'certifications' && <CertificationsView certifications={certifications} />}
           {currentView === 'kanban' && (
             <KanbanView

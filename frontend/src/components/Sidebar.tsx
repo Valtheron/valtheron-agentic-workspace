@@ -12,6 +12,7 @@ const navItems: { view: ViewType; icon: string; label: string }[] = [
   { view: 'security', icon: '\u26A0', label: 'Sicherheit' },
   { view: 'audit', icon: '\u2203', label: 'Audit-Trail' },
   { view: 'chat', icon: '\u2709', label: 'Agent Chat' },
+  { view: 'web-research', icon: '\u2315', label: 'Web-Recherche' },
   { view: 'collaboration', icon: '\u2694', label: 'Kollaboration' },
   { view: 'certifications', icon: '\u2605', label: 'Zertifizierungen' },
   { view: 'enterprise', icon: '\u2756', label: 'Enterprise' },
@@ -30,9 +31,9 @@ export default function Sidebar({ currentView, onViewChange, expanded, onToggle 
     <nav className={`sidebar${expanded ? ' expanded' : ''}`}>
       <div className="sidebar-logo" onClick={onToggle} title="Valtheron">
         {expanded ? (
-          <img src="/valtheron-logo.gif" alt="Valtheron" className="logo-img-full"/>
+          <img src="/valtheron-logo.gif" alt="Valtheron" className="logo-img-full" />
         ) : (
-          <img src="/valtheron-logo.gif" alt="V" className="logo-img-icon"/>
+          <img src="/valtheron-logo.gif" alt="V" className="logo-img-icon" />
         )}
       </div>
       <div className="sidebar-nav">
