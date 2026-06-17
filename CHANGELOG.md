@@ -10,6 +10,19 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
 
 ### Hinzugefügt
 
+- **Web-Browsing für Agenten via Playwright-MCP (Teil 1 — sichere Basis).**
+  Neuer Endpunkt `POST /api/browse {url}` öffnet eine Seite in einem echten
+  headless-Chromium, gesteuert über den **@playwright/mcp**-Server
+  (`browserMcp.ts` als MCP-Client), und liefert Titel + Seiten-Snapshot — der
+  direkte Tool-Aufruf braucht **kein** LLM. Sicherheit ist fest eingebaut, nicht
+  nebenbei: **SSRF-Guard** (`urlGuard.ts`: nur http/https, blockt
+  localhost/127.0.0.1/Cloud-Metadata `169.254.169.254`/private+CGNAT-Ranges,
+  DNS-Rebinding-bewusst), optionale **Domain-Allowlist** (`BROWSE_ALLOWLIST`),
+  **Kill-Switch-Kopplung** (aktiv → 423, gesperrt) und **Audit-Log** jedes
+  Versuchs. Feature-Flag `BROWSE_ENABLED`. Verifiziert: example.com wird real
+  geladen; alle SSRF-Fälle werden geblockt; 7 Guard-Unit-Tests grün. _(Der
+  agentische LLM-Loop und browse-use folgen als Teil 2.)_
+
 - **xAI (Grok) als eigener LLM-Provider.** Bisher gab es nur „Groq"
   (api.groq.com) — nicht das davon verschiedene **xAI Grok** (api.x.ai).
   Neu: eigene Provider-Karte „xAI (Grok)" (Modelle grok-4.3 / grok-4 /
