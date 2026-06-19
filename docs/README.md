@@ -35,7 +35,7 @@ Technische Referenzdokumentation.
 
 Konzept- und Vorgängerdokumente aus der Planungsphase (Januar 2026). Aktuelle Inhalte sind in den Reference- und Guide-Dokumenten gepflegt; Inhalte aus diesen Archivdokumenten wurden nach Bedarf in `reference/ARCHITECTURE.md` übernommen.
 
-→ [docs/archive/README.md](archive/README.md)
+→ [docs/older_docs/README.md](archive/README.md)
 
 ## Root-Level-Dokumente
 
