@@ -40,27 +40,29 @@
 
 ## 2. Test-Szenarien
 
+> **Hinweis:** Status-Spalten spiegeln den Stand des Beta-Runs vom 2026-05-03/2026-06-04. Quelle der Wahrheit für Details, Fehler-Severity und Fix-Status ist `reports/beta-test-run-2026-05-03.md`; die D-Nummer-Referenzen verweisen dorthin (§5 Defekt-Journal, §8 Mapping).
+
 ### 2.1 Authentifizierung & Autorisierung
 
 | # | Szenario | Schritte | Erwartet | Status |
 |---|----------|----------|----------|--------|
-| A1 | Benutzer-Registrierung | 1. `/register` aufrufen 2. Formular ausfüllen 3. Absenden | Account erstellt, Token erhalten | ⬜ |
-| A2 | Login mit Credentials | 1. Username/Passwort eingeben 2. Login klicken | JWT-Token, Dashboard geladen | ⬜ |
+| A1 | Benutzer-Registrierung | 1. `/register` aufrufen 2. Formular ausfüllen 3. Absenden | Account erstellt, Token erhalten | 🟡 funktional ok, D-1/D-2/D-3 offen |
+| A2 | Login mit Credentials | 1. Username/Passwort eingeben 2. Login klicken | JWT-Token, Dashboard geladen | 🟡 funktional ok, D-4 gefixt (bcrypt) |
 | A3 | MFA-Setup | 1. Settings → MFA 2. QR-Code scannen 3. TOTP bestätigen | MFA aktiviert, Backup-Codes erhalten | ⬜ |
 | A4 | Login mit MFA | 1. Login 2. MFA-Code eingeben | Zugang gewährt | ⬜ |
 | A5 | Token-Refresh | 1. 23h warten 2. Aktion ausführen | Token automatisch erneuert | ⬜ |
-| A6 | Fehlerhafter Login | 1. Falsche Credentials | Fehlermeldung, kein Zugang | ⬜ |
+| A6 | Fehlerhafter Login | 1. Falsche Credentials | Fehlermeldung, kein Zugang | ❌→🟡 D-6/D-7 — Rate-Limit gefixt, security_events bei Fehl-Login offen |
 
 ### 2.2 Agent-Management
 
 | # | Szenario | Schritte | Erwartet | Status |
 |---|----------|----------|----------|--------|
-| B1 | Agent erstellen | 1. Agents → Neu 2. Daten eingeben 3. Speichern | Agent in Liste sichtbar | ⬜ |
+| B1 | Agent erstellen | 1. Agents → Neu 2. Daten eingeben 3. Speichern | Agent in Liste sichtbar | ✅ |
 | B2 | Agent bearbeiten | 1. Agent auswählen 2. Daten ändern 3. Speichern | Änderungen übernommen | ⬜ |
 | B3 | Agent löschen | 1. Agent auswählen 2. Löschen bestätigen | Agent entfernt | ⬜ |
-| B4 | Agent suchen | 1. Suchfeld nutzen 2. Begriff eingeben | Gefilterte Ergebnisse | ⬜ |
+| B4 | Agent suchen | 1. Suchfeld nutzen 2. Begriff eingeben | Gefilterte Ergebnisse | 🟡 funktional ok, D-16 (Response-`total`-Feld falsch) offen |
 | B5 | Agent suspendieren | 1. Agent → Suspend | Status = suspended | ⬜ |
-| B6 | Agent-Details | 1. Agent in Liste klicken | Detail-Panel mit Dimensionen, Tests | ⬜ |
+| B6 | Agent-Details | 1. Agent in Liste klicken | Detail-Panel mit Dimensionen, Tests | ❌→🟡 D-17 — Auth-Bypass auf Security-Routen gefixt, B6 selbst funktional ok |
 
 ### 2.3 Task-Management (Kanban)
 
@@ -84,27 +86,27 @@
 
 | # | Szenario | Schritte | Erwartet | Status |
 |---|----------|----------|----------|--------|
-| E1 | Dashboard laden | 1. Dashboard aufrufen | KPI-Cards, Charts sichtbar | ⬜ |
-| E2 | Performance Trends | 1. Analytics → Trends | Diagramme mit 7-Tage-Daten | ⬜ |
-| E3 | SLA-Monitoring | 1. Analytics → SLA | SLA-Metriken sichtbar | ⬜ |
-| E4 | Export JSON | 1. Analytics → Export JSON | JSON-Datei heruntergeladen | ⬜ |
-| E5 | Export CSV | 1. Analytics → Export CSV | CSV-Datei heruntergeladen | ⬜ |
+| E1 | Dashboard laden | 1. Dashboard aufrufen | KPI-Cards, Charts sichtbar | 🟡 D-8…D-14 (Mock-Daten) gefixt; Latenz-p95 in §4 noch offen |
+| E2 | Performance Trends | 1. Analytics → Trends | Diagramme mit 7-Tage-Daten | ⏭️ Code auf API umgestellt, UI-Klick-Verify steht aus |
+| E3 | SLA-Monitoring | 1. Analytics → SLA | SLA-Metriken sichtbar | ⏭️ Code auf API umgestellt, UI-Klick-Verify steht aus |
+| E4 | Export JSON | 1. Analytics → Export JSON | JSON-Datei heruntergeladen | ⏭️ nicht durchgeführt |
+| E5 | Export CSV | 1. Analytics → Export CSV | CSV-Datei heruntergeladen | ⏭️ nicht durchgeführt |
 
 ### 2.6 Collaboration & Chat
 
 | # | Szenario | Schritte | Erwartet | Status |
 |---|----------|----------|----------|--------|
-| F1 | Chat-Session starten | 1. Agent auswählen 2. Chat öffnen | Chat-UI sichtbar | ⬜ |
-| F2 | Nachricht senden | 1. Text eingeben 2. Senden | Nachricht angezeigt, Antwort erhalten | ⬜ |
-| F3 | Collaboration-Session | 1. Mehrere Agents einladen | Shared Workspace aktiv | ⬜ |
+| F1 | Chat-Session starten | 1. Agent auswählen 2. Chat öffnen | Chat-UI sichtbar | 🟡 D-19/D-20 (Boot-Race + FK-500) gefixt, UI-Re-Test steht aus |
+| F2 | Nachricht senden | 1. Text eingeben 2. Senden | Nachricht angezeigt, Antwort erhalten | ❌→🟡 D-18 (Key-Pipeline) gefixt, Live-Verifikation mit echter LLM-Antwort steht aus |
+| F3 | Collaboration-Session | 1. Mehrere Agents einladen | Shared Workspace aktiv | ⏭️ nicht erreicht |
 
 ### 2.7 Security
 
 | # | Szenario | Schritte | Erwartet | Status |
 |---|----------|----------|----------|--------|
-| G1 | Audit-Log prüfen | 1. Security → Audit | Alle Aktionen geloggt | ⬜ |
-| G2 | Security-Events | 1. Security → Events | Events sichtbar, filterbar | ⬜ |
-| G3 | Secrets Vault | 1. Secret erstellen 2. Abrufen 3. Löschen | CRUD funktioniert, verschlüsselt | ⬜ |
+| G1 | Audit-Log prüfen | 1. Security → Audit | Alle Aktionen geloggt | ⏭️ D-5/D-6 (kein userId, kein Insert bei Login) offen |
+| G2 | Security-Events | 1. Security → Events | Events sichtbar, filterbar | ⏭️ nicht durchgeführt |
+| G3 | Secrets Vault | 1. Secret erstellen 2. Abrufen 3. Löschen | CRUD funktioniert, verschlüsselt | ❌ D-15 — secrets-Tabelle existiert nicht im Schema, Route ist Stub |
 
 ---
 

@@ -45,13 +45,15 @@ Test-Account: `beta-tester-2026-05-03` (Passwort separat, nicht im Report). UUID
 
 ### 2.E Dashboard
 
+E1 ist durch einen Screenshot des Users belegt und hat **sieben Defekte zu Tage gefördert** (D-8…D-14). Die Cleanup-Commits `dbfd198`, `fd9ffa2`, `7fcbf3a` haben die fabricated Daten aus dem Live-Pfad gezogen; ein Bestätigungs-Screenshot zeigt jetzt echte Nullen + Empty-States. E2/E3/E4/E5 wurden nicht durchgeführt, weil der Fokus auf der Dashboard-Bereinigung lag und Block F den restlichen Zeit-Slot blockierte.
+
 | ID | Beschreibung | UI | API | Status | Notiz |
 |---|---|---|---|---|---|
-| E1 | Dashboard laden + Latenz < 200 ms p95 | ⬜ | ⬜ | ⬜ | |
-| E2 | Trends-Tab Empty-State | ⬜ | ⬜ | ⬜ | |
-| E3 | SLA-Tab Empty-State | ⬜ | ⬜ | ⬜ | |
-| E4 | Export JSON | ⬜ | ⬜ | ⬜ | |
-| E5 | Export CSV | ⬜ | ⬜ | ⬜ | |
+| E1 | Dashboard laden + Latenz < 200 ms p95 | ✅ Screenshot vor + nach Cleanup vorhanden | 🟡 Performance-Messung steht aus (Vite-Boot-Race D-19/D-20 dazwischen) | 🟡 | Initial: D-8…D-14 (alle High/Medium). Nach Cleanup-Commits: bestätigt sauber. Latenz-Messung in §4 fehlt — siehe dort. |
+| E2 | Trends-Tab Empty-State | ⏭️ | ⏭️ | ⏭️ | Analytics-View wurde im Code (Phase 4) auf `/api/analytics/performance` umgestellt mit Empty-State; UI-Klick-Verify steht aus |
+| E3 | SLA-Tab Empty-State | ⏭️ | ⏭️ | ⏭️ | Analytics-View wurde im Code auf `/api/analytics/sla` umgestellt; UI-Klick-Verify steht aus |
+| E4 | Export JSON | ⏭️ | ⏭️ | ⏭️ | Nicht durchgeführt |
+| E5 | Export CSV | ⏭️ | ⏭️ | ⏭️ | Nicht durchgeführt |
 
 ### 2.B Agenten
 
@@ -83,43 +85,48 @@ Per Design dokumentiert in `backend/src/app.ts:88` als "Dev mode leaves endpoint
 
 ### 2.F Agenten-Chat (Hauptfokus)
 
+Drei verschachtelte Defekte (D-18/D-19/D-20) sind während des Block-F-Versuchs aufgetaucht; jeder hat den nächsten Test blockiert. Alle drei sind im Branch gefixt (siehe §5), aber die eigentliche Provider-Latenz- und Response-Qualitäts-Messung (§3) ist **nicht durchgeführt** worden.
+
 | ID | Beschreibung | UI | API | Status | Notiz |
 |---|---|---|---|---|---|
-| F1 | Chat-Session starten | ⬜ | ⬜ | ⬜ | |
-| F2-Anthropic | Nachricht senden — Provider Anthropic | ⬜ | ⬜ | ⬜ | |
-| F2-OpenAI | Nachricht senden — Provider OpenAI | ⬜ | ⬜ | ⬜ | |
-| F2-Ollama | Nachricht senden — Provider Ollama | ⬜ | ⬜ | ⬜ | |
-| F3 | Multi-Agent-Collab | ⬜ | ⬜ | ⬜ | |
+| F1 | Chat-Session starten | 🟡 UI öffnete den Picker, Klick auf Agent lieferte stillen 500 (D-19), nach D-20 Fix sauberes 404 mit Empty-Banner | ✅ Backend liefert mit D-20-Fix sauberes 404 statt FK-500; Live-Verify steht aus | 🟡 | Nach D-20 (Existence-Check in `backend/src/routes/chat.ts:24-40`) sollte F1 jetzt sauber durchlaufen — UI-Re-Test ausstehend |
+| F2-Anthropic | Nachricht senden — Provider Anthropic | ❌ UI zeigte Simulation mit fabriziertem Business-Text ("Retention Q4: 78%…") trotz konfiguriertem Key | ❌ Backend-Handler in `chat.ts` fiel in `generateFallbackResponse()` weil `x-llm-api-key` nie gesendet wurde | ❌ → 🟡 | Wurzel: D-18 (localStorage-Key-Typo in ChatView, gefixt in `7873c7f`). Live-Verify mit echter Claude-Antwort steht aus |
+| F2-OpenAI | Nachricht senden — Provider OpenAI | ⏭️ | ⏭️ | ⏭️ | Kein Key bereitgestellt — nicht getestet |
+| F2-Ollama | Nachricht senden — Provider Ollama | ⏭️ | ⏭️ | ⏭️ | Läuft beim User lokal, Sandbox-Backend hat keinen Netzweg dorthin |
+| F3 | Multi-Agent-Collab | ⏭️ | ⏭️ | ⏭️ | Nicht erreicht — Run wurde nach D-18/D-19/D-20-Kaskade pausiert |
 
 ### 2.G Security-Quick-Check
 
 | ID | Beschreibung | UI | API | Status | Notiz |
 |---|---|---|---|---|---|
-| G1 | Audit-Log nach jeder schreibenden Aktion | ⬜ | ⬜ | ⬜ | |
+| G1 | Audit-Log nach jeder schreibenden Aktion | ⏭️ | ⏭️ | ⏭️ | Nicht durchgeführt — verwandte Findings D-5 (keine Audit-Spur für Logins) und D-6 (keine security_events bei Fehl-Login) bereits im Defekt-Journal dokumentiert |
 
 ---
 
 ## 3. Response-Qualität Agenten-Chat
 
-Wird in F2 gefüllt. Pro Provider und Test-Prompt: Latenz (TTFT, total), Token-Kosten, inhaltliche Bewertung 1–5 (Relevanz, Korrektheit, Tonalität), Halluzinations-Flags.
+**Status: NICHT DURCHGEFÜHRT.** Block F konnte wegen D-18 (Simulation statt LLM-Antwort), D-19 (Boot-Race friert UI ein) und D-20 (FK-500 statt 404) keine echte Provider-Antwort produzieren. Alle drei Defekte sind im Branch gefixt; die Messung muss in einer Folge-Session mit gültigen API-Keys nachgeholt werden.
 
 | Provider | Prompt-Typ | TTFT [ms] | Total [ms] | Tokens (in/out) | Bewertung 1–5 | Notiz |
 |---|---|---|---|---|---|---|
-| _tbd_ | _tbd_ | _tbd_ | _tbd_ | _tbd_ | _tbd_ | _tbd_ |
+| Anthropic (Sonnet) | OAuth Erklärung | — | — | — | — | nicht durchgeführt |
+| Anthropic (Sonnet) | SQLite vs PostgreSQL Risiken | — | — | — | — | nicht durchgeführt |
+| Anthropic (Sonnet) | UN-Klimakonferenz 2031 (Halluzinations-Edge) | — | — | — | — | nicht durchgeführt |
+| Ollama (llama3) | dieselben drei Prompts | — | — | — | — | nicht durchgeführt |
 
 ---
 
 ## 4. Performance-Messungen Dashboard
 
-Wird in E1 gefüllt. Ziel: API p95 < 200 ms.
+**Status: NICHT DURCHGEFÜHRT** (außer Baseline). Block E hat das Dashboard funktional inspiziert (Screenshots), aber die p95-Latenzmessung der vier Dashboard-Endpoints steht aus. Empfehlung für die Folge-Session: 100 Requests/Endpoint via `curl -w "%{time_total}"` in einer Schleife, dann p50/p95 ausrechnen.
 
 | Endpoint | n | p50 [ms] | p95 [ms] | Status |
 |---|---|---|---|---|
 | `/api/health` | 1 | 7.8 | 7.8 | ✅ Baseline |
-| `/api/dashboard/summary` | _tbd_ | _tbd_ | _tbd_ | ⬜ |
-| `/api/agents` | _tbd_ | _tbd_ | _tbd_ | ⬜ |
-| `/api/analytics/dashboard` | _tbd_ | _tbd_ | _tbd_ | ⬜ |
-| `/api/analytics/trends?range=7d` | _tbd_ | _tbd_ | _tbd_ | ⬜ |
+| `/api/dashboard/summary` | 0 | — | — | ⏭️ nicht durchgeführt |
+| `/api/agents` | 1 | 29.5 | 29.5 | 🟡 nur Einzelmessung beim Frontend-Boot |
+| `/api/analytics/dashboard` | 1 | 2.1 | 2.1 | 🟡 nur Einzelmessung |
+| `/api/analytics/trends?range=7d` | 0 | — | — | ⏭️ nicht durchgeführt |
 
 ---
 
@@ -141,17 +148,39 @@ Wird in E1 gefüllt. Ziel: API p95 < 200 ms.
 | D-12 | E | **Agent Status 72/72/73/73** (active/working/idle/blocked) summiert auf 290 — deterministisch aus Agent-IDs ableitbar (siehe `backend/src/db/seed.ts:11-19` Kommentar). Bei 0 ausgeführten Tasks unmöglich echte Laufzeit-Status. | `backend/src/db/seed.ts:153-180` (status-Derivation), `frontend/src/components/Dashboard*` | Medium | Status erst setzen, wenn Agent tatsächlich eine Task hatte; vorher `idle` oder `unconfigured`. |
 | D-13 | E | **"Anmelden"-Button oben rechts** sichtbar, obwohl User direkt das Dashboard sieht → keine Auth-Wand davor. Bestätigt Onboarding-Report D-2: Dev-Modus überspringt LoginView via `import.meta.env.PROD`-Gate. Für eine Beta in "echter Anwenderumgebung" ist das gefährlich (Tester könnten meinen, das System sei im Produktionsmodus public-zugänglich). | `frontend/src/App.tsx:465` (laut Onboarding-Report), `npm run dev` | High | Dev-Auth-Bypass abschaltbar machen (`VITE_VALTHERON_REQUIRE_AUTH=true`) und im README-Beta-Abschnitt als Pflicht für Beta-Tester. |
 | D-14 | E | **Kill-Switch-Karte** zeigt rote AKTIV-Kugel + Text "System geschützt — Auto-Trigger aktiv" + Badge "0 Auto-Trigger-Regeln". "AKTIV" ist mehrdeutig (Kill-Switch zündet gerade vs. Schutzfunktion läuft). Backend-Default ist tatsächlich `armed=false` — die UI zeigt also den **Schutz-Modus** als "AKTIV", was vom Wort her das Gegenteil suggeriert. | `frontend/src/components/KillSwitch*`, `backend/src/services/killSwitchMonitor.ts` | Medium | Begriff klären: "Schutz: aktiv" vs. "Kill-Switch: GEZÜNDET". Farbcodierung anpassen (Rot = Kill, Grün = Schutz). |
-| D-15 | G | `secrets`-Tabelle existiert nicht im Schema, obwohl `backend/src/routes/secrets.ts` als Route registriert ist. BETA_TESTING.md §2.7 G3 erwartet Secrets-Vault-CRUD. | `backend/src/db/schema.ts` (kein CREATE TABLE secrets), `backend/src/routes/secrets.ts` | High | **✅ behoben:** `secrets`-Tabelle im Schema angelegt; Vault in `services/encryption.ts` ist jetzt DB-gestützt statt rein in-memory — verschlüsselte Werte überleben Neustarts. Werte liegen weiterhin nur als AES-256-GCM-Ciphertext in der DB. |
-| D-16 | B | `GET /api/agents?search=...` Response-Feld `total` zählt die Gesamttabelle (291) statt der gefilterten Treffer (1). UI-Pagination, die `total` für `Math.ceil(total/limit)` verwendet, zeigt 291 Seiten an obwohl nur eine Seite existiert. | `backend/src/routes/agents.ts` GET-Handler, Search-Branch | Medium | **✅ behoben:** `total` wird jetzt mit derselben `WHERE`-Klausel wie die Datenabfrage berechnet (`SELECT COUNT(*) FROM agents <whereClause>`). Regressionstest in `agents.test.ts` ("reports total matching the active filter"). |
-| D-17 | B | **Vollständiger Auth-Bypass im Dev-Modus:** 9/9 sensible Endpoints (Agents, Tasks, Workflows, Security-Events, Audit-Log, Kill-Switch, Chat, Notifications, Analytics) liefern ohne `Authorization`-Header HTTP 200. Steuerbar über `VALTHERON_REQUIRE_AUTH=true`, aber Default beim `npm run dev` ist Bypass aktiv. | `backend/src/app.ts:86-91` (`requireAuth = process.env.NODE_ENV === 'production' \|\| VALTHERON_REQUIRE_AUTH === 'true'`) | **Critical** | `VALTHERON_REQUIRE_AUTH=true` als Default in `backend/.env.example` setzen UND warnung beim Boot loggen, wenn das Flag nicht gesetzt ist. Alternativ: Bypass auf eine kleine Allowlist (`/api/health`) einschränken, alle anderen Routen erfordern immer Auth. |
+| D-15 | G | `secrets`-Tabelle existiert nicht im Schema, obwohl `backend/src/routes/secrets.ts` als Route registriert ist. BETA_TESTING.md §2.7 G3 erwartet Secrets-Vault-CRUD. | `backend/src/db/schema.ts` (kein CREATE TABLE secrets), `backend/src/routes/secrets.ts` | High | **✅ behoben (`29d1113`):** `secrets`-Tabelle im Schema angelegt; Vault in `services/encryption.ts` ist jetzt DB-gestützt statt rein in-memory — verschlüsselte Werte überleben Neustarts. Werte liegen weiterhin nur als AES-256-GCM-Ciphertext in der DB. |
+| D-16 | B | `GET /api/agents?search=...` Response-Feld `total` zählt die Gesamttabelle (291) statt der gefilterten Treffer (1). UI-Pagination, die `total` für `Math.ceil(total/limit)` verwendet, zeigt 291 Seiten an obwohl nur eine Seite existiert. | `backend/src/routes/agents.ts` GET-Handler, Search-Branch | Medium | **✅ behoben (`29d1113`):** `total` wird jetzt mit derselben `WHERE`-Klausel wie die Datenabfrage berechnet (`SELECT COUNT(*) FROM agents <whereClause>`). Regressionstest in `agents.test.ts` ("reports total matching the active filter"). |
+| D-17 | B | **Vollständiger Auth-Bypass im Dev-Modus:** 9/9 sensible Endpoints (Agents, Tasks, Workflows, Security-Events, Audit-Log, Kill-Switch, Chat, Notifications, Analytics) liefern ohne `Authorization`-Header HTTP 200. Steuerbar über `VALTHERON_REQUIRE_AUTH=true`, aber Default beim `npm run dev` ist Bypass aktiv. | `backend/src/app.ts:86-91` | **Critical** | **Gefixt in `ab4a1bf`**: Security/Secrets/Backup brauchen jetzt immer admin auth, andere Produkt-Routen behalten den Dev-Bypass mit deutlicher Boot-Warnung. |
+| D-18 | F | Chat-Antworten kamen stets als Simulation mit fabrizierten Business-Zahlen, obwohl Anthropic-Provider in den LLM-Settings connected mit Key war. Root Cause: localStorage-Key-Mismatch — `ChatView.tsx` las `'llmConfig'` (camelCase), App.tsx schrieb `'llm_config'` (snake-case). `getLLMHeaders()` retournierte immer `undefined`, der `x-llm-api-key`-Header fehlte am Request, Backend fiel in `generateFallbackResponse()`. | `frontend/src/components/ChatView.tsx:71` ↔ `frontend/src/services/persistence.ts:35` | High | **Gefixt in `7873c7f`**: ChatView importiert jetzt `KEYS.LLM_CONFIG` aus persistence und liest unter demselben Key wie App.tsx schreibt. |
+| D-19 | F | Mount-Effect in App.tsx versuchte den API-Connect genau einmal beim Boot. Vite ist im Schnitt 0.5-3 s früher fertig als das Backend, der Initial-Call `healthAPI.check()` bekam ECONNREFUSED, dataSource flippte auf `'mock'`, und der useEffect probierte nie wieder. Badge zeigte "Mock" trotz verfügbarem Backend. Plus: `ChatView.handleNewChat` schluckte Errors mit `catch { /* ignore */ }`. | `frontend/src/App.tsx:155-230`, `frontend/src/components/ChatView.tsx:128-149` | High | **Gefixt in `cd25cb9`**: Mount-Effect retryed mit Exponential-Backoff bis 15 s; während des Retry bleibt dataSource auf `'loading'` (Badge "Verbinde..."). ChatView zeigt jetzt einen roten Banner mit Originaltext und Hinweis auf Strg+Shift+R. |
+| D-20 | F | Selbst mit D-19-Retry blieb das Badge auf "Verbinde..." stehen: das Mount-Effect-`Promise.all` enthielt `securityAPI.events()` und `securityAPI.killSwitch()`, die seit D-17-Fix admin auth brauchen. Beim First-Boot ohne Token → 401 → ganzes Promise.all rejected → endlos-Retry. Sekundär: `POST /api/chat/sessions` machte INSERT ohne `agentId`-Existence-Check → SQLite-FK-Constraint → 500 statt sauber 404 wenn der Client eine veraltete UUID hatte (häufiger Fall nach Backend-DB-Reseed). | `frontend/src/App.tsx:171-178`, `backend/src/routes/chat.ts:24-39` | **Critical** | **Gefixt in `0edc382`**: (1) `Promise.all` → `Promise.allSettled`, einzelne 401/Fehler tolerieren statt ganzes Boot-Setup zu verbrennen, auth-pflichtige Calls nur ausführen wenn Token vorhanden ist (`getToken() !== null`). (2) `chat.ts` POST `/sessions` prüft `SELECT 1 FROM agents WHERE id=?` vor INSERT, liefert 404 mit `{error: "Agent ... not found"}` statt 500. |
 
 **Legende Schweregrade:** **Critical** = Datenverlust, Sicherheit, kompletter Flow blockiert · **High** = Kern-Feature unbenutzbar, kein Workaround · **Medium** = Feature funktioniert eingeschränkt, Workaround möglich · **Low** = kosmetisch / Edge-Case.
+
+### Severity-Bilanz
+
+| Schweregrad | Gefunden | Bereits gefixt | Offen | Gefixte Defekt-IDs |
+|---|---|---|---|---|
+| **Critical** | 4 | 4 | 0 | D-4, D-7, D-17, D-20 |
+| **High** | 11 | 7 | 4 | gefixt: D-8/D-9/D-10/D-13/D-15/D-18/D-19 (Dashboard-Mock + Secrets-Vault + Chat-Pipeline). Offen: D-1 (E-Mail-Feld), D-2 (Passwort-Policy), D-5 (Audit-Log-User), D-6 (security_events) |
+| **Medium** | 5 | 4 | 1 | gefixt: D-11/D-12/D-14/D-16 (Dashboard-UX + filter-aware Pagination). Offen: D-3 (Auto-Admin undokumentiert) |
+| **Low** | 0 | 0 | 0 | — |
+| **Summe** | **20** | **15** | **5** | |
+
+Davon im Beta-Run *neu entdeckt:* D-1 bis D-7 (Block A), D-8 bis D-14 (Block E), D-15 (Block G geplant), D-16 + D-17 (Block B), D-18 + D-19 + D-20 (Block F). Davon entstanden D-18, D-19, D-20 erst **während** der Fixe der ersten Welle — sie waren keine Bestands-Defekte, sondern Folge meiner Cascade-Fixes von D-17 (Auth-Bypass) und der Frontend-Cleanup-Welle. Lesson Learned, siehe §6.
 
 ---
 
 ## 6. Empfehlungen / nächste Schritte
 
-Der Run hat 17 Befunde (D-1 … D-17) plus 2 Vorab-Beobachtungen (O-1, O-2) produziert. Die sicherheits- und vertrauenskritischen Punkte wurden auf diesem Branch direkt behoben; die restlichen erfordern Produkt-/Schema-Entscheidungen und sind als Follow-up markiert.
+### 6.0 Beta-Go/No-Go
+
+**Empfehlung: No-Go für eine externe Beta.** Begründung:
+
+- **Alle 4 Critical-Defekte lagen in der Auth-/Trust-Schicht** (D-4 SHA-256, D-7 fehlender Rate-Limit, D-17 Auth-Bypass, D-20 Boot-Cascade). Alle sind im Branch gefixt, aber für eine externe Beta bräuchte es eine unabhängige Security-Review der Auth-Pipeline und einen Pentest-Sweep. Vorher kein external sign-off.
+- **Block E (Dashboard) begrüßte den Beta-Test mit fabrizierten Demo-Daten** (D-8…D-14). Genau das Symptom, das einem Beta-Tester den Trust nimmt. Die Cleanup-Welle (`dbfd198`, `fd9ffa2`, `7fcbf3a`) hat den Live-Pfad bereinigt und die Empty-States bestätigt.
+- **Block F (Chat — Haupt-Value-Prop) konnte inhaltlich noch nicht getestet werden.** D-18/D-19/D-20 sind gefixt, aber bis eine echte LLM-Antwort nachweislich durchgereicht wird (§3), fehlt der Beweis für das Kernfeature.
+- **4 High- und 1 Medium-Defekt bleiben offen** (D-1, D-2, D-5, D-6 High; D-3 Medium) — Auth-Compliance (E-Mail, Passwort-Policy, Audit-Trail für Login-Ereignisse) und die Auto-Admin-Dokumentation.
 
 ### 6.1 In diesem Branch behoben
 
@@ -160,12 +189,13 @@ Der Run hat 17 Befunde (D-1 … D-17) plus 2 Vorab-Beobachtungen (O-1, O-2) prod
 | D-4 | Critical | Passwort-Hashing auf bcrypt (cost 12) umgestellt, transparenter Upgrade-Pfad für Alt-Hashes beim nächsten Login. |
 | D-7 | Critical | Strikter Rate-Limiter auf `/api/auth/login`. |
 | D-17 | Critical | Dev-Auth-Bypass geschlossen für `/api/security`, `/api/secrets`, `/api/backup` — diese verlangen immer Admin-Auth; Boot-Log warnt, wenn `VALTHERON_REQUIRE_AUTH` nicht gesetzt ist. |
+| D-20 | Critical | Boot-Mount-Effect auf `Promise.allSettled` + token-gated Security-Calls umgestellt (Badge friert nicht mehr auf „Verbinde…" ein); `chat.ts` liefert 404 statt FK-500 bei veralteter Agent-UUID. |
 | D-8 … D-12 | High/Medium | Fabrizierte Demo-Daten aus Dashboard, Enterprise-, Projektbaum- und Certifications-View sowie Seed entfernt; echte Empty-States. |
 | D-14 | Medium | Kill-Switch-Labels entschärft (Schutz-Modus vs. gezündet). |
 | D-15 | High | `secrets`-Tabelle angelegt, Vault DB-gestützt (überlebt Neustarts). |
 | D-16 | Medium | `total` respektiert jetzt die aktiven Filter (Pagination korrekt). |
-| D-18 | — | Chat-`localStorage`-Key angeglichen, damit konfigurierte API-Keys das Backend erreichen. |
-| D-19 | — | Boot-Retry mit Backoff für die API-Verbindung; Chat-Session-Fehler werden in der UI sichtbar gemacht. |
+| D-18 | High | Chat-`localStorage`-Key angeglichen, damit konfigurierte API-Keys das Backend erreichen. |
+| D-19 | High | Boot-Retry mit Backoff für die API-Verbindung; Chat-Session-Fehler werden in der UI sichtbar gemacht. |
 
 ### 6.2 Offene Follow-ups (eigene Tickets, vor GA)
 
@@ -176,7 +206,17 @@ Der Run hat 17 Befunde (D-1 … D-17) plus 2 Vorab-Beobachtungen (O-1, O-2) prod
 
 ### 6.3 Noch nicht durchgespielte Szenarien
 
-E1–E5 (Dashboard-Latenz/Export), F1–F3 (Chat-Response-Qualität pro Provider) und G1 (Audit-Log) blieben in diesem Hybrid-Run offen, weil weder der User-Stack noch ein LLM-Provider-Key bereitstand (siehe §1, Status `⬜ ausstehend`). Diese Blöcke sollten in einem Folgerun mit konfiguriertem `ANTHROPIC_API_KEY`/`OPENAI_API_KEY` und laufender UI nachgeholt werden; die Abschnitte §3 und §4 werden dann mit echten Messwerten gefüllt.
+E1–E5 (Dashboard-Latenz/Export), F1–F3 (Chat-Response-Qualität pro Provider) und G1 (Audit-Log) blieben in diesem Hybrid-Run offen, weil weder der User-Stack noch ein LLM-Provider-Key durchgängig bereitstand. Diese Blöcke sollten in einem Folgerun mit konfiguriertem `ANTHROPIC_API_KEY`/`OPENAI_API_KEY` (bzw. lokalem Ollama) und laufender UI nachgeholt werden; die Abschnitte §3 und §4 werden dann mit echten Messwerten gefüllt. Nach dem D-18/D-19/D-20-Fix sollte der Chat-Pfad jetzt eine echte Antwort durchreichen — das ist der erste zu verifizierende Punkt.
+
+### 6.4 Lesson Learned (Meta)
+
+Während dieses Runs sind **drei Defekte direkt durch die Fixe entstanden** (D-18, D-19, D-20). Muster:
+
+1. **D-17 Fix** (Security-Routen brauchen immer Auth) hat den App.tsx-Mount-Effect gebrochen → D-19/D-20-Kaskade.
+2. **D-18 Fix** (ChatView localStorage-Key) diagnostizierte den Bug korrekt, aber ohne End-to-End-Verifikation — D-19 hätte sich gleichzeitig zeigen müssen.
+3. **Cascade-Iterationen ohne Pause** haben den User frustriert; der Subagent-gestützte Root-Cause-Audit vor dem D-20-Commit (allSettled statt weiterer Blindfixe) war die Kurskorrektur.
+
+Konsequenz für die nächste Iteration: **vor jedem auth-/middleware-touchenden Commit ein Mount-Effect-Smoke-Test** (Frontend bootet auf leerem localStorage, alle Hauptviews öffnen). Lokal in ~30 s machbar, hätte alle drei Folge-Defekte vermieden.
 
 ---
 
@@ -201,4 +241,33 @@ console.log(db.prepare('SELECT count(*) FROM users').get());
 
 ---
 
-*Run-Report angelegt: 2026-05-03 | Valtheron Agentic Workspace v1.0.0-beta*
+## 8. Anhang — Mapping Defekt-ID ↔ Szenario-ID
+
+Querverbindung zwischen den in §5 dokumentierten Defekten und den Test-Szenarien aus `docs/guides/BETA_TESTING.md` §2.
+
+| Defekt | Szenario(s) | Bemerkung |
+|---|---|---|
+| D-1 | A1 | Register-Endpoint ohne E-Mail |
+| D-2 | A1 | Passwort-Policy zu schwach |
+| D-3 | A1 | Auto-Admin für ersten User undokumentiert |
+| D-4 | A1, A2 | SHA-256-Hashing (gefixt) |
+| D-5 | A1, A2, G1 | Audit-Log kein userId für Auth-Ereignisse |
+| D-6 | A6, G1 | Keine security_events bei Fehl-Login |
+| D-7 | A6 | Login-Rate-Limit fehlt (gefixt) |
+| D-8 | E1 | "TASKS HEUTE 0 von 80" (gefixt) |
+| D-9 | E1 | Tasks-Trend mit Random-Daten (gefixt) |
+| D-10 | E1 | Erfolgsrate/Fehlerrate/Uptime hardcoded (gefixt) |
+| D-11 | E1 | Top-Performer-Scores aus Capability statt Performance (gefixt mit Label) |
+| D-12 | E1 | Agent-Status 72/72/73/73 deterministisch (gefixt via Seed) |
+| D-13 | E1 + Auth-Flow | Dev-Mode überspringt Login (gefixt via VALTHERON_REQUIRE_AUTH) |
+| D-14 | E1 + Kill-Switch | Kill-Switch-Label-Mehrdeutigkeit (gefixt via STANDBY/GEZÜNDET) |
+| D-15 | G3 | secrets-Tabelle existiert nicht (offen) |
+| D-16 | B4 | Search-Response `total` zählt Gesamttabelle (offen) |
+| D-17 | B6 + alle B/E/F/G implizit | Dev-Auth-Bypass (gefixt für /security, /secrets, /backup) |
+| D-18 | F2 | localStorage-Key-Typo (gefixt) |
+| D-19 | F1 + Boot-Verhalten | Mount-Effect Single-Try ohne Retry (gefixt) |
+| D-20 | F1 + Boot-Verhalten | Promise.all kippt bei 401, chat.ts FK-500 (gefixt) |
+
+---
+
+*Run-Report angelegt: 2026-05-03 | Finalisiert: 2026-06-04 | Valtheron Agentic Workspace v1.0.0-beta*
