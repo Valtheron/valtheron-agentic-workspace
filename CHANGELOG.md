@@ -257,6 +257,21 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) 
   Ein-Treffer-Suche. `total` wird jetzt mit derselben `WHERE`-Klausel wie die
   Datenabfrage berechnet. Regressionstest in `agents.test.ts`.
 
+- **Block F Defekt D-20 (Boot-Cascade nach D-17 + Chat-FK-500):** Nachdem D-17
+  die `/api/security/*`-Routen auf Pflicht-Admin-Auth umgestellt hatte, kippte
+  das Mount-Effect-`Promise.all` in `frontend/src/App.tsx` beim First-Boot ohne
+  Token an den beiden Security-Calls (401) — der gesamte Load schlug fehl,
+  `dataSource` blieb auf `'loading'`, das Badge fror auf „Verbinde…" ein und der
+  agents-State verließ nie seinen localStorage-Seed. Umgestellt auf
+  `Promise.allSettled` mit Einzel-Auswertung: essenzielle Daten
+  (agents/tasks/workflows/analytics) werden übernommen sobald sie auflösen; die
+  auth-pflichtigen Calls (securityEvents/killSwitch) laufen nur bei
+  `getToken() !== null` und werden bei Fehler toleriert. `health.check()` bleibt
+  das alleinige Reachability-Gate. Sekundär: `POST /api/chat/sessions` in
+  `backend/src/routes/chat.ts` prüft jetzt `SELECT 1 FROM agents WHERE id=?` vor
+  dem INSERT und liefert bei unbekannter (z. B. veralteter) Agent-UUID ein
+  sauberes 404 statt eines SQLite-FK-Constraint-500. Neuer Negativ-Test in
+  `chat.test.ts`. Tests: 449 Backend (+1) + 219 Frontend grün.
 - **Block F Defekt D-19 (Boot-Race + lautlose Chat-Fehler):** Beim ersten
   Mount-Effect in `frontend/src/App.tsx` lief `healthAPI.check()` genau einmal.
   Vite ist im Schnitt 0,5–3 s früher fertig als das Backend (Express + sqlite
