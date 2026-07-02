@@ -157,6 +157,15 @@ function App() {
   // express + sqlite + WS), so we retry on failure with capped exponential
   // backoff until the backend answers. Until then, dataSource stays
   // 'loading' so the badge doesn't lie about a "mock" state.
+  //
+  // D-20 fix: `health.check()` is the only gate on reachability — once it
+  // returns healthy, the connection is good even if individual data fetches
+  // fail (most commonly because the user isn't logged in and the security
+  // routes now require admin auth after D-17). We use `Promise.allSettled`
+  // for the data calls so a 401 on /security/* doesn't kill the whole boot
+  // and freeze the badge on "Verbinde…" forever. Auth-only calls are also
+  // skipped entirely when no token is present, to avoid surfacing
+  // misleading 401 noise in the console at boot.
   useEffect(() => {
     let cancelled = false;
     let retryTimer: ReturnType<typeof setTimeout> | null = null;
@@ -167,24 +176,37 @@ function App() {
         const health = await healthAPI.check();
         if (cancelled || health.status !== 'healthy') throw new Error('Backend unhealthy');
 
-        // Load all data from API in parallel
-        const [agentsRes, tasksRes, workflowsRes, secEventsRes, ksRes, analyticsRes] = await Promise.all([
+        const hasToken = getToken() !== null;
+
+        // Essential data — always tried, individual failures tolerated.
+        // Auth-required data is only attempted when a token is available.
+        const [agentsRes, tasksRes, workflowsRes, analyticsRes, secEventsRes, ksRes] = await Promise.allSettled([
           agentsAPI.list({ limit: 300 }),
           tasksAPI.list(),
           workflowsAPI.list(),
-          securityAPI.events(),
-          securityAPI.killSwitch(),
           analyticsAPI.dashboard(),
+          hasToken ? securityAPI.events() : Promise.reject(new Error('skipped — no auth token')),
+          hasToken ? securityAPI.killSwitch() : Promise.reject(new Error('skipped — no auth token')),
         ]);
 
         if (cancelled) return;
 
-        setAgents(agentsRes.agents as Agent[]);
-        setTasks(tasksRes.tasks as Task[]);
-        setWorkflows(workflowsRes.workflows as Workflow[]);
-        setSecurityEvents(secEventsRes.events as SecurityEvent[]);
-        setKillSwitch(ksRes as KillSwitch);
-        setAnalytics(analyticsRes as AnalyticsData);
+        if (agentsRes.status === 'fulfilled') setAgents(agentsRes.value.agents as Agent[]);
+        else console.warn('[boot] agents fetch failed:', agentsRes.reason);
+
+        if (tasksRes.status === 'fulfilled') setTasks(tasksRes.value.tasks as Task[]);
+        else console.warn('[boot] tasks fetch failed:', tasksRes.reason);
+
+        if (workflowsRes.status === 'fulfilled') setWorkflows(workflowsRes.value.workflows as Workflow[]);
+        else console.warn('[boot] workflows fetch failed:', workflowsRes.reason);
+
+        if (analyticsRes.status === 'fulfilled') setAnalytics(analyticsRes.value as AnalyticsData);
+        else console.warn('[boot] analytics fetch failed:', analyticsRes.reason);
+
+        if (secEventsRes.status === 'fulfilled') setSecurityEvents(secEventsRes.value.events as SecurityEvent[]);
+        // killSwitch falls back to the default standby state when not authorised
+        if (ksRes.status === 'fulfilled') setKillSwitch(ksRes.value as KillSwitch);
+
         setBackendConnected(true);
         setDataSource('api');
 
@@ -211,8 +233,10 @@ function App() {
             });
         });
 
+        const agentsCount = agentsRes.status === 'fulfilled' ? (agentsRes.value.agents as Agent[]).length : 0;
+        const tasksCount = tasksRes.status === 'fulfilled' ? (tasksRes.value.tasks as Task[]).length : 0;
         console.log(
-          `Backend connected: ${health.database.agents} agents, ${health.database.tasks} tasks loaded from API`,
+          `Backend connected: ${agentsCount} agents, ${tasksCount} tasks loaded from API (health: ${health.database.agents}/${health.database.tasks}).`,
         );
       } catch (err) {
         if (cancelled) return;

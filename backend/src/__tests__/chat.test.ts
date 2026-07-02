@@ -55,6 +55,14 @@ describe('Chat Endpoints', () => {
     expect(res.status).toBe(400);
   });
 
+  it('POST /api/chat/sessions — returns 404 (not 500) for unknown agentId (D-20)', async () => {
+    const res = await request(app)
+      .post('/api/chat/sessions')
+      .send({ agentId: '00000000-0000-0000-0000-000000000000', title: 'Stale UUID' });
+    expect(res.status).toBe(404);
+    expect(res.body.error).toMatch(/not found/i);
+  });
+
   it('POST /api/chat/sessions — uses default title when omitted', async () => {
     const res = await request(app).post('/api/chat/sessions').send({ agentId });
     expect(res.status).toBe(201);
@@ -170,10 +178,7 @@ describe('Chat Endpoints', () => {
 
     expect(res.status).toBe(201);
     await new Promise((r) => setTimeout(r, 50));
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining('localhost:11434'),
-      expect.any(Object),
-    );
+    expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('localhost:11434'), expect.any(Object));
   });
 
   it('POST /api/chat/sessions/:id/messages — uses custom endpoint via fetch', async () => {

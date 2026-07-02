@@ -26,6 +26,14 @@ router.post('/sessions', (req, res) => {
   const { agentId, title } = req.body;
   if (!agentId) return res.status(400).json({ error: 'agentId is required' });
 
+  // D-20 fix: surface a clean 404 instead of a SQLite FK-constraint 500
+  // when the client points at an agent that no longer exists (the common
+  // case: stale UUID in the user's localStorage after a backend DB reseed).
+  const agentExists = db.prepare('SELECT 1 FROM agents WHERE id = ?').get(agentId);
+  if (!agentExists) {
+    return res.status(404).json({ error: `Agent ${agentId} not found` });
+  }
+
   const id = uuid();
   const now = new Date().toISOString();
   db.prepare('INSERT INTO chat_sessions (id, agentId, title, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)').run(
